@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>vault</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="HSS UX">
+    <link href="css/eso-theme.css" rel="stylesheet">
+    <link href="css/vault.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="js/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" media="all" />
+    <link href="images/favicon.ico" rel="shortcut icon">
+     <script src="js/jqueryui/js/jquery-1.7.2.min.js" ></script>
+     <script src="js/dropdown.js"></script>
+    <script src="js/modal.js"></script>
+    <script type="text/javascript" language="javascript" src="datatable/datatable.js"></script>
+     <script language="javascript">
+    $(function(){
+			  
+			   $("#search1").click(function(){
+										 $("div.form-area").show();
+										 $("#search1").hide();
+										 $("#search2").show();
+										
+										 })
+			   $("#search2").click(function(){
+										 $("div.form-area").hide();
+										 $("#search1").show();
+										 $("#search2").hide();
+										
+										 })
+			   
+			   
+			   
+			   })
+    
+    </script>
+</head>
+<body id='eso-body'>
+<div class="server"><div>stage server</div></div>
+<div class="eso-inner">
+
+<header id='eso-topbar'>
+  <a href="index.html" title="go back home" class="logo">Vault</a>
+  <a href="https://engineering.redhat.com/hss-portal" class="eso-logo"><img src="images/header-logo-eso-developed.png" alt="Developed by HSS"></a>
+  <ul class="quick-menu unstyled">
+  <li class="dropdown">
+    <a href="https://engineering.redhat.com/hss-portal/products/" title="Engineering Services">Engineering Services</a>
+  </li>
+  <li class="dropdown header-help">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="User Guide">Help<b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li><a href="aboutus.html">User guide</a></li>
+        <li class="divider"></li>
+        <li><a href="mailto:hss-eip@redhat.com">EIP Request</a></li>
+        <li><a href="mailto:eng-ops@redhat.com">Eng-ops Request</a></li>
+        <li><a href="mailto:hss-ied-list@redhat.com">Application Request</a></li>
+        <li class="divider"></li>
+        <li><a href="mailto:hss-ied-list@redhat.com">Contact developers</a></li>
+      </ul>
+    </li>
+ <li class="dropdown header-user">
+   <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="User Info">erousseau<b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <li><a href="#">Profile</a></li>
+    </ul>
+    </li>
+ </ul>
+
+</header>
+
+<div class="navbar">
+  <ul class="nav">
+    <li class=""><a href="index.html">Home</a></li>
+    <li class="active"><a href="new request.html" >New Request </a></li>
+    <li class=""><a href="needing my approval.html">Needing My Approval<span class="number"> ( 3 )</span></a></li>
+    <li class=""><a href="my request.html">My Requests<span class="number"> ( 10 )</span></a></li>
+    <li class=""><a href="have signed.html">Have Signed <span class="number">( 8 )</span></a></li>
+    <li class=""><a href="cc me.html">CC Me<span class="number"> ( 100 )</span></a></li>
+    <li class=""><a href="i can view.html">I Can View <span class="number">( 568 )</span></a></li>
+  </ul>
+    
+</div>
+<div class="content">
+   
+<div class="breadcrumb">
+    <ul class="pull-left">
+        <li><a href="index.html">Home</a> <span class="divider">/</span></li>
+        <li>New request</li>
+    </ul>
+        
+    
+     <div class="clear"></div>
+</div>
+	
+    <div>
+			
+        <div class="clear"></div>
+	</div>
+   
+	
+	
+		<table class="eso-table new-request" id="table1">
+  <thead>
+  	<th colspan="2">Create Request</th>
+  
+<tbody>
+    <tr>
+    <td width="9%" ><span> Name:</span><span class="red">*</span></td>
+    <td ><input type="text" class="input-xlarge" id="input01"></td>
+    </tr>
+    <tr>
+    <td >Product:</td>
+    <td ><select data-placeholder="" class="chzn-select creat-request-select" tabindex="6">
+      <option value=""></option>
+        <option>Dallas Cowboys</option>
+        <option>New York Giants</option>
+        <option>Philadelphia Eagles</option>
+        <option>Washington Redskins</option>
+      </select></td>
+   
+    </tr>
+    <tr>
+    <td ><span>Version:</span></td>
+    <td ><select data-placeholder="" class="chzn-select creat-request-select" tabindex="6">
+      <option value=""></option>
+        <option>Dallas Cowboys</option>
+        <option>New York Giants</option>
+        <option>Philadelphia Eagles</option>
+        <option>Washington Redskins</option>
+      </select></td>
+   
+    </tr>
+    <tr>
+      <td ><span>Sign off by:</span><span class="red">*</span></td>
+      <td ><select data-placeholder=""  class="chzn-select creat-request-select" tabindex="6">
+      <option value=""></option>
+        <option>Reset and require new sign off</option>
+        <option>Send email notification</option>
+        <option>Do not notify</option>
+      </select>
+      <input type="text" class="input-xlarge add-width" id="input01" value="">
+      Input E-mail and separated by commas.
+      </br>
+      </td>
+    </tr>
+    <tr>
+      <td ><span>CC:</span></td>
+      <td ><input type="text" class="input-xlarge sign add-width" id="input01"></td>
+      
+    </tr>
+    <tr>
+    <td ><span>Due date:</span></td>
+    <td ><input type="text" class="input-xlarge" id="input01"><input type="text" class="input-xlarge times" id="input01"> GMT+0800 (CST)</td>
+   
+    </tr>
+    <tr>
+    <td ><span>Parent:</span></td>
+    <td ><input type="text" class="input-xlarge" id="input01"></td>
+   
+    </tr>
+    <tr>
+    <td ><span>Child:</span></td>
+    <td >
+    <input type="text" class="input-xlarge" id="input01"><span class="delate-table"></span></br>
+    <button class="btn off-margin span-top" cl>Add More</button>
+    </td>
+   
+    </tr>
+    <tr>
+    <td ><span>Description:</span><span class="red">*</span></td>
+    <td ><textarea class="input-xlarge" id="textarea" rows="3"></textarea></td>
+   
+    </tr>
+    <tr>
+    <td ><span>Attachment:</span></td>
+    <td ><div class="control-group">
+            <label class="control-label" for="fileInput">File input</label>
+            <div class="controls">
+              <input class="input-file" id="fileInput" type="file">
+            </div>
+          </div> allowable file types: image, openoffice, pdf, text, plain-text, package(gz,tgz,bz2,z,rar,zip,tar) </td>
+   
+    </tr>
+    <tr>
+    <td ><span>Public:</span></td>
+    <td ><input type="checkbox" value="option2" name="optionsCheckboxList2"> (If you want to share this request flow to all users, please check box.)</td>
+   
+    </tr>
+    
+    <tr>
+    <td colspan="2" ><button class="btn btn-primary">Create</button><button class="btn">Cancel</button></td>
+   
+    </tr>
+
+
+    </tbody>
+</table>
+
+</div>
+<footer class="footer">
+    
+    <div class="hss-logo"></div>
+    <div class='copyright'>
+    <p>Vault 3.0 <a href="#">Report an Issue</a></p>
+    <p>Copyright © 2012 Red Hat, Inc. All rights reserved.</p>
+    <p>INTERNAL USE ONLY</p>
+    <!--when the application use some tech supported by opensource, then please mark it here><p>Powered by <a href='http://www.redhat.com/products/jbossenterprisemiddleware/portal/'>@JBoss EAP</a></p><-->
+    </div>
+</footer>
+</div>
+<script>
+	$(".chzn-select").chosen(); 
+	$(".chzn-select-deselect").chosen({allow_single_deselect:true}); 
+</script>	
+</div>
+<div class="row-fluid">
+    	<div class="span8"></div>    
+      </div>
+</body>
+</html>
