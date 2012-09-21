@@ -10,6 +10,8 @@ import java.util.TimeZone;
 
 import org.jboss.logging.Logger;
 
+
+
 /**
  * Date Tools <br>
  * Notes:
@@ -90,7 +92,7 @@ import org.jboss.logging.Logger;
  *         rs.getTimestamp(String columnName, Calendar cal)
  *         rs.getTime(int columnIndex, Calendar cal)
  *         rs.getTime(String columnName, Calendar cal)
- * 
+ *  
  * </pre>
  * 
  * @author speng@redhat.com
@@ -99,14 +101,14 @@ public class DateUtil {
 	/**
 	 * logger
 	 */
-	protected static final Logger logger = Logger.getLogger(DateUtil.class);
+    protected static final Logger logger = Logger.getLogger(DateUtil.class);
 
 	/**
 	 * GMT:00 TimeZone TODO: after change all callers to use getGMTTimeZone() to
 	 * get GMT TimeZone, please change it to be protected.
 	 * 
 	 * @deprecated this field will become protected. Please use getGMTTimeZone()
-	 * method instead of referencing this field directly.
+	 *             method instead of referencing this field directly.
 	 */
 	private static final TimeZone GMTTimeZone = TimeZone.getTimeZone("GMT");
 
@@ -114,12 +116,7 @@ public class DateUtil {
 	 * System timestamp format.
 	 */
 	private static final String SYSTEM_TIMESTAMP_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
-	
-	/**
-	 * System vault format.
-	 */
-	private static final String VAULT_TIMESTAMP_FORMAT_PATTERN = "yyyy-MM-dd HH:mm";
-	
+
 	/**
 	 * System date format.
 	 */
@@ -132,8 +129,7 @@ public class DateUtil {
 
 	private static final String SYSTEM_LONGTIMESTAMPZ_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS Z";
 
-	private static final DateFormat HOUR_MINUTE_FORMATTER = new SimpleDateFormat(
-			"HH:mm");
+	private static final DateFormat HOUR_MINUTE_FORMATTER = new SimpleDateFormat("HH:mm");
 
 	/**
 	 * Calendar for GMT:00 TimeZone. Don't change its TimeZone. Its time is not
@@ -145,7 +141,7 @@ public class DateUtil {
 	 * Calendar, please change it to be protected.
 	 * 
 	 * @deprecated this field will become protected. Please use getGMTCalendar()
-	 * method instead of referencing this field directly.
+	 *             method instead of referencing this field directly.
 	 */
 	// public static final Calendar GMTCalendar =
 	// Calendar.getInstance(GMTTimeZone);
@@ -203,8 +199,10 @@ public class DateUtil {
 	/**
 	 * get a calendar with a java.util.Date and given TimeZone
 	 * 
-	 * @param timeZone the timezone
-	 * @param date the date
+	 * @param timeZone
+	 *            the timezone
+	 * @param date
+	 *            the date
 	 * @return java.util.Calendar
 	 */
 	public static final Calendar getCalendar(TimeZone timeZone, Date date) {
@@ -212,29 +210,31 @@ public class DateUtil {
 		cal.setTime(date);
 		return (cal);
 	}
-
 	public static final Calendar getCalendar(String timeZoneStr) {
 		TimeZone timeZone = TimeZone.getTimeZone(timeZoneStr);
 		Calendar cal = Calendar.getInstance(timeZone);
 		return (cal);
 	}
-
 	/**
 	 * get a calendar with given date and time fields that are in given
 	 * TimeZone.
 	 * 
-	 * @param timeZone the TimeZone. if it is null, then use system host time
-	 * zone.
-	 * @param date the date without time information or its time information
-	 * will be overridden by new values
-	 * @param hour the hour, 0 - 23
-	 * @param minute the minute, 0 - 59
-	 * @param second the second, 0 - 59
-	 * @param millis the millisecond, 0 - 999
+	 * @param timeZone
+	 *            the TimeZone. if it is null, then use system host time zone.
+	 * @param date
+	 *            the date without time information or its time information will
+	 *            be overridden by new values
+	 * @param hour
+	 *            the hour, 0 - 23
+	 * @param minute
+	 *            the minute, 0 - 59
+	 * @param second
+	 *            the second, 0 - 59
+	 * @param millis
+	 *            the millisecond, 0 - 999
 	 * @return Calendar
 	 */
-	public static final Calendar getCalendar(TimeZone timeZone, Date date,
-			int hour, int minute, int second, int millis) {
+	public static final Calendar getCalendar(TimeZone timeZone, Date date, int hour, int minute, int second, int millis) {
 		if (timeZone == null)
 			timeZone = TimeZone.getDefault();
 		Calendar cal = Calendar.getInstance(timeZone);
@@ -253,36 +253,46 @@ public class DateUtil {
 	 * get a calendar with given date and time fields that are in given
 	 * TimeZone.
 	 * 
-	 * @param timeZone the TimeZone. if it is null, then use system host time
-	 * zone.
-	 * @param date the date without time information or its time information
-	 * will be overridden by new values
-	 * @param hour the hour, 0 - 23
-	 * @param minute the minute, 0 - 59
-	 * @param second the second, 0 - 59
+	 * @param timeZone
+	 *            the TimeZone. if it is null, then use system host time zone.
+	 * @param date
+	 *            the date without time information or its time information will
+	 *            be overridden by new values
+	 * @param hour
+	 *            the hour, 0 - 23
+	 * @param minute
+	 *            the minute, 0 - 59
+	 * @param second
+	 *            the second, 0 - 59
 	 * @return Calendar
 	 */
-	public static final Calendar getCalendar(TimeZone timeZone, Date date,
-			int hour, int minute, int second) {
+	public static final Calendar getCalendar(TimeZone timeZone, Date date, int hour, int minute, int second) {
 		return (getCalendar(timeZone, date, hour, minute, second, 0));
 	}
 
 	/**
 	 * get a calendar with given time fields that are in given TimeZone.
 	 * 
-	 * @param timeZone the TimeZone. if it is null, then use system host time
-	 * zone.
-	 * @param year the year in 4-digits.
-	 * @param month the month, 0 - 11
-	 * @param day the day of the month, start from 1.
-	 * @param hour the hour, 0 - 23
-	 * @param minute the minute, 0 - 59
-	 * @param second the second, 0 - 59
-	 * @param millis the millisecond, 0 - 999
+	 * @param timeZone
+	 *            the TimeZone. if it is null, then use system host time zone.
+	 * @param year
+	 *            the year in 4-digits.
+	 * @param month
+	 *            the month, 0 - 11
+	 * @param day
+	 *            the day of the month, start from 1.
+	 * @param hour
+	 *            the hour, 0 - 23
+	 * @param minute
+	 *            the minute, 0 - 59
+	 * @param second
+	 *            the second, 0 - 59
+	 * @param millis
+	 *            the millisecond, 0 - 999
 	 * @return Calendar
 	 */
-	public static final Calendar getCalendar(TimeZone timeZone, int year,
-			int month, int day, int hour, int minute, int second, int millis) {
+	public static final Calendar getCalendar(TimeZone timeZone, int year, int month, int day, int hour, int minute,
+			int second, int millis) {
 		if (timeZone == null)
 			timeZone = TimeZone.getDefault();
 		Calendar cal = Calendar.getInstance(timeZone);
@@ -295,66 +305,82 @@ public class DateUtil {
 	/**
 	 * get a calendar with given time fields that are in given TimeZone.
 	 * 
-	 * @param timeZone the TimeZone. if it is null, then use system host time
-	 * zone.
-	 * @param year the year in 4-digits.
-	 * @param month the month, 0 - 11
-	 * @param day the day of the month, start from 1.
-	 * @param hour the hour, 0 - 23
-	 * @param minute the minute, 0 - 59
-	 * @param second the second, 0 - 59
+	 * @param timeZone
+	 *            the TimeZone. if it is null, then use system host time zone.
+	 * @param year
+	 *            the year in 4-digits.
+	 * @param month
+	 *            the month, 0 - 11
+	 * @param day
+	 *            the day of the month, start from 1.
+	 * @param hour
+	 *            the hour, 0 - 23
+	 * @param minute
+	 *            the minute, 0 - 59
+	 * @param second
+	 *            the second, 0 - 59
 	 * @return Calendar
 	 */
-	public static final Calendar getCalendar(TimeZone timeZone, int year,
-			int month, int day, int hour, int minute, int second) {
+	public static final Calendar getCalendar(TimeZone timeZone, int year, int month, int day, int hour, int minute,
+			int second) {
 		return (getCalendar(timeZone, year, month, day, hour, minute, second, 0));
 	}
 
 	/**
 	 * get a calendar with given time fields that are in system host TimeZone.
 	 * 
-	 * @param year the year in 4-digits such as 2005.
-	 * @param month the month, 0 - 11
-	 * @param day the day of the month, start from 1.
-	 * @param hour the hour, 0 - 23
-	 * @param minute the minute, 0 - 59
-	 * @param second the second, 0 - 59
-	 * @param millis the millisecond, 0 - 999
+	 * @param year
+	 *            the year in 4-digits such as 2005.
+	 * @param month
+	 *            the month, 0 - 11
+	 * @param day
+	 *            the day of the month, start from 1.
+	 * @param hour
+	 *            the hour, 0 - 23
+	 * @param minute
+	 *            the minute, 0 - 59
+	 * @param second
+	 *            the second, 0 - 59
+	 * @param millis
+	 *            the millisecond, 0 - 999
 	 * @return Calendar
 	 */
-	public static final Calendar getCalendar(int year, int month, int day,
-			int hour, int minute, int second, int millis) {
-		return (getCalendar(null, year, month, day, hour, minute, second,
-				millis));
+	public static final Calendar getCalendar(int year, int month, int day, int hour, int minute, int second, int millis) {
+		return (getCalendar(null, year, month, day, hour, minute, second, millis));
 	}
 
 	/**
 	 * get a calendar with given time fields that are in system host TimeZone.
 	 * 
-	 * @param year the year in 4-digits such as 2005.
-	 * @param month the month, 0 - 11
-	 * @param day the day of the month, start from 1.
-	 * @param hour the hour, 0 - 23
-	 * @param minute the minute, 0 - 59
-	 * @param second the second, 0 - 59
+	 * @param year
+	 *            the year in 4-digits such as 2005.
+	 * @param month
+	 *            the month, 0 - 11
+	 * @param day
+	 *            the day of the month, start from 1.
+	 * @param hour
+	 *            the hour, 0 - 23
+	 * @param minute
+	 *            the minute, 0 - 59
+	 * @param second
+	 *            the second, 0 - 59
 	 * @return Calendar
 	 */
-	public static final Calendar getCalendar(int year, int month, int day,
-			int hour, int minute, int second) {
+	public static final Calendar getCalendar(int year, int month, int day, int hour, int minute, int second) {
 		return (getCalendar(null, year, month, day, hour, minute, second, 0));
 	}
 
 	/**
 	 * convert a calendar to another timezone. Both have the same absolute time.
 	 * 
-	 * @param fromCalendar the original calendar, which will be changed after
-	 * the call.
-	 * @param toTimeZone the new timezone
+	 * @param fromCalendar
+	 *            the original calendar, which will be changed after the call.
+	 * @param toTimeZone
+	 *            the new timezone
 	 * @return the new calendar in new timezone, which is the same calendar
-	 * object with timezone changed to new one.
+	 *         object with timezone changed to new one.
 	 */
-	public static final Calendar convertTimeZone(Calendar fromCalendar,
-			TimeZone toTimeZone) {
+	public static final Calendar convertTimeZone(Calendar fromCalendar, TimeZone toTimeZone) {
 		fromCalendar.setTimeZone(toTimeZone);
 		fromCalendar.get(Calendar.YEAR); // force it to re-compute all fields
 		return (fromCalendar);
@@ -365,15 +391,16 @@ public class DateUtil {
 	 * Saving Time is in effect at the given date, the offset value is adjusted
 	 * with the amount of daylight saving.
 	 * 
-	 * @param timeZone the TimeZone
-	 * @param date the date
+	 * @param timeZone
+	 *            the TimeZone
+	 * @param date
+	 *            the date
 	 * @return offset of the timezone in milliseconds
 	 */
 	public static int getTimeZoneOffset(TimeZone timeZone, Date date) {
 		if (timeZone.inDaylightTime(date)) {
 			return (timeZone.getRawOffset() + timeZone.getDSTSavings());
-		}
-		else {
+		} else {
 			return (timeZone.getRawOffset());
 		}
 	}
@@ -383,9 +410,11 @@ public class DateUtil {
 	 * Saving Time is in effect at the given date, the offset value is adjusted
 	 * with the amount of daylight saving.
 	 * 
-	 * @param timeZone the TimeZone
-	 * @param date the date in milliseconds since January 1, 1970, 00:00:00.000
-	 * GMT
+	 * @param timeZone
+	 *            the TimeZone
+	 * @param date
+	 *            the date in milliseconds since January 1, 1970, 00:00:00.000
+	 *            GMT
 	 * @return offset of the timezone in milliseconds
 	 */
 	public static int getTimeZoneOffset(TimeZone timeZone, long date) {
@@ -405,10 +434,8 @@ public class DateUtil {
 	 * String strDate = &quot;2006-05-01&quot;;
 	 * SimpleDateFormat fmt = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
 	 * Date date = fmt.parse(strDate);
-	 * date = DateTool.adjustDate(date, TimeZone.getDefault(),
-	 * 		TimeZone.getTimeZone(&quot;Asia/Shanghai&quot;));
-	 * // now the date is the right date representing 2006-05-01 in Asia/Shanghai time
-	 * // zone.
+	 * date = DateTool.adjustDate(date, TimeZone.getDefault(), TimeZone.getTimeZone(&quot;Asia/Shanghai&quot;));
+	 * // now the date is the right date representing 2006-05-01 in Asia/Shanghai time zone.
 	 * </pre>
 	 * 
 	 * Of course we can create a formater with the desired TimeZone (using
@@ -421,10 +448,8 @@ public class DateUtil {
 	 * @param toTimeZone
 	 * @return Date
 	 */
-	public static final Date adjustDate(Date date, TimeZone fromTimeZone,
-			TimeZone toTimeZone) {
-		return (new Date(date.getTime() + getTimeZoneOffset(fromTimeZone, date)
-				- getTimeZoneOffset(toTimeZone, date)));
+	public static final Date adjustDate(Date date, TimeZone fromTimeZone, TimeZone toTimeZone) {
+		return (new Date(date.getTime() + getTimeZoneOffset(fromTimeZone, date) - getTimeZoneOffset(toTimeZone, date)));
 	}
 
 	/**
@@ -440,12 +465,10 @@ public class DateUtil {
 	 * Date date = new Date();
 	 * SimpleDateFormat fmt = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
 	 * System.out.println(&quot;date in default time zone: &quot; + fmt.format(date));
-	 * date = DateTool.disruptDate(date, TimeZone.getDefault(),
-	 * 		TimeZone.getTimeZone(&quot;Asia/Shanghai&quot;));
+	 * date = DateTool.disruptDate(date, TimeZone.getDefault(), TimeZone.getTimeZone(&quot;Asia/Shanghai&quot;));
 	 * String strDate = fmt.format(date);
 	 * System.out.println(&quot;date in time zone Asia/Shanghai: &quot; + strDate);
-	 * // now the strDate is the String representing the Date in Asia/Shanghai time
-	 * // zone.
+	 * // now the strDate is the String representing the Date in Asia/Shanghai time zone.
 	 * </pre>
 	 * 
 	 * This case is the reverse of adjustDate(). <br>
@@ -455,10 +478,8 @@ public class DateUtil {
 	 * @param toTimeZone
 	 * @return Date
 	 */
-	public static final Date disruptDate(Date date, TimeZone fromTimeZone,
-			TimeZone toTimeZone) {
-		return (new Date(date.getTime() + getTimeZoneOffset(toTimeZone, date)
-				- getTimeZoneOffset(fromTimeZone, date)));
+	public static final Date disruptDate(Date date, TimeZone fromTimeZone, TimeZone toTimeZone) {
+		return (new Date(date.getTime() + getTimeZoneOffset(toTimeZone, date) - getTimeZoneOffset(fromTimeZone, date)));
 	}
 
 	/**
@@ -470,82 +491,100 @@ public class DateUtil {
 		return (new Date());
 	}
 
-	public static final Date today() {
+	public static final Date today(){
 		return dateOnly(new Date());
 	}
-
 	/**
 	 * get a Date with given time fields that are in given TimeZone.
 	 * 
-	 * @param timeZone the TimeZone. if it is null, then use system host time
-	 * zone.
-	 * @param year the year in 4-digits.
-	 * @param month the month, 0 - 11
-	 * @param day the day of the month, start from 1.
-	 * @param hour the hour, 0 - 23
-	 * @param minute the minute, 0 - 59
-	 * @param second the second, 0 - 59
-	 * @param millis the millisecond, 0 - 999
+	 * @param timeZone
+	 *            the TimeZone. if it is null, then use system host time zone.
+	 * @param year
+	 *            the year in 4-digits.
+	 * @param month
+	 *            the month, 0 - 11
+	 * @param day
+	 *            the day of the month, start from 1.
+	 * @param hour
+	 *            the hour, 0 - 23
+	 * @param minute
+	 *            the minute, 0 - 59
+	 * @param second
+	 *            the second, 0 - 59
+	 * @param millis
+	 *            the millisecond, 0 - 999
 	 * @return Date
 	 */
-	public static final Date getDate(TimeZone timeZone, int year, int month,
-			int day, int hour, int minute, int second, int millis) {
-		return (getCalendar(timeZone, year, month, day, hour, minute, second,
-				millis).getTime());
+	public static final Date getDate(TimeZone timeZone, int year, int month, int day, int hour, int minute, int second,
+			int millis) {
+		return (getCalendar(timeZone, year, month, day, hour, minute, second, millis).getTime());
 	}
 
 	/**
 	 * get a Date with given time fields that are in given TimeZone.
 	 * 
-	 * @param timeZone the TimeZone. if it is null, then use system host time
-	 * zone.
-	 * @param year the year in 4-digits.
-	 * @param month the month, 0 - 11
-	 * @param day the day of the month, start from 1.
-	 * @param hour the hour, 0 - 23
-	 * @param minute the minute, 0 - 59
-	 * @param second the second, 0 - 59
+	 * @param timeZone
+	 *            the TimeZone. if it is null, then use system host time zone.
+	 * @param year
+	 *            the year in 4-digits.
+	 * @param month
+	 *            the month, 0 - 11
+	 * @param day
+	 *            the day of the month, start from 1.
+	 * @param hour
+	 *            the hour, 0 - 23
+	 * @param minute
+	 *            the minute, 0 - 59
+	 * @param second
+	 *            the second, 0 - 59
 	 * @return Date
 	 */
-	public static final Date getDate(TimeZone timeZone, int year, int month,
-			int day, int hour, int minute, int second) {
-		return (getCalendar(timeZone, year, month, day, hour, minute, second, 0)
-				.getTime());
+	public static final Date getDate(TimeZone timeZone, int year, int month, int day, int hour, int minute, int second) {
+		return (getCalendar(timeZone, year, month, day, hour, minute, second, 0).getTime());
 	}
 
 	/**
 	 * get a Date with given time fields that are in system host TimeZone
 	 * 
-	 * @param year the year in 4-digits.
-	 * @param month the month, 0 - 11
-	 * @param day the day of the month, start from 1.
-	 * @param hour the hour, 0 - 23
-	 * @param minute the minute, 0 - 59
-	 * @param second the second, 0 - 59
-	 * @param millis the millisecond, 0 - 999
+	 * @param year
+	 *            the year in 4-digits.
+	 * @param month
+	 *            the month, 0 - 11
+	 * @param day
+	 *            the day of the month, start from 1.
+	 * @param hour
+	 *            the hour, 0 - 23
+	 * @param minute
+	 *            the minute, 0 - 59
+	 * @param second
+	 *            the second, 0 - 59
+	 * @param millis
+	 *            the millisecond, 0 - 999
 	 * @return Date
 	 */
-	public static final Date getDate(int year, int month, int day, int hour,
-			int minute, int second, int millis) {
-		return (getCalendar(null, year, month, day, hour, minute, second,
-				millis).getTime());
+	public static final Date getDate(int year, int month, int day, int hour, int minute, int second, int millis) {
+		return (getCalendar(null, year, month, day, hour, minute, second, millis).getTime());
 	}
 
 	/**
 	 * get a Date with given time fields that are in system host TimeZone
 	 * 
-	 * @param year the year in 4-digits.
-	 * @param month the month, 0 - 11
-	 * @param day the day of the month, start from 1.
-	 * @param hour the hour, 0 - 23
-	 * @param minute the minute, 0 - 59
-	 * @param second the second, 0 - 59
+	 * @param year
+	 *            the year in 4-digits.
+	 * @param month
+	 *            the month, 0 - 11
+	 * @param day
+	 *            the day of the month, start from 1.
+	 * @param hour
+	 *            the hour, 0 - 23
+	 * @param minute
+	 *            the minute, 0 - 59
+	 * @param second
+	 *            the second, 0 - 59
 	 * @return Date
 	 */
-	public static final Date getDate(int year, int month, int day, int hour,
-			int minute, int second) {
-		return (getCalendar(null, year, month, day, hour, minute, second, 0)
-				.getTime());
+	public static final Date getDate(int year, int month, int day, int hour, int minute, int second) {
+		return (getCalendar(null, year, month, day, hour, minute, second, 0).getTime());
 	}
 
 	/**
@@ -553,7 +592,8 @@ public class DateUtil {
 	 * 
 	 * @author diff_i@hotmail.com
 	 * @param dateStr
-	 * @param format,yyyy-MM-dd HH:mm:ss
+	 * @param format,yyyy-MM-dd
+	 *            HH:mm:ss
 	 * @return java.util.Date
 	 * 
 	 * <pre>
@@ -565,15 +605,13 @@ public class DateUtil {
 	public static final Date toDate(String dateString, String format) {
 		Date date = null;
 		SimpleDateFormat formatter = null;
-		if (dateString == null || dateString.length() == 0 || format == null
-				|| format.length() == 0) {
+		if (dateString == null || dateString.length() == 0 || format == null || format.length() == 0) {
 			return null;
 		}
 		formatter = new SimpleDateFormat(format);
 		try {
 			date = formatter.parse(dateString);
-		}
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			logger.error("toDate(String, String) error", e);
 		}
 		return date;
@@ -584,8 +622,10 @@ public class DateUtil {
 	 * Date with given timezone
 	 * 
 	 * @author diff_i@hotmail.com
-	 * @param date source date
-	 * @param timeZone destination timezone
+	 * @param date
+	 *            source date
+	 * @param timeZone
+	 *            destination timezone
 	 * @return java.util.Date
 	 */
 	public static final Date toDate(Date date, TimeZone timeZone) {
@@ -594,8 +634,7 @@ public class DateUtil {
 			String ds = toString(date, timeZone);
 			DateFormat formatter = FormatManager.getDefaultTimestampFormat();// .getDateFormatObject(SYSTEM_DATETIME_FORMAT);
 			dt = formatter.parse(ds);
-		}
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			logger.error("toDate(Date, TimeZone parse error)", e);
 		}
 		return dt;
@@ -604,7 +643,8 @@ public class DateUtil {
 	/**
 	 * Convert dateString of "SYSTEM_TIMESTAMP_FORMATTER" format to Date.
 	 * 
-	 * @param dateString, the input format should be "yyyy-MM-dd HH:mm:ss.SSS"
+	 * @param dateString,
+	 *            the input format should be "yyyy-MM-dd HH:mm:ss.SSS"
 	 * @return
 	 * 
 	 * <pre>
@@ -618,34 +658,10 @@ public class DateUtil {
 		if (dateString == null || dateString.trim().length() == 0) {
 			return null;
 		}
-		DateFormat format = new SimpleDateFormat(
-				SYSTEM_TIMESTAMP_FORMAT_PATTERN);
+		DateFormat format = new SimpleDateFormat(SYSTEM_TIMESTAMP_FORMAT_PATTERN);
 		try {
 			date = format.parse(dateString);
-		}
-		catch (ParseException e) {
-			logger.error("toSystemDate(String) error", e);
-		}
-		return date;
-	}
-	
-	public static final Date toVaultDate(String dateString) {
-		Date date = null;
-		if (dateString == null || dateString.trim().length() == 0) {
-			return null;
-		}
-		DateFormat format =null;
-		if(dateString.trim().length()==10){
-			format= new SimpleDateFormat(
-					SYSTEM_DATE_FORMAT_PATTERN);
-		}else{
-		    format=new SimpleDateFormat(
-				VAULT_TIMESTAMP_FORMAT_PATTERN);
-		}
-		try {
-			date = format.parse(dateString);
-		}
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			logger.error("toSystemDate(String) error", e);
 		}
 		return date;
@@ -695,8 +711,7 @@ public class DateUtil {
 		return formatter.format(date);
 	}
 
-	public static final String toString(Date date, String format,
-			String defValue) {
+	public static final String toString(Date date, String format, String defValue) {
 		if (date == null || format == null) {
 			return defValue;
 		}
@@ -711,8 +726,10 @@ public class DateUtil {
 	 * SYSTEM_DATE_FORMATTER
 	 * 
 	 * @author diff_i@hotmail.com
-	 * @param date source date (Timezone is host system timezone)
-	 * @param timeZone destination timezone
+	 * @param date
+	 *            source date (Timezone is host system timezone)
+	 * @param timeZone
+	 *            destination timezone
 	 * @return java.util.Date
 	 */
 	public static final String toString(Date date, TimeZone timeZone) {
@@ -729,8 +746,7 @@ public class DateUtil {
 	 * @param format
 	 * @return String
 	 */
-	public static final String toString(Date date, TimeZone timeZone,
-			String format) {
+	public static final String toString(Date date, TimeZone timeZone, String format) {
 		Calendar calendar = Calendar.getInstance(timeZone);
 		DateFormat formatter = FormatManager.getDateFormat(format, timeZone);
 		formatter.setCalendar(calendar);
@@ -750,21 +766,12 @@ public class DateUtil {
 	 * </pre>
 	 */
 	public static String toSystemString(Date date) {
-		DateFormat dateFormat = new SimpleDateFormat(
-				SYSTEM_TIMESTAMP_FORMAT_PATTERN);
+		DateFormat dateFormat = new SimpleDateFormat(SYSTEM_TIMESTAMP_FORMAT_PATTERN);
 		return dateFormat.format(date);
 	}
-	
-	public static String toVaultString(Date date) {
-		DateFormat dateFormat = new SimpleDateFormat(
-				VAULT_TIMESTAMP_FORMAT_PATTERN);
-		return dateFormat.format(date);
-	}
-
 	public static final String toLongZString(Date date) {
 		return toString(date, SYSTEM_LONGTIMESTAMPZ_FORMAT_PATTERN);
 	}
-
 	public static final String toLongString(Date date, TimeZone timeZone) {
 		return toString(date, timeZone, SYSTEM_TIMESTAMP_FORMAT_PATTERN);
 	}
@@ -781,12 +788,11 @@ public class DateUtil {
 
 	public static final int getBirthdaysBetween(Date birthday, Date now) {
 		if (birthday == null || now == null) {
-			throw new IllegalArgumentException(
-					"birthday or now cannot be null.");
+			throw new IllegalArgumentException("birthday or now cannot be null.");
 		}
 		Date nextBirthday = getNextBirthday(birthday);
-
-		return getDaysBetween(nextBirthday, now);
+		
+		return getDaysBetween( nextBirthday, now);
 	}
 
 	public static Date getNextBirthday(Date birthday) {
@@ -803,23 +809,19 @@ public class DateUtil {
 				if (nowMonth > month) {
 					Date dt = getNextLeapYear(now);
 					year = getYear(dt);
-				}
-				else if (nowMonth == month && nowDay > day) {
+				} else if (nowMonth == month && nowDay > day) {
 					Date dt = getNextLeapYear(now);
 					year = getYear(dt);
-				}
-			}
-			else {
+				} 
+			} else {
 				Date dt = getNextLeapYear(now);
 				year = getYear(dt);
 			}
 
-		}
-		else {
+		} else {
 			if (nowMonth > month) {
 				year++;
-			}
-			else if (nowMonth == month && nowDay > day) {
+			} else if (nowMonth == month && nowDay > day) {
 				year++;
 			}
 		}
@@ -945,8 +947,7 @@ public class DateUtil {
 		if (date1 == null || date2 == null) {
 			throw new IllegalArgumentException("date1 or date2 cannot be null.");
 		}
-		return (date.getTime() <= date2.getTime() && date.getTime() >= date1
-				.getTime()) ? true : false;
+		return (date.getTime() <= date2.getTime() && date.getTime() >= date1.getTime()) ? true : false;
 	}
 
 	/**
@@ -959,15 +960,12 @@ public class DateUtil {
 	 * @param date
 	 * @return
 	 */
-	public static final boolean isBetweenDatesIn(Date date1, Date date2,
-			Date date) {
+	public static final boolean isBetweenDatesIn(Date date1, Date date2, Date date) {
 		if (date1 == null || date2 == null) {
 			throw new IllegalArgumentException("date1 or date2 cannot be null.");
 		}
-		return (date.getTime() < date2.getTime() && date.getTime() > date1
-				.getTime()) ? true : false;
+		return (date.getTime() < date2.getTime() && date.getTime() > date1.getTime()) ? true : false;
 	}
-
 	/**
 	 * 左闭右开
 	 * @param date1
@@ -975,15 +973,12 @@ public class DateUtil {
 	 * @param date
 	 * @return
 	 */
-	public static final boolean isBetweenDates2(Date date1, Date date2,
-			Date date) {
+	public static final boolean isBetweenDates2(Date date1, Date date2, Date date) {
 		if (date1 == null || date2 == null) {
 			throw new IllegalArgumentException("date1 or date2 cannot be null.");
 		}
-		return (date.getTime() < date2.getTime() && date.getTime() >= date1
-				.getTime()) ? true : false;
+		return (date.getTime() < date2.getTime() && date.getTime() >= date1.getTime()) ? true : false;
 	}
-
 	/**
 	 * Check whether a date is weekend
 	 * 
@@ -997,8 +992,7 @@ public class DateUtil {
 		}
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		if ((cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
-				|| (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)) {
+		if ((cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) || (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)) {
 			return true;
 		}
 		return false;
@@ -1056,8 +1050,10 @@ public class DateUtil {
 	 * Check whether date1 is beofe date2 by day (unlike java.util.Date by mili
 	 * seconds).
 	 * 
-	 * @param date1 java.util.Date
-	 * @param date2 java.util.Date
+	 * @param date1
+	 *            java.util.Date
+	 * @param date2
+	 *            java.util.Date
 	 * @return boolean
 	 * 
 	 * <pre>
@@ -1080,8 +1076,10 @@ public class DateUtil {
 	 * seconds).
 	 * 
 	 * @author diff_i@hotmail.com
-	 * @param date1 java.util.Date
-	 * @param date2 java.util.Date
+	 * @param date1
+	 *            java.util.Date
+	 * @param date2
+	 *            java.util.Date
 	 * @return boolean
 	 * 
 	 * <pre>
@@ -1104,10 +1102,13 @@ public class DateUtil {
 	 * Check whether date1 is equal to date2 by day (ignore time part).
 	 * 
 	 * @author diff_i@hotmail.com
-	 * @param date1 java.util.Date
-	 * @param date2 java.util.Date
+	 * @param date1
+	 *            java.util.Date
+	 * @param date2
+	 *            java.util.Date
 	 * @return boolean
-	 * @throws IllegalArgumentException if date1==null and date2==null
+	 * @throws IllegalArgumentException
+	 *             if date1==null and date2==null
 	 * 
 	 * <pre>
 	 * For example:
@@ -1135,10 +1136,13 @@ public class DateUtil {
 	 * Check whether date1 is equal to date2 by day (ignore time part).
 	 * 
 	 * @author diff_i@hotmail.com
-	 * @param cal1 Calendar
-	 * @param cal2 Calendar
+	 * @param cal1
+	 *            Calendar
+	 * @param cal2
+	 *            Calendar
 	 * @return boolean
-	 * @throws IllegalArgumentException if cal1==null and cal2==null
+	 * @throws IllegalArgumentException
+	 *             if cal1==null and cal2==null
 	 * 
 	 * <pre>
 	 * For example:
@@ -1150,11 +1154,9 @@ public class DateUtil {
 	 */
 	public static final boolean isOnSameDay(Calendar cal1, Calendar cal2) {
 		if (cal1 == null || cal2 == null) {
-			throw new IllegalArgumentException(
-					"calendar1 or calendar2 cannot be null.");
+			throw new IllegalArgumentException("calendar1 or calendar2 cannot be null.");
 		}
-		return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA)
-				&& cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1
+		return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && cal1
 				.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
 	}
 
@@ -1164,9 +1166,11 @@ public class DateUtil {
 	 * are equal by day, return 0.
 	 * 
 	 * @author diff_i@hotmail.com
-	 * @param date1 java.util.Date
-	 * @param date2 java.util.Date if date1==dat2 return 0,if date1>date2 return
-	 * 1,if date1<date2 return -1
+	 * @param date1
+	 *            java.util.Date
+	 * @param date2
+	 *            java.util.Date if date1==dat2 return 0,if date1>date2 return
+	 *            1,if date1<date2 return -1
 	 * @return int
 	 */
 	public static final int compareByDay(Date date1, Date date2) {
@@ -1178,8 +1182,7 @@ public class DateUtil {
 		int retVal = 0;
 		if (milli1 > milli2) {
 			retVal = 1;
-		}
-		else if (milli1 < milli2) {
+		} else if (milli1 < milli2) {
 			retVal = -1;
 		}
 		return retVal;
@@ -1204,8 +1207,7 @@ public class DateUtil {
 		int retVal = 0;
 		if (milli1 > milli2) {
 			retVal = 1;
-		}
-		else if (milli1 < milli2) {
+		} else if (milli1 < milli2) {
 			retVal = -1;
 		}
 		return retVal;
@@ -1217,9 +1219,11 @@ public class DateUtil {
 	 * return positive number. If they are equal by day, return 0.
 	 * 
 	 * @author diff_i@hotmail.com
-	 * @param date1 java.util.Date
-	 * @param date2 java.util.Date if date1==dat2 return 0,if date1>date2 return
-	 * 1,if date1<date2 return -1
+	 * @param date1
+	 *            java.util.Date
+	 * @param date2
+	 *            java.util.Date if date1==dat2 return 0,if date1>date2 return
+	 *            1,if date1<date2 return -1
 	 * @return int
 	 */
 	public static final int compareByTimestamp(Date date1, Date date2) {
@@ -1231,8 +1235,7 @@ public class DateUtil {
 		int retVal = 0;
 		if (milli1 > milli2) {
 			retVal = 1;
-		}
-		else if (milli1 < milli2) {
+		} else if (milli1 < milli2) {
 			retVal = -1;
 		}
 		return retVal;
@@ -1244,9 +1247,11 @@ public class DateUtil {
 	 * positive number. If they are equal by day, return 0.
 	 * 
 	 * @author diff_i@hotmail.com
-	 * @param date1 java.util.Date
-	 * @param date2 java.util.Date if date1==dat2 return 0,if date1>date2 return
-	 * 1,if date1<date2 return -1
+	 * @param date1
+	 *            java.util.Date
+	 * @param date2
+	 *            java.util.Date if date1==dat2 return 0,if date1>date2 return
+	 *            1,if date1<date2 return -1
 	 * @return int
 	 */
 	public static final int compareByDate(Date date1, Date date2) {
@@ -1298,23 +1303,17 @@ public class DateUtil {
 	public static final Date trimTimestamp(java.util.Date date, String field) {
 		if (date == null || field == null || field.length() == 0) {
 			return date;
-		}
-		else if ("ss".equals(field)) {
+		} else if ("ss".equals(field)) {
 			return new Date((date.getTime() / 1000) * 1000);
-		}
-		else if ("mm".equals(field)) {
+		} else if ("mm".equals(field)) {
 			return new Date((date.getTime() / 1000 / 60) * 1000 * 60);
-		}
-		else if ("HH".equals(field)) {
+		} else if ("HH".equals(field)) {
 			return new Date((date.getTime() / 1000 / 60 / 60) * 1000 * 60 * 60);
-		}
-		else if ("dd".equals(field)) {
+		} else if ("dd".equals(field)) {
 			return trimToDate(date);
-		}
-		else if ("MM".equals(field)) {
+		} else if ("MM".equals(field)) {
 			return getFirstDayOfMonth(date);
-		}
-		else if ("YYYY".equals(field)) {
+		} else if ("YYYY".equals(field)) {
 			return getFirstDayOfYear(date);
 		}
 		return null;
@@ -1392,7 +1391,7 @@ public class DateUtil {
 		cal.add(Calendar.DATE, days);
 		return cal.getTime();
 	}
-
+	
 	public static final Date subDays(Date date, int days) {
 		if (date == null) {
 			return null;
@@ -1553,8 +1552,7 @@ public class DateUtil {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		// int d=cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-		cal.set(Calendar.DAY_OF_MONTH,
-				cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+		cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 
 		return cal.getTime();
 	}
@@ -1725,8 +1723,7 @@ public class DateUtil {
 	 * @see
 	 * @since Jun 21, 2006 10:48:42 AM
 	 */
-	public static final Date attachTime(Date date, int hours, int minutes,
-			int seconds) {
+	public static final Date attachTime(Date date, int hours, int minutes, int seconds) {
 		Calendar cal = Calendar.getInstance();
 		if (date == null) {
 			return null;
@@ -1750,16 +1747,12 @@ public class DateUtil {
 	 * @see
 	 * @since Jun 21, 2006 11:00:35 AM
 	 */
-	public static final Date attachTime(Date date, String hours,
-			String minutes, String seconds) {
+	public static final Date attachTime(Date date, String hours, String minutes, String seconds) {
 		Date dt = null;
 		try {
-			dt = attachTime(date,
-					isEmpty(hours) ? 0 : Integer.parseInt(trim(hours)),
-					isEmpty(minutes) ? 0 : Integer.parseInt(trim(minutes)),
-					isEmpty(seconds) ? 0 : Integer.parseInt(trim(seconds)));
-		}
-		catch (Exception e) {
+			dt = attachTime(date, isEmpty(hours) ? 0 : Integer.parseInt(trim(hours)), isEmpty(minutes) ? 0 : Integer
+					.parseInt(trim(minutes)), isEmpty(seconds) ? 0 : Integer.parseInt(trim(seconds)));
+		} catch (Exception e) {
 			logger.error("attachTime(...)", e);
 		}
 		return dt;
@@ -1777,20 +1770,16 @@ public class DateUtil {
 	 * @see
 	 * @since Jul 12, 2006 4:20:05 PM
 	 */
-	public static final int getOffsetBetweenTimeZone(Date fromDate,
-			TimeZone fromZone, TimeZone toZone) {
+	public static final int getOffsetBetweenTimeZone(Date fromDate, TimeZone fromZone, TimeZone toZone) {
 		long rawOffset = fromZone.getRawOffset() - toZone.getRawOffset();
 		Date dt = new Date((fromDate.getTime() - rawOffset));
-		DateFormat formatter = new SimpleDateFormat(
-				SYSTEM_TIMESTAMP_FORMAT_PATTERN);
+		DateFormat formatter = new SimpleDateFormat(SYSTEM_TIMESTAMP_FORMAT_PATTERN);
 		formatter.setTimeZone(TimeZone.getDefault());
 		int fromZoneOffset = 0;
 		String fromZoneOffsetStr = null;
 		fromZoneOffset = fromZone.getRawOffset() / 3600000;
-		fromZoneOffsetStr = (fromZoneOffset > 0 ? "+" : "")
-				+ (fromZone.getRawOffset() / 3600000) + ":00";
-		String dateStr = formatter.format(fromDate) + " GMT"
-				+ fromZoneOffsetStr;
+		fromZoneOffsetStr = (fromZoneOffset > 0 ? "+" : "") + (fromZone.getRawOffset() / 3600000) + ":00";
+		String dateStr = formatter.format(fromDate) + " GMT" + fromZoneOffsetStr;
 		long offset = rawOffset;
 		Date dt2 = toDate(dateStr, SYSTEM_TIMESTAMPZ_FORMAT_PATTERN);
 		if (fromZone.inDaylightTime(dt2)) {
@@ -1847,17 +1836,14 @@ public class DateUtil {
 		if (dateString == null || dateString.trim().length() == 0) {
 			return null;
 		}
-		SimpleDateFormat format = new SimpleDateFormat(
-				SYSTEM_DATE_FORMAT_PATTERN);
+		SimpleDateFormat format = new SimpleDateFormat(SYSTEM_DATE_FORMAT_PATTERN);
 		try {
 			date = format.parse(dateString);
-		}
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			logger.warn("toDateOnly(String)", e);
 		}
 		return date;
 	}
-
 	public static final Date dateOnly(Date date) {
 		if (date == null) {
 			return null;
@@ -1870,20 +1856,20 @@ public class DateUtil {
 		cal.set(Calendar.MILLISECOND, 0);
 		return cal.getTime();
 	}
-
+	
+	
 	public static final Date dateTomorrow(Date date) {
 		if (date == null) {
 			return null;
 		}
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date(date.getTime() + 86400000L));
+		cal.setTime(new Date(date.getTime()+86400000L));
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
 		return cal.getTime();
 	}
-
 	/**
 	 * get year of the date.
 	 * 
@@ -1899,14 +1885,12 @@ public class DateUtil {
 		int year = cal.get(Calendar.YEAR);
 		return year;
 	}
-
 	public static final int getYear() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		int year = cal.get(Calendar.YEAR);
 		return year;
 	}
-
 	/**
 	 * get the natural month of the date.
 	 * 
@@ -1922,14 +1906,12 @@ public class DateUtil {
 		int month = cal.get(Calendar.MONTH);
 		return month + 1;
 	}
-
 	public static final int getMonth() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		int month = cal.get(Calendar.MONTH);
 		return month + 1;
 	}
-
 	/**
 	 * get month day of the date.
 	 * 
@@ -1945,14 +1927,12 @@ public class DateUtil {
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 		return day;
 	}
-
 	public static final int getDay() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 		return day;
 	}
-
 	public static final int getDay2(Date date) {
 		if (date == null)
 			return 0;
@@ -1961,14 +1941,12 @@ public class DateUtil {
 		int day = cal.get(Calendar.DAY_OF_YEAR);
 		return day;
 	}
-
 	public static final int getDay2() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		int day = cal.get(Calendar.DAY_OF_YEAR);
 		return day;
 	}
-
 	/**
 	 * get hour of the date.
 	 * 
@@ -1984,14 +1962,12 @@ public class DateUtil {
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
 		return hour;
 	}
-
 	public static final int getHour() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
 		return hour;
 	}
-
 	/**
 	 * get the minute of the date.
 	 * 
@@ -2007,14 +1983,12 @@ public class DateUtil {
 		int minute = cal.get(Calendar.MINUTE);
 		return minute;
 	}
-
 	public static final int getMinute() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		int minute = cal.get(Calendar.MINUTE);
 		return minute;
 	}
-
 	/**
 	 * get second of the date.
 	 * 
@@ -2030,14 +2004,12 @@ public class DateUtil {
 		int second = cal.get(Calendar.SECOND);
 		return second;
 	}
-
 	public static final int getSecond() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		int second = cal.get(Calendar.SECOND);
 		return second;
 	}
-
 	/**
 	 * get millisecond of the date.
 	 * 
@@ -2053,14 +2025,12 @@ public class DateUtil {
 		int milliSecond = cal.get(Calendar.MILLISECOND);
 		return milliSecond;
 	}
-
 	public static final int getMilliSecond() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		int milliSecond = cal.get(Calendar.MILLISECOND);
 		return milliSecond;
 	}
-
 	/**
 	 * convert date string to date.
 	 * 
@@ -2083,8 +2053,7 @@ public class DateUtil {
 		DateFormat format = FormatManager.getDefaultTimestampFormat();
 		try {
 			date = format.parse(dateString);
-		}
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			logger.error("toDate(String) parse error", e);
 		}
 		return date;
@@ -2112,8 +2081,7 @@ public class DateUtil {
 		DateFormat format = FormatManager.getDefaultDateFormat();
 		try {
 			date = format.parse(dateString);
-		}
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			logger.warn("toShortDate(String) parse error", e);
 		}
 		return date;
@@ -2136,12 +2104,10 @@ public class DateUtil {
 		if (dateString == null || dateString.trim().length() == 0) {
 			return null;
 		}
-		DateFormat format = FormatManager
-				.getDateFormat(SYSTEM_TIMESTAMP_FORMAT_PATTERN);
+		DateFormat format = FormatManager.getDateFormat(SYSTEM_TIMESTAMP_FORMAT_PATTERN);
 		try {
 			date = format.parse(dateString);
-		}
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			logger.warn("toLongDate(String) parse error", e);
 		}
 		return date;
@@ -2165,12 +2131,10 @@ public class DateUtil {
 		if (dateString == null || dateString.trim().length() == 0) {
 			return null;
 		}
-		DateFormat format = FormatManager
-				.getDateFormat(SYSTEM_LONGTIMESTAMPZ_FORMAT_PATTERN);
+		DateFormat format = FormatManager.getDateFormat(SYSTEM_LONGTIMESTAMPZ_FORMAT_PATTERN);
 		try {
 			date = format.parse(dateString);
-		}
-		catch (ParseException e) {
+		} catch (ParseException e) {
 			logger.warn("toLongZDate(String) parse error", e);
 		}
 		return date;
@@ -2251,37 +2215,28 @@ public class DateUtil {
 		if (isTimeUnit(unit)) {
 			if ("y".equals(unit)) {
 				days = (int) (amt * 365 * 30);
-			}
-			else if ("M".equals(unit)) {
+			} else if ("M".equals(unit)) {
 				days = (int) (30 * amt);
-			}
-			else if ("d".equals(unit)) {
+			} else if ("d".equals(unit)) {
 				days = (int) amt;
-			}
-			else if ("H".equals(unit)) {
+			} else if ("H".equals(unit)) {
 				days = (int) (amt / 24);
-			}
-			else if ("m".equals(unit)) {
+			} else if ("m".equals(unit)) {
 				days = (int) (amt / (24 * 60));
-			}
-			else if ("s".equals(unit)) {
+			} else if ("s".equals(unit)) {
 				days = (int) (amt / (24 * 60 * 60));
-			}
-			else if ("S".equals(unit)) {
+			} else if ("S".equals(unit)) {
 				days = (int) amt / (24 * 60 * 60 * 1000);
-			}
-			else {
+			} else {
 				days = (int) amt;
 			}
-		}
-		else {
+		} else {
 			days = (int) amt;
 
 		}
 		return days;
 
 	}
-
 	public static int asHours(String time) {
 		if (time == null || time.trim().length() == 0) {
 			return 0;
@@ -2293,37 +2248,28 @@ public class DateUtil {
 		if (isTimeUnit(unit)) {
 			if ("y".equals(unit)) {
 				days = (int) (amt * 365 * 30 * 24);
-			}
-			else if ("M".equals(unit)) {
+			} else if ("M".equals(unit)) {
 				days = (int) (30 * amt * 24);
-			}
-			else if ("d".equals(unit)) {
-				days = (int) (amt * 24);
-			}
-			else if ("H".equals(unit)) {
+			} else if ("d".equals(unit)) {
+				days = (int) (amt*24);
+			} else if ("H".equals(unit)) {
 				days = (int) (amt);
-			}
-			else if ("m".equals(unit)) {
+			} else if ("m".equals(unit)) {
 				days = (int) (amt / (60));
-			}
-			else if ("s".equals(unit)) {
+			} else if ("s".equals(unit)) {
 				days = (int) (amt / (60 * 60));
-			}
-			else if ("S".equals(unit)) {
+			} else if ("S".equals(unit)) {
 				days = (int) amt / (60 * 60 * 1000);
-			}
-			else {
+			} else {
 				days = (int) amt;
 			}
-		}
-		else {
+		} else {
 			days = (int) amt;
 
 		}
 		return days;
 
 	}
-
 	public static int asMinutes(String time) {
 		if (time == null || time.trim().length() == 0) {
 			return 0;
@@ -2334,38 +2280,29 @@ public class DateUtil {
 		String unit = tm.substring(tm.length() - 1, tm.length());
 		if (isTimeUnit(unit)) {
 			if ("y".equals(unit)) {
-				days = (int) (amt * 365 * 30 * 24 * 60);
-			}
-			else if ("M".equals(unit)) {
-				days = (int) (30 * amt * 24 * 60);
-			}
-			else if ("d".equals(unit)) {
-				days = (int) (amt * 24 * 60);
-			}
-			else if ("H".equals(unit)) {
-				days = (int) (amt * 60);
-			}
-			else if ("m".equals(unit)) {
+				days = (int) (amt * 365 * 30 * 24*60);
+			} else if ("M".equals(unit)) {
+				days = (int) (30 * amt * 24*60);
+			} else if ("d".equals(unit)) {
+				days = (int) (amt*24*60);
+			} else if ("H".equals(unit)) {
+				days = (int) (amt*60);
+			} else if ("m".equals(unit)) {
 				days = (int) (amt);
-			}
-			else if ("s".equals(unit)) {
+			} else if ("s".equals(unit)) {
 				days = (int) (amt / 60);
-			}
-			else if ("S".equals(unit)) {
+			} else if ("S".equals(unit)) {
 				days = (int) amt / (60 * 1000);
-			}
-			else {
+			} else {
 				days = (int) amt;
 			}
-		}
-		else {
+		} else {
 			days = (int) amt;
 
 		}
 		return days;
 
 	}
-
 	public static long asMills(String time) {
 		if (time == null || time.trim().length() == 0) {
 			return 0L;
@@ -2377,30 +2314,22 @@ public class DateUtil {
 		if (isTimeUnit(unit)) {
 			if ("y".equals(unit)) {
 				millis = (long) (amt * 365L * 30L * 24L * 60L * 60L * 1000L);
-			}
-			else if ("M".equals(unit)) {
+			} else if ("M".equals(unit)) {
 				millis = (long) (30L * 24L * 60L * 60L * 1000L * amt);
-			}
-			else if ("d".equals(unit)) {
+			} else if ("d".equals(unit)) {
 				millis = (long) (24L * 60L * 60L * 1000L * amt);
-			}
-			else if ("H".equals(unit)) {
+			} else if ("H".equals(unit)) {
 				millis = (long) (60L * 60L * 1000L * amt);
-			}
-			else if ("m".equals(unit)) {
+			} else if ("m".equals(unit)) {
 				millis = (long) (amt * 60L * 1000L);
-			}
-			else if ("s".equals(unit)) {
+			} else if ("s".equals(unit)) {
 				millis = (long) (amt * 1000L);
-			}
-			else if ("S".equals(unit)) {
+			} else if ("S".equals(unit)) {
+				millis = (long) amt;
+			} else {
 				millis = (long) amt;
 			}
-			else {
-				millis = (long) amt;
-			}
-		}
-		else {
+		} else {
 			millis = (long) amt;
 
 		}
@@ -2408,42 +2337,42 @@ public class DateUtil {
 
 	}
 
-	public static String duration(long millis) {
+	public static String duration(long millis){
 		long theMillis = millis;
-		long baseDay = 24 * 60 * 60 * 1000;
-		long baseHour = 60 * 60 * 1000;
-		long baseMinute = 60 * 1000;
+		long baseDay = 24 * 60 * 60 *1000;
+		long baseHour = 60 * 60 *1000;
+		long baseMinute = 60 *1000;
 		long baseSecond = 1000;
 		StringBuffer buf = new StringBuffer();
-		int day = (int) (theMillis / baseDay);
-
-		if (day > 0) {
+		int day =(int)(theMillis /baseDay);
+		
+		if( day>0){
 			buf.append(day).append(" day(s)");
 		}
-		theMillis -= day * baseDay;
+		theMillis -= day*baseDay;
 
-		int hour = (int) (theMillis / baseHour);
-		if (hour > 0) {
+		int hour =(int)(theMillis /baseHour);
+		if( hour>0){
 			buf.append(",").append(hour).append(" hour(s)");
 		}
-		theMillis -= hour * baseHour;
-
-		int minutes = (int) (theMillis / baseMinute);
-		if (minutes > 0) {
+		theMillis -= hour*baseHour;
+		
+		int minutes =(int)(theMillis /baseMinute);
+		if( minutes>0){
 			buf.append(",").append(minutes).append(" minute(s)");
 		}
-		theMillis -= minutes * baseMinute;
-
-		int seconds = (int) (theMillis / baseSecond);
-		if (seconds > 0) {
+		theMillis -= minutes*baseMinute;
+		
+		int seconds =(int)(theMillis /baseSecond);
+		if( seconds>0){
 			buf.append(",").append(seconds).append(" second(s)");
 		}
-		theMillis -= seconds * baseSecond;
+		theMillis -= seconds*baseSecond;
 		return buf.toString();
 	}
 
 	public static String toChineseString(String date) {
-		// 20060101101520
+		//20060101101520
 		StringBuffer sb = new StringBuffer();
 		sb.append(getChineseNumber(Integer.parseInt(date.substring(0, 1))));
 		sb.append(getChineseNumber(Integer.parseInt(date.substring(1, 2))));
@@ -2464,11 +2393,9 @@ public class DateUtil {
 		String day1 = date.substring(6, 7);
 		if ("0".equals(day1)) {
 			// nothing
-		}
-		else if ("1".equals(day1)) {
+		} else if ("1".equals(day1)) {
 			sb.append("ʮ");
-		}
-		else {
+		} else {
 			sb.append(getChineseNumber(Integer.parseInt(day1)));
 			sb.append("ʮ");
 		}
@@ -2487,9 +2414,8 @@ public class DateUtil {
 		DateFormat dateFormat = FormatManager.getDateFormat("MM-dd HH:mm");
 		return dateFormat.format(dt);
 	}
-
-	public static Date randomDateBetween(Date begin, Date end) {
-		if (begin == null || end == null || end.before(begin)) {
+	public static Date randomDateBetween(Date begin, Date end){
+		if(begin==null || end==null || end.before(begin)){
 			return null;
 		}
 		int minutes = getMinutesBetweenDates(end, begin);
@@ -2522,21 +2448,18 @@ public class DateUtil {
 		}
 		return "";
 	}
-
-	public static String getAMTDateToString(Date date) {
-		if (date == null) {
+	
+	public static String getAMTDateToString(Date date){
+		if(date == null){
 			return "";
 		}
-		Date date0 = DateUtil.toDate(DateUtil.toString(date, "yyyy-MM-dd"),
-				"yyyy-MM-dd");
+		Date date0 = DateUtil.toDate(DateUtil.toString(date, "yyyy-MM-dd"),"yyyy-MM-dd");
 		Date date1 = DateUtil.getGMTDisplayTimestamp(date0);
-		// System.out.println(date1);
 		String date2 = date1.toGMTString();
-		// System.out.println(date2);
-		String date3 = date2.substring(0, 11);
+		String date3 = date2.substring(0,11);
 		return date3;
 	}
-
+	
 	private static final boolean isTimeUnit(String u) {
 		return ("yMdHmsS".indexOf(u) != -1);
 	}
@@ -2548,63 +2471,12 @@ public class DateUtil {
 	private static final String trim(String str) {
 		return (str == null) ? null : str.trim();
 	}
-
 	/**
 	 * test
 	 * 
 	 * @param argv
 	 */
 	public static void main(String[] argv) throws ParseException {
-		// Date from = toSystemDate("1996-2-29 00:00:00.000");
-		// Date to = toSystemDate("2001-01-02 23:00:00.000");
-		// Date now = new Date();
-		// System.out.println("from=" + from.getTime());
-		//
-		// System.out.println(DateUtil.addMinutes(new Date(),300));
-		//
-		// System.out.println(DateUtil.randomDateBetween(DateUtil.toDate("2009-3-8 18:19:00.000"),
-		// DateUtil.toDate("2009-3-8 18:25:00.000")));
 
-		// System.out.println(DateUtil.toDate(DateUtil.toString(new Date(),
-		// "yyyy-MM-dd"),"yyyy-MM-dd"));
-		System.out.println(DateUtil.toString(new Date(), "yyyy-MM-dd"));
-		// System.out.println(DateUtil.toSystemString(new Date()));
-		Date date = DateUtil.toDate(
-				DateUtil.toString(new Date(), "yyyy-MM-dd"), "yyyy-MM-dd");
-		System.out.println(date);
-		System.out.println(getAMTDateToString(date));
-	}
-	
-	/**
-	 * get local UTC time
-	 */
-	public static Date getLocalUTCTime(){
-		final Calendar cal=Calendar.getInstance();
-		final int zoneOffset=cal.get(Calendar.ZONE_OFFSET);
-		final int dstOffset=cal.get(Calendar.DST_OFFSET);
-		cal.add(Calendar.MILLISECOND, -(zoneOffset+dstOffset));
-		return cal.getTime();
-	}
-	
-	/**
-	 * utc
-	 */
-	public static Date getUTCTime(){
-		Calendar calendar = Calendar.getInstance();  
-		TimeZone tztz = TimeZone.getTimeZone("GMT+8");         
-		calendar.setTimeZone(tztz); 
-		return calendar.getTime();
-	}
-	
-	/**
-	 * change to local UTC time
-	 */
-	public static Date changeToUTCTime(Date date){
-		final Calendar cal=Calendar.getInstance();
-		cal.setTime(date);
-		final int zoneOffset=cal.get(Calendar.ZONE_OFFSET);
-		final int dstOffset=cal.get(Calendar.DST_OFFSET);
-		cal.add(Calendar.MILLISECOND, -(zoneOffset+dstOffset));
-		return cal.getTime();
 	}
 }

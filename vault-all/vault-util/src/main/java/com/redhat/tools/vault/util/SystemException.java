@@ -13,7 +13,6 @@ public class SystemException extends BaseException {
 	public SystemException(Throwable cause) {
 		this(null, null, cause);
 	}
-
 	/**
 	 * constructor.
 	 * 
@@ -22,7 +21,6 @@ public class SystemException extends BaseException {
 	public SystemException(String message) {
 		this(message, null, null);
 	}
-
 	/**
 	 * constructor.
 	 * 
@@ -32,7 +30,6 @@ public class SystemException extends BaseException {
 	public SystemException(String message, Throwable cause) {
 		this(message, null, cause);
 	}
-
 	/**
 	 * constructor.
 	 * 
@@ -42,7 +39,6 @@ public class SystemException extends BaseException {
 	public SystemException(String message, Object param) {
 		this(message, new Object[] { param }, null);
 	}
-
 	/**
 	 * constructor.
 	 * 
@@ -52,7 +48,7 @@ public class SystemException extends BaseException {
 	public SystemException(String message, Object[] params) {
 		this(message, params, null);
 	}
-
+	
 	/**
 	 * constructor.
 	 * 

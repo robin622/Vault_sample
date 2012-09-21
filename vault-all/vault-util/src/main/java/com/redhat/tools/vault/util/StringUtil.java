@@ -1,8 +1,5 @@
 package com.redhat.tools.vault.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
@@ -24,19 +21,22 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jboss.logging.Logger;
-
+/**
+ * 
+ * @author wguo@redhat.com
+ *
+ */
 public class StringUtil {
 	/**
 	 * logger
 	 */
-	protected static final Logger logger = Logger.getLogger(StringUtil.class);
+    protected static final Logger logger = Logger.getLogger(StringUtil.class);
 
 	/**
 	 * do not allow to create instance.
 	 */
 	private StringUtil() {
 	}
-
 	public static final String LOGIC_YES = "YES";
 
 	public static final String LOGIC_NO = "NO";
@@ -52,58 +52,40 @@ public class StringUtil {
 	public static final String DEFAULT_ATTR_ASSIGN_LOGIC = "=";
 
 	public static final String DEFAULT_OPTION_DELIMITER = "=";
-
+	
 	public static final String DEFAULT_GENERAL_SPLITOR = ",|;|\\s+";
 
-	private final static String[] hex = { "00", "01", "02", "03", "04", "05",
-			"06", "07", "08", "09", "0A", "0B", "0C", "0D", "0E", "0F", "10",
-			"11", "12", "13", "14", "15", "16", "17", "18", "19", "1A", "1B",
-			"1C", "1D", "1E", "1F", "20", "21", "22", "23", "24", "25", "26",
-			"27", "28", "29", "2A", "2B", "2C", "2D", "2E", "2F", "30", "31",
-			"32", "33", "34", "35", "36", "37", "38", "39", "3A", "3B", "3C",
-			"3D", "3E", "3F", "40", "41", "42", "43", "44", "45", "46", "47",
-			"48", "49", "4A", "4B", "4C", "4D", "4E", "4F", "50", "51", "52",
-			"53", "54", "55", "56", "57", "58", "59", "5A", "5B", "5C", "5D",
-			"5E", "5F", "60", "61", "62", "63", "64", "65", "66", "67", "68",
-			"69", "6A", "6B", "6C", "6D", "6E", "6F", "70", "71", "72", "73",
-			"74", "75", "76", "77", "78", "79", "7A", "7B", "7C", "7D", "7E",
-			"7F", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89",
-			"8A", "8B", "8C", "8D", "8E", "8F", "90", "91", "92", "93", "94",
-			"95", "96", "97", "98", "99", "9A", "9B", "9C", "9D", "9E", "9F",
-			"A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "AA",
-			"AB", "AC", "AD", "AE", "AF", "B0", "B1", "B2", "B3", "B4", "B5",
-			"B6", "B7", "B8", "B9", "BA", "BB", "BC", "BD", "BE", "BF", "C0",
-			"C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "CA", "CB",
-			"CC", "CD", "CE", "CF", "D0", "D1", "D2", "D3", "D4", "D5", "D6",
-			"D7", "D8", "D9", "DA", "DB", "DC", "DD", "DE", "DF", "E0", "E1",
-			"E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "EA", "EB", "EC",
-			"ED", "EE", "EF", "F0", "F1", "F2", "F3", "F4", "F5", "F6", "F7",
-			"F8", "F9", "FA", "FB", "FC", "FD", "FE", "FF" };
+	private final static String[] hex = { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "0A", "0B", "0C",
+			"0D", "0E", "0F", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "1A", "1B", "1C", "1D", "1E",
+			"1F", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "2A", "2B", "2C", "2D", "2E", "2F", "30",
+			"31", "32", "33", "34", "35", "36", "37", "38", "39", "3A", "3B", "3C", "3D", "3E", "3F", "40", "41", "42",
+			"43", "44", "45", "46", "47", "48", "49", "4A", "4B", "4C", "4D", "4E", "4F", "50", "51", "52", "53", "54",
+			"55", "56", "57", "58", "59", "5A", "5B", "5C", "5D", "5E", "5F", "60", "61", "62", "63", "64", "65", "66",
+			"67", "68", "69", "6A", "6B", "6C", "6D", "6E", "6F", "70", "71", "72", "73", "74", "75", "76", "77", "78",
+			"79", "7A", "7B", "7C", "7D", "7E", "7F", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "8A",
+			"8B", "8C", "8D", "8E", "8F", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "9A", "9B", "9C",
+			"9D", "9E", "9F", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "AA", "AB", "AC", "AD", "AE",
+			"AF", "B0", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "BA", "BB", "BC", "BD", "BE", "BF", "C0",
+			"C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "CA", "CB", "CC", "CD", "CE", "CF", "D0", "D1", "D2",
+			"D3", "D4", "D5", "D6", "D7", "D8", "D9", "DA", "DB", "DC", "DD", "DE", "DF", "E0", "E1", "E2", "E3", "E4",
+			"E5", "E6", "E7", "E8", "E9", "EA", "EB", "EC", "ED", "EE", "EF", "F0", "F1", "F2", "F3", "F4", "F5", "F6",
+			"F7", "F8", "F9", "FA", "FB", "FC", "FD", "FE", "FF" };
 
-	private final static byte[] val = { 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x00, 0x01,
-			0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
-			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F };
+	private final static byte[] val = { 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x00,
+			0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x0A, 0x0B,
+			0x0C, 0x0D, 0x0E, 0x0F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+			0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F };
 
 	private static final char[] QUOTE_ENCODE = "&quot;".toCharArray();
 
@@ -123,230 +105,7 @@ public class StringUtil {
 			+ "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ").toCharArray();
 
 	private static Random randGen = new Random();
-
-	/*
-	 * 16进制数字字符集
-	 */
-	private static String hexString = "0123456789ABCDEF";
-
-	public String utf8Bytes2String(byte[] buff) {
-
-		if (buff == null)
-
-			return null;
-
-		StringBuffer sb = new StringBuffer();
-
-		int idx = 0;
-
-		if (buff[0] == (byte) 0xEF &&
-
-		buff[1] == (byte) 0xBB &&
-
-		buff[2] == (byte) 0xBF)
-
-			idx = 3;// Skip UTF8 header
-
-		while (idx < buff.length) {
-
-			int hB = buff[idx] & 0xFF;
-
-			int bCnt = 0;
-
-			int check = 0x80;
-
-			for (int i = 0; i < 8; i++) {
-
-				if ((hB & check) != 0) {
-
-					bCnt++;
-
-					check >>= 1;
-
-				}
-				else
-
-					break;
-
-			}
-
-			if (bCnt <= 1) {
-
-				char c = 0;
-
-				c |= buff[idx] & 0xFF;
-
-				sb.append(c);
-
-				idx++;
-
-			}
-			else if (bCnt == 2) {
-
-				char c = 0;
-
-				c |= buff[idx] & 0x03;
-
-				c <<= 6;
-
-				if ((buff[idx + 1] & 0xC0) != 0x80)
-
-					return null;
-
-				c |= buff[idx + 1] & 0x3F;
-
-				idx += 2;
-
-				sb.append(c);
-
-			}
-			else if (bCnt == 3) {
-
-				char c = 0;
-
-				c |= buff[idx] & 0x0F;
-
-				c <<= 6;
-
-				if ((buff[idx + 1] & 0xC0) != 0x80)
-
-					return null;
-
-				c |= buff[idx + 1] & 0x3F;
-
-				c <<= 6;
-
-				if ((buff[idx + 2] & 0xC0) != 0x80)
-
-					return null;
-
-				c |= buff[idx + 2] & 0x3F;
-
-				idx += 3;
-
-				sb.append(c);
-
-			}
-			else
-
-				return null;
-
-		}
-
-		return sb.toString();
-
-	}
-
-	public byte[] string2Utf8Bytes(String str) {
-
-		if (str == null)
-
-			return null;
-
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-		try {
-
-			string2Utf8Stream(str, bos);
-
-		}
-		catch (IOException e) {
-
-			logger.error(e.getMessage());
-
-		}
-
-		return bos.toByteArray();
-
-	}
-
-	public void string2Utf8Stream(String str, OutputStream os)
-			throws IOException {
-
-		if (str == null || os == null)
-
-			return;
-
-		for (int i = 0; i < str.length(); i++) {
-
-			char c = str.charAt(i);
-
-			if (c < 0x80) {
-
-				os.write((byte) c);
-
-			}
-			else if (c >= 0x80 && c < 0x100) {
-
-				int hi = c >> 6;
-
-				hi |= 0xC0;
-
-				int lo = c & 0x3F;
-
-				lo |= 0x80;
-
-				os.write(hi);
-
-				os.write(lo);
-
-			}
-			else {
-
-				int first = c >> 12;
-
-				first |= 0xE0;
-
-				int second = c >> 6;
-
-				second &= 0x3F;
-
-				second |= 0x80;
-
-				int third = c & 0x3F;
-
-				third |= 0x80;
-
-				os.write(first);
-
-				os.write(second);
-
-				os.write(third);
-
-			}
-
-		}
-
-	}
-
-	/*
-	 * 将字符串编码成16进制数字,适用于所有字符（包括中文）
-	 */
-	public static String encode(String str) {
-		// 根据默认编码获取字节数组
-		byte[] bytes = str.getBytes();
-		StringBuilder sb = new StringBuilder(bytes.length * 2);
-		// 将字节数组中每个字节拆解成2位16进制整数
-		for (int i = 0; i < bytes.length; i++) {
-			sb.append(hexString.charAt((bytes[i] & 0xf0) >> 4));
-			sb.append(hexString.charAt((bytes[i] & 0x0f) >> 0));
-		}
-		return sb.toString();
-	}
-
-	/*
-	 * 将16进制数字解码成字符串,适用于所有字符（包括中文）
-	 */
-	public static String decode(String bytes) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream(
-				bytes.length() / 2);
-		// 将每2位16进制整数组装成一个字节
-		for (int i = 0; i < bytes.length(); i += 2)
-			baos.write((hexString.indexOf(bytes.charAt(i)) << 4 | hexString
-					.indexOf(bytes.charAt(i + 1))));
-		return new String(baos.toByteArray());
-	}
-
+	
 	/**
 	 * Returns a random String of numbers and letters (lower and upper case) of
 	 * the specified length. The method uses the Random class that is built-in
@@ -358,7 +117,8 @@ public class StringUtil {
 	 * The specified length must be at least one. If not, the method will return
 	 * null.
 	 * 
-	 * @param length the desired length of the random String to return.
+	 * @param length
+	 *            the desired length of the random String to return.
 	 * @return a random String of numbers and letters of the specified length.
 	 */
 	public static final String randomString(int length) {
@@ -385,79 +145,32 @@ public class StringUtil {
 	 * @since 2007-1-7 14:19:47
 	 */
 	public static String[] splitStringToArray(String str, String delimitor) {
-		if (str == null || str.length() == 0 || delimitor == null
-				|| delimitor.length() == 0)
+		if (str == null || str.length() == 0 || delimitor == null || delimitor.length() == 0)
 			return null;
 		return str.split(delimitor);
 	}
 
 	/**
-	 * Splict string to array the empty string between two commas will not be
-	 * ignored.
 	 * 
 	 * @param str
 	 * @return
-	 * @author
-	 * @see
-	 * @since 2007-1-7 14:19:26
-	 */
-	public static String[] splitCsvStringToArray(String str) {
-		if (str == null || str.length() == 0)
-			return null;
-		return str.split(",");
-	}
-
-	/**
-	 * 
-	 * construct a string array from a comma-separated item string the empty
-	 * string between two commas will be ignored.
-	 * 
-	 * @param csvStr cvs string.
-	 * @return array of String.
-	 * @author
-	 * @see
-	 * @since May 29, 2006 6:26:44 PM
-	 * <p>
-	 * usage
-	 * </p>
-	 * 
-	 * <pre>
-	 * String[] s = csvStringToArray(&quot;Beijing,NewYork,Tokyo,Landon&quot;);
-	 * </pre>
-	 */
-	public static String[] csvStringToArray(String csvStr) {
-		return (stringToArray(csvStr, ","));
-	}
-
-	public static List<String> csvStringToList(String csvStr) {
-		return (stringToList(csvStr, ","));
-	}
-
-	public static Set<String> csvStringToSet(String csvStr) {
-		return (stringToSet(csvStr, ","));
-	}
-
-	/**
-	 * 
-	 * @param str
-	 * @return
-	 * @sample String s="jiang;diff,cls,ok nn"; String[] ar = s.split("[;, ]");
-	 * System.out.println(java.util.Arrays.asList(ar));
+	 * @sample
+	 *  String s="jiang;diff,cls,ok nn";
+		String[] ar = s.split("[;, ]");
+		System.out.println(java.util.Arrays.asList(ar));
 	 */
 	public static String[] stringToArray2(String str) {
-		if (str == null || str.length() == 0) {
+		if (str == null || str.length() == 0){
 			return (null);
 		}
 		return str.split(DEFAULT_GENERAL_SPLITOR);
 	}
-
 	public static List<String> stringToList2(String str) {
-		if (str == null || str.length() == 0) {
+		if (str == null || str.length() == 0){
 			return (null);
 		}
 		return Arrays.asList(str.split(DEFAULT_GENERAL_SPLITOR));
 	}
-
 	public static String[] stringToArray2(String str, String splitor) {
 		if (str == null || str.length() == 0) {
 			return (null);
@@ -468,18 +181,16 @@ public class StringUtil {
 		}
 		return str.split(sp);
 	}
-
 	public static List<String> stringToList2(String str, String splitor) {
-		if (str == null || str.length() == 0) {
+		if (str == null || str.length() == 0){
 			return (null);
 		}
 		String sp = splitor;
 		if (sp == null || sp.length() == 0) {
 			sp = DEFAULT_GENERAL_SPLITOR;
-		}
+		}		
 		return Arrays.asList(str.split(sp));
 	}
-
 	/**
 	 * construct a string array from a comma-separated item string the empty
 	 * string between two delimitors will be ignored.
@@ -490,9 +201,9 @@ public class StringUtil {
 	 * @author
 	 * @see
 	 * @since May 29, 2006 6:27:22 PM
-	 * <p>
-	 * usage
-	 * </p>
+	 *        <p>
+	 *        usage
+	 *        </p>
 	 * 
 	 * <pre>
 	 * String[] s=csvStringToArray(&quot;Beijing/NewYork/Tokyo/Landon&quot;,&quot;/&quot;);&lt;pre&gt;
@@ -500,35 +211,32 @@ public class StringUtil {
 	 */
 	public static String[] stringToArray(String str, String delimitor) {
 		List<String> list = stringToList(str, delimitor);
-		if (list == null) {
+		if(list == null){
 			return null;
 		}
 		return ((String[]) list.toArray(new String[list.size()]));
 	}
-
 	/**
-	 * usage: Pattern pattern=Pattern.compile(","); String[] ss =
-	 * stringToArray(str,pattern);
+	 * usage: Pattern pattern=Pattern.compile(",");
+	 *   String[] ss = stringToArray(str,pattern);
 	 * @param str
 	 * @param pattern
 	 * @return
 	 */
-	public static final String[] stringToArray(String str, Pattern pattern) {
+	public static final String[] stringToArray(String str, Pattern pattern){
 		if (str == null || str.length() == 0)
 			return (null);
 		List<Integer> list = new ArrayList<Integer>();
-		String[] items = pattern.split(str, 0);
+		String []items=pattern.split(str,0);
 		return items;
 	}
-
 	public static List<String> stringToList(String str, String delimitor) {
 		if (str == null || str.length() == 0)
 			return (null);
 		List<String> list = new ArrayList<String>();
 		if (str.indexOf(delimitor) < 0) {
 			list.add(str);
-		}
-		else {
+		} else {
 			StringTokenizer tok = new StringTokenizer(str, delimitor);
 			while (tok.hasMoreTokens()) {
 				list.add(tok.nextToken().trim());
@@ -536,22 +244,20 @@ public class StringUtil {
 		}
 		return list;
 	}
-
 	/**
-	 * usage: Pattern pattern=Pattern.compile(","); List list =
-	 * stringToList(str,pattern);
+	 * usage: Pattern pattern=Pattern.compile(",");
+	 *   List list = stringToList(str,pattern);
 	 * @param str
 	 * @param pattern
 	 * @return
 	 */
-	public static final List<String> stringToList(String str, Pattern pattern) {
+	public static final List<String> stringToList(String str, Pattern pattern){
 		if (str == null || str.length() == 0)
 			return (null);
 		List<Integer> list = new ArrayList<Integer>();
-		String[] items = pattern.split(str, 0);
+		String []items=pattern.split(str,0);
 		return Arrays.asList(items);
 	}
-
 	/**
 	 * System.out.println(keywordsToList("jiangbing \"li haiyan\" zhangwei"));
 	 * @param str
@@ -563,34 +269,31 @@ public class StringUtil {
 		char[] chs = str.toCharArray();
 		boolean qbegin = false;
 		StringBuffer buf = new StringBuffer();
-		List<String> list = new ArrayList<String>();
-		for (char ch : chs) {
-			if (ch == '"') {
-				qbegin = !qbegin;
+		List<String> list =new ArrayList<String>();
+		for(char ch : chs){
+			if(ch=='"'){
+				qbegin=!qbegin;
 				continue;
 			}
-			if (ch == ' ' && !qbegin) {
-				if (buf.length() > 0) {
+			if(ch==' '&&!qbegin){
+				if(buf.length()>0){
 					list.add(buf.toString());
 				}
 				buf = new StringBuffer();
-			}
-			else {
+			} else {
 				buf.append(ch);
 			}
 		}
 		list.add(buf.toString());
 		return list;
 	}
-
 	public static Set<String> stringToSet(String str, String delimitor) {
 		if (str == null || str.length() == 0)
 			return (null);
 		Set<String> set = new HashSet<String>();
 		if (str.indexOf(delimitor) < 0) {
 			set.add(str);
-		}
-		else {
+		} else {
 			StringTokenizer tok = new StringTokenizer(str, delimitor);
 			while (tok.hasMoreTokens()) {
 				set.add(tok.nextToken());
@@ -598,23 +301,20 @@ public class StringUtil {
 		}
 		return set;
 	}
-
 	public static Map<String, String> stringToMap(String str, String delimitor) {
 		if (str == null || str.length() == 0)
 			return (null);
 		Map<String, String> map = new HashMap<String, String>();
 		if (str.indexOf(delimitor) < 0) {
-			map.put(str, null);
-		}
-		else {
+			map.put(str,null);
+		} else {
 			StringTokenizer tok = new StringTokenizer(str, delimitor);
 			while (tok.hasMoreTokens()) {
-				map.put(tok.nextToken(), null);
+				map.put(tok.nextToken(),null);
 			}
 		}
 		return map;
-	}
-
+	}	
 	/**
 	 * construct a string array from a comma-separated item string and trim the
 	 * qualifier
@@ -627,15 +327,13 @@ public class StringUtil {
 	 * @see
 	 * @since 2007-1-7 15:15:53
 	 */
-	public static String[] stringToArray(String str, String delimitor,
-			String qualifier) {
+	public static String[] stringToArray(String str, String delimitor, String qualifier) {
 		if (str == null || str.length() == 0)
 			return (null);
 		List list = new ArrayList();
 		if (str.indexOf(delimitor) < 0) {
 			list.add(StringUtil.exTrim(str, qualifier));
-		}
-		else {
+		} else {
 			StringTokenizer tok = new StringTokenizer(str, delimitor);
 			while (tok.hasMoreTokens()) {
 				list.add(StringUtil.exTrim(tok.nextToken(), qualifier));
@@ -645,34 +343,15 @@ public class StringUtil {
 	}
 
 	/**
-	 * convert a string array to a comma-delimited item stringBuffer
-	 * 
-	 * @param aryStr the string array
-	 * @return
-	 * @author
-	 * @see
-	 * @since May 29, 2006 6:28:00 PM
-	 * <p>
-	 * usage
-	 * </p>
-	 * 
-	 * <pre>
-	 * StringBuffer sb=arrayToCsvString(columns[]));
-	 * Result:PRODUCT_ID,PRODUCT_NAME,DATA_STATUS
-	 * </pre>
-	 */
-	public static StringBuffer arrayToCsvString(String[] aryStr) {
-		return (arrayToString(aryStr, ","));
-	}
-
-	/**
 	 * convert a string array to a delimited item stringBuffer
 	 * 
-	 * @param aryStr the string array
-	 * @param delimitor the delimitor
+	 * @param aryStr
+	 *            the string array
+	 * @param delimitor
+	 *            the delimitor
 	 * @return a string
 	 * @usage StringBuffer sb=arrayToString(columns[],"/");
-	 * Result:PRODCUT_ID/PRODUCT_NAME/DATA_STATUS
+	 *        Result:PRODCUT_ID/PRODUCT_NAME/DATA_STATUS
 	 */
 	public static StringBuffer arrayToString(String[] aryStr, String delimitor) {
 		if (aryStr == null)
@@ -687,7 +366,7 @@ public class StringUtil {
 	}
 
 	public static String listToString(List list, String delimitor) {
-		if (list == null) {
+		if (list == null){
 			return null;
 		}
 		StringBuffer sb = new StringBuffer();
@@ -698,7 +377,6 @@ public class StringUtil {
 		}
 		return (sb.toString());
 	}
-
 	/**
 	 * set to string
 	 * @param set
@@ -706,14 +384,14 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String setToString(Set set, String delimitor) {
-		if (set == null) {
-			return null;
-		}
+			if (set == null){
+				return null;
+			}
 		StringBuffer sb = new StringBuffer();
 		Iterator it = set.iterator();
 		int loopNum = 0;
-		for (; it.hasNext();) {
-			String line = (String) it.next();
+		for (;it.hasNext();) {
+			String line = (String)it.next();
 			if (delimitor != null && loopNum > 0)
 				sb.append(delimitor);
 			sb.append(line);
@@ -721,15 +399,6 @@ public class StringUtil {
 		}
 		return (sb.toString());
 	}
-
-	public static String listToCsvString(List list) {
-		return (listToString(list, ","));
-	}
-
-	public static String setToCsvString(Set set) {
-		return (setToString(set, ","));
-	}
-
 	/**
 	 * Convert String array to SQL set,such as 'A','B','D'
 	 * 
@@ -737,7 +406,7 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String concatInList(String[] array) {
-		if (array == null || array.length == 0) {
+		if (array == null || array.length==0){
 			throw new SystemException("util.string.error.argument-is-empty");
 		}
 		StringBuffer buf = new StringBuffer();
@@ -755,11 +424,12 @@ public class StringUtil {
 	/**
 	 * Convert char array to SQL set,such as 'A','B','D'
 	 * 
-	 * @param aryStr:char array
+	 * @param aryStr:char
+	 *            array
 	 * @return
 	 */
 	public static String concatInList(char[] array) {
-		if (array == null || array.length == 0) {
+		if (array == null || array.length == 0){
 			throw new SystemException("util.string.error.argument-is-empty");
 		}
 		StringBuffer buf = new StringBuffer();
@@ -777,7 +447,8 @@ public class StringUtil {
 	/**
 	 * Convert List array to SQL set,such as 'A','B','D'
 	 * 
-	 * @param aryStr: List of String Type
+	 * @param aryStr:
+	 *            List of String Type
 	 * @return
 	 */
 	public static String concatInList(List list, boolean quote) {
@@ -799,40 +470,37 @@ public class StringUtil {
 		}
 		return (buf.toString());
 	}
-
-	public static String concatInList(List list) {
+	public static String concatInList(List list){
 		return concatInList(list, true);
 	}
-
 	/**
 	 * Convert String array to SQL set with parentheses,such as ('A','B','D')
 	 * 
-	 * @param aryStr:String array
+	 * @param aryStr:String
+	 *            array
 	 * @return
 	 */
 	public static String concatInList2(String[] array) {
 		if (array == null || array.length == 0)
 			return (null);
 		StringBuffer buf = new StringBuffer();
-		return (buf.append("(").append(concatInList(array)).append(")"))
-				.toString();
+		return (buf.append("(").append(concatInList(array)).append(")")).toString();
 	}
 
 	/**
 	 * Convert char array to SQL set with parentheses,such as ('A','B','D')
 	 * 
-	 * @param aryStr:char array
+	 * @param aryStr:char
+	 *            array
 	 * @return
 	 */
 	public static String concatInList2(char[] array) {
-		if (array == null || array.length == 0) {
+		if (array == null || array.length == 0){
 			throw new SystemException("util.string.error.argument-is-empty");
 		}
 		StringBuffer buf = new StringBuffer();
-		return buf.append("(").append(concatInList(array)).append(")")
-				.toString();
+		return buf.append("(").append(concatInList(array)).append(")").toString();
 	}
-
 	/**
 	 * 
 	 * @param set
@@ -862,21 +530,17 @@ public class StringUtil {
 
 	public static String concatInList(Set set) {
 		return concatInList(set, true);
-	}
-
+	}	
 	public static String concatInList2(Set set, boolean quote) {
 		if (set == null || set.size() == 0) {
 			throw new SystemException("util.string.error.argument-is-empty");
 		}
 		StringBuffer buf = new StringBuffer();
-		return buf.append("(").append(concatInList(set, quote)).append(")")
-				.toString();
+		return buf.append("(").append(concatInList(set, quote)).append(")").toString();
 	}
-
 	public static String concatInList2(Set set) {
 		return concatInList2(set, true);
 	}
-
 	/**
 	 * Convert String array to SQL set with parentheses,such as ('A','B','D')
 	 * 
@@ -884,18 +548,15 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String concatInList2(List list, boolean quote) {
-		if (list == null || list.size() == 0) {
+		if (list == null || list.size() == 0){
 			throw new SystemException("util.string.error.argument-is-empty");
 		}
 		StringBuffer buf = new StringBuffer();
-		return buf.append("(").append(concatInList(list, quote)).append(")")
-				.toString();
+		return buf.append("(").append(concatInList(list, quote)).append(")").toString();
 	}
-
 	public static String concatInList2(List list) {
 		return concatInList2(list, true);
 	}
-
 	/**
 	 * Convert String array to SQL parameters,such as ?,?,?
 	 * 
@@ -974,8 +635,7 @@ public class StringUtil {
 			buf.append("?");
 
 		}
-		return (buf.append("(").append(concatValueBindings(array)).append(")")
-				.toString());
+		return (buf.append("(").append(concatValueBindings(array)).append(")").toString());
 	}
 
 	/**
@@ -995,10 +655,8 @@ public class StringUtil {
 			buf.append("?");
 
 		}
-		return (buf.append("(").append(concatValueBindings(list)).append(")")
-				.toString());
+		return (buf.append("(").append(concatValueBindings(list)).append(")").toString());
 	}
-
 	public static String concatUpdateBindings(List list) {
 		if (list == null || list.size() == 0)
 			return (null);
@@ -1011,7 +669,6 @@ public class StringUtil {
 		}
 		return (buf.toString());
 	}
-
 	public static String concatWhereBindings(List list) {
 		if (list == null || list.size() == 0)
 			return (null);
@@ -1024,16 +681,18 @@ public class StringUtil {
 		}
 		return (buf.toString());
 	}
-
 	/**
 	 * get duplicate String according to patString
 	 * 
-	 * @param patString:pattern String
-	 * @param dupTimes:duplicate times
+	 * @param patString:pattern
+	 *            String
+	 * @param dupTimes:duplicate
+	 *            times
 	 * @param delimitor
-	 * @return <p>
-	 * usage:
-	 * </p>
+	 * @return
+	 *            <p>
+	 *            usage:
+	 *            </p>
 	 * 
 	 * <pre>
 	 * StringBuffer sb=duplicateString(&quot;?&quot;,6,&quot;,&quot;);
@@ -1042,14 +701,12 @@ public class StringUtil {
 	 * Result:*****
 	 * </pre>
 	 */
-	public static String duplicateString(String patString, int dupTimes,
-			String delimitor) {
+	public static String duplicateString(String patString, int dupTimes, String delimitor) {
 		if (patString == null) {
 			return null;
 		}
 		if (dupTimes <= 0) {
-			throw new IllegalArgumentException("Illegal duplicate times: "
-					+ dupTimes);
+			throw new IllegalArgumentException("Illegal duplicate times: " + dupTimes);
 		}
 
 		StringBuffer buf = new StringBuffer();
@@ -1061,19 +718,15 @@ public class StringUtil {
 		}
 		return buf.toString();
 	}
-
 	public static String repeatString(String patString, int repTimes) {
-		return repeatString(patString, repTimes, "");
+		return repeatString(patString, repTimes,"");
 	}
-
-	public static String repeatString(String patString, int dupTimes,
-			String delimitor) {
+	public static String repeatString(String patString, int dupTimes, String delimitor) {
 		if (patString == null) {
 			return null;
 		}
 		if (dupTimes <= 0) {
-			throw new IllegalArgumentException("Illegal duplicate times: "
-					+ dupTimes);
+			throw new IllegalArgumentException("Illegal duplicate times: " + dupTimes);
 		}
 
 		StringBuffer buf = new StringBuffer();
@@ -1085,7 +738,6 @@ public class StringUtil {
 		}
 		return buf.toString();
 	}
-
 	/**
 	 * Left pad the string for example:leftPad("98",4,"0"),the result is:0098
 	 * 
@@ -1165,14 +817,14 @@ public class StringUtil {
 	 * 
 	 * @param srcString
 	 * @param patString
-	 * @return <p>
-	 * usage
-	 * </p>
-	 * leftTrim("ok,ok,this is a good main...","ok,");
+	 * @return
+	 *            <p>
+	 *            usage
+	 *            </p>
+	 *            leftTrim("ok,ok,this is a good main...","ok,");
 	 */
 	public static String leftTrim(String srcString, String patString) {
-		if (srcString == null || srcString.length() == 0 || patString == null
-				|| patString.length() == 0) {
+		if (srcString == null || srcString.length() == 0 || patString == null || patString.length() == 0) {
 			return srcString;
 		}
 		String str = null;
@@ -1188,15 +840,15 @@ public class StringUtil {
 	 * 
 	 * @param srcString
 	 * @param patString
-	 * @return <p>
-	 * usage
-	 * <p>
-	 * rightTrim("this is a good main...",".");
+	 * @return
+	 *            <p>
+	 *            usage
+	 *            <p>
+	 *            rightTrim("this is a good main...",".");
 	 * 
 	 */
 	public static String rightTrim(String srcString, String patString) {
-		if (srcString == null || srcString.length() == 0 || patString == null
-				|| patString.length() == 0) {
+		if (srcString == null || srcString.length() == 0 || patString == null || patString.length() == 0) {
 			return srcString;
 		}
 		String str = null;
@@ -1255,8 +907,7 @@ public class StringUtil {
 	 * </pre>
 	 */
 	public static String exLeftTrim(String srcString, String patString) {
-		if (srcString == null || srcString.length() == 0 || patString == null
-				|| patString.length() == 0) {
+		if (srcString == null || srcString.length() == 0 || patString == null || patString.length() == 0) {
 			return srcString;
 		}
 		String str = null;
@@ -1280,8 +931,7 @@ public class StringUtil {
 	 * 
 	 */
 	public static String exRightTrim(String srcString, String patString) {
-		if (srcString == null || srcString.length() == 0 || patString == null
-				|| patString.length() == 0) {
+		if (srcString == null || srcString.length() == 0 || patString == null || patString.length() == 0) {
 			return srcString;
 		}
 		String str = null;
@@ -1308,9 +958,10 @@ public class StringUtil {
 	 * 
 	 * @param src
 	 * @param ch
-	 * @return <p>
-	 * usage
-	 * <p>
+	 * @return
+	 *            <p>
+	 *            usage
+	 *            <p>
 	 * 
 	 * <pre>
 	 * int num=getCharNumOfString(&quot;select * from mytable where deparment=? and birthday=? and idcard like ?&quot;,&quot;?&quot;);
@@ -1318,52 +969,6 @@ public class StringUtil {
 	 * </pre>
 	 */
 	public static int charCount(String src, char ch) {
-		if (src == null || src.length() == 0) {
-			return 0;
-		}
-
-		char[] c = src.toCharArray();
-		int len = c.length;
-		int num = 0;
-		for (int i = 0; i < len; i++) {
-			if (c[i] == ch) {
-				num++;
-			}
-		}
-		return num;
-	}
-
-	/**
-	 * @deprecated
-	 * @param src
-	 * @param ch
-	 * @return
-	 */
-	public static int getCharNumOfString(String src, char ch) {
-		if (src == null || src.length() == 0) {
-			return 0;
-		}
-
-		char[] c = src.toCharArray();
-		int len = c.length;
-		int num = 0;
-		for (int i = 0; i < len; i++) {
-			if (c[i] == ch) {
-				num++;
-			}
-		}
-		return num;
-	}
-
-	/**
-	 * get repeat time of a char in source string.
-	 * 
-	 * @param src
-	 * @param ch
-	 * @return
-	 * @deprecated
-	 */
-	public static int getRepeatTimesOfChar(String src, char ch) {
 		if (src == null || src.length() == 0) {
 			return 0;
 		}
@@ -1404,12 +1009,10 @@ public class StringUtil {
 			if (sqlChars[i] == '\'' || sqlChars[i] == '\"') {
 				if (isQuoteBegin) {
 					isQuoteBegin = false;
-				}
-				else {
+				} else {
 					isQuoteBegin = true;
 				}
-			}
-			else {
+			} else {
 				if (sqlChars[i] == '?' && !isQuoteBegin) {
 					num++;
 				}
@@ -1418,7 +1021,6 @@ public class StringUtil {
 		}
 		return num;
 	}
-
 	public static int getBundingNumberInSQL(String sql) {
 		if (isEmpty(sql)) {
 			return 0;
@@ -1430,12 +1032,10 @@ public class StringUtil {
 			if (sqlChars[i] == '\'' || sqlChars[i] == '\"') {
 				if (isQuoteBegin) {
 					isQuoteBegin = false;
-				}
-				else {
+				} else {
 					isQuoteBegin = true;
 				}
-			}
-			else {
+			} else {
 				if (sqlChars[i] == '?' && !isQuoteBegin) {
 					num++;
 				}
@@ -1444,44 +1044,6 @@ public class StringUtil {
 		}
 		return num;
 	}
-
-	/**
-	 * 
-	 * <Method Simple Description>
-	 * 
-	 * @param sql
-	 * @return
-	 * @author
-	 * @see
-	 * @since 2006-1-17 16:52:32
-	 * @deprecated use getBundingNumberInSQL
-	 */
-	public static int getSqlParamsNum(String sql) {
-		if (isEmpty(sql)) {
-			return 0;
-		}
-		char[] sqlChars = sql.toCharArray();
-		boolean isQuoteBegin = false; // Default Single quotes not begin
-		int num = 0;
-		for (int i = 0; i < sqlChars.length; i++) {
-			if (sqlChars[i] == '\'' || sqlChars[i] == '\"') {
-				if (isQuoteBegin) {
-					isQuoteBegin = false;
-				}
-				else {
-					isQuoteBegin = true;
-				}
-			}
-			else {
-				if (sqlChars[i] == '?' && !isQuoteBegin) {
-					num++;
-				}
-			}
-
-		}
-		return num;
-	}
-
 	/**
 	 * get repeat times of a string in source string.
 	 * 
@@ -1498,8 +1060,7 @@ public class StringUtil {
 	 * </pre>
 	 */
 	public static int patternCount(String src, String pat) {
-		if (src == null || src.length() == 0 || pat == null
-				|| pat.length() == 0) {
+		if (src == null || src.length() == 0 || pat == null || pat.length() == 0) {
 			return 0;
 		}
 		int num = 0;
@@ -1513,34 +1074,11 @@ public class StringUtil {
 	}
 
 	/**
-	 * @param src
-	 * @param str
-	 * @return
-	 * @author
-	 * @see
-	 * @since 2006-9-18 22:07:43
-	 * @deprecated use getRepeatTimesOfPattern method
-	 */
-	public static int getStringRepeatTimes(String src, String str) {
-		if (src == null || src.length() == 0 || str == null
-				|| str.length() == 0) {
-			return 0;
-		}
-		int num = 0;
-		int p = src.indexOf(str);
-		int len = str.length();
-		while (p >= 0) {
-			num++;
-			p = src.indexOf(str, p + len);
-		}
-		return num;
-	}
-
-	/**
 	 * replace source string with parameter to patString with repString
 	 * 
 	 * @param source
-	 * @param patString is paramter format which is ${PARAMETER_NAME}
+	 * @param patString
+	 *            is paramter format which is ${PARAMETER_NAME}
 	 * @param repString
 	 * @return
 	 * 
@@ -1550,19 +1088,16 @@ public class StringUtil {
 	 * output:&quot;This is content,id is:100081, name is:${XX_NAME}
 	 * </pre>
 	 */
-	public static String replaceParameter(String source, String patString,
-			String repString) {
+	public static String replaceParameter(String source, String patString, String repString) {
 		if (isEmpty(source) || isEmpty(patString) || repString == null)
 			return source;
 		if (patString.indexOf("$") > -1 || patString.indexOf("{") > -1) {
-			patString = "\\$\\{"
-					+ rightTrim(leftTrim(patString.trim(), "${"), "}") + "\\}";
+			patString = "\\$\\{" + rightTrim(leftTrim(patString.trim(), "${"), "}") + "\\}";
 		}
 		Pattern pattern = Pattern.compile(patString);
 		Matcher m = pattern.matcher(source);
 		String result = m.replaceAll(repString);
 		return result;
-		// return replaceAll(source, 0, patString, repString);
 	}
 
 	/**
@@ -1579,15 +1114,13 @@ public class StringUtil {
 	 * output:that is a good man. And this is his dog.
 	 * </pre>
 	 */
-	public static String replaceFirst(String source, String patString,
-			String repString) {
+	public static String replaceFirst(String source, String patString, String repString) {
 		if (isEmpty(source) || isEmpty(patString) || repString == null)
 			return source;
 		Pattern pattern = Pattern.compile(patString);
 		Matcher m = pattern.matcher(source);
 		String result = m.replaceFirst(repString);
 		return result;
-		// return replaceAll(source, 0, patString, repString);
 	}
 
 	/**
@@ -1598,8 +1131,7 @@ public class StringUtil {
 	 * @param to
 	 * @return
 	 */
-	public static String replaceAll(String source, String patString,
-			String repString) {
+	public static String replaceAll(String source, String patString, String repString) {
 		return replaceAll(source, 0, patString, repString);
 	}
 
@@ -1612,14 +1144,12 @@ public class StringUtil {
 	 * @param to
 	 * @return
 	 */
-	public static String replaceAll(String source, int startPosition,
-			String patString, String repString) {
+	public static String replaceAll(String source, int startPosition, String patString, String repString) {
 		if (isEmpty(source) || isEmpty(patString) || repString == null) {
 			return source;
 		}
 		if (startPosition < 0) {
-			throw new IllegalArgumentException("Illegal start position: "
-					+ startPosition);
+			throw new IllegalArgumentException("Illegal start position: " + startPosition);
 		}
 		String retString = "";
 		StringBuffer buf = new StringBuffer();
@@ -1627,11 +1157,7 @@ public class StringUtil {
 		int fromlen = patString.length();
 		int subFrom = 0;
 		while (source.indexOf(patString, start) != -1) {
-			buf.append(
-					source.substring(subFrom, source.indexOf(patString, start)))
-					.append(repString);
-			// retString += source.substring(start, source.indexOf(srcString,
-			// start)) + destString;
+			buf.append(source.substring(subFrom, source.indexOf(patString, start))).append(repString);
 			start = source.indexOf(patString, start) + fromlen;
 			subFrom = start;
 		}
@@ -1642,15 +1168,17 @@ public class StringUtil {
 	/**
 	 * Replaces all instances of oldString with newString in line.
 	 * 
-	 * @param line the String to search to perform replacements on
-	 * @param oldString the String that should be replaced by newString
-	 * @param newString the String that will replace all instances of oldString
+	 * @param line
+	 *            the String to search to perform replacements on
+	 * @param oldString
+	 *            the String that should be replaced by newString
+	 * @param newString
+	 *            the String that will replace all instances of oldString
 	 * 
 	 * @return a String will all instances of oldString replaced by newString
 	 * @author tyf
 	 */
-	public static final String replace(String line, String oldString,
-			String newString) {
+	public static final String replace(String line, String oldString, String newString) {
 		if (line == null) {
 			return null;
 		}
@@ -1678,15 +1206,17 @@ public class StringUtil {
 	 * Replaces all instances of oldString with newString in line with the added
 	 * feature that matches of newString in oldString ignore case.
 	 * 
-	 * @param line the String to search to perform replacements on
-	 * @param oldString the String that should be replaced by newString
-	 * @param newString the String that will replace all instances of oldString
+	 * @param line
+	 *            the String to search to perform replacements on
+	 * @param oldString
+	 *            the String that should be replaced by newString
+	 * @param newString
+	 *            the String that will replace all instances of oldString
 	 * 
 	 * @return a String will all instances of oldString replaced by newString
 	 * @author tyf
 	 */
-	public static final String replaceIgnoreCase(String line, String oldString,
-			String newString) {
+	public static final String replaceIgnoreCase(String line, String oldString, String newString) {
 		if (line == null) {
 			return null;
 		}
@@ -1717,17 +1247,20 @@ public class StringUtil {
 	 * feature that matches of newString in oldString ignore case. The count
 	 * paramater is set to the number of replaces performed.
 	 * 
-	 * @param line the String to search to perform replacements on
-	 * @param oldString the String that should be replaced by newString
-	 * @param newString the String that will replace all instances of oldString
-	 * @param count a value that will be updated with the number of replaces
-	 * performed.
+	 * @param line
+	 *            the String to search to perform replacements on
+	 * @param oldString
+	 *            the String that should be replaced by newString
+	 * @param newString
+	 *            the String that will replace all instances of oldString
+	 * @param count
+	 *            a value that will be updated with the number of replaces
+	 *            performed.
 	 * 
 	 * @return a String will all instances of oldString replaced by newString
 	 * @author tyf
 	 */
-	public static final String replaceIgnoreCase(String line, String oldString,
-			String newString, int[] count) {
+	public static final String replaceIgnoreCase(String line, String oldString, String newString, int[] count) {
 		if (line == null) {
 			return null;
 		}
@@ -1760,15 +1293,17 @@ public class StringUtil {
 	 * Replaces all instances of oldString with newString in line. The count
 	 * Integer is updated with number of replaces.
 	 * 
-	 * @param line the String to search to perform replacements on
-	 * @param oldString the String that should be replaced by newString
-	 * @param newString the String that will replace all instances of oldString
+	 * @param line
+	 *            the String to search to perform replacements on
+	 * @param oldString
+	 *            the String that should be replaced by newString
+	 * @param newString
+	 *            the String that will replace all instances of oldString
 	 * 
 	 * @return a String will all instances of oldString replaced by newString
 	 * @author tyf
 	 */
-	public static final String replace(String line, String oldString,
-			String newString, int[] count) {
+	public static final String replace(String line, String oldString, String newString, int[] count) {
 		if (line == null) {
 			return null;
 		}
@@ -1799,29 +1334,27 @@ public class StringUtil {
 	/**
 	 * get property values of class array by the getMethodName.
 	 * 
-	 * @param obj:Object array
-	 * @param c:class name.
+	 * @param obj:Object
+	 *            array
+	 * @param c:class
+	 *            name.
 	 * @param getMethodName.
 	 * @return
 	 */
-	public static String queryScopeSet(Object[] obj, String className,
-			String getMethodName, String[] excepts) {
+	public static String queryScopeSet(Object[] obj, String className, String getMethodName, String[] excepts) {
 		Class cls = null;
 		String result = "";
 		try {
 			cls = Class.forName(className);
-		}
-		catch (ClassNotFoundException e1) {
+		} catch (ClassNotFoundException e1) {
 			logger.error("class not found error", e1);
 		}
 		Method meth = null;
 		try {
-			meth = cls.getMethod(getMethodName, (java.lang.Class[]) null);
-		}
-		catch (SecurityException e2) {
+			meth = cls.getMethod(getMethodName, (java.lang.Class[])null);
+		} catch (SecurityException e2) {
 			logger.error("security exception", e2);
-		}
-		catch (NoSuchMethodException e2) {
+		} catch (NoSuchMethodException e2) {
 			logger.error("no such method error", e2);
 		}
 		StringBuffer sb = new StringBuffer();
@@ -1830,7 +1363,7 @@ public class StringUtil {
 				String retobj = "";
 				try {
 					// no any arg, so the arglist is null.
-					retobj = (String) meth.invoke(obj[i], (Object) null);
+					retobj = (String) meth.invoke(obj[i], (Object)null);
 					boolean exceptFlag = false;
 					if (excepts != null)
 						for (int j = 0; j < excepts.length; j++) {
@@ -1845,14 +1378,11 @@ public class StringUtil {
 
 					if (exceptFlag)
 						continue;
-				}
-				catch (IllegalArgumentException e) {
+				} catch (IllegalArgumentException e) {
 					logger.error("illegal argument exception", e);
-				}
-				catch (IllegalAccessException e) {
+				} catch (IllegalAccessException e) {
 					logger.error("illegal access exception", e);
-				}
-				catch (InvocationTargetException e) {
+				} catch (InvocationTargetException e) {
 					logger.error("invocation target exception", e);
 				}
 				sb.append("'" + retobj + "',");
@@ -1947,7 +1477,8 @@ public class StringUtil {
 	 * 
 	 * @param srcStr
 	 * @param start
-	 * @param len length of string, not end position.
+	 * @param len
+	 *            length of string, not end position.
 	 * @return
 	 * @author
 	 * @see java.lang.String#substring
@@ -1965,8 +1496,7 @@ public class StringUtil {
 		char[] dest = null;
 		if (start >= 0) {
 			return srcStr.substring(start, start + len);
-		}
-		else {
+		} else {
 			int srcLen = srcStr.length();
 			if (len > Math.abs(start)) {
 				len = Math.abs(start);
@@ -2023,15 +1553,11 @@ public class StringUtil {
 		}
 		if (start >= 0 && end >= 0) {
 			return srcStr.substring(start, end);
-		}
-		else {
+		} else {
 			if (Math.abs(start) > Math.abs(end)) {
 				return srcStr.substring(srcLen + start, srcLen + end);
-			}
-			else {
-				return srcStr
-						.substring((srcLen + end) < 0 ? 0 : (srcLen + end),
-								srcLen + start);
+			} else {
+				return srcStr.substring((srcLen + end) < 0 ? 0 : (srcLen + end), srcLen + start);
 			}
 		}
 
@@ -2071,10 +1597,8 @@ public class StringUtil {
 	public static String rightString(String srcStr, int length, int end) {
 		if (isEmpty(srcStr) || length < 0 || end < 0 || srcStr.length() < end)
 			return null;
-		int len = srcStr.length() - end < length ? srcStr.length() - end
-				: length;
-		return substring(srcStr, srcStr.length() - len - end, srcStr.length()
-				- end);
+		int len = srcStr.length() - end < length ? srcStr.length() - end : length;
+		return substring(srcStr, srcStr.length() - len - end, srcStr.length() - end);
 
 	}
 
@@ -2111,25 +1635,7 @@ public class StringUtil {
 	 * @return
 	 */
 	public static boolean checkTrue(String value) {
-		if (LOGIC_YES.equalsIgnoreCase(value)
-				|| LOGIC_TRUE.equalsIgnoreCase(value)
-				|| LOGIC_YES_ABBR.equalsIgnoreCase(value)) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * same to checkTrue
-	 * 
-	 * @param value
-	 * @return
-	 * @author
-	 * @deprecated use checkTrue
-	 */
-	public static boolean isTrue(String value) {
-		if (LOGIC_YES.equalsIgnoreCase(value)
-				|| LOGIC_TRUE.equalsIgnoreCase(value)
+		if (LOGIC_YES.equalsIgnoreCase(value) || LOGIC_TRUE.equalsIgnoreCase(value)
 				|| LOGIC_YES_ABBR.equalsIgnoreCase(value)) {
 			return true;
 		}
@@ -2147,24 +1653,7 @@ public class StringUtil {
 	 * @since 2006-9-19 10:01:14
 	 */
 	public static boolean checkFalse(String value) {
-		if (LOGIC_NO.equalsIgnoreCase(value)
-				|| LOGIC_FALSE.equalsIgnoreCase(value)
-				|| LOGIC_NO_ABBR.equalsIgnoreCase(value)) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * 
-	 * @param value
-	 * @return
-	 * @author
-	 * @deprecated use checkFalse
-	 */
-	public static boolean isFalse(String value) {
-		if (LOGIC_NO.equalsIgnoreCase(value)
-				|| LOGIC_FALSE.equalsIgnoreCase(value)
+		if (LOGIC_NO.equalsIgnoreCase(value) || LOGIC_FALSE.equalsIgnoreCase(value)
 				|| LOGIC_NO_ABBR.equalsIgnoreCase(value)) {
 			return false;
 		}
@@ -2177,8 +1666,6 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String crLf() {
-		// char[] c = new char[] { 13, 10 };
-		// return String.copyValueOf(c);
 		return System.getProperty("line.separator");
 	}
 
@@ -2206,9 +1693,10 @@ public class StringUtil {
 	/**
 	 * Get Attribute Name from attrEntry
 	 * 
-	 * @param attrEntry, format is XxxxxAttribuete=XxxxValue
-	 * @param attrAssignLogic, the assignment if the assignment isn't equals
-	 * sign.
+	 * @param attrEntry,
+	 *            format is XxxxxAttribuete=XxxxValue
+	 * @param attrAssignLogic,
+	 *            the assignment if the assignment isn't equals sign.
 	 * @return
 	 * @see getAttrValue
 	 */
@@ -2216,18 +1704,17 @@ public class StringUtil {
 		if (isEmpty(attrEntry) || isEmpty(attrAssignLogic)) {
 			return null;
 		}
-		// System.out.println(attrEntry.indexOf(attrAssignLogic));
 		if (attrEntry.indexOf(attrAssignLogic) <= 0) {
 			return attrEntry.trim();
 		}
-		return attrEntry.substring(0, attrEntry.indexOf(attrAssignLogic))
-				.trim();
+		return attrEntry.substring(0, attrEntry.indexOf(attrAssignLogic)).trim();
 	}
 
 	/**
 	 * Get Attribute Value from attrEntry
 	 * 
-	 * @param attrEntry, format is XxxxxAttribuete=XxxxValue
+	 * @param attrEntry,
+	 *            format is XxxxxAttribuete=XxxxValue
 	 * @return
 	 * @see getAttrName
 	 */
@@ -2238,9 +1725,10 @@ public class StringUtil {
 	/**
 	 * Get Attribute Value from attrEntry
 	 * 
-	 * @param attrEntry, format is XxxxxAttribuete=XxxxValue
-	 * @param attrAssignLogic, the assignment if the assignment isn't equals
-	 * sign.
+	 * @param attrEntry,
+	 *            format is XxxxxAttribuete=XxxxValue
+	 * @param attrAssignLogic,
+	 *            the assignment if the assignment isn't equals sign.
 	 * @return
 	 * @see getAttrName
 	 */
@@ -2248,13 +1736,11 @@ public class StringUtil {
 		if (isEmpty(attrEntry) || isEmpty(attrAssignLogic)) {
 			return null;
 		}
-		// System.out.println(attrEntry.indexOf(attrAssignLogic));
 		if (attrEntry.indexOf(attrAssignLogic) <= 0) {
 			return null;
 		}
-		return attrEntry.substring(
-				attrEntry.indexOf(attrAssignLogic) + attrAssignLogic.length(),
-				attrEntry.length()).trim();
+		return attrEntry.substring(attrEntry.indexOf(attrAssignLogic) + attrAssignLogic.length(), attrEntry.length())
+				.trim();
 	}
 
 	public static String getOptionValue(String option) {
@@ -2269,7 +1755,6 @@ public class StringUtil {
 		if (isEmpty(option) || isEmpty(delimiter)) {
 			return null;
 		}
-		// System.out.println(attrEntry.indexOf(attrAssignLogic));
 		if (option.indexOf(delimiter) <= 0) {
 			return option.trim();
 		}
@@ -2280,12 +1765,10 @@ public class StringUtil {
 		if (isEmpty(option) || isEmpty(delimiter)) {
 			return null;
 		}
-		// System.out.println(attrEntry.indexOf(attrAssignLogic));
 		if (option.indexOf(delimiter) <= 0) {
 			return null;
 		}
-		return option.substring(option.indexOf(delimiter) + delimiter.length(),
-				option.length()).trim();
+		return option.substring(option.indexOf(delimiter) + delimiter.length(), option.length()).trim();
 	}
 
 	/**
@@ -2359,11 +1842,9 @@ public class StringUtil {
 			if (beginFlag) {
 				sc[i] = (char) (sc[i] ^ 32);
 			}
-			if (sc[i] == ' ' || sc[i] == '-' || sc[i] == '_' || sc[i] == ';'
-					|| sc[i] == '.') {
+			if (sc[i] == ' ' || sc[i] == '-' || sc[i] == '_' || sc[i] == ';' || sc[i] == '.') {
 				beginFlag = true;
-			}
-			else {
+			} else {
 				beginFlag = false;
 			}
 		}
@@ -2380,116 +1861,38 @@ public class StringUtil {
 				sc[i] = (char) (sc[i] ^ 32);
 			}
 
-			if (sc[i] == ' ' || sc[i] == '-' || sc[i] == '_' || sc[i] == ';'
-					|| sc[i] == '.') {
+			if (sc[i] == ' ' || sc[i] == '-' || sc[i] == '_' || sc[i] == ';' || sc[i] == '.') {
 				b = true;
-			}
-			else {
+			} else {
 				b = false;
 			}
 		}
 		return String.valueOf(sc);
 	}
 
-	/**
-	 * 
-	 * @param src
-	 * @param filter
-	 * @return
-	 * @author
-	 * @deprecated use ColletionUtil.java
-	 */
-	public static String[] filterArray(String[] src, Map filter) {
-		if (isEmpty(src) || filter == null) {
-			return src;
-		}
-		List dest = new ArrayList();
-		for (int i = 0; i < src.length; i++) {
-			if (!filter.containsKey(src[i])) {
-				dest.add(src[i]);
-			}
-		}
-		return (String[]) dest.toArray(new String[dest.size()]);
-	}
-
-	/**
-	 * 
-	 * @param src
-	 * @param filter
-	 * @return
-	 * @author
-	 * @deprecated use ColletionUtil.java
-	 */
-	public static String[] filterArray(String[] src, String[] filter) {
-		if (isEmpty(src) || isEmpty(filter)) {
-			return src;
-		}
-
-		List dest = new ArrayList();
-		boolean isExist = false;
-		for (int i = 0; i < src.length; i++) {
-			isExist = false;
-			for (int j = 0; j < filter.length; j++) {
-				if (src[i].equals(filter[j])) {
-					isExist = true;
-					break;
-				}
-			}
-			if (!isExist) {
-				dest.add(src[i]);
-			}
-		}
-		return (String[]) dest.toArray(new String[dest.size()]);
-	}
-
-	/**
-	 * 
-	 * @param src
-	 * @param filter
-	 * @return
-	 * @author
-	 * @deprecated use ColletionUtil.java
-	 */
-	public static String[] filterArray(String[] src, List filter) {
-		if (isEmpty(src) || filter == null) {
-			return src;
-		}
-
-		List dest = new ArrayList();
-		for (int i = 0; i < src.length; i++) {
-			if (!filter.contains(src[i])) {
-				dest.add(src[i]);
-			}
-		}
-		return (String[]) dest.toArray(new String[dest.size()]);
-	}
-
-	public static String escapeValue(String value, String escapeChar) {
-		if (value == null)
-			return null;
-		if (escapeChar == null)
-			return value;
+	public static String escapeValue(String value, String escapeChar){
+		if(value==null) return null;
+		if(escapeChar==null) return value;
 		String val = value;
 		boolean flag = false;
-		if (val.indexOf("{~}") != -1) {
-			val = val.replace("{~}", "{~}{~}");
+		if(val.indexOf("{~}")!=-1){
+			val=val.replace("{~}", "{~}{~}");
 			flag = true;
 		}
-		if (val.indexOf("{`}") != -1) {
-			val = val.replace("{`}", "{~}{`}");
+		if(val.indexOf("{`}")!=-1){
+			val=val.replace("{`}", "{~}{`}");
 		}
-		if (val.indexOf(escapeChar) != -1) {
-			if (flag) {
-				val = val.replace(escapeChar, "{`}");
-			}
-			else {
-				val = val.replace(escapeChar, "{~}");
+		if(val.indexOf(escapeChar)!=-1){
+			if(flag){
+				val=val.replace(escapeChar,"{`}");
+			} else{
+				val=val.replace(escapeChar,"{~}");
 			}
 		}
 		return val;
-
+		
 	}
-
+	
 	public static String unescapeValue(String value, String escapeChar) {
 		if (value == null)
 			return null;
@@ -2498,27 +1901,25 @@ public class StringUtil {
 		String val = value;
 		boolean flag = false;
 		if (val.indexOf("{~}{~}") != -1) {
-			val = val.replace("{~}{~}", "{~}");
+			val=val.replace("{~}{~}", "{~}");
 			flag = true;
 		}
 		if (val.indexOf("{~}{`}") != -1) {
-			val = val.replace("{~}{`}", "{`}");
+			val=val.replace("{~}{`}", "{`}");
 			flag = true;
 		}
-		if (flag) {
-			if (val.indexOf("{`}") != -1) {
-				val = val.replace("{`}", escapeChar);
+		if(flag){
+			if(val.indexOf("{`}") != -1){
+				val=val.replace("{`}", escapeChar);
 			}
-		}
-		else {
-			if (val.indexOf("{~}") != -1) {
-				val = val.replace("{~}", escapeChar);
+		} else{
+			if(val.indexOf("{~}") != -1){
+				val=val.replace("{~}", escapeChar);
 			}
 		}
 		return val;
 
-	}
-
+	}	
 	/**
 	 * escape sql.
 	 * 
@@ -2561,20 +1962,14 @@ public class StringUtil {
 		for (int i = 0; i < len; i++) {
 			c = string.charAt(i);
 			if (c == ' ') {
-				// blank gets extra work,
-				// this solves the problem you get if you replace all
-				// blanks with &nbsp;, if you do that you loss
-				// word breaking
 				if (lastWasBlankChar) {
 					lastWasBlankChar = false;
 					sb.append("&nbsp;");
-				}
-				else {
+				} else {
 					lastWasBlankChar = true;
 					sb.append(' ');
 				}
-			}
-			else {
+			} else {
 				lastWasBlankChar = false;
 				//
 				// HTML Special Chars
@@ -2592,8 +1987,7 @@ public class StringUtil {
 				else if (c == '\n') {
 					if (pc != '\r')
 						sb.append("&lt;BR&gt;");
-				}
-				else {
+				} else {
 					int ci = 0xffff & c;
 					if (ci < 160)
 						// nothing special only 7 Bit
@@ -2618,7 +2012,8 @@ public class StringUtil {
 	 * @param splitor
 	 * @param index
 	 * @return
-	 * @throws IllegalArgumentException if index is less or equal zero.
+	 * @throws IllegalArgumentException
+	 *             if index is less or equal zero.
 	 * 
 	 * <pre>
 	 * String str=&quot;A$BC$DX$che$cc$$&quot;;
@@ -2648,12 +2043,10 @@ public class StringUtil {
 		if (loc == -1) {
 			if (loop < index) {
 				return null;
-			}
-			else {
+			} else {
 				return str.substring(prevLoc + splitorLen);
 			}
-		}
-		else {
+		} else {
 			return str.substring(prevLoc + splitorLen, loc);
 		}
 	}
@@ -2673,82 +2066,64 @@ public class StringUtil {
 		}
 		if ("java.lang.String".equals(type)) {
 			return (String) value;
-		}
-		else if ("byte".equals(type) || "short".equals(type)
-				|| "int".equals(type) || "long".equals(type)) {
+		} else if ("byte".equals(type) || "short".equals(type) || "int".equals(type) || "long".equals(type)) {
 			return String.valueOf(value);
-		}
-		else if ("float".equals(type)) {
+		} else if ("float".equals(type)) {
 			DecimalFormat format = null;
 			if (fmt != null && fmt.length() > 0) {
 				format = new DecimalFormat(fmt);
-			}
-			else {
+			} else {
 				format = new DecimalFormat("#,##0.00#");
 			}
 			return format.format(Float.parseFloat((String) value));
-		}
-		else if ("double".equals(type)) {
+		} else if ("double".equals(type)) {
 			DecimalFormat format = null;
 			if (fmt != null && fmt.length() > 0) {
 				format = new DecimalFormat(fmt);
-			}
-			else {
+			} else {
 				format = new DecimalFormat("#,##0.00#");
 			}
 			return format.format(Double.parseDouble((String) value));
-		}
-		else if ("Byte".equals(type) || "Short".equals(type)
-				|| "Integer".equals(type) || "Long".equals(type)
+		} else if ("Byte".equals(type) || "Short".equals(type) || "Integer".equals(type) || "Long".equals(type)
 				|| "Float".equals(type) || "Double".equals(type)) {
 			return value.toString();
-		}
-		else if ("java.util.Date".equals(type)) {
+		} else if ("java.util.Date".equals(type)) {
 			SimpleDateFormat format = null;
 			if (fmt != null && fmt.length() > 0) {
 				format = new SimpleDateFormat(fmt);
-			}
-			else {
+			} else {
 				format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 			}
 
 			return format.format(new Date(((java.util.Date) value).getTime()));
-		}
-		else if ("java.sql.Date".equals(type)) {
+		} else if ("java.sql.Date".equals(type)) {
 			SimpleDateFormat format = null;
 			if (fmt != null && fmt.length() > 0) {
 				format = new SimpleDateFormat(fmt);
-			}
-			else {
+			} else {
 				format = new SimpleDateFormat("yyyy-MM-dd");
 			}
 
 			return format.format((Date) value);
-		}
-		else if ("java.sql.Timestamp".equals(type)) {
+		} else if ("java.sql.Timestamp".equals(type)) {
 			SimpleDateFormat format = null;
 			if (fmt != null && fmt.length() > 0) {
 				format = new SimpleDateFormat(fmt);
-			}
-			else {
+			} else {
 				format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 			}
 
-			return format.format(new Date(((java.sql.Timestamp) value)
-					.getTime()));
-		}
-		else if ("java.sql.Time".equals(type)) {
+			return format.format(new Date(((java.sql.Timestamp) value).getTime()));
+		} else if ("java.sql.Time".equals(type)) {
 			SimpleDateFormat format = null;
 			if (fmt != null && fmt.length() > 0) {
 				format = new SimpleDateFormat(fmt);
-			}
-			else {
+			} else {
 				format = new SimpleDateFormat("HH:mm:ss");
 			}
 
 			return format.format(new Date(((java.sql.Time) value).getTime()));
-		}
-		else {
+		} else {
 			return value.toString();
 		}
 	}
@@ -2766,27 +2141,19 @@ public class StringUtil {
 			int ch = s.charAt(i);
 			if (ch == ' ') { // space : map to '+'
 				sbuf.append('+');
-			}
-			else if ('A' <= ch && ch <= 'Z') { // 'A'..'Z' : as it was
+			} else if ('A' <= ch && ch <= 'Z') { // 'A'..'Z' : as it was
 				sbuf.append((char) ch);
-			}
-			else if ('a' <= ch && ch <= 'z') { // 'a'..'z' : as it was
+			} else if ('a' <= ch && ch <= 'z') { // 'a'..'z' : as it was
 				sbuf.append((char) ch);
-			}
-			else if ('0' <= ch && ch <= '9') { // '0'..'9' : as it was
+			} else if ('0' <= ch && ch <= '9') { // '0'..'9' : as it was
 				sbuf.append((char) ch);
-			}
-			else if (ch == '-'
-					|| ch == '_' // unreserved : as it was
-					|| ch == '.' || ch == '!' || ch == '~' || ch == '*'
-					|| ch == '\'' || ch == '(' || ch == ')') {
+			} else if (ch == '-' || ch == '_' // unreserved : as it was
+					|| ch == '.' || ch == '!' || ch == '~' || ch == '*' || ch == '\'' || ch == '(' || ch == ')') {
 				sbuf.append((char) ch);
-			}
-			else if (ch <= 0x007F) { // other ASCII : map to %XX
+			} else if (ch <= 0x007F) { // other ASCII : map to %XX
 				sbuf.append('%');
 				sbuf.append(hex[ch]);
-			}
-			else { // unicode : map to %uXXXX
+			} else { // unicode : map to %uXXXX
 				sbuf.append('%');
 				sbuf.append('u');
 				sbuf.append(hex[(ch >>> 8)]);
@@ -2804,30 +2171,22 @@ public class StringUtil {
 			int ch = s.charAt(i);
 			if (ch == '+') { // + : map to ' '
 				sbuf.append(' ');
-			}
-			else if ('A' <= ch && ch <= 'Z') { // 'A'..'Z' : as it was
+			} else if ('A' <= ch && ch <= 'Z') { // 'A'..'Z' : as it was
 				sbuf.append((char) ch);
-			}
-			else if ('a' <= ch && ch <= 'z') { // 'a'..'z' : as it was
+			} else if ('a' <= ch && ch <= 'z') { // 'a'..'z' : as it was
 				sbuf.append((char) ch);
-			}
-			else if ('0' <= ch && ch <= '9') { // '0'..'9' : as it was
+			} else if ('0' <= ch && ch <= '9') { // '0'..'9' : as it was
 				sbuf.append((char) ch);
-			}
-			else if (ch == '-'
-					|| ch == '_' // unreserved : as it was
-					|| ch == '.' || ch == '!' || ch == '~' || ch == '*'
-					|| ch == '\'' || ch == '(' || ch == ')') {
+			} else if (ch == '-' || ch == '_' // unreserved : as it was
+					|| ch == '.' || ch == '!' || ch == '~' || ch == '*' || ch == '\'' || ch == '(' || ch == ')') {
 				sbuf.append((char) ch);
-			}
-			else if (ch == '%') {
+			} else if (ch == '%') {
 				int cint = 0;
 				if ('u' != s.charAt(i + 1)) { // %XX : map to ascii(XX)
 					cint = (cint << 4) | val[s.charAt(i + 1)];
 					cint = (cint << 4) | val[s.charAt(i + 2)];
 					i += 2;
-				}
-				else { // %uXXXX : map to unicode(XXXX)
+				} else { // %uXXXX : map to unicode(XXXX)
 					cint = (cint << 4) | val[s.charAt(i + 2)];
 					cint = (cint << 4) | val[s.charAt(i + 3)];
 					cint = (cint << 4) | val[s.charAt(i + 4)];
@@ -2863,8 +2222,7 @@ public class StringUtil {
 				if (n < 0 || n > 255) {
 					return false;
 				}
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				return false;
 			}
 		}
@@ -2874,9 +2232,10 @@ public class StringUtil {
 	/**
 	 * Parse a string to boolean.
 	 * 
-	 * @param param string to parse
+	 * @param param
+	 *            string to parse
 	 * @return boolean value, if param begin with(1,y,Y,t,T) return true, on
-	 * exception return false.
+	 *         exception return false.
 	 * @author tyf
 	 */
 	public static boolean parseBoolean(String param) {
@@ -2897,12 +2256,12 @@ public class StringUtil {
 	/**
 	 * Check a string null or blank.
 	 * 
-	 * @param param string to check
+	 * @param param
+	 *            string to check
 	 * @return boolean
 	 */
 	public static boolean nullOrBlank(String param) {
-		return (param == null || param.length() == 0 || param.trim().equals("")) ? true
-				: false;
+		return (param == null || param.length() == 0 || param.trim().equals("")) ? true : false;
 	}
 
 	public static String notNull(String param) {
@@ -2927,7 +2286,8 @@ public class StringUtil {
 	 * Escapes all necessary characters in the String so that it can be used in
 	 * an XML doc.
 	 * 
-	 * @param string the string to escape.
+	 * @param string
+	 *            the string to escape.
 	 * @return the string with appropriate characters escaped.
 	 */
 	public static final String escapeForXML(String string) {
@@ -2944,22 +2304,19 @@ public class StringUtil {
 			ch = input[i];
 			if (ch > '>') {
 				continue;
-			}
-			else if (ch == '<') {
+			} else if (ch == '<') {
 				if (i > last) {
 					out.append(input, last, i - last);
 				}
 				last = i + 1;
 				out.append(LT_ENCODE);
-			}
-			else if (ch == '&') {
+			} else if (ch == '&') {
 				if (i > last) {
 					out.append(input, last, i - last);
 				}
 				last = i + 1;
 				out.append(AMP_ENCODE);
-			}
-			else if (ch == '"') {
+			} else if (ch == '"') {
 				if (i > last) {
 					out.append(input, last, i - last);
 				}
@@ -2975,32 +2332,7 @@ public class StringUtil {
 		}
 		return out.toString();
 	}
-
-	/**
-	 * split mlist to map
-	 * @param mlist
-	 * @return
-	 * @sample mlistToMap("key1=value1;key2=value2");
-	 */
-	public static Map mlistToMap(String mlist) {
-		if (isEmpty(mlist)) {
-			return null;
-		}
-		Map map = new HashMap();
-		String[] array = csvStringToArray(mlist);
-		for (int i = 0; i < array.length; i++) {
-			int p = array[i].indexOf("=");
-			if (p != -1) {
-				map.put(array[i].substring(0, p).trim(),
-						array[i].substring(p + 1).trim());
-			}
-			else {
-				map.put(array[i], null);
-			}
-		}
-		return map;
-	}
-
+	
 	public static String subUtf8String(String utf8String, int limited) {
 		char[] ch = utf8String.toCharArray();
 		int pos = 0;
@@ -3010,14 +2342,11 @@ public class StringUtil {
 			int ascii = (int) c;
 			if (ascii < 127) {
 				incLength = 1;
-			}
-			else if (ascii < 2047) {
+			} else if (ascii < 2047) {
 				incLength = 2;
-			}
-			else if (ascii < 65535) {
+			} else if (ascii < 65535) {
 				incLength = 3;
-			}
-			else if (ascii < 1114111) {
+			} else if (ascii < 1114111) {
 				incLength = 4;
 			}
 			if (length + incLength > limited) {
@@ -3028,14 +2357,11 @@ public class StringUtil {
 		}
 		return utf8String.substring(0, pos);
 	}
-
-	public static String subGbkString(String gbkString, int limited)
-			throws Exception {
+	public static String subGbkString(String gbkString, int limited) throws Exception {
 		String uniString = null;
-		try {
-			uniString = new String(gbkString.getBytes(), "unicode");
-		}
-		catch (Exception e) {
+		try{
+			uniString = new String(gbkString.getBytes(),"unicode");
+		}catch(Exception e){
 			throw new SystemException("encoding error", e);
 		}
 		char[] ch = uniString.toCharArray();
@@ -3046,8 +2372,7 @@ public class StringUtil {
 			int ascii = (int) c;
 			if (ascii < 127) {
 				incLength = 1;
-			}
-			else {
+			} else {
 				incLength = 2;
 			}
 			if (length + incLength > limited) {
@@ -3058,69 +2383,28 @@ public class StringUtil {
 		}
 		return gbkString.substring(0, pos);
 	}
-
-	public static String substring(String str, String characterSet, int limited) {
-		if ("UTF-8".equals(characterSet)) {
+	public static String substring(String str, String characterSet, int limited){
+		if("UTF-8".equals(characterSet)){
 			return subUtf8String(str, limited);
-		}
-		else if ("GBK".equals(characterSet)) {
+		} else if("GBK".equals(characterSet)){
 			return subUtf8String(str, limited);
 		}
 		return null;
 	}
-
 	public static boolean containCsvItem(String strList, String item) {
-		if (item == null || item.trim().length() == 0 || strList == null
-				|| strList.trim().length() == 0) {
+		if (item == null || item.trim().length() == 0 || strList == null || strList.trim().length() == 0) {
 			return false;
 		}
 		String list = "," + strList + ",";
 		String it = "," + item + ",";
 		return (list.indexOf(it) != -1);
 	}
-
-	public static boolean containCsvItems(String strList, String items) {
-		if (items == null || items.trim().length() == 0 || strList == null
-				|| strList.trim().length() == 0) {
-			return false;
-		}
-		String[] array = csvStringToArray(items);
-		for (int i = 0; i < array.length; i++) {
-			if (!containCsvItem(strList, array[i])) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * contain at least one csv item.
-	 * @param strList
-	 * @param items
-	 * @return
-	 */
-	public static boolean containOneCsvItem(String strList, String items) {
-		if (items == null || items.trim().length() == 0 || strList == null
-				|| strList.trim().length() == 0) {
-			return false;
-		}
-		String[] array = csvStringToArray(items);
-		for (int i = 0; i < array.length; i++) {
-			if (containCsvItem(strList, array[i])) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private static String encode(String value, boolean trimWhiteSpace,
-			char escapeCharacter) {
+	private static String encode(String value, boolean trimWhiteSpace, char escapeCharacter) {
 		String result = "";
 		if (value != null) {
 			if (trimWhiteSpace) {
 				result = value.trim();
-			}
-			else {
+			} else {
 				result = value;
 			}
 			if (escapeCharacter != '\0') {
@@ -3137,222 +2421,114 @@ public class StringUtil {
 		}
 		return result;
 	}
-
-	public static String firstItemOfCsvString(String csvString) {
-		if (csvString == null && csvString.length() == 0) {
-			return null;
-		}
-		int pos = csvString.indexOf(BaseConstants.ITEM_SEPARATOR);
-		if (pos == -1) {
-			return csvString;
-		}
-		else {
-			return csvString.substring(0, pos);
-		}
-	}
-
-	public static String lastItemOfCsvString(String csvString) {
-		if (csvString == null && csvString.length() == 0) {
-			return null;
-		}
-		int pos = csvString.lastIndexOf(BaseConstants.ITEM_SEPARATOR);
-		if (pos == -1) {
-			return csvString;
-		}
-		else {
-			return csvString.substring(pos + 1);
-		}
-	}
-
-	/*
-	 * public static List peekArray(Object[] objs, String propName) { if (objs
-	 * == null || objs.length == 0) { return null; } List list = new
-	 * ArrayList(objs.length); try { for (Object obj : objs) { Object val =
-	 * PropertyUtils.getProperty(obj, propName); list.add(val); } } catch
-	 * (Exception e) { throw new SystemException(e); } return list; }
-	 */
+	
 	/**
-	 * 判断字符是否为构成ID的字符
+	 * 
 	 * @param ch
 	 * @return
 	 */
-	public static boolean isIdChar(char ch) {
-		return "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"
-				.indexOf(ch) != -1;
+	public static boolean isIdChar(char ch){
+		return "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_".indexOf(ch)!=-1;
 	}
-
-	public static boolean isVaildEmail(String email) {
-		String emailPattern = "[a-zA-Z0-9][a-zA-Z0-9._-]{1,16}[a-zA-Z0-9]@[a-zA-Z0-9]+.[a-zA-Z0-9]+";
-		boolean result = Pattern.matches(emailPattern, email);
-		return result;
-	}
-
+	
+	public static boolean isVaildEmail(String email){
+	     String emailPattern="[a-zA-Z0-9][a-zA-Z0-9._-]{1,16}[a-zA-Z0-9]@[a-zA-Z0-9]+.[a-zA-Z0-9]+";
+	     boolean result=Pattern.matches(emailPattern, email);
+	     return result;
+	} 
+	
 	public static String convertToHref(String Str)
 
 	{
-		if (Str == null || Str.equals(""))
-			return Str;
-		Matcher matcher = null;
-		Pattern pattern = null;
-		String str2 = "";
-		pattern = Pattern
-				.compile(
-						"(https://[A-Za-z0-9\\./=\\?%\\-&_~`@':+!]+)|(http://[A-Za-z0-9\\./=\\?%\\-&_~`@':+!]+)|(www\\.[A-Za-z0-9\\./=\\?%\\-&_~`@':+!]+)",
-						Pattern.CASE_INSENSITIVE);
-		matcher = pattern.matcher(Str);
-		StringBuffer stringbuffer = new StringBuffer();
-		for (; matcher.find(); matcher.appendReplacement(stringbuffer, str2)) {
-			if (matcher.group(3) != null) {
-				str2 = "<a href=\"http://" + matcher.group(3)
-						+ "\" target=\"_blank\">" + matcher.group(3) + "</a>";
-			}
-			else if (matcher.group(2) != null) {
-				str2 = "<a href=\"" + matcher.group(2)
-						+ "\" target=\"_blank\">" + matcher.group(2) + "</a>";
-			}
-			else {
-				str2 = "<a href=\"" + matcher.group(1)
-						+ "\" target=\"_blank\">" + matcher.group(1) + "</a>";
-			}
-		}
+		if (Str==null||Str.equals("")) return Str;
+	       Matcher matcher=null;
+	       Pattern pattern=null;
+	       String str2="";
+	       pattern = Pattern.compile("(https://[A-Za-z0-9\\./=\\?%\\-&_~`@':+!]+)|(http://[A-Za-z0-9\\./=\\?%\\-&_~`@':+!]+)|(www\\.[A-Za-z0-9\\./=\\?%\\-&_~`@':+!]+)",Pattern.CASE_INSENSITIVE);
+	       matcher = pattern.matcher(Str);
+	       StringBuffer stringbuffer = new StringBuffer();
+	       for(; matcher.find(); matcher.appendReplacement(stringbuffer, str2)){
+	    	   	if(matcher.group(3)!=null){
+                str2 = "<a href=\"http://" + matcher.group(3) + "\" target=\"_blank\">"+matcher.group(3)+"</a>";
+	    	   	}else  if(matcher.group(2)!=null){
+	    	   		str2 = "<a href=\"" + matcher.group(2) + "\" target=\"_blank\">"+matcher.group(2)+"</a>";
+	    	   	}else{
+	            	 str2 = "<a href=\"" + matcher.group(1) + "\" target=\"_blank\">"+matcher.group(1)+"</a>";
+	    	   	}
+	      }
 
-		matcher.appendTail(stringbuffer);
-		return stringbuffer.toString();
+	      matcher.appendTail(stringbuffer);
+	      return stringbuffer.toString();	      
 	}
-
-	public static String showInEmail(String str) {
-		str = str.replaceAll("&amp;", "&");
-		str = str.replaceAll("&quot;", "\"");
-		str = str.replaceAll("&nbsp;", " ");
-		str = str.replaceAll("&copy;", "©");
-		str = str.replaceAll("<br>", "\r\n");
+	
+	public static String showInEmail(String str){
+		str = str.replaceAll("&amp;","&");
+		str = str.replaceAll("&quot;","\"");
+		str = str.replaceAll("&nbsp;"," ");
+		str = str.replaceAll("&copy;","©");
+		str = str.replaceAll("<br>","\r\n");
 		return str;
 	}
-
-	public static String removeComma(String str) {
-		if (!isEmpty(str) && str.substring(str.length() - 1).equals(",")) {
-			return str.substring(0, str.length() - 1);
+	
+	public static String removeComma(String str){
+		if(!isEmpty(str) && str.substring(str.length()-1).equals(",")){						
+			return str.substring(0,str.length()-1);
 		}
-		return str;
+		return "";
 	}
-
-	public static String escapeHTMLXMLJavaScript(String input) {
+	
+	public static String escapeHTMLXMLJavaScript(String input){
+		input = StringEscapeUtils.escapeHtml(input);		
+		input = input.replaceAll("&lt;br&gt;", "<br>");
+		return input;
+	}
+	
+	public static String escapeHTMLForDesc(String input){
+		input = input.replaceAll("&amp;amp;","&");
+		input = input.replaceAll("&amp;","&");
+		input = input.replaceAll("&nbsp;"," ");
+		input = input.replaceAll("\n","<br>");
+		input = input.replaceAll("&quot;","\"");
+		input = input.replaceAll("&copy;","©");
 		input = StringEscapeUtils.escapeHtml(input);
 		input = input.replaceAll("&lt;br&gt;", "<br>");
 		return input;
 	}
-
-	public static String escapeHTMLForDesc(String input) {
-		input = input.replaceAll("&amp;amp;", "&");
-		input = input.replaceAll("&amp;", "&");
-		input = input.replaceAll("&nbsp;", " ");
-		input = input.replaceAll("\n", "<br>");
-		input = input.replaceAll("&quot;", "\"");
-		input = input.replaceAll("&copy;", "©");
-		input = StringEscapeUtils.escapeHtml(input);
-		input = input.replaceAll("&lt;br&gt;", "<br>");
-		return input;
-	}
-
-	public static String formartCCList(String cc) {
-		if (StringUtils.isBlank(cc)) {
+	
+	
+	public static String formartCCList(String cc){
+		if(StringUtils.isBlank(cc)){
 			return cc;
 		}
 		String result = "";
 		String[] array = cc.split(",");
-
-		if (array != null && array.length > 0) {
-			if (array.length <= 6) {
+		
+				
+		if(array!=null && array.length>0){			
+			if(array.length <= 6){
 				return cc;
 			}
-			for (int i = 0; i < array.length; i++) {
-				if (i < array.length - 1) {
-					if (i >= 5 && (i + 1) % 6 == 0) {
-						result += array[i] + ",<br>";
-					}
-					else {
+			for(int i=0;i<array.length;i++){
+				if(i < array.length-1){
+					if(i >= 5 && (i+1)%6 == 0){
+						result += array[i] + ",<br>";	
+					}else{
 						result += array[i] + ",";
 					}
-
-				}
-				else {
+						
+				}else{
 					result += array[i];
 				}
 			}
 		}
-
+		
 		return result;
 	}
-
-	public static String deFormartCCList(String forward) {
-		if (StringUtils.isNotBlank(forward) && forward.indexOf("<br>") > -1) {
-			forward = forward.replaceAll("<br>", "");
+	
+	public static String deFormartCCList(String forward){
+		if(StringUtils.isNotBlank(forward) && forward.indexOf("<br>") > -1){
+			forward = forward.replaceAll("<br>", "");	
 		}
 		return forward;
-	}
-
-	public static void main(String args[]) throws Exception {
-		// System.out.println(encode("jiangbin|",false,'|'));
-
-		/*
-		 * System.out.println(exRightTrim("ingokmygood and","and"));
-		 * System.out.println("jiangbing".indexOf("i"));
-		 * System.out.println(getStringRepeatTimes("bingjianbing","bing"));
-		 * System.out.println("getSqlParamsNum:"+getSqlParamsNum("select * from
-		 * do where id like v'd?%' and d=? and x=? and a='???'")); String[]
-		 * s=new String[]{"A","C","X"}; char[] c=new char[]{'A','C','X'};
-		 * StringBuffer buf=new StringBuffer(); buf.append("jiangbing");
-		 * System.out.println(leftPad("932",10,"sdfs0"));
-		 * System.out.println(rightPad("932",10,"sdfs0"));
-		 * System.out.println("substring:"+substring("jiangbing",0,5));
-		 * System.out.println("substring2:"+substr("jiangbingwert",-3,33));
-		 * String x=null;
-		 * System.out.println("))"+replaceAll("is","are","")+"))");
-		 * System.out.println(firstUpperCase("")); String xx=null;
-		 * System.out.println(xx+"kkk");
-		 * 
-		 * String fmt=null; DecimalFormat format=null;
-		 * if(fmt!=null&&fmt.length()>0){ format = new DecimalFormat(fmt); }
-		 * else{ format = new DecimalFormat("#,##0.00#"); } Object
-		 * value="2342342.23"; System.out.println(
-		 * format.format(Double.parseDouble((String)value))); Integer i=new
-		 * Integer("23"); value=i; if(value instanceof Integer){
-		 * System.out.println("ok"); } long b=System.currentTimeMillis();
-		 * for(int i=0;i<10000;i++){ initialCap("This_IS_a_good_girl."); }
-		 * System.out.println(System.currentTimeMillis()-b);
-		 * b=System.currentTimeMillis(); for(int i=0;i<10000;i++){
-		 * initialCapital("This_IS_a_good_girl."); }
-		 * System.out.println(System.currentTimeMillis()-b);
-		 * 
-		 * char c=65; c+=1;
-		 * System.out.println(initialCapital("this_IS_a_good_girl."));
-		 * System.out
-		 * .println(replaceParameter("this_IS_a_${REFERENCE}_girl.","${REFERENCE}"
-		 * ,"chenynaxia"));
-		 */
-		// System.out.println(substring("abcdefghijk",0));
-		// System.out.println(containCsvItems("2,8,9,222,9923823","2,8,9,222"));
-		//
-		// String s="jiang;diff,cls,ok nn";
-		// String[] ar = s.split("[;, ]");
-		//
-		// System.out.println((char)127);
-		// String ss="{`}chenyanxia | Jiangbing{~}OK";
-		// String ss2="{`}chenyanxia {`} Jiangbing{~}{~}OK";
-		// System.out.println(escapeValue(ss,"|"));
-		// System.out.println(unescapeValue(ss2,"|"));
-		// System.out.println(getFirstItemOfCsvString("jiangbing,lihaiyan"));
-
-		// System.out.println(keywordsToList("jiangbing \"li haiyan\" zhangwei"));
-		// String lst = "jiang, diff ,dddl , lihaiyan";
-		// String[] arr = lst.split(",\\S*");
-		// com.butiao.util.collection.CollectionUtil.print(arr);
-		// String[]
-		// sts=stringToArray2("jiangbing,chenyanxia  lihaiyan jiangxiaoying;liuxia");
-		// CollectionUtil.print(sts);
-		String email = "rwu@redhat.com";
-		boolean judge = isVaildEmail(email);
-		System.out.println(judge);
-
 	}
 }

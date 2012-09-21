@@ -20,10 +20,10 @@
 		<dependency>
 			<groupId>jboss</groupId>
 			<artifactId>jboss-common</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
+	    </dependency>
+	    <dependency>
+	    	<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-		</dependency>
+	    </dependency>
 	</dependencies>
 </project>

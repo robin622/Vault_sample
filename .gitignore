@@ -5,3 +5,10 @@ target/
 */.classpath
 */target/*
 */.settings/*
+*/*/target/*
+*/*/.classpath
+*/*/.settings/*
+bin/
+*/bin/*
+*/*/bin/*
+

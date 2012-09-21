@@ -3,8 +3,11 @@ package com.redhat.tools.vault.util;
 import java.math.BigDecimal;
 import java.util.Random;
 
+
 /**
- * @author speng@redhat.com
+ * 
+ * @author wguo@redhat.com
+ *
  */
 public class ArithmeticUtil {
 	// Default compute scale
@@ -14,23 +17,18 @@ public class ArithmeticUtil {
 
 	private static Random random = new Random();
 
-	private static final char[] RANDOM_SRC_LETTER = new char[] { 'A', 'B', 'C',
-			'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-			'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c',
-			'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-			'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+	private static final char[] RANDOM_SRC_LETTER = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+			'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
+			'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
-	private static final char[] RANDOM_SRC_ID = new char[] { 'A', 'B', 'C',
-			'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-			'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c',
-			'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-			'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2',
-			'3', '4', '5', '6', '7', '8', '9', '-', '_' };
+	private static final char[] RANDOM_SRC_ID = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+			'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
+			'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0',
+			'1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_' };
 
 	//
 	private ArithmeticUtil() {
 	}
-
 	/**
 	 * add short for two arguments.
 	 * @param short1
@@ -41,19 +39,16 @@ public class ArithmeticUtil {
 		short sh1, sh2;
 		if (short1 == null) {
 			sh1 = 0;
-		}
-		else {
+		} else {
 			sh1 = short1.shortValue();
 		}
 		if (short2 == null) {
 			sh2 = 0;
-		}
-		else {
+		} else {
 			sh2 = short2.shortValue();
 		}
-		return Short.valueOf((short) (sh1 + sh2));
+		return Short.valueOf((short)(sh1 + sh2));
 	}
-
 	/**
 	 * add integer
 	 * @param integer1
@@ -64,19 +59,16 @@ public class ArithmeticUtil {
 		int int1, int2;
 		if (integer1 == null) {
 			int1 = 0;
-		}
-		else {
+		} else {
 			int1 = integer1.intValue();
 		}
 		if (integer2 == null) {
 			int2 = 0;
-		}
-		else {
+		} else {
 			int2 = integer2.intValue();
 		}
 		return Integer.valueOf(int1 + int2);
 	}
-
 	/**
 	 * add integer.
 	 * @param integer1
@@ -84,30 +76,25 @@ public class ArithmeticUtil {
 	 * @param integer3
 	 * @return
 	 */
-	public static Integer add(Integer integer1, Integer integer2,
-			Integer integer3) {
+	public static Integer add(Integer integer1, Integer integer2, Integer integer3) {
 		int int1, int2, int3;
 		if (integer1 == null) {
 			int1 = 0;
-		}
-		else {
+		} else {
 			int1 = integer1.intValue();
 		}
 		if (integer2 == null) {
 			int2 = 0;
-		}
-		else {
+		} else {
 			int2 = integer2.intValue();
 		}
 		if (integer3 == null) {
 			int3 = 0;
-		}
-		else {
+		} else {
 			int3 = integer3.intValue();
-		}
+		}		
 		return Integer.valueOf(int1 + int2 + int3);
 	}
-
 	/**
 	 * add long arguments.
 	 * @param long1
@@ -118,19 +105,16 @@ public class ArithmeticUtil {
 		int l1, l2;
 		if (long1 == null) {
 			l1 = 0;
-		}
-		else {
+		} else {
 			l1 = long1.intValue();
 		}
 		if (long2 == null) {
 			l2 = 0;
-		}
-		else {
+		} else {
 			l2 = long2.intValue();
 		}
 		return Long.valueOf(l1 + l2);
 	}
-
 	/**
 	 * add long for three arguments.
 	 * @param long1
@@ -141,30 +125,28 @@ public class ArithmeticUtil {
 		int l1, l2, l3;
 		if (long1 == null) {
 			l1 = 0;
-		}
-		else {
+		} else {
 			l1 = long1.intValue();
 		}
 		if (long2 == null) {
 			l2 = 0;
-		}
-		else {
+		} else {
 			l2 = long2.intValue();
-		}
+		}		
 		if (long3 == null) {
 			l3 = 0;
-		}
-		else {
+		} else {
 			l3 = long3.intValue();
 		}
 		return Long.valueOf(l1 + l2 + l3);
-	}
-
+	}		
 	/**
 	 * add computation
 	 * 
-	 * @param v1 addend
-	 * @param v2 augend
+	 * @param v1
+	 *            addend
+	 * @param v2
+	 *            augend
 	 * @return the and
 	 */
 	public static double add(double v1, double v2) {
@@ -210,8 +192,10 @@ public class ArithmeticUtil {
 	/**
 	 * subtration
 	 * 
-	 * @param v1 minuend
-	 * @param v2 subtrahend
+	 * @param v1
+	 *            minuend
+	 * @param v2
+	 *            subtrahend
 	 * @return difference
 	 */
 	public static double sub(double v1, double v2) {
@@ -223,8 +207,10 @@ public class ArithmeticUtil {
 	/**
 	 * multiplication
 	 * 
-	 * @param v1 multiplier
-	 * @param v2 multiplier
+	 * @param v1
+	 *            multiplier
+	 * @param v2
+	 *            multiplier
 	 * @return product
 	 */
 	public static double mul(double v1, double v2) {
@@ -260,8 +246,10 @@ public class ArithmeticUtil {
 	/**
 	 * dividing
 	 * 
-	 * @param v1 dividend
-	 * @param v2 divsor
+	 * @param v1
+	 *            dividend
+	 * @param v2
+	 *            divsor
 	 * @return quotient
 	 */
 	public static double div(double v1, double v2) {
@@ -287,15 +275,16 @@ public class ArithmeticUtil {
 	/**
 	 * dividing
 	 * 
-	 * @param v1 dividend
-	 * @param v2 divsor
+	 * @param v1
+	 *            dividend
+	 * @param v2
+	 *            divsor
 	 * @param scale
 	 * @return quotient
 	 */
 	public static double div(double v1, double v2, int scale) {
 		if (scale < 0) {
-			throw new IllegalArgumentException(
-					"The scale must be a positive integer or zero");
+			throw new IllegalArgumentException("The scale must be a positive integer or zero");
 		}
 		BigDecimal b1 = new BigDecimal(Double.toString(v1));
 		BigDecimal b2 = new BigDecimal(Double.toString(v2));
@@ -304,14 +293,12 @@ public class ArithmeticUtil {
 
 	public static double div(double v1, double v2, double v3, int scale) {
 		if (scale < 0) {
-			throw new IllegalArgumentException(
-					"The scale must be a positive integer or zero");
+			throw new IllegalArgumentException("The scale must be a positive integer or zero");
 		}
 		BigDecimal b1 = new BigDecimal(Double.toString(v1));
 		BigDecimal b2 = new BigDecimal(Double.toString(v2));
 		BigDecimal b3 = new BigDecimal(Double.toString(v3));
-		return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP)
-				.divide(b3, BigDecimal.ROUND_HALF_UP).doubleValue();
+		return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).divide(b3, BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 
 	/**
@@ -325,8 +312,7 @@ public class ArithmeticUtil {
 	 */
 	public static double div(int v1, int v2, int scale) {
 		if (scale < 0) {
-			throw new IllegalArgumentException(
-					"The scale must be a positive integer or zero");
+			throw new IllegalArgumentException("The scale must be a positive integer or zero");
 		}
 		BigDecimal b1 = new BigDecimal(Integer.toString(v1));
 		BigDecimal b2 = new BigDecimal(Integer.toString(v2));
@@ -336,14 +322,15 @@ public class ArithmeticUtil {
 	/**
 	 * round processing
 	 * 
-	 * @param v number
-	 * @param scale scale
+	 * @param v
+	 *            number
+	 * @param scale
+	 *            scale
 	 * @return result
 	 */
 	public static double round(double v, int scale) {
 		if (scale < 0) {
-			throw new IllegalArgumentException(
-					"The scale must be a positive integer or zero");
+			throw new IllegalArgumentException("The scale must be a positive integer or zero");
 		}
 		BigDecimal b = new BigDecimal(Double.toString(v));
 		BigDecimal one = new BigDecimal("1");
@@ -383,8 +370,7 @@ public class ArithmeticUtil {
 		for (int i = 0; i < d.length; i++) {
 			sum.add(new BigDecimal(Double.toString(d[i])));
 		}
-		sum.divide(new BigDecimal(Integer.toString(d.length)),
-				DEFAULT_DIV_SCALE, BigDecimal.ROUND_HALF_UP);
+		sum.divide(new BigDecimal(Integer.toString(d.length)), DEFAULT_DIV_SCALE, BigDecimal.ROUND_HALF_UP);
 		return sum.doubleValue();
 	}
 
@@ -435,8 +421,7 @@ public class ArithmeticUtil {
 	 */
 	public static double max(double[] d) {
 		if (d == null || d.length == 0) {
-			throw new IllegalArgumentException(
-					"double array is null or length equal zero.");
+			throw new IllegalArgumentException("double array is null or length equal zero.");
 		}
 		double max = Double.MIN_VALUE;
 		for (int i = 0; i < d.length; i++) {
@@ -456,8 +441,7 @@ public class ArithmeticUtil {
 	 */
 	public static double min(double[] d) {
 		if (d == null || d.length == 0) {
-			throw new IllegalArgumentException(
-					"double array is null or length is equal to zero.");
+			throw new IllegalArgumentException("double array is null or length is equal to zero.");
 		}
 		double min = Double.MAX_VALUE;
 		for (int i = 0; i < d.length; i++) {
@@ -477,8 +461,7 @@ public class ArithmeticUtil {
 	 */
 	public static int max(int[] d) {
 		if (d == null || d.length == 0) {
-			throw new IllegalArgumentException(
-					"double array is null or length is equal to zero.");
+			throw new IllegalArgumentException("double array is null or length is equal to zero.");
 		}
 		int max = Integer.MIN_VALUE;
 		for (int i = 0; i < d.length; i++) {
@@ -498,8 +481,7 @@ public class ArithmeticUtil {
 	 */
 	public static int min(int[] d) {
 		if (d == null || d.length == 0) {
-			throw new IllegalArgumentException(
-					"double array is null or length is equal to zero.");
+			throw new IllegalArgumentException("double array is null or length is equal to zero.");
 		}
 		int min = Integer.MAX_VALUE;
 		for (int i = 0; i < d.length; i++) {
@@ -523,8 +505,7 @@ public class ArithmeticUtil {
 	public static int sign(int i) {
 		if (i > 0) {
 			return 1;
-		}
-		else if (i < 0) {
+		} else if (i < 0) {
 			return -1;
 		}
 		return 0;
@@ -543,8 +524,7 @@ public class ArithmeticUtil {
 	public static int sign(double d) {
 		if (d > 0) {
 			return 1;
-		}
-		else if (d < 0) {
+		} else if (d < 0) {
 			return -1;
 		}
 		return 0;
@@ -566,7 +546,7 @@ public class ArithmeticUtil {
 
 	public static String randomIntPad(int max) {
 		int len = String.valueOf(max).length();
-		return StringUtil.leftPad(random.nextInt(max), len - 1);
+		return StringUtil.leftPad(random.nextInt(max), len-1);
 	}
 
 	public static long randomLong() {
@@ -620,8 +600,7 @@ public class ArithmeticUtil {
 	 */
 	public static String randomId(int len) {
 		if (len < ID_MIN_LENGTH) {
-			throw new IllegalArgumentException(
-					"The minimum size of ID must be " + ID_MIN_LENGTH);
+			throw new IllegalArgumentException("The minimum size of ID must be " + ID_MIN_LENGTH);
 		}
 		int length = random.nextInt(len) + 1;
 		if (length < ID_MIN_LENGTH) {
@@ -639,37 +618,5 @@ public class ArithmeticUtil {
 			sb.append(ch);
 		}
 		return sb.toString();
-	}
-
-	public static void main(String args[]) {
-		/*
-		 * double d1=1234.12345678012345678909999d; System.out.println(d1);
-		 * System.out.println("A decimal:" + Arith.div(1,3670000));
-		 * System.out.println("A double :" +(double)(1d/3670000)); long
-		 * l=System.currentTimeMillis(); for(int i=0;i<1000000;i++){
-		 * Arith.div(1,3670000,18); }
-		 * System.out.println(System.currentTimeMillis()-l);
-		 * l=System.currentTimeMillis();
-		 * 
-		 * for(int i=0;i<1000000;i++){ Arith.div(1,3670000,24); }
-		 * System.out.println(System.currentTimeMillis()-l);
-		 * 
-		 * l=System.currentTimeMillis();
-		 * 
-		 * for(int i=0;i<1000000;i++){ double d=1/3670000d; }
-		 * System.out.println(System.currentTimeMillis()-l);
-		 * 
-		 * System.out.println("B decimal:" +
-		 * (107688883434L*9876543L*18976987531L
-		 * *Arith.div(1,3670000)+987.2342342)); System.out.println("B double :"
-		 * +
-		 * (107688883434L*9876543L*18976987531L*(double)(1d/3670000)+987.2342342
-		 * ));
-		 */
-		// double result = ArithmeticUtil.div(3.702 / 100, 360);
-		// System.out.println(result);
-		int result = ArithmeticUtil.randomInt(50);
-		System.out.println(result);
-
 	}
 }

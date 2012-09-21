@@ -26,7 +26,7 @@ public class BaseException extends RuntimeException {
 	public BaseException() {
 		this("Error occurred.");
 	}
-
+	
 	/**
 	 * constructor.
 	 * 
@@ -35,7 +35,7 @@ public class BaseException extends RuntimeException {
 	public BaseException(Throwable cause) {
 		this(null, null, cause);
 	}
-
+	
 	/**
 	 * constructor.
 	 * 
@@ -44,7 +44,7 @@ public class BaseException extends RuntimeException {
 	public BaseException(String message) {
 		this(message, null, null);
 	}
-
+	
 	/**
 	 * constructor.
 	 * 

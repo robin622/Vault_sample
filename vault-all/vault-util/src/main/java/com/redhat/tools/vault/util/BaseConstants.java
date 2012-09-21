@@ -5,7 +5,6 @@ public interface BaseConstants {
 	 * Blank space
 	 */
 	public static final String BLANK_SPACE = " ";
-
 	/**
 	 * It is used to split complex primary key.
 	 */
