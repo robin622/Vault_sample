@@ -1,187 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
-    <title>vault</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="HSS UX">
-    <link rel="stylesheet" type="text/css" href="datatable/datatable.css">
-    <link href="css/eso-theme.css" rel="stylesheet">
-    <link href="css/vault.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="js/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" media="all" />
-    <link href="images/favicon.ico" rel="shortcut icon">
-    <script src="js/jqueryui/js/jquery-1.7.2.min.js" ></script>
-     <script src="js/dropdown.js"></script>
-    <script src="js/modal.js"></script>
-    <script type="text/javascript" language="javascript" src="datatable/datatable.js"></script>
-     <script language="javascript">
-    $(function(){
-			  
-			   $("#search1").click(function(){
-										 $("div.form-area").show();
-										 $("#search1").hide();
-										 $("#search2").show();
-										
-										 })
-			   $("#search2").click(function(){
-										 $("div.form-area").hide();
-										 $("#search1").show();
-										 $("#search2").hide();
-										
-										 })
-			   
-			   })
-	
-	$(function(){
-			  
-			   $("#more").click(function(){
-										 $("#quary-js").show();
-										 $("#more").hide();
-										 $("#hide").show();
-										
-										 })
-			   $("#hide").click(function(){
-										 $("#quary-js").hide();
-										 $("#more").show();
-										 $("#hide").hide();
-										
-										 })
-			   
-			   })
-	
-
-    
-	/* Default class modification */
-$.extend( $.fn.dataTableExt.oStdClasses, {
-	"sSortAsc": "header headerSortDown",
-	"sSortDesc": "header headerSortUp",
-	"sSortable": "header"
-} );
-
-/* API method to get paging information */
-$.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
-{
-	return {
-		"iStart":         oSettings._iDisplayStart,
-		"iEnd":           oSettings.fnDisplayEnd(),
-		"iLength":        oSettings._iDisplayLength,
-		"iTotal":         oSettings.fnRecordsTotal(),
-		"iFilteredTotal": oSettings.fnRecordsDisplay(),
-		"iPage":          Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
-		"iTotalPages":    Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
-	};
-}
-
-/* Bootstrap style pagination control */
-$.extend( $.fn.dataTableExt.oPagination, {
-	"bootstrap": {
-		"fnInit": function( oSettings, nPaging, fnDraw ) {
-			var oLang = oSettings.oLanguage.oPaginate;
-			var fnClickHandler = function ( e ) {
-				e.preventDefault();
-				if ( oSettings.oApi._fnPageChange(oSettings, e.data.action) ) {
-					fnDraw( oSettings );
-				}
-			};
-
-			$(nPaging).addClass('pagination').append(
-				'<ul>'+
-					'<li class="prev disabled"><a href="#">&larr; '+oLang.sPrevious+'</a></li>'+
-					'<li class="next disabled"><a href="#">'+oLang.sNext+' &rarr; </a></li>'+
-				'</ul>'
-			);
-			var els = $('a', nPaging);
-			$(els[0]).bind( 'click.DT', { action: "previous" }, fnClickHandler );
-			$(els[1]).bind( 'click.DT', { action: "next" }, fnClickHandler );
-		},
-
-		"fnUpdate": function ( oSettings, fnDraw ) {
-			var iListLength = 5;
-			var oPaging = oSettings.oInstance.fnPagingInfo();
-			var an = oSettings.aanFeatures.p;
-			var i, j, sClass, iStart, iEnd, iHalf=Math.floor(iListLength/2);
-
-			if ( oPaging.iTotalPages < iListLength) {
-				iStart = 1;
-				iEnd = oPaging.iTotalPages;
-			}
-			else if ( oPaging.iPage <= iHalf ) {
-				iStart = 1;
-				iEnd = iListLength;
-			} else if ( oPaging.iPage >= (oPaging.iTotalPages-iHalf) ) {
-				iStart = oPaging.iTotalPages - iListLength + 1;
-				iEnd = oPaging.iTotalPages;
-			} else {
-				iStart = oPaging.iPage - iHalf + 1;
-				iEnd = iStart + iListLength - 1;
-			}
-
-			for ( i=0, iLen=an.length ; i<iLen ; i++ ) {
-				// Remove the middle elements
-				$('li:gt(0)', an[i]).filter(':not(:last)').remove();
-
-				// Add the new list items and their event handlers
-				for ( j=iStart ; j<=iEnd ; j++ ) {
-					sClass = (j==oPaging.iPage+1) ? 'class="active"' : '';
-					$('<li '+sClass+'><a href="#">'+j+'</a></li>')
-						.insertBefore( $('li:last', an[i])[0] )
-						.bind('click', function (e) {
-							e.preventDefault();
-							oSettings._iDisplayStart = (parseInt($('a', this).text(),10)-1) * oPaging.iLength;
-							fnDraw( oSettings );
-						} );
-				}
-
-				// Add / remove disabled classes from the static elements
-				if ( oPaging.iPage === 0 ) {
-					$('li:first', an[i]).addClass('disabled');
-				} else {
-					$('li:first', an[i]).removeClass('disabled');
-				}
-
-				if ( oPaging.iPage === oPaging.iTotalPages-1 || oPaging.iTotalPages === 0 ) {
-					$('li:last', an[i]).addClass('disabled');
-				} else {
-					$('li:last', an[i]).removeClass('disabled');
-				}
-			}
-		}
-	}
-} );
-
-/* Table initialisation */
-$(document).ready(function() {
-	$('#example').dataTable( {
-		"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-		"sPaginationType": "bootstrap",
-		"oLanguage": {
-			"sLengthMenu": "Show_MENU_ entries"
-		}
-	} );
-} );
-
-/* Table initialisation */
-$(document).ready(function() {
-	$('#example2').dataTable( {
-		"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-		"sPaginationType": "bootstrap",
-		"oLanguage": {
-			"sLengthMenu": "Show_MENU_ entries"
-		}
-	} );
-} );
-
-	
-    </script>
+	<title>vault</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/datatable.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/eso-theme.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/vault.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery-ui-1.8.20.custom.css" />
+	<link href="<%=request.getContextPath()%>/images/favicon.ico" rel="shortcut icon" />
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.7.2.min.js" ></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/dropdown.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/modal.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/datatable.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/vault.js"></script>
 </head>
 <body id='eso-body'>
 <div class="server"><div>stage server</div></div>
 <div class="eso-inner">
-
 <header id='eso-topbar'>
   <a href="index.html" title="go back home" class="logo">Vault</a>
-  <a href="https://engineering.redhat.com/hss-portal" class="eso-logo"><img src="images/header-logo-eso-developed.png" alt="Developed by HSS"></a>
+  <a href="https://engineering.redhat.com/hss-portal" class="eso-logo"><img src="<%=request.getContextPath()%>/images/header-logo-eso-developed.png" alt="Developed by HSS"></a>
   <ul class="quick-menu unstyled">
   <li class="dropdown">
     <a href="https://engineering.redhat.com/hss-portal/products/" title="Engineering Services">Engineering Services</a>
@@ -238,13 +79,13 @@ $(document).ready(function() {
                 <div class="controls search-vault">
                   <input type="text" class="input-xlarge" id="input">
                   <button class="btn">Search</button>
-                  <a href="#" class="quary">newquery<img src=" images/delete.gif"  alt=""></a>
-                  <a href="#" class="quary">newquery<img src=" images/delete.gif"  alt=""></a>
-                  <a href="#" class="quary">newquery<img src=" images/delete.gif"  alt=""></a>
-                  <a href="#" class="quary">newquery<img src=" images/delete.gif"  alt=""></a>
+                  <a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
+                  <a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
+                  <a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
+                  <a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
                   <span class="quary-more"  id="quary-js">
-                  		<a href="#" class="quary">newquery<img src=" images/delete.gif"  alt=""></a>
-                  		<a href="#" class="quary">newquery<img src=" images/delete.gif"  alt=""></a>
+                  		<a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
+                  		<a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
                   </span>
                   <a href="#" class="quary" id="more">more...</a>
                   <a href="#" class="quary display-none" id="hide">hide...</a>
@@ -326,7 +167,7 @@ $(document).ready(function() {
     	<div class="span8">
             <div class="modal hide fade" id="myModal">
                 <div class="modal-header">
-                  <button data-dismiss="modal" class="close">×</button>
+                  <button data-dismiss="modal" class="close">Ã</button>
                   <h3>Please input query name</h3>
                 </div>
                 <div class="modal-body">
@@ -559,7 +400,7 @@ $(document).ready(function() {
         <th>Vertion</th>
         <th>Creator</th>
         <th>Created date</th>
-        <th>	Due date</th>
+        <th>Due date</th>
         <th>Last modified</th>
          <th>Modified date</th>
         <th>Status</th>
@@ -567,176 +408,39 @@ $(document).ready(function() {
     </tr>
 </thead>
 <tbody>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox1"> </td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox1"> </td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox1"> </td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox1"> </td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox1"> </td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox1"> </td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox1"> </td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox1"> </td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox2"></td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox1"> </td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox1"> </td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>
-        <td><input type="checkbox" value="option1" id="inlineCheckbox1"> </td>
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-   
-  
+		<c:forEach var="myRequest" items="${myRequests}">
+			<tr id="myrequestlist${myRequest.requestid}">
+			<td><input type="checkbox" name="chkltMyRequest" id="chkltMyRequest${myRequest.requestid}" value="${myRequest.requestid}"></td>
+			<td>${myRequest.requestid}</td>
+			<td nowrap><a href=${pageContext.request.contextPath}/showRequest/${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
+			<td nowrap>${myRequest.productname}</td>
+			<td>${myRequest.versiondesc}</td>
+			<td>${myRequest.createdby}</td>
+			<td nowrap><c:if test="${empty myRequest.createdtime}"><fmt:formatDate value="${myRequest.createdtime}" pattern="yyyy-MM-dd" /></c:if></td>
+			<td nowrap><c:if test="${empty myRequest.createdtime}"><fmt:formatDate value="${myRequest.requesttime}" pattern="yyyy-MM-dd" /></c:if></td>
+			<td nowrap>${myRequest.editedby}</td>
+			<td nowrap><c:if test="${empty myRequest.createdtime}"><fmt:formatDate value="${myRequest.editedtime}" pattern="yyyy-MM-dd" /></c:if></td>
+			<td nowrap>${myRequest.status}</td>
+			<td nowrap>
+			<c:if test="${myRequest.status ne 'withdrawn'}">
+			    <c:choose>
+	                <c:when test="${myRequest.from eq 0}">
+						<div id="deletemyrequest${myRequest.requestid}">
+							<a href="javascript:confirmDelete('index.do?operation=DeleteRequest
+							&requestid=${myRequest.requestid}', '${myRequest.requestname}')">Delete</a>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div id="withdrawmyrequest${myRequest.requestid}">
+						<a href="javascript:confirmWithDraw('index.do?operation=WithDrawRequest
+						    &requestid=${myRequest.requestid}', '${myRequest.requestname}')">Withdraw</a>
+							</div>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+			</td>
+		</tr>
+		</c:forEach>
 </tbody>
 </table>
           <div class="clear"></div>
@@ -751,7 +455,7 @@ $(document).ready(function() {
     <div class="hss-logo"></div>
     <div class='copyright'>
     <p>Vault 3.0 <a href="#"> Report an Issue</a></p>
-    <p>Copyright © 2012 Red Hat, Inc. All rights reserved.</p>
+    <p>Copyright Â© 2012 Red Hat, Inc. All rights reserved.</p>
     <p>INTERNAL USE ONLY</p>
     <!--when the application use some tech supported by opensource, then please mark it here><p>Powered by <a href='http://www.redhat.com/products/jbossenterprisemiddleware/portal/'>@JBoss EAP</a></p><-->
     </div>

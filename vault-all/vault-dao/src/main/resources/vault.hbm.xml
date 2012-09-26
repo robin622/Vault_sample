@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		~ JBoss, a division of Red Hat ~ ~ Copyright 2006, Red Hat Middleware,
+		LLC, and individual ~ ~ contributors as indicated by the @authors tag.
+		See the ~ ~ copyright.txt in the distribution for a full listing of ~
+		~ individual contributors. ~ ~ ~ ~ This is free software; you can
+		redistribute it and/or modify it ~ ~ under the terms of the GNU Lesser
+		General Public License as ~ ~ published by the Free Software
+		Foundation; either version 2.1 of ~ ~ the License, or (at your option)
+		any later version. ~ ~ ~ ~ This software is distributed in the hope
+		that it will be useful, ~ ~ but WITHOUT ANY WARRANTY; without even the
+		implied warranty of ~ ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR
+		PURPOSE. See the GNU ~ ~ Lesser General Public License for more
+		details. ~ ~ ~ ~ You should have received a copy of the GNU Lesser
+		General Public ~ ~ License along with this software; if not, write to
+		the Free ~ ~ Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+		Boston, MA ~ ~ 02110-1301 USA, or see the FSF site:
+		http://www.fsf.org. ~
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+   "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.redhat.tools.vault.bean.Request" table="VA_request" dynamic-insert="true" dynamic-update="true">
+		<cache usage="read-write" />
+		<id name="requestid" column="requestid" type="java.lang.Long">
+			<generator class="native">
+				<param name="sequence">id_seq</param>
+			</generator>
+		</id>
+		<property name="requestname" column="requestname" type="java.lang.String"
+			update="true" insert="true" not-null="true" unique="false" />
+		<property name="summary" column="summary" type="java.lang.String"
+			update="true" insert="true" length="1024" unique="false" />
+		<property name="detail" column="detail" type="java.lang.String"
+			update="true" insert="true" not-null="true" length="1024" unique="false" />
+		<property name="owner" column="owner" type="java.lang.String"
+			update="true" insert="true" not-null="true" unique="false" />
+		<property name="createdby" column="createdby" type="java.lang.String"
+			update="true" insert="true" not-null="true" unique="false" />
+		<property name="createdtime" column="createdtime" type="java.util.Date"
+			update="true" insert="true" not-null="true" unique="false" />
+		<property name="requesttime" column="requesttime" type="java.util.Date"
+			update="true" insert="true" unique="false" />
+		<property name="signedby" column="signedby" type="java.lang.String"
+			update="true" insert="true" unique="false" />
+		<property name="signedtime" column="signedtime" type="java.util.Date"
+			update="true" insert="true" unique="false" />
+		<property name="status" column="status" type="java.lang.String"
+			update="true" insert="true" not-null="true" unique="false" />
+		<property name="comment" column="comment" type="java.lang.String"
+			update="true" insert="true" length="1024" unique="false" />
+	    <property name="value" column="value" type="java.lang.Long"
+			update="true" insert="true" unique="false" />
+		<property name="editedby" column="editedby" type="java.lang.String"
+			update="true" insert="true" unique="false" />
+		<property name="editedtime" column="editedtime" type="java.util.Date"
+			update="true" insert="true" unique="false" />
+		<property name="versionid" column="versionid" type="java.lang.Long"
+			update="true" insert="true" not-null="true" />
+		<property name="is_public" column="is_public" type="java.lang.Integer"
+			update="true" insert="true"/>
+		<property name="forward" column="forward" length="1024" type="java.lang.String"
+			update="true" insert="true"/>
+		<property name="from" type="java.lang.Integer"
+			update="true" insert="true" not-null="true">
+			<column name="[from]" default="0" />
+		</property> 
+		<set name="maps" table="VA_requestmap" lazy="true" inverse="false"
+			cascade="all" sort="unsorted">
+			<cache usage="read-write" />
+			<key column="requestid" />
+			<one-to-many class="com.redhat.tools.vault.bean.RequestMap" />
+		</set>
+		<property name="requestVersion" type="java.lang.Integer" not-null="false" update="true" insert="true">
+			<column name="request_version" default="1" />
+		</property>
+		
+		<!-- 
+        <set name="relations" table="VA_request_relationship" lazy="false" inverse="true"
+			cascade="all" sort="unsorted">
+			<cache usage="read-write" />
+			<key column="requestid" />
+			<one-to-many class="com.redhat.nay.jbossportal.vault.db.RequestRelationship" />
+		</set>
+		
+        <property name="children" column="children" type="java.lang.String"
+            update="true" insert="true"/>
+        -->
+	</class>
+	
+	<class name="com.redhat.tools.vault.bean.RequestRelationship"
+		table="VA_request_relationship">
+		<cache usage="read-write" />
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="native">
+				<param name="sequence">id_seq</param>
+			</generator>
+		</id>
+		<property name="requestId" column="requestid" type="java.lang.Long" update="true" insert="true" not-null="true" unique="false"/>
+		<!-- 
+		<property name="requestName" column="request_name" type="java.lang.String" update="true" insert="true" not-null="true" unique="false"/>
+		 -->
+		<property name="relationshipId" column="relationshipid" type="java.lang.Long" update="true" insert="true" not-null="true" unique="false"/>
+		<property name="isParent" column="is_parent" type="java.lang.Boolean" update="true" insert="true" not-null="true" unique="false"/>
+		<!-- 
+		<property name="relationshipRequestName" column="rel_request_name" type="java.lang.String" update="true" insert="true" not-null="true" unique="false"/>
+		 -->
+		<property name="requestVersion" type="java.lang.Integer" not-null="false" update="true" insert="true">
+			<column name="request_version" default="1" />
+		</property>
+		<property name="enable" type="java.lang.Boolean" not-null="false" update="true" insert="true">
+			<column name="enable" default="true" />
+		</property>
+	</class>
+	
+	<class name="com.redhat.tools.vault.bean.RequestMap"
+		table="VA_requestmap">
+		<cache usage="read-write" />
+		<id name="mapid" column="mapid" type="java.lang.Long">
+			<generator class="native">
+				<param name="sequence">id_seq</param>
+			</generator>
+		</id>
+		<property name="mapname" column="mapname" type="java.lang.String"
+			update="true" insert="true" not-null="true" unique="false" />
+		<property name="mapvalue" column="mapvalue" type="java.lang.String"
+			update="true" insert="true" not-null="true" unique="false" />
+		<property name="requestid" column="requestid" type="java.lang.Long"/>
+		<property name="requestVersion" type="java.lang.Integer" not-null="false" update="true" insert="true">
+			<column name="request_version" default="1" />
+		</property>
+		<map name="dynamic" table="VA_requestmap_prop" lazy="false" sort="unsorted"
+			cascade="all">
+			<cache usage="read-write" />
+			<key column="mapid" />
+			<index column="VA_name" type="java.lang.String" />
+			<element column="VA_value" type="java.lang.String" not-null="false"
+				unique="false" />
+		</map>
+	</class>
+	<class name="com.redhat.tools.vault.bean.Product" table="products">
+		<cache usage="read-write" />
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="native">
+				<param name="sequence">id_seq</param>
+			</generator>
+		</id>
+		<property name="name" column="name" type="java.lang.String"
+			update="true" insert="true" not-null="true" unique="false" />
+		<property name="description" column="description" type="java.lang.String"
+			update="true" insert="true" />
+		<property name="milestoneurl" column="milestoneurl" type="java.lang.String"
+			update="true" insert="true" not-null="true" />
+		<property name="votesperuser" column="votesperuser" type="java.lang.Integer"
+			update="true" insert="true" not-null="true" />
+		<property name="maxvotesperbug" column="maxvotesperbug" type="java.lang.Integer"
+			update="true" insert="true" not-null="true" />
+		<property name="votestoconfirm" column="votestoconfirm" type="java.lang.Integer"
+			update="true" insert="true" not-null="true" />
+		<property name="defaultmilestone" column="defaultmilestone" type="java.lang.String"
+			update="true" insert="true" not-null="true" />
+		<property name="depends" column="depends" type="java.lang.Integer"
+			update="true" insert="true" unique="false" />
+		<property name="classification_id" column="classification_id" type="java.lang.Integer"
+			update="true" insert="true" not-null="true" />
+		<property name="isactive" column="isactive" type="java.lang.Integer"
+			update="true" insert="true" not-null="true" />
+	</class>
+	<class name="com.redhat.tools.vault.bean.Version" table="versions">
+		<cache usage="read-write" />
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="native">
+				<param name="sequence">id_seq</param>
+			</generator>
+		</id>
+		<property name="value" column="value" type="java.lang.String"
+			update="true" insert="true" not-null="true" />
+		<property name="product_id" column="product_id" type="java.lang.Long"
+			update="true" insert="true" not-null="true" />
+	</class>
+</hibernate-mapping>

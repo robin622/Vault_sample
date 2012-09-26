@@ -1,4 +1,4 @@
-package com.redhat.tools.vault;
+package com.redhat.tools.vault.dao;
 
 /**
  * Hello world!
