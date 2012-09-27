@@ -1,7 +1,6 @@
 package com.redhat.tools.vault.util;
 
 import org.jboss.logging.Logger;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -88,8 +87,6 @@ public class MD5Util {
 	}
 
 	public static void main(String[] args) throws IOException {
-	  
-	   
 	}
 
 }

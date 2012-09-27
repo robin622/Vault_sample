@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="tran" uri="/wezhao/tran" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -16,8 +17,115 @@
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/modal.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/datatable.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/vault.js"></script>
+	<script>
+		var loc;
+		var loc_timezoneOffset=new Date();
+		var loc_ts=loc_timezoneOffset.toString();
+		var loc_patern=/^(.+) (GMT.+)$/;
+		var match=loc_ts.match(loc_patern);
+		loc=match[2];
+		function OutputLoc(){
+			document.write(loc);
+		}
+		jQuery(function($){
+			if("${is_search}" != "null" || "${queryName}" != "null"){
+				$("table#searchrequest").attr("style","display");
+				$("table#allrequest").hide();
+				$("table#waitrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#canviewrequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+			}
+			else 
+				if("${judgeDetailValue}"){
+				$("table#detail_name_table").attr("style","display");
+				$("table#detail_tbl").attr("style","display");
+				$("table#myrequest").hide();
+				$("table#allrequest").hide();
+				$("table#waitrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#canviewrequest").hide();
+				$("table#newrequest_tbl").hide();
+			}
+			else if("${operationstatus}" != "null" && "${operationstatus}" == "wait"){
+				$("table#waitrequest").attr("style","display");
+				$("table#myrequest").hide();
+				$("table#allrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#canviewrequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+			}
+			else if("${operationstatus}" != "null" && "${operationstatus}" == "signed"){
+				$("table#signedrequest").attr("style","display");
+				$("table#myrequest").hide();
+				$("table#allrequest").hide();
+				$("table#canviewrequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+				$("table#waitrequest").hide();
+			}
+			else if("${operationstatus}" != "null" && "${operationstatus}" == "CanView"){
+				$("table#canviewrequest").attr("style","display");
+				$("table#myrequest").hide();
+				$("table#allrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+				$("table#waitrequest").hide();
+			}
+			else {
+				$("table#myrequest").attr("style","display");
+				$("table#waitrequest").attr("style","display");
+				$("table#canviewrequest").hide();
+				$("table#allrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+			}
+		});
+		var selectRequest,selectUser;
+		function setUserAndRequest()
+		{
+			jQuery(function($){
+				var url = "${pageContext.request.contextPath}/showRequest";
+				$.ajax({
+					type: "POST",
+					url: url,
+					async:false,
+					data: "operation=FindRequest",
+					success: function(rtnData) {
+						rtnData = eval("(" + rtnData + ")");
+						selectRequest = rtnData.rqsts;
+					}
+				});
+				$.ajax({
+					type: "POST",
+					url: url,
+					async:false,
+					data: "operation=ShowAllEmails",
+					success: function(rtnData) {
+						rtnData = eval("(" + rtnData + ")");
+						selectUser = rtnData.emails;
+					}
+				});
+				
+			});
+		}
+		var loadingDiv = $('<div id="loadingDiv" style="position:fixed; left:'+window.screen.width/2+'px; top:'+window.screen.height/2+'px;"></div>').html("<img src='${pageContext.request.contextPath}/images/loading.gif' /> ");
+		//console.info('loading div');
+		$(document.body).append(loadingDiv);
+	</script>
+	<script type='text/javascript' src="<%=request.getContextPath()%>/js/vault_js.js"></script>
+	<script type='text/javascript' src="<%=request.getContextPath()%>/js/timezone.js"></script>
 </head>
-<body id='eso-body'>
+<body id='eso-body' onload="rmloading();">
 <div class="server"><div>stage server</div></div>
 <div class="eso-inner">
 <header id='eso-topbar'>
@@ -182,7 +290,8 @@
       </div>
      </div>
     </div>
-<div class="clear"></div>  
+<div class="clear"></div>
+<%@ include file="detail.jsp"%>  
 </div>
 	<table class="eso-table" id="table1">
 	  <thead>
@@ -412,14 +521,14 @@
 			<tr id="myrequestlist${myRequest.requestid}">
 			<td><input type="checkbox" name="chkltMyRequest" id="chkltMyRequest${myRequest.requestid}" value="${myRequest.requestid}"></td>
 			<td>${myRequest.requestid}</td>
-			<td nowrap><a href=${pageContext.request.contextPath}/showRequest/${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
+			<td nowrap><a href=${pageContext.request.contextPath}/showRequest?requestid=${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
 			<td nowrap>${myRequest.productname}</td>
 			<td>${myRequest.versiondesc}</td>
 			<td>${myRequest.createdby}</td>
-			<td nowrap><c:if test="${empty myRequest.createdtime}"><fmt:formatDate value="${myRequest.createdtime}" pattern="yyyy-MM-dd" /></c:if></td>
-			<td nowrap><c:if test="${empty myRequest.createdtime}"><fmt:formatDate value="${myRequest.requesttime}" pattern="yyyy-MM-dd" /></c:if></td>
+			<td nowrap>${tran:transformByFormat(myRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
+			<td nowrap>${tran:transformByFormat(myRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
 			<td nowrap>${myRequest.editedby}</td>
-			<td nowrap><c:if test="${empty myRequest.createdtime}"><fmt:formatDate value="${myRequest.editedtime}" pattern="yyyy-MM-dd" /></c:if></td>
+			<td nowrap>${tran:transformByFormat(myRequest.editedtime,"yyyy-MM-dd HH:mm")}</td>
 			<td nowrap>${myRequest.status}</td>
 			<td nowrap>
 			<c:if test="${myRequest.status ne 'withdrawn'}">
