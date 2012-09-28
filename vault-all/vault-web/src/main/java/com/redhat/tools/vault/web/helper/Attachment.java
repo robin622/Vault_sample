@@ -73,6 +73,30 @@ public class Attachment {
 		return to;
 	}
 
+	public static String createFileInfo(File file, String path) {
+        long kbyte = file.length() / 1024;
+        if(!file.exists()) {
+            log.debug("createFileInfo file not exist. file=" + file.getName());
+            return "";
+        }
+        log.debug("file=" + file.getName() + " kbyte=" + kbyte);
+        StringBuffer sb = new StringBuffer();
+        sb.append("<span id='"+file.lastModified()+"'>"+file.getName() + "&nbsp;Size:" + kbyte);        
+        sb.append("&nbsp;[Kbyte]&nbsp;Date:" + Attachment.getTimeStamp(file) + "&nbsp;"); 
+        
+        sb.append("&nbsp;MD5:" + MD5Util.getFileMD5String(file) + "&nbsp;");
+        
+        //sb.append("<div id=\"delete_" + file.lastModified() + "\">");
+        //sb.append("<a href=\"#\" onclick=\"deleteAttachment(" + file.lastModified() + ")\">");
+        sb.append("<a href=\"javascript:void(0)\" onclick=\"request.req_delAttachment('" + file.getName() + "')\">");
+        
+        sb.append("<img alt=\"delete\" src=" +
+            path + "/images/delete.gif border=\"0\">Delete</a>");
+        sb.append("</span>");
+        log.debug(sb.toString());
+        return sb.toString();
+    }
+	
 	public static String createFileInfo(Request request, String path) {
 		StringBuffer sb = new StringBuffer();
 		Set<RequestMap> maps = request.getMaps();
@@ -121,5 +145,33 @@ public class Attachment {
 		}
 		return sb.toString();
 	}
+	
+    public static void remove(String path) throws IOException {
+        File file = new File(path);
+        if (!file.exists()) {
+            return;
+        }
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    if (f.isFile()) {
+                        removeFile(f);
+                    } else {
+                        throw new IOException("Cannot have sub directory.");
+                    }
+                }
+            }
+        }
+        removeFile(file);
+    }
+
+    private static void removeFile(File file) throws IOException {
+        if (file.delete()) {
+            log.debug("deleted.");
+        } else {
+            throw new IOException("Cannot delete file. " + file.getAbsolutePath());
+        }
+    }
 
 }

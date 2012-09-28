@@ -8,11 +8,18 @@
 	<title>vault</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/datatable.css" />
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/eso-theme.css" />
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/vault.css" />
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery-ui-1.8.20.custom.css" />
+	 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/eso-theme.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/vault.css" /> 
+	
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/ui.core.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/ui.datepicker.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.ptTimeSelect.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/ui.theme.css" />
+			
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.autocomplete.css" />
 	<link href="<%=request.getContextPath()%>/images/favicon.ico" rel="shortcut icon" />
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.7.2.min.js" ></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ptTimeSelect.js" ></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/dropdown.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/modal.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/datatable.js"></script>
@@ -28,16 +35,121 @@
 			document.write(loc);
 		}
 		jQuery(function($){
-			if(${judgeDetailValue}){
-				$("table#detail_name_table").attr("style","display");
-				$("table#reception_tbl").attr("style","display");
-				$("table#detail_comment").attr("style","display");
+			if("${is_search}" != "" || "${queryName}" != ""){
+				$("table#searchrequest").attr("style","display");
+				$("table#allrequest").hide();
 				$("table#myrequest").hide();
+				$("table#waitrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#canviewrequest").hide();
+				$("table#cctomerequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+			}
+			else 
+				if("${judgeDetailValue}" == "true"){
+				$("table#detail_name_table").attr("style","display");
+                $("table#reception_tbl").attr("style","display");
+				$("table#detail_comment").attr("style","display");
+				$("table#searchrequest").hide();
+				$("table#myrequest").hide();
+				$("table#cctomerequest").hide();
 				$("table#allrequest").hide();
 				$("table#waitrequest").hide();
 				$("table#signedrequest").hide();
 				$("table#canviewrequest").hide();
 				$("table#newrequest_tbl").hide();
+				$("div#query-area").hide();
+				$("div#advance_query").hide();
+				$("fieldset#advance_set").hide();
+			}
+			else if("${operationstatus}" != "null" && "${operationstatus}" == "wait"){
+				$("table#waitrequest").attr("style","display");
+				$("table#myrequest").hide();
+				$("table#cctomerequest").hide();
+				$("table#allrequest").hide();
+				$("table#searchrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#canviewrequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+			}
+			else if("${operationstatus}" != "null" && "${operationstatus}" == "signed"){
+				$("table#signedrequest").attr("style","display");
+				$("table#cctomerequest").hide();
+				$("table#myrequest").hide();
+				$("table#allrequest").hide();
+				$("table#searchrequest").hide();
+				$("table#canviewrequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+				$("table#waitrequest").hide();
+			}
+			else if("${operationstatus}" != "null" && "${operationstatus}" == "CanView"){
+				$("table#canviewrequest").attr("style","display");
+				$("table#cctomerequest").hide();
+				$("table#myrequest").hide();
+				$("table#allrequest").hide();
+				$("table#searchrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+				$("table#waitrequest").hide();
+			}
+			else if("${operationstatus}" != "null" && "${operationstatus}" == "cctome"){
+				$("table#cctomerequest").attr("style","display");
+				$("table#canviewrequest").hide();
+				$("table#myrequest").hide();
+				$("table#allrequest").hide();
+				$("table#searchrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+				$("table#waitrequest").hide();
+			}
+			else if("${operationstatus}" != "null" && "${operationstatus}" == "myrequest"){
+				$("table#myrequest").attr("style","display");
+				$("table#canviewrequest").hide();
+				$("table#cctomerequest").hide();
+				$("table#allrequest").hide();
+				$("table#searchrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+				$("table#waitrequest").hide();
+			}
+			else if("${operationstatus}" != "" && "${operationstatus}" == "newrequest"){
+				$("table#newrequest_tbl").attr("style","display");
+				$("table#canviewrequest").hide();
+				$("table#myrequest").hide();
+				$("table#allrequest").hide();
+				$("table#searchrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#cctomerequest").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+				$("table#waitrequest").hide();
+				$("div#query-area").hide();
+				$("div#advance_query").hide();
+				$("fieldset#advance_set").hide();
+			}
+			else {
+				$("table#myrequest").attr("style","display");
+				$("table#waitrequest").attr("style","display");
+				$("table#canviewrequest").hide();
+				$("table#cctomerequest").hide();
+				$("table#searchrequest").hide();
+				$("table#allrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#newrequest_tbl").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
 			}
 		});
 		var selectRequest,selectUser;
@@ -70,7 +182,7 @@
 		console.info('loading div');
 		$(document.body).append(loadingDiv);
 	</script>
-	<script type='text/javascript' src="<%=request.getContextPath()%>/js/vault_js.js"></script>
+	<script type='text/javascript' src="<%=request.getContextPath()%>/js/vault_js.js"></script> 
 	<script type='text/javascript' src="<%=request.getContextPath()%>/js/timezone.js"></script>
 </head>
 <body id='eso-body' onload="rmloading();">
@@ -108,12 +220,12 @@
 <div class="navbar">
   <ul class="nav">
     <li class="active"><a href="index.html">Home</a></li>
-   <li class=""><a href="new request.html" >New Request </a></li>
-    <li class=""><a href="needing my approval.html">Needing My Approval<span class="number"> ( 3 )</span></a></li>
-    <li class=""><a href="my request.html">My Requests<span class="number"> ( 10 )</span></a></li>
-    <li class=""><a href="have signed.html">Have Signed <span class="number">( 8 )</span></a></li>
-    <li class=""><a href="cc me.html">CC Me<span class="number"> ( 100 )</span></a></li>
-    <li class=""><a href="i can view.html">I Can View <span class="number">( 568 )</span></a></li>
+   <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a></li>
+    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval<span class="number"> ( 3 )</span></a></li>
+    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests<span class="number"> ( 10 )</span></a></li>
+    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed <span class="number">( 8 )</span></a></li>
+    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me<span class="number"> ( 100 )</span></a></li>
+    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CanViewRequest>I Can View <span class="number">( 568 )</span></a></li>
   </ul>
 </div>
 <div class="content">
@@ -126,385 +238,15 @@
     
      <div class="clear"></div>
 </div>
-	
-    <div>
-			<form class="form-horizontal form-horizontal-vault ">
-            <div class="control-group">
-               
-                <div class="controls search-vault">
-                  <input type="text" class="input-xlarge" id="input">
-                  <button class="btn">Search</button>
-                  <a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
-                  <a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
-                  <a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
-                  <a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
-                  <span class="quary-more"  id="quary-js">
-                  		<a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
-                  		<a href="#" class="quary">newquery<img src=" <%=request.getContextPath()%>/images/delete.gif"  alt=""></a>
-                  </span>
-                  <a href="#" class="quary" id="more">more...</a>
-                  <a href="#" class="quary display-none" id="hide">hide...</a>
-                </div>
-            </div>
-        </form>
-        <div class="clear"></div>
-	</div>
-    <fieldset class="fieldset-vault fieldset-search">
-    <legend class="legend-vault img2" id="search1">Advanced Search </legend>
-    <legend class="legend-vault img1 display-none" id="search2" >Advanced Search </legend>
-    </fieldset>
-	<div class="form-area display-none">
-    <div class="form-area-left">
-        <form class="form-horizontal form-horizontal-vault">
-            <div class="control-group">
-                <label class="control-label" for="input01">Request Name:</label>
-                <div class="controls">
-                  <input type="text" class="input-xlarge" id="input">
-                </div>
-            </div>
-        </form>
-         <form class="form-horizontal form-horizontal-vault">
-            <div class="control-group">
-                <label class="control-label" for="input01">Product:</label>
-                <div class="controls">
-                <select data-placeholder="Your Favorite Football Team"  class="chzn-select" tabindex="6">
-             <option value=""></option>
-               <option>Dallas Cowboys</option>
-               <option>New York Giants</option>
-               <option>Philadelphia Eagles</option>
-               <option>Washington Redskins</option>
-           </select>
-                </div>
-            </div>
-        </form>
-        <form class="form-horizontal form-horizontal-vault">
-            <div class="control-group">
-                <label class="control-label" for="input01">Creator:</label>
-                  <div class="controls">
-             
-           <input type="text" class="input-xlarge" id="input01">
-           </div>
-            </div>
-        </form>
-       
-    </div>
-    <div class="form-area-right">
-        <form class="form-horizontal">
-              <div class="control-group">
-                <label class="control-label">Status: </label>
-                <div class="controls">
-                <select data-placeholder="RHEL6"  class="chzn-select select-width" tabindex="6">
-                <option value=""></option>
-                <option>RHEL6</option>
-                <option>RHEL7</option>
-                <option>JBoss</option>
-                <option>Openshift</option>
-                </select>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">Sign off by: </label>
-                <div class="controls">
-               <input type="text" class="input-xlarge" id="input01">
-                </div>
-            </div>
-          
-        
-        </form>
-    </div>
-    <div class="bottom">
-    <button type="submit" class="btn btn-primary">Search</button>
-    <a class="btn" data-toggle="modal" href="#myModal" >Save Query</a>
-  
-	<div class="page-header">
-    </div>
-    <div class="row-fluid">
-    	<div class="span8">
-            <div class="modal hide fade" id="myModal">
-                <div class="modal-header">
-                  <button data-dismiss="modal" class="close">Ã</button>
-                  <h3>Please input query name</h3>
-                </div>
-                <div class="modal-body">
-                	<p><input type="text" class="input-xlarge" id="input01"></p>
-                </div>
-                <div class="modal-footer">
-                  <a data-dismiss="modal" class="btn" href="#">Close</a>
-                  <a class="btn btn-primary" href="#">Save</a>
-                </div>
-          </div>
-           
-      </div>
-     </div>
-    </div>
-	<div class="clear"></div> 
-</div>
-<%@ include file="detail.jsp"%> 
-	<table class="eso-table" id="table1">
-	  <thead>
-	    <tr>
-      		<th>Requests Needing My Approval</th>
-        </tr>
-      </thead>
-	  <tbody>
-	    <tr>
-	      <td class="clear-padding">
-	        
-	        
-	        <div class="list-margin-top">
-	          <table id="example" class="eso-table table-striped eso-table-inner ">
-<thead>
-    <tr>        
-        <th>ID</th>
-        <th>Request Name</th>
-         <th>Product</th>
-        <th>Vertion</th>
-        <th>Creator</th>
-        <th>Created date</th>
-        <th>	Due date</th>
-        <th>Last modified</th>
-         <th>Modified date</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>        
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>        
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>        
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>        
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>        
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>        
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>        
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>        
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>        
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>        
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>        
-    <td><a href="request_details.html">6427</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-    <tr>        
-    <td><a href="request_details.html">6488</a></td>
-    <td><a href="request_details.html">test child</a></td>
-    <td>Unspecified</td>
-    <td>Unspecified</td>
-    <td> 	xiaowang</td>
-    <td>2012-08-23 10:43</td>
-    <td>2012-08-23 10:43</td>
-    <td>xiaowang</td>
-    <td>2012-08-23 13:48</a></td>
-    <td> 	Approved</td>
-    <td><a href="#" id="delete" ></a></td>
-    </tr>
-</tbody>
-</table>
-	          <div class="clear"></div>
-            </div></td>
-        </tr>
-	    
-      </tbody>
-</table>
-<table class="eso-table" id="table1">
-  <thead>
-    <tr>
-      <th>My Requests<a href="Summary Report.html" class="float-right"><button class="btn">Summary Report</button></a></th>
-      
-      </tr>
-    </thead>
-  <tbody>
-    <tr>
-      <td class="clear-padding">
-        
-        
-        <div class="list-margin-top">
-          <table id="example2" class="eso-table table-striped eso-table-inner ">
-<thead>
-    <tr>
-        <th><input type="checkbox" value="option1" id="inlineCheckbox1"></th>
-        <th>ID</th>
-        <th>Request Name</th>
-         <th>Product</th>
-        <th>Vertion</th>
-        <th>Creator</th>
-        <th>Created date</th>
-        <th>Due date</th>
-        <th>Last modified</th>
-         <th>Modified date</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
-</thead>
-<tbody>
-		<c:forEach var="myRequest" items="${myRequests}">
-			<tr id="myrequestlist${myRequest.requestid}">
-			<td><input type="checkbox" name="chkltMyRequest" id="chkltMyRequest${myRequest.requestid}" value="${myRequest.requestid}"></td>
-			<td>${myRequest.requestid}</td>
-			<td nowrap><a href=${pageContext.request.contextPath}/ShowRequest?requestid=${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
-			<td nowrap>${myRequest.productname}</td>
-			<td>${myRequest.versiondesc}</td>
-			<td>${myRequest.createdby}</td>
-			<td nowrap>${tran:transformByFormat(myRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
-			<td nowrap>${tran:transformByFormat(myRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
-			<td nowrap>${myRequest.editedby}</td>
-			<td nowrap>${tran:transformByFormat(myRequest.editedtime,"yyyy-MM-dd HH:mm")}</td>
-			<td nowrap>${myRequest.status}</td>
-			<td nowrap>
-			<c:if test="${myRequest.status ne 'withdrawn'}">
-			    <c:choose>
-	                <c:when test="${myRequest.from eq 0}">
-						<div id="deletemyrequest${myRequest.requestid}">
-							<a href="javascript:confirmDelete('index.do?operation=DeleteRequest
-							&requestid=${myRequest.requestid}', '${myRequest.requestname}')">Delete</a>
-						</div>
-					</c:when>
-					<c:otherwise>
-						<div id="withdrawmyrequest${myRequest.requestid}">
-						<a href="javascript:confirmWithDraw('index.do?operation=WithDrawRequest
-						    &requestid=${myRequest.requestid}', '${myRequest.requestname}')">Withdraw</a>
-							</div>
-					</c:otherwise>
-				</c:choose>
-			</c:if>
-			</td>
-		</tr>
-		</c:forEach>
-</tbody>
-</table>
-          <div class="clear"></div>
-          </div></td>
-      </tr>
-    
-    </tbody>
-</table>
+	<%@ include file="detail.jsp"%>  
+        <%@ include file="search.jsp"%>
+	<%@ include file="needApproval.jsp"%>
+	<%@ include file="signed.jsp" %>
+	<%@ include file="viewrequest.jsp" %>
+	<%@ include file="newrequest.jsp" %>
+	<%@ include file="searchrequest.jsp" %>
+	<%@ include file="cctomerequest.jsp" %>
+	<%@ include file="myrequest.jsp" %>
 
 </div>
 <footer class="footer">
@@ -518,8 +260,8 @@
 </footer>
 </div>
 <script>
-	$(".chzn-select").chosen(); 
-	$(".chzn-select-deselect").chosen({allow_single_deselect:true}); 
+	//$(".chzn-select").chosen(); 
+	//$(".chzn-select-deselect").chosen({allow_single_deselect:true}); 
 </script>	
     </div>
  </body>

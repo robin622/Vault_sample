@@ -354,7 +354,7 @@ public class RequestDAO {
 			sess.update(updatedRequest);
 			//trans.commit();
 			// trans = null;
-			//sess.flush();
+			sess.flush();
 		}
 		catch (Exception e) {
 			log.error(e.getMessage());
@@ -666,6 +666,53 @@ public class RequestDAO {
 		}
 
 		return null;
+	}
+	//TODO the hql should be changed
+	public List<Request> getCCToMe(String userName,String userEmail){
+	    log.debug("finding all Log instances");
+        Session sess = null;
+        try {
+            sess = dao.getSession();
+        }
+        catch (Exception re) {
+            log.error("Create session failed", re);
+        }
+        List<Request> requests = null;
+        try {
+            String queryString = "from Request as a where a.is_public = 1 or a.createdby = ? or (a.owner like ? or a.owner like ?) or (a.forward like ? or a.forward like ?)";
+            Query queryObject;
+            try {
+                queryObject = sess.createQuery(queryString);
+                queryObject.setString(0, userName);
+                queryObject.setString(1, userEmail + "%");
+                queryObject.setString(2, "%," + userEmail + "%");
+                queryObject.setString(3, userEmail + "%");
+                queryObject.setString(4, "%," + userEmail + "%");
+                requests = queryObject.list();
+                if (requests != null && requests.size() > 0) {
+                    for (Request s : requests) {
+                        Hibernate.initialize(s.getMaps());
+                        Hibernate.initialize(s.getRelations());
+                        // log.debug("flow=" + s);
+                    }
+                }
+                return requests;
+            }
+            catch (Exception e) {
+                log.error(e.getMessage());
+            }
+        }
+        catch (RuntimeException re) {
+            log.error("find all failed", re);
+            throw re;
+        }
+        finally {
+            if (sess != null) {
+                sess.close();
+            }
+        }
+
+        return null;
 	}
 
 	public List<Request> getAllByStatus(List<Request> allRequests,

@@ -220,3 +220,61 @@ $(document)
 										}
 									});
 				});
+/* Table initialisation */
+$(document)
+		.ready(
+				function() {
+					$('#example3')
+							.dataTable(
+									{
+										"sDom" : "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+										"sPaginationType" : "bootstrap",
+										"oLanguage" : {
+											"sLengthMenu" : "Show_MENU_ entries"
+										}
+									});
+				});
+
+/* Table initialisation */
+$(document)
+		.ready(
+				function() {
+					$('#example4')
+							.dataTable(
+									{
+										"sDom" : "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+										"sPaginationType" : "bootstrap",
+										"oLanguage" : {
+											"sLengthMenu" : "Show_MENU_ entries"
+										}
+									});
+				});
+
+/* Table initialisation */
+$(document)
+		.ready(
+				function() {
+					$('#example6')
+							.dataTable(
+									{
+										"sDom" : "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+										"sPaginationType" : "bootstrap",
+										"oLanguage" : {
+											"sLengthMenu" : "Show_MENU_ entries"
+										}
+									});
+				});
+/* Table initialisation */
+$(document)
+		.ready(
+				function() {
+					$('#example7')
+							.dataTable(
+									{
+										"sDom" : "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+										"sPaginationType" : "bootstrap",
+										"oLanguage" : {
+											"sLengthMenu" : "Show_MENU_ entries"
+										}
+									});
+				});

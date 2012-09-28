@@ -36,13 +36,23 @@ public class HomeServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userName="wezhao";
+		String userName="jskeoch";
 		String userEmail="wezhao@redhat.com";
 		request.getSession().setAttribute("userName", userName);
 		request.getSession().setAttribute("userEmail", userEmail);
 		List<Request> myRequests=service.getMyRequest(userName);
 		boolean judgeDetailValue = false;
 		request.setAttribute("myRequests", myRequests);
+		
+		List<Request> canViewReuqests = service.getCanViewRequests(userName, userEmail);
+		request.setAttribute("canViewReuqests", canViewReuqests);
+		
+	    List<Request> signedOffReuqests = service.getCanViewRequests(userName, userEmail);
+	    request.setAttribute("signedOffReuqests", signedOffReuqests);
+	        
+	    List<Request> waitReuqests = service.getCanViewRequests(userName, userEmail);
+	    request.setAttribute("waitReuqests", waitReuqests);
+		
 		request.setAttribute("judgeDetailValue", judgeDetailValue);
 		request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
 	}

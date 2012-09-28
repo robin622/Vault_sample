@@ -18,19 +18,20 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import com.redhat.tools.vault.bean.Request;
+import com.redhat.tools.vault.service.ReplyService;
 import com.redhat.tools.vault.service.RequestService;
 
 /**
  * @author wezhao
  * Servlet implementation class HomeServlet
  */
-@WebServlet("/ShowRequest")
+@WebServlet("/ShowReplyComment")
 public class ShowReplyCommentServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Inject 
-	private RequestService service;
+	@Inject
+    private ReplyService service;
 
     /**
      * Default constructor. 
@@ -43,56 +44,17 @@ public class ShowReplyCommentServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userName=(String) request.getSession().getAttribute("userName");
-		String userEmail=(String) request.getSession().getAttribute("userEmail");
-		String requestid=request.getParameter("requestid");
-		List<Request> detailRequests=service.getDetailRequest(requestid);
-		String detailRequestName = null;
-		Integer detailPublic = null;
-		Request detailRequest = null;
-		String detailCreator = null;
-		String detailCCList = null;
-		Boolean isEditable = false;
-		Boolean isSignatory = false;
-		Boolean displaySignoffOnBehalf = false;
-		String requestName_unescape = null;
+	    String userName = (String) request.getSession().getAttribute("userName");
+        String userEmail = (String) request.getSession().getAttribute("userEmail");
 
-		boolean judgeDetailValue = false;
-		if(detailRequests != null && detailRequests.size() > 0){
-		    detailRequest = detailRequests.get(0);
-		    Boolean isCreator = false;
-		    Boolean isOwner = false;
-		    Boolean isCC = false;
-		    String detailOwnerList = null;
-		    detailPublic = detailRequest.getIs_public();
-		    detailCreator = detailRequest.getCreatedby();
-		    detailCCList = detailRequest.getForward();
-		    detailOwnerList = detailRequest.getOwner();
-		    if(detailCreator != null && detailCreator.equals(userName)){
-		            isCreator = true;
-		    }        
-		    if(detailOwnerList != null){
-		            isOwner = Pattern.compile(userEmail).matcher(detailOwnerList).find();
-		    }
-		    if(detailCCList != null){
-		            isCC = Pattern.compile(userEmail).matcher(detailCCList).find();
-		    }
-		    
-		    if(detailPublic == 1 || isCreator || isOwner || isCC){
-		            detailRequestName = detailRequest.getRequestname();
-		            requestName_unescape = StringEscapeUtils.unescapeHtml(detailRequestName);
-		            isEditable = detailRequest.displayEditButton(userName);
-		            isSignatory = service.displaySignButton(userName,detailRequest.getRequestid());
-		            displaySignoffOnBehalf=service.displaySignOnBehalfButton(userName,detailRequest.getRequestid());
-		            judgeDetailValue = true;
-		    }
-		}
-		request.setAttribute("detailRequest",detailRequest);
-		request.setAttribute("isSignatory", isSignatory);
-		request.setAttribute("isEditable", isEditable);
-		request.setAttribute("displaySignoffOnBehalf", displaySignoffOnBehalf);
-		request.setAttribute("requestName_unescape", requestName_unescape);
-		request.setAttribute("judgeDetailValue", judgeDetailValue);
-		request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
+        String operation = request.getParameter("operation");
+        operation = operation == null ? "" : operation;
+        response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Cache-Control", "no-chche");
+        JSONObject joReturn = new JSONObject();
+        String requestid = (String) request.getParameter("requestid");
+        String historyid = (String) request.getParameter("historyid");
+        joReturn = service.ShowReply(requestid, historyid);
+        response.getWriter().print(joReturn);
 	}
 }

@@ -2471,8 +2471,12 @@ public class StringUtil {
 	}
 	
 	public static String removeComma(String str){
-		if(!isEmpty(str) && str.substring(str.length()-1).equals(",")){						
-			return str.substring(0,str.length()-1);
+		if(!isEmpty(str)){
+		    if(str.substring(str.length()-1).equals(",")){
+		        return str.substring(0,str.length()-1);
+		    }else{
+		        return str;
+		    }
 		}
 		return "";
 	}

@@ -142,32 +142,6 @@
 				unique="false" />
 		</map>
 	</class>
-	<class name="com.redhat.tools.vault.bean.RequestHistory" table="VA_request_history">
-		<cache usage="read-write" />
-		<id name="historyid" column="historyid" type="java.lang.Long">
-			<generator class="native">
-				<param name="sequence">id_seq</param>
-			</generator>
-		</id>
-		<property name="requestid" column="requestid" type="java.lang.Long"
-			update="true" insert="true" not-null="true" />
-		<property name="editedby" column="editedby" type="java.lang.String"
-			update="true" insert="true" not-null="true" />
-		<property name="editedtime" column="editedtime" type="java.util.Date"
-			update="true" insert="true" />
-		<property name="status" column="status" type="java.lang.String"
-			update="true" insert="true" not-null="true" />
-		<property name="comment" column="comment" type="java.lang.String"
-			update="true" insert="true" not-null="true" length="1024"/>
-		<property name="useremail" column="useremail" type="java.lang.String"
-			update="true" insert="true" not-null="true" />			
-		<property name="requestVersion" type="java.lang.Integer" not-null="false" update="true" insert="true">
-			<column name="request_version" default="1" />
-		</property>
-		<property name="isHistory" type="java.lang.Boolean" not-null="true" update="true" insert="true">
-			<column name="is_history" default="false" />
-		</property>
-	</class>
 	<class name="com.redhat.tools.vault.bean.Product" table="products">
 		<cache usage="read-write" />
 		<id name="id" column="id" type="java.lang.Long">
@@ -208,36 +182,34 @@
 		<property name="product_id" column="product_id" type="java.lang.Long"
 			update="true" insert="true" not-null="true" />
 	</class>
-	<class name="com.redhat.tools.vault.bean.ReplyComment" table="VA_reply_comment">
+	<!-- save query -->
+	<class name="com.redhat.tools.vault.bean.Savequery" table="VA_savequery">
 		<cache usage="read-write" />
-		<id name="replyid" column="replyid" type="java.lang.Long">
+		<id name="queryid" column="queryid" type="java.lang.Long">
 			<generator class="native">
 				<param name="sequence">id_seq</param>
 			</generator>
 		</id>
-		<property name="baseid" type="java.lang.Long" update="true" insert="true" not-null="true">
-			<column name="baseid" default="-1" />
-		</property>
-		<property name="replycomment" column="replycomment" type="java.lang.String"
-			update="true" insert="true" not-null="true" length="1024"/>
-		<property name="editedby" column="editedby" type="java.lang.String"
+		<property name="queryname" column="queryname" type="java.lang.String"
 			update="true" insert="true" not-null="true" />
-		<property name="editedtime" column="editedtime" type="java.lang.String"
-			update="true" insert="true" />
-	</class>
-	<class name="com.redhat.tools.vault.bean.CommentRelationship" table="VA_comment_relationship">
-		<cache usage="read-write" />
-		<id name="id" column="id" type="java.lang.Long">
-			<generator class="native">
-				<param name="sequence">id_seq</param>
-			</generator>
-		</id>
-		<property name="historyid" column="historyid" type="java.lang.Long"
+		<property name="searchname" column="searchname" type="java.lang.String"
+			update="true" insert="true" not-null="false" />
+		<property name="createdby" column="createdby" type="java.lang.String"
 			update="true" insert="true" not-null="true" />
-		<property name="requestid" column="requestid" type="java.lang.Long"
+		<property name="createdtime" column="createdtime" type="java.util.Date"
 			update="true" insert="true" not-null="true" />
-		<property name="replyid" column="replyid" type="java.lang.Long"
+		<property name="versionid" column="versionid" type="java.lang.Long"
+			update="true" insert="true" not-null="false" />
+		<property name="status" column="status" type="java.lang.String"
+			update="true" insert="true" not-null="false" />
+		<property name="owner" column="owner" type="java.lang.String"
 			update="true" insert="true" not-null="true" />
+		<property name="searchcreator" column="searchcreator" type="java.lang.String"
+			update="true" insert="true" not-null="false" />
+		<property name="type" column="type" type="java.lang.String"
+			update="true" insert="true" not-null="true" />
+		<property name="productid" column="productid" type="java.lang.Long"
+			update="true" insert="true" not-null="false" />
 	</class>
 	<class name="com.redhat.tools.vault.bean.VAUser" table="VA_user">
 		<cache usage="read-write" />
@@ -256,5 +228,66 @@
 			update="true" insert="true" unique="false" />
 		<property name="login_count" column="login_count" type="java.lang.Integer"
 			update="true" insert="true" unique="false" />
+	</class>
+	<class name="com.redhat.tools.vault.bean.RequestHistory" table="VA_request_history">
+		<cache usage="read-write" />
+		<id name="historyid" column="historyid" type="java.lang.Long">
+			<generator class="native">
+				<param name="sequence">id_seq</param>
+			</generator>
+		</id>
+		<property name="requestid" column="requestid" type="java.lang.Long"
+			update="true" insert="true" not-null="true" />
+		<property name="editedby" column="editedby" type="java.lang.String"
+			update="true" insert="true" not-null="true" />
+		<property name="editedtime" column="editedtime" type="java.util.Date"
+			update="true" insert="true" />
+		<property name="status" column="status" type="java.lang.String"
+			update="true" insert="true" not-null="true" />
+		<property name="comment" column="comment" type="java.lang.String"
+			update="true" insert="true" not-null="true" length="1024" />
+		<property name="useremail" column="useremail" type="java.lang.String"
+			update="true" insert="true" not-null="true" />
+		<property name="requestVersion" type="java.lang.Integer"
+			not-null="false" update="true" insert="true">
+			<column name="request_version" default="1" />
+		</property>
+		<property name="isHistory" type="java.lang.Boolean" not-null="true"
+			update="true" insert="true">
+			<column name="is_history" default="false" />
+		</property>
+	</class>
+	<class name="com.redhat.tools.vault.bean.ReplyComment" table="VA_reply_comment">
+		<cache usage="read-write" />
+		<id name="replyid" column="replyid" type="java.lang.Long">
+			<generator class="native">
+				<param name="sequence">id_seq</param>
+			</generator>
+		</id>
+		<property name="baseid" type="java.lang.Long" update="true"
+			insert="true" not-null="true">
+			<column name="baseid" default="-1" />
+		</property>
+		<property name="replycomment" column="replycomment" type="java.lang.String"
+			update="true" insert="true" not-null="true" length="1024" />
+		<property name="editedby" column="editedby" type="java.lang.String"
+			update="true" insert="true" not-null="true" />
+		<property name="editedtime" column="editedtime" type="java.lang.String"
+			update="true" insert="true" />
+	</class>
+	<class name="com.redhat.tools.vault.bean.CommentRelationship"
+		table="VA_comment_relationship">
+		<cache usage="read-write" />
+		<id name="id" column="id" type="java.lang.Long">
+			<generator class="native">
+				<param name="sequence">id_seq</param>
+			</generator>
+		</id>
+		<property name="historyid" column="historyid" type="java.lang.Long"
+			update="true" insert="true" not-null="true" />
+		<property name="requestid" column="requestid" type="java.lang.Long"
+			update="true" insert="true" not-null="true" />
+		<property name="replyid" column="replyid" type="java.lang.Long"
+			update="true" insert="true" not-null="true" />
 	</class>
 </hibernate-mapping>

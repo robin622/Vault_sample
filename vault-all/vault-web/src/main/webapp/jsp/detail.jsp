@@ -18,7 +18,7 @@ function checkCommentLength(comment) {
 	}
 	else return true;
 }
-if(${judgeDetailValue}){
+if("${judgeDetailValue}" == "true"){
 	jQuery(function($){
 		$("#requestid").val("${detailRequest.requestid}");
 		$("#versionid").val("${detailRequest.versionid}");

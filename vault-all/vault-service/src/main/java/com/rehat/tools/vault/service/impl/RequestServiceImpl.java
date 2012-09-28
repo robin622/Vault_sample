@@ -15,10 +15,12 @@ import org.jboss.logging.Logger;
 import com.redhat.tools.vault.bean.Product;
 import com.redhat.tools.vault.bean.Request;
 import com.redhat.tools.vault.bean.RequestHistory;
+import com.redhat.tools.vault.bean.RequestRelationship;
 import com.redhat.tools.vault.bean.Version;
 import com.redhat.tools.vault.dao.ProductDAO;
 import com.redhat.tools.vault.dao.RequestDAO;
 import com.redhat.tools.vault.dao.RequestHistoryDAO;
+import com.redhat.tools.vault.dao.RequestRelationshipDAO;
 import com.redhat.tools.vault.dao.VAUserDAO;
 import com.redhat.tools.vault.dao.VersionDAO;
 import com.redhat.tools.vault.service.RequestService;
@@ -37,6 +39,8 @@ public class RequestServiceImpl implements RequestService{
 	private RequestHistoryDAO historyDAO;
 	@Inject
 	private VaultSendMail mailer;
+	@Inject
+	private RequestRelationshipDAO relationshipDAO;
 	
 	private static final Logger log = Logger.getLogger(RequestServiceImpl.class);
 
@@ -453,4 +457,132 @@ public class RequestServiceImpl implements RequestService{
 		return false;
 
 	}
+
+    public List<Request> getWaitRequests(String userName,String userEmail) {
+        List<Request> waitRequests  = requestDAO.getWaitRequests(userName,userEmail);
+        if (waitRequests != null && waitRequests.size() > 0) {
+            for (Request waitRequest : waitRequests) {
+                waitRequest.setRequestname(StringEscapeUtils
+                        .escapeHtml(waitRequest.getRequestname()));
+                try {
+                    setVersionAndProduct(waitRequest);
+                    setParentAndChildren(waitRequest);
+                } catch (Exception e) {
+                    
+                }
+            }
+        }
+        return waitRequests;
+    }
+
+    public List<Request> getCanViewRequests(String userName,String userEmail) {
+        List<Request> viewRequests  = requestDAO.getCanView(userName,userEmail);
+        if (viewRequests != null && viewRequests.size() > 0) {
+            for (Request viewRequest : viewRequests) {
+                viewRequest.setRequestname(StringEscapeUtils
+                        .escapeHtml(viewRequest.getRequestname()));
+                try {
+                    setVersionAndProduct(viewRequest);
+                    setParentAndChildren(viewRequest);
+                } catch (Exception e) {
+                    
+                }
+            }
+        }
+        return viewRequests;
+    }
+
+    public List<Request> getSignedOffRequests(String userName,String userEmail) {
+        List<Request> signedOffRequests  = requestDAO.getSignedOff(userName,userEmail);
+        if (signedOffRequests != null && signedOffRequests.size() > 0) {
+            for (Request signedOffRequest : signedOffRequests) {
+                signedOffRequest.setRequestname(StringEscapeUtils
+                        .escapeHtml(signedOffRequest.getRequestname()));
+                try {
+                    setVersionAndProduct(signedOffRequest);
+                    setParentAndChildren(signedOffRequest);
+                } catch (Exception e) {
+                    
+                }
+            }
+        }
+        return signedOffRequests;
+    }
+
+    public List<Request> advanceSearch(String requestName,String creator,String versionid,String productid,String status,
+            String owneremail,String userName,String userEmail) {
+        List<Request> requests = requestDAO.advanceSearch(requestName, creator, versionid, productid, status, owneremail,
+                userName, userEmail);
+        if(requests != null && requests.size() > 0){
+            for(Request request : requests){
+                request.setRequestname(StringEscapeUtils
+                        .escapeHtml(request.getRequestname()));
+                try{
+                    setVersionAndProduct(request);
+                    setParentAndChildren(request);
+                }catch(Exception e){
+                    
+                }
+            }
+        }
+        return requests;
+    }
+
+    public List<Request> getCCToMeRequests(String userName,String userEmail) {
+        List<Request> ccToMeRequests  = requestDAO.getCCToMe(userName,userEmail);
+        if (ccToMeRequests != null && ccToMeRequests.size() > 0) {
+            for (Request ccToMeRequest : ccToMeRequests) {
+                ccToMeRequest.setRequestname(StringEscapeUtils
+                        .escapeHtml(ccToMeRequest.getRequestname()));
+                try {
+                    setVersionAndProduct(ccToMeRequest);
+                    setParentAndChildren(ccToMeRequest);
+                } catch (Exception e) {
+                    
+                }
+            }
+        }
+        return ccToMeRequests;
+    }
+
+    public Long save(Request request) {
+        Long requestId = null;
+        try {
+            requestId = requestDAO.save(request);
+        } catch (Exception e) {
+            
+        }
+        return requestId;
+    }
+
+    public void update(Request request) {
+        requestDAO.update(request);
+        
+    }
+
+    public Long saveRelationShip(RequestRelationship rls) {
+        Long relationId = null;
+        try{
+            relationId = relationshipDAO.save(rls);
+        } catch (Exception e){
+            
+        }
+        return relationId;
+    }
+
+    public String[] generateParent(Long requestId) {
+        String[] parentArray = null;
+        try {
+            parentArray = requestDAO.generateParent(requestId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return parentArray;
+    }
+
+    public void disableRelationShip(RequestRelationship condition) {
+        relationshipDAO.disable(condition);
+        
+    }
+
 }

@@ -55,12 +55,12 @@ public class RequestHistoryDAO {
 						condition.getEditedby()));
 			}
 			if(condition.getStartDate() !=null){
-					criteria.add(Expression.gt(RequestHistory.PROPERTY_EDITEDTIME,
-							DateUtil.toVaultDate(condition.getStartDate())));
+//					criteria.add(Expression.gt(RequestHistory.PROPERTY_EDITEDTIME,
+//							DateUtil.toVaultDate(condition.getStartDate())));
 			}
 			if(condition.getEndDate() != null){
-				criteria.add(Expression.lt(RequestHistory.PROPERTY_EDITEDTIME,
-						DateUtil.toVaultDate(condition.getEndDate())));
+//				criteria.add(Expression.lt(RequestHistory.PROPERTY_EDITEDTIME,
+//						DateUtil.toVaultDate(condition.getEndDate())));
 			}
 			if (condition.getUseremail() != null) {
 				criteria.add(Expression.eq(RequestHistory.PROPERTY_USEREMAIL,
