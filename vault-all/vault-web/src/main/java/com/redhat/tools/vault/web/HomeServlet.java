@@ -38,11 +38,12 @@ public class HomeServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userName="wezhao";
 		String userEmail="wezhao@redhat.com";
+		request.getSession().setAttribute("userName", userName);
+		request.getSession().setAttribute("userEmail", userEmail);
 		List<Request> myRequests=service.getMyRequest(userName);
 		boolean judgeDetailValue = false;
 		request.setAttribute("myRequests", myRequests);
 		request.setAttribute("judgeDetailValue", judgeDetailValue);
-		request.setAttribute("userName", userName);
 		request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
 	}
 

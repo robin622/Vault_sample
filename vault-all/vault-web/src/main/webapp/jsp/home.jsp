@@ -28,98 +28,46 @@
 			document.write(loc);
 		}
 		jQuery(function($){
-			if("${is_search}" != "null" || "${queryName}" != "null"){
-				$("table#searchrequest").attr("style","display");
-				$("table#allrequest").hide();
-				$("table#waitrequest").hide();
-				$("table#signedrequest").hide();
-				$("table#canviewrequest").hide();
-				$("table#newrequest_tbl").hide();
-				$("table#detail_name_table").hide();
-				$("table#detail_tbl").hide();
-			}
-			else 
-				if("${judgeDetailValue}"){
+			if(${judgeDetailValue}){
 				$("table#detail_name_table").attr("style","display");
-				$("table#detail_tbl").attr("style","display");
+				$("table#reception_tbl").attr("style","display");
+				$("table#detail_comment").attr("style","display");
 				$("table#myrequest").hide();
 				$("table#allrequest").hide();
 				$("table#waitrequest").hide();
 				$("table#signedrequest").hide();
 				$("table#canviewrequest").hide();
 				$("table#newrequest_tbl").hide();
-			}
-			else if("${operationstatus}" != "null" && "${operationstatus}" == "wait"){
-				$("table#waitrequest").attr("style","display");
-				$("table#myrequest").hide();
-				$("table#allrequest").hide();
-				$("table#signedrequest").hide();
-				$("table#canviewrequest").hide();
-				$("table#newrequest_tbl").hide();
-				$("table#detail_name_table").hide();
-				$("table#detail_tbl").hide();
-			}
-			else if("${operationstatus}" != "null" && "${operationstatus}" == "signed"){
-				$("table#signedrequest").attr("style","display");
-				$("table#myrequest").hide();
-				$("table#allrequest").hide();
-				$("table#canviewrequest").hide();
-				$("table#newrequest_tbl").hide();
-				$("table#detail_name_table").hide();
-				$("table#detail_tbl").hide();
-				$("table#waitrequest").hide();
-			}
-			else if("${operationstatus}" != "null" && "${operationstatus}" == "CanView"){
-				$("table#canviewrequest").attr("style","display");
-				$("table#myrequest").hide();
-				$("table#allrequest").hide();
-				$("table#signedrequest").hide();
-				$("table#newrequest_tbl").hide();
-				$("table#detail_name_table").hide();
-				$("table#detail_tbl").hide();
-				$("table#waitrequest").hide();
-			}
-			else {
-				$("table#myrequest").attr("style","display");
-				$("table#waitrequest").attr("style","display");
-				$("table#canviewrequest").hide();
-				$("table#allrequest").hide();
-				$("table#signedrequest").hide();
-				$("table#newrequest_tbl").hide();
-				$("table#detail_name_table").hide();
-				$("table#detail_tbl").hide();
 			}
 		});
 		var selectRequest,selectUser;
 		function setUserAndRequest()
 		{
 			jQuery(function($){
-				var url = "${pageContext.request.contextPath}/showRequest";
+				var url = "${pageContext.request.contextPath}/FindRequest";
 				$.ajax({
 					type: "POST",
 					url: url,
 					async:false,
-					data: "operation=FindRequest",
 					success: function(rtnData) {
 						rtnData = eval("(" + rtnData + ")");
 						selectRequest = rtnData.rqsts;
 					}
 				});
+				var url2 = "${pageContext.request.contextPath}/ShowAllEmails";
 				$.ajax({
 					type: "POST",
-					url: url,
+					url: url2,
 					async:false,
-					data: "operation=ShowAllEmails",
 					success: function(rtnData) {
 						rtnData = eval("(" + rtnData + ")");
 						selectUser = rtnData.emails;
 					}
 				});
-				
 			});
 		}
 		var loadingDiv = $('<div id="loadingDiv" style="position:fixed; left:'+window.screen.width/2+'px; top:'+window.screen.height/2+'px;"></div>').html("<img src='${pageContext.request.contextPath}/images/loading.gif' /> ");
-		//console.info('loading div');
+		console.info('loading div');
 		$(document.body).append(loadingDiv);
 	</script>
 	<script type='text/javascript' src="<%=request.getContextPath()%>/js/vault_js.js"></script>
@@ -167,7 +115,6 @@
     <li class=""><a href="cc me.html">CC Me<span class="number"> ( 100 )</span></a></li>
     <li class=""><a href="i can view.html">I Can View <span class="number">( 568 )</span></a></li>
   </ul>
-    
 </div>
 <div class="content">
    
@@ -290,9 +237,9 @@
       </div>
      </div>
     </div>
-<div class="clear"></div>
-<%@ include file="detail.jsp"%>  
+	<div class="clear"></div> 
 </div>
+<%@ include file="detail.jsp"%> 
 	<table class="eso-table" id="table1">
 	  <thead>
 	    <tr>
@@ -521,7 +468,7 @@
 			<tr id="myrequestlist${myRequest.requestid}">
 			<td><input type="checkbox" name="chkltMyRequest" id="chkltMyRequest${myRequest.requestid}" value="${myRequest.requestid}"></td>
 			<td>${myRequest.requestid}</td>
-			<td nowrap><a href=${pageContext.request.contextPath}/showRequest?requestid=${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
+			<td nowrap><a href=${pageContext.request.contextPath}/ShowRequest?requestid=${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
 			<td nowrap>${myRequest.productname}</td>
 			<td>${myRequest.versiondesc}</td>
 			<td>${myRequest.createdby}</td>

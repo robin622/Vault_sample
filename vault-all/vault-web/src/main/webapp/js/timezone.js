@@ -48,12 +48,13 @@ var zone_patern=/\d{1,4}\-\d{1,2}\-\d{1,2} \d{1,2}:\d{1,2}/g;
 		//toreplace("reception_tbl");
 	}
 	function toreplace2(componentid){
-		//console.info('componentid is'+ componentid);
+		console.info('componentid is'+ componentid);
 		var componentId=document.getElementById(componentid);
 		if(typeof componentId == "undefined" || componentId==null)return;
 		var nl=componentId.childNodes;
 		for(var i=0;i<nl.length;i++){
 			var intext=nl[i].innerHTML;
+			//alert("innertext is"+intext);
 			if(typeof intext != "undefined" && intext.search(zone_patern)!=-1){
 				//console.info('success');
 				 var arr=intext.match(zone_patern);
@@ -65,6 +66,7 @@ var zone_patern=/\d{1,4}\-\d{1,2}\-\d{1,2} \d{1,2}:\d{1,2}/g;
 					 intext=intext.replace(arr[m],calculateTime(arr[m]));
 					 //console.info('intext is: '+intext);
 		         }
+				 //alert("after replace,innertext is"+intext);
 				 nl[i].innerHTML=intext;
 			}
 		}

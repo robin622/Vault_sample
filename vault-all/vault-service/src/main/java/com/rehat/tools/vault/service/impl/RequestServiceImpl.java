@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jboss.logging.Logger;
 
 import com.redhat.tools.vault.bean.Product;
@@ -21,6 +22,7 @@ import com.redhat.tools.vault.dao.RequestHistoryDAO;
 import com.redhat.tools.vault.dao.VAUserDAO;
 import com.redhat.tools.vault.dao.VersionDAO;
 import com.redhat.tools.vault.service.RequestService;
+import com.redhat.tools.vault.util.DateUtil;
 
 public class RequestServiceImpl implements RequestService{
 	@Inject
@@ -32,7 +34,9 @@ public class RequestServiceImpl implements RequestService{
 	@Inject
 	private VAUserDAO userDAO;
 	@Inject
-	private RequestHistoryDAO requestHistoryDAO;
+	private RequestHistoryDAO historyDAO;
+	@Inject
+	private VaultSendMail mailer;
 	
 	private static final Logger log = Logger.getLogger(RequestServiceImpl.class);
 
@@ -216,7 +220,7 @@ public class RequestServiceImpl implements RequestService{
 		return joReturn;
 	}
 
-	public JSONObject ShowAllEmails() {
+	public JSONObject showAllEmails() {
 		JSONObject joReturn = new JSONObject();
 		List<String> emails = null;
 		userDAO = new VAUserDAO();
@@ -230,5 +234,223 @@ public class RequestServiceImpl implements RequestService{
 			joReturn.put("emails", emails);
 		}
 		return joReturn;
+	}
+
+	public JSONObject listNoneSign(String requestId) {
+		JSONObject json = new JSONObject();
+		List<String> list = getNoneSigned(Long.parseLong(requestId));
+		json.put("noneSignUsers", list);
+		return json;
+	}
+	
+	private List<String> getNoneSigned(Long requestId) {
+		List<String> result = new ArrayList<String>();
+		Request request = new RequestDAO().find(requestId);
+		String[] ownerArr = request.getOwner().split(",");
+		RequestHistory rh = new RequestHistory();
+		rh.setRequestid(request.getRequestid());
+		rh.setIsHistory(false);
+		List<RequestHistory> list = new RequestHistoryDAO().get(rh, false);
+		if (list != null && list.size() > 0) {
+			for (String email : ownerArr) {
+				boolean signed = false;
+				for (RequestHistory h : list) {
+					if (email.equalsIgnoreCase(h.getUseremail())
+							&& (Request.SIGNED.equals(h.getStatus()) || Request.SIGNED_BY
+									.equals(h.getStatus()))) {
+						signed = true;
+					}
+				}
+
+				if (!signed) {
+					result.add(email.substring(0, email.indexOf("@")));
+				}
+			}
+		}
+		else {
+			for (String email : ownerArr) {
+				result.add(email.substring(0, email.indexOf("@")));
+			}
+		}
+
+		return result;
+	}
+
+	public JSONObject SignedOrRject(String requestid, String username,
+			String comment, String type, String useremail, String flag,
+			String onBehalfUsers) {
+		JSONObject joReturn = new JSONObject();
+		String message = "";
+		Long requestId = Long.parseLong(requestid);
+		Request searchRequest = requestDAO.find(requestId);
+		Integer requestVersion = searchRequest.getRequestVersion();
+		Request request = new Request();
+		request.setRequestid(requestId);
+		boolean onBehalf = "2".equals(flag) ? true : false;
+
+		if (Request.REJECTED.equals(type)) {
+			RequestHistory rh = new RequestHistory();
+			rh.setIsHistory(false);
+			rh.setStatus(Request.REJECTED);
+			rh.setRequestid(requestId);
+			rh.setEditedby(username);
+			rh.setEditedtime(DateUtil.getLocalUTCTime());
+			rh.setComment(comment);
+			rh.setUseremail(useremail);
+			rh.setRequestVersion(requestVersion);
+			try {
+				historyDAO.save(rh);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			request.setComment(comment);
+			request.setEditedby(username);
+			request.setEditedtime(DateUtil.getLocalUTCTime());
+			request.setSignedby(username);
+			request.setSignedtime(DateUtil.getLocalUTCTime());
+			requestDAO.update(request);
+			message = "Reject success!";
+
+			request = requestDAO.get(new Request(requestId)).get(0);
+			try {
+				mailer.sendEmail(null, request, null, null,
+						"showrequest", "reject", "");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		else if (!onBehalf) {
+			RequestHistory rh = new RequestHistory();
+			rh.setIsHistory(false);
+			rh.setStatus(Request.SIGNED);
+			rh.setRequestid(requestId);
+			rh.setEditedby(username);
+			rh.setEditedtime(DateUtil.getLocalUTCTime());
+			rh.setComment(comment);
+			rh.setUseremail(useremail);
+			rh.setRequestVersion(requestVersion);
+			try {
+				historyDAO.save(rh);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			request.setComment(comment);
+			request.setEditedby(username);
+			request.setEditedtime(DateUtil.getLocalUTCTime());
+			request.setSignedby(username);
+			request.setSignedtime(DateUtil.getLocalUTCTime());
+			if (allSigned(searchRequest)) {
+				request.setStatus(Request.INACTIVE);
+			}
+			requestDAO.update(request);
+
+			request = requestDAO.get(new Request(requestId)).get(0);
+
+			try {
+				mailer.sendEmail(null, request, null, null,
+						"showrequest", "signoff", "");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			message = "Sign Off success!";
+
+		}
+		else {
+
+			String[] userArray = onBehalfUsers.split(",");
+			for (String user : userArray) {
+				if (StringUtils.isBlank(user)) {
+					continue;
+				}
+				RequestHistory rh = new RequestHistory();
+				rh.setIsHistory(false);
+				rh.setStatus(Request.SIGNED_BY);
+				rh.setRequestid(requestId);
+				rh.setEditedby(user);
+				rh.setEditedtime(DateUtil.getLocalUTCTime());
+				// rh.setComment(comment);
+				rh.setComment("");
+				rh.setUseremail(user + "@redhat.com");
+				rh.setRequestVersion(requestVersion);
+				try {
+					historyDAO.save(rh);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			// save request history for creator
+			RequestHistory rh = new RequestHistory();
+			rh.setIsHistory(false);
+			rh.setStatus(Request.SIGNED_ONBEHALF);
+			rh.setRequestid(requestId);
+			rh.setEditedby(username);
+			rh.setEditedtime(DateUtil.getLocalUTCTime());
+			rh.setComment(comment);
+			rh.setUseremail(useremail);
+			rh.setRequestVersion(requestVersion);
+			try {
+				historyDAO.save(rh);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			request.setComment(comment);
+			request.setEditedby(username);
+			request.setEditedtime(DateUtil.getLocalUTCTime());
+			request.setSignedby(username);
+			request.setSignedtime(DateUtil.getLocalUTCTime());
+
+			if (allSigned(searchRequest)) {
+				request.setStatus(Request.INACTIVE);
+			}
+
+			requestDAO.update(request);
+
+			request = requestDAO.get(new Request(requestId)).get(0);
+			VaultSendMail mailer = new VaultSendMail();
+			message = "Sign Off success!";
+			try {
+				mailer.sendEmail(null, request, null, null,
+						"showrequest", "signoffOnBehalf", "");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		joReturn.put("message", message);
+		return joReturn;
+	}
+	
+	private boolean allSigned(Request request) {
+
+		String[] ownerArr = request.getOwner().split(",");
+		int ownerCount = ownerArr.length;
+
+		RequestHistory rh = new RequestHistory();
+		rh.setRequestid(request.getRequestid());
+		rh.setIsHistory(false);
+		List<RequestHistory> list = new RequestHistoryDAO().get(rh, false);
+		int signCount = 0;
+		if (list != null && list.size() > 0) {
+			for (String email : ownerArr) {
+				for (RequestHistory h : list) {
+					if (email.equalsIgnoreCase(h.getUseremail())
+							&& (Request.SIGNED.equals(h.getStatus()) || Request.SIGNED_BY
+									.equals(h.getStatus()))) {
+						signCount++;
+					}
+				}
+			}
+		}
+		if (ownerCount == signCount) {
+			return true;
+		}
+
+		return false;
+
 	}
 }

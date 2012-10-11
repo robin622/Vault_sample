@@ -52,6 +52,7 @@ tr.become-due td{ background: #FFE6B8!important;}
 .report{background:url("../images/btn-report.png") no-repeat scroll left center; float:right; padding-left:20px; margin-right:20px;}
 .commentd{background:url("../images/ico_comment.png") no-repeat scroll 0 10px transparent;}
 .comments_list ul li:first-child{border-top:1px dotted #CCC;padding-top:10px;}
+.SignedOnBehalf{background:url("../images/behalf.png") no-repeat scroll 0 10px transparent;}
 .comments_list ul li{ list-style:none;}
 .blu{ color:#006699; cursor:pointer;}
 .fieldset-vault{ border-width:1px 0 0 ; border-top:1px solid #ccc; padding:10px; padding-bottom:0px;}

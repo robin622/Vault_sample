@@ -56,8 +56,10 @@ public class DAOFactory {
 
 	public void closeSession(Session session) throws Exception {
 		try {
-			if (session != null)
+			if (session.isOpen())
+			{
 				session.close();
+			}
 		}
 		catch (Exception e) {
 			throw e;

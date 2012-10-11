@@ -190,11 +190,11 @@ public class RequestHistoryDAO {
 		Long id = null;
 		try {
 			session = dao.getSession();
-			trans = session.beginTransaction();
+			//trans = session.beginTransaction();
 			id = (Long) session.save(history);
-			trans.commit();
+			//trans.commit();
 			trans = null;
-			session.flush();
+			//session.flush();
 		}
 		catch (HibernateException e) {
 			log.error(e.getMessage());
@@ -223,15 +223,15 @@ public class RequestHistoryDAO {
 		Transaction trans = null;
 		try {
 			session = dao.getSession();
-			trans = session.beginTransaction();
+			//trans = session.beginTransaction();
 			deletedRequestHistory = (RequestHistory) session.load(
 					RequestHistory.class, new Long(condition.getHistoryid()));
 			if (condition.getHistoryid() != null)
 				deletedRequestHistory.setHistoryid(condition.getHistoryid());
 			session.delete(deletedRequestHistory);
-			trans.commit();
+			//trans.commit();
 			trans = null;
-			session.flush();
+			//session.flush();
 		}
 		catch (HibernateException e) {
 			log.error(e.getMessage());
@@ -259,7 +259,7 @@ public class RequestHistoryDAO {
 		Transaction trans = null;
 		try {
 			session = dao.getSession();
-			trans = session.beginTransaction();
+			//trans = session.beginTransaction();
 			disableRequestHistory = (RequestHistory) session.load(
 					RequestHistory.class, new Long(condition.getHistoryid()));
 			if (condition.getHistoryid() != null)
@@ -267,8 +267,8 @@ public class RequestHistoryDAO {
 				disableRequestHistory.setIsHistory(true);
 			session.update(disableRequestHistory);
 
-			trans.commit();
-			session.flush();
+			//trans.commit();
+			//session.flush();
 		}
 		catch (HibernateException e) {
 			log.error(e.getMessage());

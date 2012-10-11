@@ -130,6 +130,11 @@ public class DateUtil {
 	private static final String SYSTEM_LONGTIMESTAMPZ_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS Z";
 
 	private static final DateFormat HOUR_MINUTE_FORMATTER = new SimpleDateFormat("HH:mm");
+	
+	/**
+	 * System vault format.
+	 */
+	private static final String VAULT_TIMESTAMP_FORMAT_PATTERN = "yyyy-MM-dd HH:mm";
 
 	/**
 	 * Calendar for GMT:00 TimeZone. Don't change its TimeZone. Its time is not
@@ -2471,12 +2476,59 @@ public class DateUtil {
 	private static final String trim(String str) {
 		return (str == null) ? null : str.trim();
 	}
+	
+	public static final Date toVaultDate(String dateString) {
+		Date date = null;
+		if (dateString == null || dateString.trim().length() == 0) {
+			return null;
+		}
+		DateFormat format =null;
+		if(dateString.trim().length()==10){
+			format= new SimpleDateFormat(
+					SYSTEM_DATE_FORMAT_PATTERN);
+		}else{
+		    format=new SimpleDateFormat(
+				VAULT_TIMESTAMP_FORMAT_PATTERN);
+		}
+		try {
+			date = format.parse(dateString);
+		}
+		catch (ParseException e) {
+			logger.error("toSystemDate(String) error", e);
+		}
+		return date;
+	}
+	
 	/**
-	 * test
-	 * 
-	 * @param argv
+	 * get local UTC time
 	 */
-	public static void main(String[] argv) throws ParseException {
-
+	public static Date getLocalUTCTime(){
+		final Calendar cal=Calendar.getInstance();
+		final int zoneOffset=cal.get(Calendar.ZONE_OFFSET);
+		final int dstOffset=cal.get(Calendar.DST_OFFSET);
+		cal.add(Calendar.MILLISECOND, -(zoneOffset+dstOffset));
+		return cal.getTime();
+	}
+	
+	/**
+	 * utc
+	 */
+	public static Date getUTCTime(){
+		Calendar calendar = Calendar.getInstance();  
+		TimeZone tztz = TimeZone.getTimeZone("GMT+8");         
+		calendar.setTimeZone(tztz); 
+		return calendar.getTime();
+	}
+	
+	/**
+	 * change to local UTC time
+	 */
+	public static Date changeToUTCTime(Date date){
+		final Calendar cal=Calendar.getInstance();
+		cal.setTime(date);
+		final int zoneOffset=cal.get(Calendar.ZONE_OFFSET);
+		final int dstOffset=cal.get(Calendar.DST_OFFSET);
+		cal.add(Calendar.MILLISECOND, -(zoneOffset+dstOffset));
+		return cal.getTime();
 	}
 }

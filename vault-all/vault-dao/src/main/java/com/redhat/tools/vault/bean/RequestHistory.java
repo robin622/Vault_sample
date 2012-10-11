@@ -3,8 +3,8 @@ package com.redhat.tools.vault.bean;
 import java.util.Date;
 
 /**
- * @author <a href="mailto:speng@redhat.com">Peng Song</a>
- * @version $Revision$
+ * @author wezhao
+ *
  */
 public class RequestHistory {
 	private static final long serialVersionUID = 1L;

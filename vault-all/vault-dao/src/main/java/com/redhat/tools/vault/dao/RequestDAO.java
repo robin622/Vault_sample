@@ -308,7 +308,7 @@ public class RequestDAO {
 		try {
 			log.debug("update. request=" + request);
 			sess = dao.getSession();
-			trans = sess.beginTransaction();
+			//trans = sess.beginTransaction();
 			updatedRequest = (Request) sess.load(Request.class, new Long(
 					request.getRequestid()));
 			log.debug("original request=" + updatedRequest);
@@ -352,9 +352,9 @@ public class RequestDAO {
 			if (request.getRequestVersion() != null)
 				updatedRequest.setRequestVersion(request.getRequestVersion());
 			sess.update(updatedRequest);
-			trans.commit();
+			//trans.commit();
 			// trans = null;
-			sess.flush();
+			//sess.flush();
 		}
 		catch (Exception e) {
 			log.error(e.getMessage());
@@ -377,12 +377,12 @@ public class RequestDAO {
 		try {
 			log.debug("save. request=" + request);
 			sess = dao.getSession();
-			trans = sess.beginTransaction();
+			//trans = sess.beginTransaction();
 			id = (Long) sess.save(request);
 			log.debug("sess success");
-			trans.commit();
+			//trans.commit();
 			trans = null;
-			sess.flush();
+			//sess.flush();
 			log.debug("transaction commit success");
 		}
 		catch (HibernateException e) {
@@ -412,15 +412,15 @@ public class RequestDAO {
 		Transaction trans = null;
 		try {
 			session = dao.getSession();
-			trans = session.beginTransaction();
+			//trans = session.beginTransaction();
 			deletedRequest = (Request) session.load(Request.class, new Long(
 					condition.getRequestid()));
 			if (condition.getRequestid() != null)
 				deletedRequest.setRequestid(condition.getRequestid());
 			session.delete(deletedRequest);
-			trans.commit();
+			//trans.commit();
 			trans = null;
-			session.flush();
+			//session.flush();
 		}
 		catch (HibernateException e) {
 			log.error(e.getMessage());

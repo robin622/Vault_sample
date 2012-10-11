@@ -74,10 +74,10 @@ public class VAUserDAO {
 		try {
 			log.debug("save. User=" + condition);
 			session = dao.getSession();
-			trans = session.beginTransaction();
+			//trans = session.beginTransaction();
 			id = (Long) session.save(condition);
 			log.debug("session.save success");
-			trans.commit();
+			//trans.commit();
 			trans = null;
 			session.flush();
 			log.debug("transaction commit success");
@@ -110,7 +110,7 @@ public class VAUserDAO {
 		try {
 			log.debug("update. user=" + user);
 			session = dao.getSession();
-			trans = session.beginTransaction();
+			//trans = session.beginTransaction();
 			updatedVAUser = (VAUser) session.load(VAUser.class,
 					new Long(user.getUserid()));
 			log.debug("original user=" + updatedVAUser);
@@ -120,7 +120,7 @@ public class VAUserDAO {
 				updatedVAUser.setLogin_count(user.getLogin_count());
 
 			session.update(updatedVAUser);
-			trans.commit();
+			//trans.commit();
 			trans = null;
 			session.flush();
 		}

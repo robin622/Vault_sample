@@ -16,5 +16,9 @@ public interface RequestService {
 
 	public JSONObject findRequest();
 	
-	public JSONObject ShowAllEmails();
+	public JSONObject showAllEmails();
+	
+	public JSONObject listNoneSign(String requestId);
+	
+	public JSONObject SignedOrRject(String requestId,String username,String comment, String type,String useremail,String flag,String onBehalfUsers);
 }

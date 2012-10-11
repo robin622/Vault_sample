@@ -5,15 +5,15 @@ $(function() {
 		$("#search1").hide();
 		$("#search2").show();
 
-	})
+	});
 	$("#search2").click(function() {
 		$("div.form-area").hide();
 		$("#search1").show();
 		$("#search2").hide();
 
-	})
+	});
 
-})
+});
 
 $(function() {
 
@@ -22,15 +22,47 @@ $(function() {
 		$("#more").hide();
 		$("#hide").show();
 
-	})
+	});
 	$("#hide").click(function() {
 		$("#quary-js").hide();
 		$("#more").show();
 		$("#hide").hide();
 
-	})
+	});
 
-})
+});
+
+$(function() {
+	$("#turn").click(function() {
+		$("div.comments").hide();
+		$("#turn").hide();
+		$("#turn2").show();
+
+	});
+	$("#turn2").click(function() {
+		$("div.comments").show();
+		$("#turn").show();
+		$("#turn2").hide();
+
+	});
+
+});
+$(function() {
+
+	$("#signturnoff").click(function() {
+		$("#table2 tr td").hide();
+		$("#signturnoff").hide();
+		$("#signturnon").show();
+
+	});
+	$("#signturnon").click(function() {
+		$("#table2 tr td").show();
+		$("#signturnoff").show();
+		$("#signturnon").hide();
+
+	});
+
+});
 
 /* Default class modification */
 $.extend($.fn.dataTableExt.oStdClasses, {

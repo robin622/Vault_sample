@@ -20,12 +20,18 @@ function checkCommentLength(comment) {
 }
 if(${judgeDetailValue}){
 	jQuery(function($){
-		$("#requestid").val("${detailRequestid}");
-		$("#versionid").val("${detailVersionid}");
+		$("#requestid").val("${detailRequest.requestid}");
+		$("#versionid").val("${detailRequest.versionid}");
 		$("#judgeSignOff").val("0");
 	});
 }
-
+function opstatus(status){
+	var s="";
+	//if(status=='Signed'){
+	//	s=status;
+	//}
+	return s;
+}
 //will be removed
 function viewRequest(requestId,url) {
 	jQuery(function($){
@@ -48,363 +54,360 @@ function viewRequest(requestId,url) {
 }
 
 </script>
-<input type="hidden" name="versionid" id="versionid" value="-1"/>
-<table cellpadding="0" cellspacing="0" class="home_table margin_top" id="detail_name_table" style="display:none">
-            	<tr>
-                	<th class="tableheader">
-                		<div class="tableheaderleft" id="requestname_value"><c:if test="${not empty detailRequest.requestname}">${detailRequest.requestid} ${detailRequest.requestname}</c:if>
-                		</div>
-                	</th>
-                    <th align="right" class="tableheader">
-                    		<div class="tableheaderright">
-                    		<form action="<%=request.getContextPath()%>/rp" method="POST" name="formReport" id="formReport">
-                            <a href="javascript:edit()" class="edit" id="edit_tr">Edit</a><a href="#" id="new_child_request" class="create_child">Create Child Request</a><a href="javascript:report()" class="report">Report This Request</a>
-                           	<input type= "hidden" id ="requestNameUnescape" value="${requestName_unescape}" /> 
-                                <script type="text/javascript">
-                                    function report(){
-                                         var form = document.formReport;
-                                         form.target= "_blank";
-                                         jQuery(function($){
-                                             var action = $("#formReport").attr("action");
-                                             var requestid = $("#requestid").val();
-                                             //var str = "&requestid="+requestid;
-                                             var str = "?id="+requestid;
-                                             $("#formReport").attr("action",action+str);
-                                             form.submit();
-                                             $("#formReport").attr("action",action);
-                                             return;
-                                         });
-                                    }
-                                </script>
-                            </form>
-                    		</div>
-                    </th>
-                </tr>
-                </table>
-<table cellpadding="0" cellspacing="0" class="home_table" id="detail_tbl" style="display:none">
-            	
-                <tr>
-                    <td class="new_bg"><span class="detail_title">Product:</span></td>
-                    <td class="new_bg_white" id="product_value">
-                    	${detailRequest.productname}
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="new_bg"><span class="detail_title">Version:</span></td>
-                    <td class="new_bg_white" id="version_value">
-                    	${detailRequest.versiondesc}
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="new_bg"><span class="detail_title">Creator:</span></td>
-                    <td class="new_bg_white" id="creator_value">
-                    	${detailRequest.createdby}
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="new_bg"><span class="detail_title">Create date:</span></td>
-                    <td class="new_bg_white" id="createdtime_value">
-                    	${tran:transformByFormat(detailRequest.createdtime,"yyyy-MM-dd HH:mm")}
-                    </td>
-                    <td><script>OutputLoc();</script></td>
-                </tr>
-                <tr>
-                    <td class="new_bg"><span class="detail_title">Due date:</span></td>
-                    <td class="new_bg_white" id="requesttime_value">${tran:transformByFormat(detailRequest.requesttime,"yyyy-MM-dd HH:mm")}
-                    </td>
-                    <td><script>OutputLoc();</script></td>
-                </tr>
-                <tr>
-                    <td class="new_bg"><span class="detail_title">Parent:</span></td>
-                    <td class="new_bg_white" id="parent_val">                    						
-						${tran:getParent(detailRequest.parent,pageContext.request.contextPath)}       
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="new_bg"><span class="detail_title">Child:</span></td>
-                    <td class="new_bg_white" id="child_val">
-                    	${tran:getChildren(detailRequest.parent,pageContext.request.contextPath)}
-                    </td>
-                    <td></td>
-                </tr>
-                 <tr>
-                    <td class="new_bg"><span class="detail_title">Detailed description:</span></td>
-                    <td class="new_bg_white" colspan="2">
-                    <div class="description" id="detail_value">
-                    	
-                    </div>
-                    <c:if test="not empty detailDetailed">
-                   		<script type="text/javascript">
-                   		jQuery(function($){
-                   			var detail = "${detailRequest.detailDetailed}";
-                   			var editdetail = detail; 
-                   			//var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
-                   			var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|-)+)/g;
-                   			detail = detail.replace(reg, '<a href="$1$2" target="_blank">$1$2</a>');
-                   			detail = detail.replaceAll(' ','&nbsp;');
-                   			detail = detail.replaceAll("&nbsp</a>;","</a>&nbsp;");
-                   			$("#detail_value").html("");
-                   			$("#detail_value").html(detail);
-                   			editdetail = editdetail.replaceAll("<br>",'\n');                   			
-                   			editdetail = editdetail.replaceAll('&quot;','"');
-                   			editdetail = editdetail.replaceAll('&nbsp;',' ');
-                   			editdetail = editdetail.replaceAll('&copy;','�');
-                   			editdetail = editdetail.replaceAll("&amp;amp;",'&');
-                   			editdetail = editdetail.replaceAll('&amp;','&');
-                   			editdetail = editdetail.replaceAll('&lt;','<');
-                   			editdetail = editdetail.replaceAll('&gt;','>');
-                   			$("#detail").val("");
-    						$("#detail").val(editdetail);
-                       	});
-                   		</script>
-                   	</c:if>
-                    </td>
-                </tr>
-                <tr>
-                    <td  class="new_bg"><span class="detail_title">Attachment:</span></td>
-                    <td class="new_bg_white" colspan="2">
-                    	<div id="requestAttachment_value">
-                    		<c:if test="${not empty detailRequest}">
-                    			${tran:createFileInfo(detailRequest,pageContext.request.contextPath)}
-                    		</c:if>
-                    	</div>
-                    </td>
-                </tr>
-                <tr>
-					<td class="new_bg"><span class="detail_title">Public:</span>
-					<input type="hidden" name="public_temp" id="public_temp" value="0"/>
-					</td>
-					<td class="new_bg_white" id="public_value" colspan="2">
-						<c:if test="${not empty detailRequest.is_public}">
-							<c:choose>
-								 <c:when test="${detailPublic eq 1}">
-								 	Yes
-									<script type="text/javascript">
-									jQuery(function($){
-										$("#public_temp").attr("value","1");
-									});
-									</script>
-								 </c:when>
-								 <c:otherwise>
-								 	No
-									<script type="text/javascript">
-									jQuery(function($){
-										$("#public_temp").attr("value","0");
-									});
-									</script>
-								 </c:otherwise>
-							</c:choose>
-						</c:if>
-					</td>
-				</tr>
-				<tr>
-                    <td class="new_bg"><span class="detail_title">CC:</span></td>
-                    <td class="new_bg_white" id="cc_value" colspan="2">
-                    	${detailRequest.forward}
-                    </td>
-                </tr>
-				
-                <tr>
-                    <td colspan="3" style=" border:none; height:30'" id="detail_td">
-                    <table cellpadding="0" cellspacing="0" class="list_table" width="100%" id="reception_tbl"></table>
-                    	<c:if test="${not empty detailRequest.requestid}">
-	                    	<script type="text/javascript">
-		                    	jQuery(function($){
-		                    		var url = "<%=request.getContextPath()%>/servlet/ShowRequestServlet";
-		                    		$.ajax({
-		    							type: "POST",
-		    							url: url,
-		    							data: "operation=RequestHistory&requestid=${detailRequest.requestid}&userEmail=${userEmail}&userName=${userName}",
-		    							beforeSend:function(){	    										
-											$(document.body).append(loadingDiv);
-										},
-		    							success: function(rtnData) {
-		    								rtnData = eval("(" + rtnData + ")");
-		    								var historys = rtnData.historys;
-		    								globalRequests = rtnData.requests;
-		    								var comments = rtnData.comments;
-		    								var data1 = null;
-		    								var data2 = new Array();
-		    								$("#addcomment_div").html("");
-		    								$("#judgeSignOff").val("0");
-		    								if(comments != null && comments != ""){
-		    									$.each(comments, function(i, n){
-		    										var editedtime = "";
-		    										var now = "";
-		    										if(n.editedtime != null){    											
-		    											now = n.editDate;    		
-		    											now = now.substring(0,now.lastIndexOf(":"));							
-		    										}
-		    										//var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
-		    										var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|-)+)/g;
-		    			                   			var comment_href = n.comment.replace(reg, '<a href="$1$2" target="_blank">$1$2</a>');
-		    										comment_href = comment_href.replaceAll("&amp;",'&');
-		    										$("#addcomment_div").append("<div class='comment_list "+n.status+"'><strong>"+comment_href+"</strong><div class='comment_pt'>"+now+" "+n.editedby+" "+n.status+"<a title='reply' href='javascript:showTextArea("+i+",-1)'></a></div><ul id='reply"+i+"' style='display:none'></ul><div id ='input"+i+"' class='comment_input'></div><input type= 'hidden' id ='historyid"+i+"' value='"+n.historyid+"'/></div>");
-		    										showReply(i);
-		    									});
-		    								}
-		    								
-		    								
-		    								$("#cc_value").html("${detailRequest.forward}");
-		    								$("#maxcccount").val("${detailRequest.getCcCount()}");
-		    								$("#maxownercount").val("${detailRequest.getSignatoryCount()}");
-		    								$("#maxchildcount").val("${detailRequest.getChildCount()}");
-		    								
-		    								
-		    								
-		    								if(historys != null && historys != ""){
-		    									$("#reception_div").html("");
-		    									//var count = -1;
-		    									var index=0;
-		    									$.each(historys, function(i, n){
-		    										//var editedtime = "";
-		    										var now = "";
-		    										data1 = new Array();
-		    										data1[0] = n.historyid;
-		    										data1[1] = n.useremail;
-		    										data1[2] = "${tran:transformByFormat(detailRequest.requesttime,"yyyy-MM-dd HH:mm")}";
-		    										if(n.editedtime != null){
-		    											now = n.editDate;
-		    											now = now.substring(0,now.lastIndexOf(":"));
-		    										}
-		    										data1[3] = now;
-		    										data1[4] = n.status;
-		    										data2[i] = data1;
-		    										if(n.displayFlag == "0"){
-		    											$("#reception_div").append("<div class='ower' id='owner"+index+"'><select id='notifyoption"+index+"' name='notifyoption"+index+"' ><option value='1' title='Any change of the Vault request will reset the sign off state to Waiting and require a new sign off'>Reset and require new sign off</option><option value='2' title='Any change of the Vault request generates an email to the signatory, The sign off state will not change'>Send email notification</option><option value='3' title='Changes of the Vault request produce no notifications'>Do not notify</option></select> &nbsp;<input type='text' name='inputowner"+index+"' id='inputowner"+index+"' value='"+n.useremail+"' /><input type='button' class='delete' onclick='javascript:deleteReception("+'"'+"owner"+index+""+'"'+","+ '"'+"inputowner"+index+""+'"' +")'/></div>");
-		    											//$("#reception_div").append("<div class='ower' id='owner"+index+"'><select id='notifyoption"+index+"' name='notifyoption"+index+"' ><option value='0'>------</option><option value='1'>Request for sign off</option><option value='2'>Notify the change</option><option value='3'>Don't send an email</option></select> &nbsp;<input type='text' name='inputowner"+index+"' id='inputowner"+index+"' value='"+n.useremail+"'  onblur='javascript:checkOwnerAndCc("+'"'+"inputowner"+index+'"'+");'  /><input type='button' class='delete' onclick='javascript:deleteReception("+'"'+"owner"+index+""+'"'+","+ '"'+"inputowner"+index+""+'"' +")'/></div>");
-		    											$("#notifyoption"+index+" option[value="+n.notifiyOptionValue+"]").attr("selected",true);
-		    											index++;
-		    											}
-		    									
-		        								});
-		    									
-		    									if(globalRequests != null && globalRequests != ""){
-													if (${isEditable}){
-														$("#edit_tr").show();
-													}else{
-														$("#edit_tr").hide();
-													}
-													if (${isSignatory}){	
-														$("#sign_btn").show();
-														$("#reject_btn").show();
-													}else{
-														$("#sign_btn").hide();
-														$("#reject_btn").hide();
-													}
-												}
-		
-		    									if (${displaySignoffOnBehalf}){
-													$("#sign_onbehalf_btn").show();											
+<input type="hidden" name="versionid" id="versionid" value="-1" />
+<table class="eso-table tableWidth" id="detail_name_table"
+	style="display: none">
+	<thead>
+		<tr>
+			<th colspan="5"><c:if
+					test="${not empty detailRequest.requestname}">${detailRequest.requestid} ${detailRequest.requestname}</c:if>
+				<form action="<%=request.getContextPath()%>/rp" method="POST"
+					name="formReport" id="formReport" style="display: inline;">
+					<a href="javascript:report()" class="report">Report This
+						Request</a><a href="#" id="new_child_request" class="add">Create
+						Child Request</a><a href="javascript:edit()" class="edite">Edit</a></th>
+			<input type="hidden" id="requestNameUnescape"
+				value="${requestName_unescape}" />
+			<script type="text/javascript">
+                function report(){
+                     var form = document.formReport;
+                     form.target= "_blank";
+                     jQuery(function($){
+                         var action = $("#formReport").attr("action");
+                         var requestid = $("#requestid").val();
+                         //var str = "&requestid="+requestid;
+                         var str = "?id="+requestid;
+                         $("#formReport").attr("action",action+str);
+                         form.submit();
+                         $("#formReport").attr("action",action);
+                         return;
+                     });
+                }
+            </script>
+			</form>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td width="11%"><span>Product:</span></td>
+			<td width="32%">${detailRequest.productname}</td>
+			<td width="7%" class="bg-gray">Version:</td>
+			<td width="50%">${detailRequest.versiondesc}</td>
+		</tr>
+		<tr>
+			<td><span>Due date:</span></td>
+			<td>${tran:transformByFormat(detailRequest.requesttime,"yyyy-MM-dd
+				HH:mm")}<script>OutputLoc();</script>
+			</td>
+			<td class="bg-gray">Create Date:</td>
+			<td>${tran:transformByFormat(detailRequest.createdtime,"yyyy-MM-dd
+				HH:mm")}<script>OutputLoc();</script>
+			</td>
+		</tr>
+		<tr>
+			<td><span>creator:</span></td>
+			<td colspan="3">${detailRequest.createdby}</td>
+		</tr>
+		<tr>
+			<td><span>CC:</span></td>
+			<td colspan="3">${detailRequest.forward}</td>
+		</tr>
+		<tr>
+			<td><span>Parent:</span></td>
+			<td colspan="3">${tran:getParent(detailRequest.parent,pageContext.request.contextPath)}</td>
+		</tr>
+		<tr>
+			<td><span>Child:</span></td>
+			<td colspan="3">${tran:getChildren(detailRequest.parent,pageContext.request.contextPath)}</td>
+		</tr>
+		<tr>
+			<td><span>Description:</span></td>
+			<td colspan="3"><c:if test="not empty detailDetailed">
+					<script type="text/javascript">
+			       		jQuery(function($){
+			       			var detail = "${detailRequest.detailDetailed}";
+			       			var editdetail = detail; 
+			       			//var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
+			       			var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|-)+)/g;
+			       			detail = detail.replace(reg, '<a href="$1$2" target="_blank">$1$2</a>');
+			       			detail = detail.replaceAll(' ','&nbsp;');
+			       			detail = detail.replaceAll("&nbsp</a>;","</a>&nbsp;");
+			       			$("#detail_value").html("");
+			       			$("#detail_value").html(detail);
+			       			editdetail = editdetail.replaceAll("<br>",'\n');                   			
+			       			editdetail = editdetail.replaceAll('&quot;','"');
+			       			editdetail = editdetail.replaceAll('&nbsp;',' ');
+			       			editdetail = editdetail.replaceAll('&copy;','�');
+			       			editdetail = editdetail.replaceAll("&amp;amp;",'&');
+			       			editdetail = editdetail.replaceAll('&amp;','&');
+			       			editdetail = editdetail.replaceAll('&lt;','<');
+			       			editdetail = editdetail.replaceAll('&gt;','>');
+			       			$("#detail").val("");
+							$("#detail").val(editdetail);
+			           	});
+		       		</script>
+				</c:if></td>
+		</tr>
+		<tr>
+			<td height="38"><span>Attachment:</span></td>
+			<td>
+				<div id="requestAttachment_value">
+					<c:if test="${not empty detailRequest}">
+	       				${tran:createFileInfo(detailRequest,pageContext.request.contextPath)}
+	       			</c:if>
+				</div>
+			</td>
+			<td class="bg-gray">Public:</td>
+			<td><input type="hidden" name="public_temp" id="public_temp"
+				value="0" /> <c:if test="${not empty detailRequest.is_public}">
+					<c:choose>
+						<c:when test="${detailPublic eq 1}">
+					 	Yes
+						<script type="text/javascript">
+						jQuery(function($){
+							$("#public_temp").attr("value","1");
+						});
+						</script>
+						</c:when>
+						<c:otherwise>
+					 	No
+						<script type="text/javascript">
+						jQuery(function($){
+							$("#public_temp").attr("value","0");
+						});
+						</script>
+						</c:otherwise>
+					</c:choose>
+				</c:if></td>
+		</tr>
+	</tbody>
+</table>
+<table class="eso-table" id="reception_tbl" style="display: none">
+	<tr>
+		<td colspan="4" style="border: none; height: 30; padding: 0px;"
+			id="detail_td"><c:if test="${not empty detailRequest.requestid}">
+				<script type="text/javascript">
+	                    	jQuery(function($){
+	                    		var url = "<%=request.getContextPath()%>/RequestHistory";
+	                    		$.ajax({
+	    							type: "POST",
+	    							url: url,
+	    							data: "requestid=${detailRequest.requestid}&userEmail=${userEmail}&userName=${userName}",
+	    							beforeSend:function(){	    										
+										$(document.body).append(loadingDiv);
+									},
+	    							success: function(rtnData) {
+	    								rtnData = eval("(" + rtnData + ")");
+	    								var historys = rtnData.historys;
+	    								globalRequests = rtnData.requests;
+	    								var comments = rtnData.comments;
+	    								var data1 = null;
+	    								var data2 = new Array();
+	    								$("#addcomment_div").html("");
+	    								$("#judgeSignOff").val("0");
+	    								if(comments != null && comments != ""){
+	    									$.each(comments, function(i, n){
+	    										var editedtime = "";
+	    										var now = "";
+	    										if(n.editedtime != null){    											
+	    											now = n.editDate;    		
+	    											now = now.substring(0,now.lastIndexOf(":"));							
+	    										}
+	    										//var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
+	    										var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|-)+)/g;
+	    			                   			var comment_href = n.comment.replace(reg, '<a href="$1$2" target="_blank">$1$2</a>');
+	    										comment_href = comment_href.replaceAll("&amp;",'&');
+	    										$("#addcomment_div").append("<div class='comment_list "+n.status+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+now+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,-1)'>Reply</span><div>"+opstatus(n.status)+comment_href+"</div><div id ='input"+i+"_"+"-1' class='comment_input'></div><ul id='reply"+i+"' style='display:none'></ul><input type= 'hidden' id ='historyid"+i+"' value='"+n.historyid+"'/></div></div>");
+	    										showReply(i);
+	    									});
+	    								}
+	    								$("#cc_value").html("${detailRequest.forward}");
+	    								$("#maxcccount").val("${detailRequest.getCcCount()}");
+	    								$("#maxownercount").val("${detailRequest.getSignatoryCount()}");
+	    								$("#maxchildcount").val("${detailRequest.getChildCount()}");
+	    								if(historys != null && historys != ""){
+	    									$("#reception_div").html("");
+	    									//var count = -1;
+	    									var index=0;
+	    									$.each(historys, function(i, n){
+	    										//var editedtime = "";
+	    										var now = "";
+	    										data1 = new Array();
+	    										data1[0] = n.historyid;
+	    										data1[1] = n.useremail;
+	    										data1[2] = "${tran:transformByFormat(detailRequest.requesttime,"yyyy-MM-dd HH:mm")}";
+	    										if(n.editedtime != null){
+	    											now = n.editDate;
+	    											now = now.substring(0,now.lastIndexOf(":"));
+	    										}
+	    										data1[3] = now;
+	    										data1[4] = n.status;
+	    										data2[i] = data1;
+	    										if(n.displayFlag == "0"){
+	    											$("#reception_div").append("<div class='ower' id='owner"+index+"'><select id='notifyoption"+index+"' name='notifyoption"+index+"' ><option value='1' title='Any change of the Vault request will reset the sign off state to Waiting and require a new sign off'>Reset and require new sign off</option><option value='2' title='Any change of the Vault request generates an email to the signatory, The sign off state will not change'>Send email notification</option><option value='3' title='Changes of the Vault request produce no notifications'>Do not notify</option></select> &nbsp;<input type='text' name='inputowner"+index+"' id='inputowner"+index+"' value='"+n.useremail+"' /><input type='button' class='delete' onclick='javascript:deleteReception("+'"'+"owner"+index+""+'"'+","+ '"'+"inputowner"+index+""+'"' +")'/></div>");
+	    											//$("#reception_div").append("<div class='ower' id='owner"+index+"'><select id='notifyoption"+index+"' name='notifyoption"+index+"' ><option value='0'>------</option><option value='1'>Request for sign off</option><option value='2'>Notify the change</option><option value='3'>Don't send an email</option></select> &nbsp;<input type='text' name='inputowner"+index+"' id='inputowner"+index+"' value='"+n.useremail+"'  onblur='javascript:checkOwnerAndCc("+'"'+"inputowner"+index+'"'+");'  /><input type='button' class='delete' onclick='javascript:deleteReception("+'"'+"owner"+index+""+'"'+","+ '"'+"inputowner"+index+""+'"' +")'/></div>");
+	    											$("#notifyoption"+index+" option[value="+n.notifiyOptionValue+"]").attr("selected",true);
+	    											index++;
+	    											}
+	    									
+	        								});
+	    									
+	    									if(globalRequests != null && globalRequests != ""){
+												if (${isEditable}){
+													$("#edit_tr").show();
 												}else{
-													$("#sign_onbehalf_btn").hide();
+													$("#edit_tr").hide();
 												}
-		        							}
-		    								if (typeof iTable != 'undefined'){
-		    									$("#detail_td").html("");
-		    									$("#detail_td").append("<table cellpadding='0' cellspacing='0' class='list_table' width='100%' id='reception_tbl'></table>");
-		    								}
-		    								iTable = $('#reception_tbl').dataTable({
-		    								    "iDisplayLength": 100,
-		    									"aaSorting": [[ 1, "desc" ]],
-		    									"aaData": data2,
-		    									"bAutoWidth": false,
-		    									"sPaginationType": "full_numbers",
-		    									"aoColumns": [
-		    									  { "sTitle": "ID",
-		    										"bVisible":false },
-		    									  { "sTitle": "Sign&nbsp;off&nbsp;by",
-		    										"fnRender": function(obj){
-		    											var reception = obj.aData[1];
-		    							            	var	sReturn = "<a href='#'>"+reception+"</a>"
-		    											return sReturn;
-		    						              	}
-		    									  },
-		    									  { "sTitle": "Due&nbsp;date"},
-		    									  { "sTitle": "Last&nbsp;modified"},
-		    									  { "sTitle": "Status",
-		    										"fnRender":function(obj){
-		    						            	  var status = obj.aData[4];
-		    										  var sReturn = "<span class='"+status+"'>"+status+"</span>";
-		    										  return sReturn;
-		    					              		}
-		    									  }
-		    							        ]
-		    								});
-		    								$('#loadingDiv').remove();
-		    								toreplace("reception_tbl");
-		    								toreplace2("addcomment_div");
-		    								//console.info("load finished.......");    								
-		        						}
-		                    		});
-								});
-                    		</script>
-                    </c:if>
-                    </td>
-				</tr>
-				
-                <tr>
-                    <td  class="new_bg"><span class="detail_title">Comment:</span></td>
-                    <td class="new_bg_white" id="comment_td" colspan='2'>
-                    	<input type="hidden" name="requestid" id="requestid" value=""/>
-                    	<div id="addcomment_div">
-	                    	
-                    	</div>
-                    	<textarea name="comment" id="comment"></textarea>
-                    	<div class="ower"><input type="button" value="Add Comment" id="comment_btn"  class="btn" style="margin:5px 0" onclick="javascript:addComment()"/>
-                    	</div>
-                    		
-                    </td>
-                    
-                </tr>
-                <tr>
-                <th colspan="3">
-                	<div class="tablefooter"> 
-                    	<div class="tablefooterleft">
-                    	<input type="hidden" name="judgeSignOff" id="judgeSignOff" value="0"/>
-                    	<input type="button" value="Sign Off"  class="btn"  id="sign_btn" onclick="javascript:commitSignOff('1','')"/>
-                    	<!-- <input type="button" value="Sign Off On Behalf Of"  class="btn"  id="sign_onbehalf_btn" onclick="javascript:commitSignOff('2')"/>  -->
-                    	<input type="button" value="Sign Off On Behalf Of"  class="btn"  id="sign_onbehalf_btn" onclick="javascript:behalf_click(this)"/>                    	
-                    	<input type="button" value="Reject"  class="btn" id="reject_btn" onclick="javascript:commitReject()"/>                    	
-                    	<input type="button" value="Cancel" class="btn" id="canceldetail"/>
-                    	</div>
-                        <div class="tablefooterright"></div>
-                    </div>
-                </th>
-            	</tr>
-            	
+												if (${isSignatory}){	
+													$("#sign_btn").show();
+													$("#reject_btn").show();
+												}else{
+													$("#sign_btn").hide();
+													$("#reject_btn").hide();
+												}
+											}
+	
+	    									if (${displaySignoffOnBehalf}){
+												$("#sign_onbehalf_btn").show();											
+											}else{
+												$("#sign_onbehalf_btn").hide();
+											}
+	        							}
+	    								if (typeof iTable != 'undefined'){
+	    									$("#detail_td").html("");
+	    									$("#detail_td").append("<table cellpadding='0' cellspacing='0' class='list_table' width='100%' id='reception_tbl'></table>");
+	    								}
+	    								iTable = $('#reception_tbl').dataTable({
+	    								    "iDisplayLength": 100,
+	    									"aaSorting": [[ 1, "desc" ]],
+	    									"aaData": data2,
+	    									"bAutoWidth": false,
+	    									"bFilter": false,
+	    									"bInfo": false,
+	    									"bLengthChange": false,
+	    									"bPaginate": false,
+	    									"bSort": false,
+	    									"sPaginationType": "full_numbers",
+	    									"aoColumns": [
+	    									  { "sTitle": "ID",
+	    										"bVisible":false },
+	    									  { "sTitle": "Sign&nbsp;off&nbsp;by",
+	    										"fnRender": function(obj){
+	    											var reception = obj.aData[1];
+	    							            	var	sReturn = "<a href='#'>"+reception+"</a>"
+	    											return sReturn;
+	    						              	}
+	    									  },
+	    									  { "sTitle": "Due&nbsp;date"},
+	    									  { "sTitle": "Last&nbsp;modified"},
+	    									  { "sTitle": "Status",
+	    										"fnRender":function(obj){
+	    						            	  var status = obj.aData[4];
+	    										  var sReturn = "<span class='"+status+"'>"+status+"</span>";
+	    										  return sReturn;
+	    					              		}
+	    									  }
+	    							        ]
+	    								});
+	    								$('#loadingDiv').remove();
+	    								toreplace("reception_tbl");
+	    								toreplace2("addcomment_div");
+	    								//console.info("load finished.......");    								
+	        						}
+	                    		});
+							});
+	                  	</script>
+			</c:if></td>
+	</tr>
+</table>
+<table class="eso-table tableWidth" id="detail_comment"
+	style="display: none">
+	<thead>
+		<tr>
+			<th colspan="2">Comment</th>
+
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="background-fff">
+
+				<fieldset class="fieldset-vault">
+					<legend class="legend-vault img1" id="turn">Turn Off
+						Comments </legend>
+					<legend class="legend-vault img2 display-none" id="turn2">Turn
+						On Comments </legend>
+					<div class="comments" id="addcomment_div"></div> 
+               </fieldset>
+           </td>
+        </tr>
+		<tr>
+			<td class="new_bg_white" id="comment_td" colspan='2'>
+				<textarea name="comment" id="comment"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="sing-off-bt">
+				<a href="#">
+					<input type="hidden" name="requestid" id="requestid" value="" />
+						<button class="btn btn-primary" onclick="javascript:addComment()">Comment</button>
+				</a> 
+			</td>
+		</tr>
+		<tr>
+			<th colspan="3">
+				<div class="tablefooter">
+					<div class="tablefooterleft">
+						<input type="hidden" name="judgeSignOff" id="judgeSignOff"
+							value="0" /> <input type="button" value="Sign Off" class="btn"
+							id="sign_btn" onclick="javascript:commitSignOff('1','')" />
+						<!-- <input type="button" value="Sign Off On Behalf Of"  class="btn"  id="sign_onbehalf_btn" onclick="javascript:commitSignOff('2')"/>  -->
+						<input type="button" value="Sign Off On Behalf Of" class="btn"
+							id="sign_onbehalf_btn" onclick="javascript:behalf_click(this)" />
+						<input type="button" value="Reject" class="btn" id="reject_btn"
+							onclick="javascript:commitReject()" /> <input type="button"
+							value="Cancel" class="btn" id="canceldetail" />
+					</div>
+					<div class="tablefooterright"></div>
+				</div>
+			</th>
+		</tr>
+		
+		
+		
 </table>
 
-<table cellpadding="0" cellspacing="0" class="home_table margin_top" id="onbehalf_table" style="display:none">
+<table cellpadding="0" cellspacing="0" class="home_table margin_top"
+	id="onbehalf_table" style="display: none">
 
-            	<tr>
-                    <td  class="new_bg"><span class="detail_title">On behalf of:</span></td>
-                    <td  class="new_bg_white" colspan='2'>
-                        <div id="onbehalf_div"></div>
-					    <input type="button" name="Submit_onbehalf" value="Confirm" onclick="javascript:click_onbehalf_confirm()"/>                    
-					    <input type="button" name="Cancel_onbehalf" value="Cancel" onclick="javascript:click_onbehalf_cancel()" />
-                    </td>
-                </tr>
-               
+	<tr>
+		<td class="new_bg"><span class="detail_title">On behalf
+				of:</span></td>
+		<td class="new_bg_white" colspan='2'>
+			<div id="onbehalf_div"></div> <input type="button"
+			name="Submit_onbehalf" value="Confirm"
+			onclick="javascript:click_onbehalf_confirm()" /> <input
+			type="button" name="Cancel_onbehalf" value="Cancel"
+			onclick="javascript:click_onbehalf_cancel()" />
+		</td>
+	</tr>
+
 </table>
- <script type="text/javascript">
+<script type="text/javascript">
  	email="vault-dev-list@redhat.com";
            function behalf_click(obj){
-           	obj.hide();
+        	document.getElementById("sign_onbehalf_btn").style.display="none";
+           	//obj.hide();
            	//$("table#onbehalf_table").attr("style","display");
            	document.getElementById("onbehalf_table").style.display = "block";
            	//ajax, get all emails pending for sign off                
 			//console.log("ajax start...");
            	jQuery(function($){
-        		var url = "<%=request.getContextPath()%>/servlet/ShowRequestServlet";
+        		var url = "<%=request.getContextPath()%>/ListNoneSign";
         		$.ajax({
         			type: "POST",
         			url: url,
-        			data: "operation=listNoneSign&requestId=${detailRequest.requestid}",
+        			data: "requestId=${detailRequest.requestid}",
         			success: function(rtnData) {
         				rtnData = eval("(" + rtnData + ")");
         				var users = rtnData.noneSignUsers;
@@ -447,7 +450,7 @@ function viewRequest(requestId,url) {
         	   $.ajax({
 					type: "POST",
 					url: url,
-					data: "operation=RequestHistory&requestid="+requestid+"&userEmail=${userEmail}&userName=${userName}",
+					data: "requestid="+requestid+"&userEmail=${userEmail}&userName=${userName}",
 					success: function(rtnData1) {
 						rtnData1 = eval("(" + rtnData1 + ")");
 						var comments = rtnData1.comments;
@@ -458,7 +461,6 @@ function viewRequest(requestId,url) {
 						var data2 = new Array();
 						if(historys != null && historys != ""){
 							$.each(historys, function(i, n){
-
 								var now = "";
 								//var editedtime = "";
 								data1 = new Array();
@@ -489,7 +491,7 @@ function viewRequest(requestId,url) {
 								var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|-)+)/g;
 	                   			var comment_href = n.comment.replace(reg, '<a href="$1$2" target="_blank">$1$2</a>');
 								comment_href = comment_href.replaceAll("&amp;",'&');
-								$("#addcomment_div").append("<div class='comment_list "+n.status+"'><strong>"+comment_href+"</strong><div class='comment_pt'>"+now+" "+n.editedby+" "+n.status+"<a title='reply' href='javascript:showTextArea("+i+",-1)'></a></div><ul id='reply"+i+"' style='display:none'></ul><div id ='input"+i+"' class='comment_input'></div><input type= 'hidden' id ='historyid"+i+"' value='"+n.historyid+"'/></div>");
+								$("#addcomment_div").append("<div class='comment_list "+n.status+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+now+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,-1)'>Reply</span><div>"+opstatus(n.status)+comment_href+"</div><div id ='input"+i+"_"+"-1' class='comment_input'></div><ul id='reply"+i+"' style='display:none'></ul><input type= 'hidden' id ='historyid"+i+"' value='"+n.historyid+"'/></div></div>");
 								showReply(i);
 								});
 						}
@@ -534,19 +536,22 @@ function viewRequest(requestId,url) {
         	   
            }
            
-           function showTextArea(i,baseid){
+           function showTextArea(i,baseid,j){
              jQuery(function($){
-               if(document.getElementById("input"+i).innerHTML == ""){
-                 $("#input"+i).append("<textarea name='replyComment"+i+"' id='replyComment"+i+"'></textarea><div class='ower'><input id='comment_btn' class='btn' type='button' value='Add Reply' onclick='javascript:addReply("+i+","+baseid+")'></div>");
+               if(document.getElementById("input"+i+"_"+j).innerHTML == ""){
+                 $("#input"+i+"_"+j).append("<textarea name='replyComment"+i+"_"+j+"' id='replyComment"+i+"_"+j+"'></textarea><input id='comment_btn' class='btn clear' type='button' value='Submit' onclick='javascript:addReply(&quot;"+i+"_"+j+"&quot;,"+baseid+")'>");
                }else{
-                 $("#input"+i).html("");
+                 $("#input"+i+"_"+j).html("");
                }
               });
             }
            
-		   function addReply(i,baseid){
-		     var replyComment = document.getElementById("replyComment"+i).value;
-		     document.getElementById("replyComment"+i).value = "";
+		   function addReply(m,baseid){
+		     var replyComment = document.getElementById("replyComment"+m).value;
+		     console.log("i ="+m);
+		     console.log("replyComment="+replyComment);
+		     document.getElementById("replyComment"+m).value = "";
+		     i=m.split("_")[0];
 		     var historyid = document.getElementById("historyid"+i).value;
 		     if(replyComment == ""){
 		       alert("Please enter Reply.");
@@ -558,15 +563,15 @@ function viewRequest(requestId,url) {
 		       replyComment = replyComment.replace(/\+/g, "%2B");
 		       replyComment = replyComment.replace(/\&/g, "%26");
                jQuery(function($){
-                 $("#input"+i).html("");
+                 $("#input"+m).html("");
                  var requestid = $("#requestid").val();
-                 var url = "<%=request.getContextPath()%>/servlet/ShowRequestServlet";
+                 var url = "<%=request.getContextPath()%>/AddReply";
                  var addedReplyList = "";
                  var flag = "";
                  $.ajax({
                    type: "POST",
                    url: url,
-                   data: "operation=AddReply&requestid="+requestid+"&editedby=${userName}&replyComment="+replyComment+"&historyid="+historyid+"&baseid="+baseid,
+                   data: "requestid="+requestid+"&editedby=${userName}&replyComment="+replyComment+"&historyid="+historyid+"&baseid="+baseid,
 				   success: function(rtnData) {
 				     rtnData = eval("(" + rtnData + ")");
     		         addedReplyList = rtnData.addedReplyList;
@@ -577,11 +582,13 @@ function viewRequest(requestId,url) {
     		           document.getElementById("reply"+i).style.display="block";
     		             $.each(addedReplyList, function(j, n){
     		               if(n.baseid == -1){
-    		                 $("#reply"+i).append("<li id='lireply"+n.replyid+"'><span>"+n.replycomment+"</span><div class='comment_pt'>"+n.editedtime+" "+n.editedby+" Reply<a title='reply' href='javascript:showTextArea("+i+","+n.replyid+")'></a></div></li>");
-    		                 $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
+    		                 //$("#reply"+i).append("<li id='lireply"+n.replyid+"'><span>"+n.replycomment+"</span><div class='comment_pt'>"+n.editedtime+" "+n.editedby+" Reply<a title='reply' href='javascript:showTextArea("+i+","+n.replyid+")'></a></div></li>");
+    		                 //$("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
+    		            	   $("#reply"+i).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+","+n.replyid+","+j+")'>Reply</span><div>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
+    	    		           $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
     		               }else{
     		                 document.getElementById("ulreply"+n.baseid).style.display="block";
-    		                 $("#ulreply"+n.baseid).append("<li id='lireply"+n.replyid+"'><span>"+n.replycomment+"</span><div class='comment_pt'>"+n.editedtime+" "+n.editedby+" Reply<a title='reply' href='javascript:showTextArea("+i+","+n.replyid+")'></a></div></li>");
+    		                 $("#ulreply"+n.baseid).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+","+n.replyid+","+j+")'>Reply</span><div>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
     		                 $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
     		               }
     		             });
@@ -601,11 +608,11 @@ function viewRequest(requestId,url) {
              var replyList = "";
              jQuery(function($){
                var requestid = $("#requestid").val();
-               var url = "<%=request.getContextPath()%>/servlet/ShowRequestServlet";
+               var url = "<%=request.getContextPath()%>/ShowReplyComment";
                $.ajax({
                  type: "POST",
                  url: url,
-                 data: "operation=ShowReplyComment&requestid="+requestid+"&historyid="+historyid,
+                 data: "requestid="+requestid+"&historyid="+historyid,
 				 success: function(rtnData) {
     			   rtnData = eval("(" + rtnData + ")");
     			   replyList = rtnData.replyList;
@@ -613,11 +620,11 @@ function viewRequest(requestId,url) {
                    document.getElementById("reply"+i).style.display="block";
     		         $.each(replyList, function(j, n){
     		           if(n.baseid == -1){
-    		             $("#reply"+i).append("<li id='lireply"+n.replyid+"'><span>"+n.replycomment+"</span><div class='comment_pt'>"+n.editedtime+" "+n.editedby+" Reply<a title='reply' href='javascript:showTextArea("+i+","+n.replyid+")'></a></div></li>");
+    		             $("#reply"+i).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,"+j+")'>Reply</span><div>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
     		             $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
     		           }else{
     		             document.getElementById("ulreply"+n.baseid).style.display="block";
-    		             $("#ulreply"+n.baseid).append("<li id='lireply"+n.replyid+"'><span>"+n.replycomment+"</span><div class='comment_pt'>"+n.editedtime+" "+n.editedby+" Reply<a title='reply' href='javascript:showTextArea("+i+","+n.replyid+")'></a></div></li>");
+    		             $("#ulreply"+n.baseid).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,"+j+")'>Reply</span><div>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
     		             $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
     		           }
     		         });
@@ -773,13 +780,13 @@ function viewRequest(requestId,url) {
 			comment = comment.replace(/\+/g, "%2B");
 			comment = comment.replace(/\&/g, "%26");
 			if(!checkCommentLength(comment)) return false;
-			var url = "<%=request.getContextPath()%>/servlet/ShowRequestServlet";
+			var url = "<%=request.getContextPath()%>/Addcomment";
 			jQuery(function($){
 				var requestid = $("#requestid").val();
 				$.ajax({
 					type: "POST",
 					url: url,
-					data: "operation=Addcomment&requestid="+requestid+"&username=${userName}&useremail=${userEmail}&comment="+comment + "&actionURL=",
+					data: "requestid="+requestid+"&username=${userName}&useremail=${userEmail}&comment="+comment + "&actionURL=",
 					beforeSend:function(){
 						$("#comment_btn").attr("disable","true");	    										
 						$(document.body).append(loadingDiv);
@@ -793,7 +800,7 @@ function viewRequest(requestId,url) {
 							alert("There have some errors! Please send eamil to "+email+".");
 							return;
 						}else{
-							refresh_tables(url,requestid);
+							refresh_tables("<%=request.getContextPath()%>/RequestHistory",requestid);
 						}
 						//toreplace2("addcomment_div");
 						$('#loadingDiv').remove(); 
@@ -818,12 +825,12 @@ function viewRequest(requestId,url) {
 						comment = comment.replace(/\+/g, "%2B");
 						comment = comment.replace(/\&/g, "%26");
 						if(!checkCommentLength(comment)) return false;
-                			var url = "<%=request.getContextPath()%>/servlet/ShowRequestServlet";
+                			var url = "<%=request.getContextPath()%>/SignedOrRject";
                 			var requestid = $("#requestid").val();
                 			$.ajax({
 								type: "POST",
 								url: url,
-								data: "operation=SignedOrRject"+"&requestid="+requestid+"&onbehalf="+flag+"&username=${userName}&useremail=${userEmail}"+"&comment="+comment + "&type=${tran:getRequestSign('signed')}&actionURL=&onbehalfUsers="+onbehalf_users,
+								data: "requestid="+requestid+"&onbehalf="+flag+"&username=${userName}&useremail=${userEmail}"+"&comment="+comment + "&type=${tran:getRequestSign('signed')}&actionURL=&onbehalfUsers="+onbehalf_users,
 								beforeSend:function(){	    				
 									$("#sign_btn").attr("disable","true");		
 									$("#sign_onbehalf_btn").attr("disable","true");				
@@ -842,7 +849,7 @@ function viewRequest(requestId,url) {
 										$("#sign_onbehalf_btn").hide();
 										$("#reject_btn").hide();
 										document.getElementById("judgeSignOff").value = "1";
-										refresh_tables(url,requestid);	    											
+										refresh_tables("<%=request.getContextPath()%>/RequestHistory",requestid);    											
 									}
 									
 									$('#loadingDiv').remove();
@@ -872,12 +879,12 @@ function viewRequest(requestId,url) {
 							comment = comment.replace(/\+/g, "%2B");
 							comment = comment.replace(/\&/g, "%26");
 							if(!checkCommentLength(comment)) return false;
-                      			var url = "<%=request.getContextPath()%>/servlet/ShowRequestServlet";
+                      			var url = "<%=request.getContextPath()%>/SignedOrRject";
                       			var requestid = $("#requestid").val();
                       			$.ajax({
   									type: "POST",
   									url: url,
-  									data: "operation=SignedOrRject"+"&requestid="+requestid+"&username=${userName}&useremail=${userEmail}"+"&comment="+comment + "&type=${tran:getRequestSign('reject')}&actionURL=",
+  									data: "requestid="+requestid+"&username=${userName}&useremail=${userEmail}"+"&comment="+comment + "&type=${tran:getRequestSign('reject')}&actionURL=",
   									beforeSend:function(){	  
   										$("#reject_btn").attr("disable","true");	  										
   										$(document.body).append(loadingDiv);
@@ -894,7 +901,7 @@ function viewRequest(requestId,url) {
   											alert("There have some errors! Please send eamil to "+email+".");
   											return;
   										}else{
-										refresh_tables(url,requestid);
+  											refresh_tables("<%=request.getContextPath()%>/RequestHistory",requestid);
   											
       									}
   										$('#loadingDiv').remove();
