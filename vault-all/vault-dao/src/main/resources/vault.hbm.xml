@@ -203,7 +203,7 @@
 		<property name="status" column="status" type="java.lang.String"
 			update="true" insert="true" not-null="false" />
 		<property name="owner" column="owner" type="java.lang.String"
-			update="true" insert="true" not-null="true" />
+			update="true" insert="true" not-null="false" />
 		<property name="searchcreator" column="searchcreator" type="java.lang.String"
 			update="true" insert="true" not-null="false" />
 		<property name="type" column="type" type="java.lang.String"
@@ -289,5 +289,19 @@
 			update="true" insert="true" not-null="true" />
 		<property name="replyid" column="replyid" type="java.lang.Long"
 			update="true" insert="true" not-null="true" />
+	</class>
+	<class name="com.redhat.tools.vault.bean.SendemailCount" table="VA_sendemail_count">
+		<cache usage="read-write" />
+		<id name="sendid" column="sendid" type="java.lang.Long">
+			<generator class="native">
+				<param name="sequence">id_seq</param>
+			</generator>
+		</id>
+		<property name="requestid" column="requestid" type="java.lang.Long"
+			update="true" insert="true" not-null="true" />
+		<property name="requesttime" column="requesttime" type="java.util.Date"
+			update="true" insert="true" unique="false" />
+		<property name="count" column="count" type="java.lang.Long"
+			update="true" insert="true" not-null="true" unique="false" />
 	</class>
 </hibernate-mapping>

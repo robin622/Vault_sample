@@ -41,6 +41,11 @@ public class RequestDAO {
 	DAOFactory dao = null;
 
 	Session session = null;
+	
+	private static final String QUERY_SIGNEDREQ = "from Request as a where (a.owner like ? or a.owner like ?) and a.requestid in(select distinct b.requestid from RequestHistory b where b.editedby = ? and (b.status = ? or b.status = ? or b.status = ?) and b.isHistory = 0 ) order by requestid desc";
+	private static final String QUERY_WAITINGREQ = "from Request as a where (a.owner like ? or a.owner like ?) and a.status = ? and a.requestid not in(select distinct b.requestid from RequestHistory b where b.editedby = ? and (b.status = ? or b.status = ? or b.status = ?) and b.isHistory = 0 ) order by requestid desc";
+	private static final String QUERY_CANVIEWREQ = "from Request as a where a.is_public = 1 or a.createdby = ? or (a.owner like ? or a.owner like ?) or (a.forward like ? or a.forward like ?) order by requestid desc";
+	private static final String QUERY_CCTOMEREQ = "from Request as a where (a.forward like ? or a.forward like ?) order by requestid desc";
 
 	public RequestDAO() {
 		dao = DAOFactory.getInstance();
@@ -420,7 +425,7 @@ public class RequestDAO {
 			session.delete(deletedRequest);
 			//trans.commit();
 			trans = null;
-			//session.flush();
+			session.flush();
 		}
 		catch (HibernateException e) {
 			log.error(e.getMessage());
@@ -535,10 +540,9 @@ public class RequestDAO {
 		}
 		List<Request> requests = null;
 		try {
-			String queryString = "from Request as a where (a.owner like ? or a.owner like ?) and a.requestid in(select distinct b.requestid from RequestHistory b where b.editedby = ? and (b.status = ? or b.status = ? or b.status = ?) and b.isHistory = 0 )";
 			Query queryObject;
 			try {
-				queryObject = sess.createQuery(queryString);
+				queryObject = sess.createQuery(QUERY_SIGNEDREQ);
 				queryObject.setString(0, "%," + userEmail + "%");
 				queryObject.setString(1, userEmail + "%");
 				queryObject.setString(2, userName);
@@ -583,10 +587,9 @@ public class RequestDAO {
 		}
 		List<Request> requests = null;
 		try {
-			String queryString = "from Request as a where (a.owner like ? or a.owner like ?) and a.status = ? and a.requestid not in(select distinct b.requestid from RequestHistory b where b.editedby = ? and (b.status = ? or b.status = ? or b.status = ?) and b.isHistory = 0 )";
 			Query queryObject;
 			try {
-				queryObject = sess.createQuery(queryString);
+				queryObject = sess.createQuery(QUERY_WAITINGREQ);
 				queryObject.setString(0, "%," + userEmail + "%");
 				queryObject.setString(1, userEmail + "%");
 				queryObject.setString(2, Request.ACTIVE);
@@ -632,10 +635,9 @@ public class RequestDAO {
 		}
 		List<Request> requests = null;
 		try {
-			String queryString = "from Request as a where a.is_public = 1 or a.createdby = ? or (a.owner like ? or a.owner like ?) or (a.forward like ? or a.forward like ?)";
 			Query queryObject;
 			try {
-				queryObject = sess.createQuery(queryString);
+				queryObject = sess.createQuery(QUERY_CANVIEWREQ);
 				queryObject.setString(0, userName);
 				queryObject.setString(1, userEmail + "%");
 				queryObject.setString(2, "%," + userEmail + "%");
@@ -667,7 +669,7 @@ public class RequestDAO {
 
 		return null;
 	}
-	//TODO the hql should be changed
+	
 	public List<Request> getCCToMe(String userName,String userEmail){
 	    log.debug("finding all Log instances");
         Session sess = null;
@@ -679,21 +681,16 @@ public class RequestDAO {
         }
         List<Request> requests = null;
         try {
-            String queryString = "from Request as a where a.is_public = 1 or a.createdby = ? or (a.owner like ? or a.owner like ?) or (a.forward like ? or a.forward like ?)";
             Query queryObject;
             try {
-                queryObject = sess.createQuery(queryString);
-                queryObject.setString(0, userName);
+                queryObject = sess.createQuery(QUERY_CCTOMEREQ);
+                queryObject.setString(0, "%," + userEmail + "%");
                 queryObject.setString(1, userEmail + "%");
-                queryObject.setString(2, "%," + userEmail + "%");
-                queryObject.setString(3, userEmail + "%");
-                queryObject.setString(4, "%," + userEmail + "%");
                 requests = queryObject.list();
                 if (requests != null && requests.size() > 0) {
                     for (Request s : requests) {
                         Hibernate.initialize(s.getMaps());
                         Hibernate.initialize(s.getRelations());
-                        // log.debug("flow=" + s);
                     }
                 }
                 return requests;
@@ -1660,6 +1657,92 @@ public class RequestDAO {
 		detail = detail.replaceAll("&lt;", "<");
 		detail = detail.replaceAll("&gt;", ">");
 		return detail;
+	}
+	
+	public Map<String,Long> getRequestCount(String userName, String userEmail){
+	    Map<String,Long> counts = new HashMap<String,Long>();
+	    log.debug("finding all Log instances");
+        Session sess = null;
+        try {
+            sess = dao.getSession();
+        }
+        catch (Exception re) {
+            log.error("Create session failed", re);
+        }
+	    
+	    String queryString = "select count(*) " + QUERY_SIGNEDREQ;
+        Query queryObject;
+        try {
+            //sigend
+            queryObject = sess.createQuery(queryString);
+            queryObject.setString(0, "%," + userEmail + "%");
+            queryObject.setString(1, userEmail + "%");
+            queryObject.setString(2, userName);
+            queryObject.setString(3, Request.SIGNED);
+            queryObject.setString(4, Request.REJECTED);
+            queryObject.setString(5, Request.WITHDRAW);
+            List<Long> temp = queryObject.list();
+            if(temp != null && temp.size() > 0){
+                counts.put("signed", temp.get(0));
+            }else{
+                counts.put("signed", 0l);
+            }
+            //waiting
+            queryString = "select count(*) " + QUERY_WAITINGREQ;
+            queryObject = sess.createQuery(queryString);
+            queryObject.setString(0, "%," + userEmail + "%");
+            queryObject.setString(1, userEmail + "%");
+            queryObject.setString(2, Request.ACTIVE);
+            queryObject.setString(3, userName);
+            queryObject.setString(4, Request.SIGNED);
+            queryObject.setString(5, Request.SIGNED_BY);
+            queryObject.setString(6, Request.REJECTED);
+            temp = queryObject.list();
+            if(temp != null && temp.size() > 0){
+                counts.put("waiting", temp.get(0));
+            }else{
+                counts.put("waiting", 0l);
+            }
+            //canview
+            queryString = "select count(*) " + QUERY_CANVIEWREQ;
+            queryObject = sess.createQuery(queryString);
+            queryObject.setString(0, userName);
+            queryObject.setString(1, userEmail + "%");
+            queryObject.setString(2, "%," + userEmail + "%");
+            queryObject.setString(3, userEmail + "%");
+            queryObject.setString(4, "%," + userEmail + "%");
+            temp = queryObject.list();
+            if(temp != null && temp.size() > 0){
+                counts.put("canview", temp.get(0));
+            }else{
+                counts.put("canview", 0l);
+            }
+            //cc to me
+            queryString = "select count(*) " + QUERY_CCTOMEREQ;
+            queryObject = sess.createQuery(queryString);
+            queryObject.setString(0, "%," + userEmail + "%");
+            queryObject.setString(1, userEmail + "%");
+            temp = queryObject.list();
+            if(temp != null && temp.size() > 0){
+                counts.put("cc", temp.get(0));
+            }else{
+                counts.put("cc", 0l);
+            }
+            //my request
+            Request condition = new Request();
+            condition.setCreatedby(userName);
+            List<Request> myRequests  = get(condition);
+            if(myRequests != null){
+                counts.put("myrequest", Long.valueOf(myRequests.size()));
+            }
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+        }finally{
+            if(sess != null){
+                sess.close();
+            }
+        }
+        return counts;
 	}
 
 }

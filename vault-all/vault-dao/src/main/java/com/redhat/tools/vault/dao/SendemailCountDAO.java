@@ -76,7 +76,7 @@ public class SendemailCountDAO {
 		try {
 			log.debug("update. condition=" + condition);
 			session = dao.getSession();
-			trans = session.beginTransaction();
+			//trans = session.beginTransaction();
 			updatedCount = (SendemailCount) session.load(SendemailCount.class,
 					new Long(condition.getSendid()));
 			log.debug("original SendemailCount=" + updatedCount);
@@ -87,8 +87,8 @@ public class SendemailCountDAO {
 			if (condition.getRequesttime() != null)
 				updatedCount.setRequesttime(condition.getRequesttime());
 			session.update(updatedCount);
-			trans.commit();
-			trans = null;
+			//trans.commit();
+			//trans = null;
 			session.flush();
 		}
 		catch (HibernateException e) {
@@ -119,11 +119,11 @@ public class SendemailCountDAO {
 		try {
 			log.debug("save. SendemailCount=" + condition);
 			session = dao.getSession();
-			trans = session.beginTransaction();
+			//trans = session.beginTransaction();
 			id = (Long) session.save(condition);
 			log.debug("session.save success");
-			trans.commit();
-			trans = null;
+			//trans.commit();
+			//trans = null;
 			session.flush();
 			log.debug("transaction commit success");
 		}

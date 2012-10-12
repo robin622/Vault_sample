@@ -2,6 +2,7 @@ package com.redhat.tools.vault.web;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -36,24 +37,22 @@ public class HomeServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userName="wezhao";
-		String userEmail="wezhao@redhat.com";
+		String userName="wguo";
+		String userEmail="wguo@redhat.com";
+
 		request.getSession().setAttribute("userName", userName);
 		request.getSession().setAttribute("userEmail", userEmail);
 		List<Request> myRequests=service.getMyRequest(userName);
 		boolean judgeDetailValue = false;
 		request.setAttribute("myRequests", myRequests);
 		
-		List<Request> canViewReuqests = service.getCanViewRequests(userName, userEmail);
-		request.setAttribute("canViewReuqests", canViewReuqests);
-		
-	    List<Request> signedOffReuqests = service.getCanViewRequests(userName, userEmail);
-	    request.setAttribute("signedOffReuqests", signedOffReuqests);
-	        
-	    List<Request> waitReuqests = service.getCanViewRequests(userName, userEmail);
-	    request.setAttribute("waitReuqests", waitReuqests);
+	    List<Request> waitReuqests = service.getWaitRequests(userName, userEmail);
+	    request.setAttribute("waitRequests", waitReuqests);
 		
 		request.setAttribute("judgeDetailValue", judgeDetailValue);
+		
+		Map<String,Long> counts = service.getRequestCount(userName, userEmail);
+        request.setAttribute("reqCounts", counts);
 		request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
 	}
 

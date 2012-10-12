@@ -60,7 +60,7 @@ function viewRequest(requestId,url) {
 	<thead>
 		<tr>
 			<th colspan="5"><c:if
-					test="${not empty detailRequest.requestname}">${detailRequest.requestid} ${detailRequest.requestname}</c:if>
+					test="${not empty detailRequest.requestname}"><span id="hiddenRequestName">${detailRequest.requestid}  ${detailRequest.requestname}</span></c:if>
 				<form action="<%=request.getContextPath()%>/ReportServlet" method="POST"
 					name="formReport" id="formReport" style="display: inline;">
 					<a href="javascript:report()" class="report">Report This
@@ -118,14 +118,14 @@ function viewRequest(requestId,url) {
 		</tr>
 		<tr>
 			<td><span>Child:</span></td>
-			<td colspan="3">${tran:getChildren(detailRequest.parent,pageContext.request.contextPath)}</td>
+			<td colspan="3">${tran:getChildren(detailRequest.children,pageContext.request.contextPath)}</td>
 		</tr>
 		<tr>
 			<td><span>Description:</span></td>
-			<td colspan="3"><c:if test="not empty detailDetailed">
+			<td id="detail_value" colspan="3"><c:if test="${not empty detailRequest.detail}">
 					<script type="text/javascript">
 			       		jQuery(function($){
-			       			var detail = "${detailRequest.detailDetailed}";
+			       			var detail = "${detailRequest.detail}";
 			       			var editdetail = detail; 
 			       			//var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
 			       			var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|-)+)/g;
@@ -161,7 +161,7 @@ function viewRequest(requestId,url) {
 			<td><input type="hidden" name="public_temp" id="public_temp"
 				value="0" /> <c:if test="${not empty detailRequest.is_public}">
 					<c:choose>
-						<c:when test="${detailPublic eq 1}">
+						<c:when test="${detailRequest.is_public eq 1}">
 					 	Yes
 						<script type="text/javascript">
 						jQuery(function($){
@@ -225,12 +225,16 @@ function viewRequest(requestId,url) {
 	    								}
 	    								$("#cc_value").html("${detailRequest.forward}");
 	    								$("#maxcccount").val("${detailRequest.getCcCount()}");
-	    								$("#maxownercount").val("${detailRequest.getSignatoryCount()}");
+	    								//$("#maxownercount").val("${detailRequest.getSignatoryCount()}");
 	    								$("#maxchildcount").val("${detailRequest.getChildCount()}");
 	    								if(historys != null && historys != ""){
 	    									$("#reception_div").html("");
+	    									$("#signofftd").html('<input type="button" id="sign_addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addOwner()" value="Add More">');
 	    									//var count = -1;
 	    									var index=0;
+	    									var edit_option1Str = "";
+	    									var edit_option2Str = "";
+	    									var edit_option3Str = "";
 	    									$.each(historys, function(i, n){
 	    										//var editedtime = "";
 	    										var now = "";
@@ -246,13 +250,48 @@ function viewRequest(requestId,url) {
 	    										data1[4] = n.status;
 	    										data2[i] = data1;
 	    										if(n.displayFlag == "0"){
-	    											$("#reception_div").append("<div class='ower' id='owner"+index+"'><select id='notifyoption"+index+"' name='notifyoption"+index+"' ><option value='1' title='Any change of the Vault request will reset the sign off state to Waiting and require a new sign off'>Reset and require new sign off</option><option value='2' title='Any change of the Vault request generates an email to the signatory, The sign off state will not change'>Send email notification</option><option value='3' title='Changes of the Vault request produce no notifications'>Do not notify</option></select> &nbsp;<input type='text' name='inputowner"+index+"' id='inputowner"+index+"' value='"+n.useremail+"' /><input type='button' class='delete' onclick='javascript:deleteReception("+'"'+"owner"+index+""+'"'+","+ '"'+"inputowner"+index+""+'"' +")'/></div>");
-	    											//$("#reception_div").append("<div class='ower' id='owner"+index+"'><select id='notifyoption"+index+"' name='notifyoption"+index+"' ><option value='0'>------</option><option value='1'>Request for sign off</option><option value='2'>Notify the change</option><option value='3'>Don't send an email</option></select> &nbsp;<input type='text' name='inputowner"+index+"' id='inputowner"+index+"' value='"+n.useremail+"'  onblur='javascript:checkOwnerAndCc("+'"'+"inputowner"+index+'"'+");'  /><input type='button' class='delete' onclick='javascript:deleteReception("+'"'+"owner"+index+""+'"'+","+ '"'+"inputowner"+index+""+'"' +")'/></div>");
-	    											$("#notifyoption"+index+" option[value="+n.notifiyOptionValue+"]").attr("selected",true);
-	    											index++;
-	    											}
+													if(n.notifiyOptionValue == 1){
+														edit_option1Str += n.useremail + ', ';
+													}else if(n.notifiyOptionValue == 2){
+														edit_option2Str += n.useremail + ', ';
+													}else if(n.notifiyOptionValue == 3){
+														edit_option3Str += n.useremail + ', ';
+													};
+	    										};
+	    										index++;
 	    									
 	        								});
+	        								
+	        								var optionIndex = 0;
+	        								var firstOption =true;
+											if(edit_option1Str != ""){
+												if(!firstOption){
+													optionIndex++;
+												}else{ 
+													request.req_addOwner(1,edit_option1Str,firstOption);
+													firstOption = false;
+												};
+											}
+											if(edit_option2Str != ""){
+												if(!firstOption){
+													optionIndex++;
+												}else{ 
+													request.req_addOwner(2,edit_option2Str,firstOption);
+													firstOption = false;
+												};
+											}
+											if(edit_option3Str != ""){
+												if(!firstOption){
+													request.req_addOwner(1,edit_option1Str,firstOption);
+													optionIndex++;
+												}else{
+													request.req_addOwner(3,edit_option3Str,firstOption); firstOption = false;
+												};
+											}
+											
+											$("#maxownercount").val(optionIndex);
+											$("#ownercount").val(optionIndex);
+											
 	    									
 	    									if(globalRequests != null && globalRequests != ""){
 												if (${isEditable}){
@@ -350,12 +389,13 @@ function viewRequest(requestId,url) {
 			<td class="new_bg_white" id="comment_td" colspan='2'><textarea
 					name="comment" id="comment"></textarea></td>
 		</tr>
-		<tr>
+		<!-- <tr>
 			<td class="sing-off-bt"><a href="#"> <input type="hidden"
 					name="requestid" id="requestid" value="" />
 					<button class="btn btn-primary" onclick="javascript:addComment()">Comment</button>
 			</a></td>
-		</tr>
+		</tr>-->
+		<input type="hidden" name="requestid" id="requestid" value="" />
 		<tr>
 			<th colspan="3">
 				<div class="tablefooter">
@@ -683,9 +723,13 @@ function viewRequest(requestId,url) {
         					}
         				});
         			}
-        			document.getElementById("requesttime").value = $("#requesttime_value").html().Trim().split(" ")[0];
+        			var timeTemp = $("#requesttime_value").html().Trim();
+        			timeTemp = timeTemp.substring(0,timeTemp.indexOf("<"));
+        			//document.getElementById("requesttime").value = timeTemp.split(" ")[0];
+        			document.getElementById("requesttime").value = timeTemp.substring(0,10);
         			//change to AM or PM
-            		var allhour=$("#requesttime_value").html().Trim().split(" ")[1];
+            		//var allhour=timeTemp.split(" ")[1];
+            		var allhour=$.trim(timeTemp.substr(10));
             		var firsthour=allhour.split(":")[0];
             		var secondhour=allhour.split(":")[1];
             		if(parseInt(firsthour)>12){
@@ -703,7 +747,7 @@ function viewRequest(requestId,url) {
         			//$("#detail").html($("#detail_value").html());
         			$("#Attachment_div_request").html("");
         			document.getElementById("requestAttachment").value = "";
-        			url = "<%=request.getContextPath()%>/VaultFileUpload";
+        			url = "VaultFileUpload";
         			$.post(url,{
         				operation:"list",
         				id:requestid
@@ -724,44 +768,31 @@ function viewRequest(requestId,url) {
         				var cc_str = globalRequests[0].forward;
         				if(cc_str != null && cc_str != ""){
         					cc_str = cc_str.replaceAll('<br>','');
-        					var cc_array = cc_str.split(",");
-        					for (var i=0;i<cc_array.length;i++){								
-        						$("#cc_div").append("<div class='ower' id='cc"+i+"'><input type='text' name='inputcc"+i+"' id='inputcc"+i+"' value='"+cc_array[i]+"'/><input type='button' class='delete' onclick='javascript:deleteCC("+'"'+"cc"+i+""+'"'+","+ '"'+"inputcc"+i+""+'"' +")'/></div>");    											
-        						$("#inputcc"+i).autocomplete(selectUser);
-        					}
-        				}else{
-        					$("#cc_div").html("<div class='ower' id='cc0'><input type='text' name='inputcc0' id='inputcc0' value=''/><input type='button' class='delete' onclick='javascript:deleteCC("+'"'+"cc0"+'"'+","+'"'+"inputcc0"+'"'+")'/></div>");
-        					$("#inputcc0").autocomplete(selectUser);    										
+        					$("#input_cc").val(cc_str);
         				}
-        				
         			}
         			
-        			//$("#inputparent").val(requests[0].parent.split("##")[1]);    								  
         			if(globalRequests[0].parent == ""){
-        				$("#inputparent").val("");
+        				$("#input_parent").val("");
         			}else{
-        				$("#inputparent").val(globalRequests[0].parent.split("##")[1]);
+        				$("#input_parent").val(globalRequests[0].parent.split("##")[1]);
         			}								
-        			$("#inputparent").autocomplete(selectRequest,{ mustMatch:true,matchContains:1} );
         			
         			//child list
-        			$("#child_div").html("");
+        			$("#childtd").html('<input type="button" id="addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addChild()" value="Add More">');
         			if(globalRequests != null && globalRequests != ""){
         				var child_str = globalRequests[0].children;
         				if(child_str != null && child_str != ""){
         					var child_array = child_str.split(",");
         					for (var i=0;i<child_array.length;i++){								
-        						//$("#child_div").append("<div class='ower' id='child"+i+"'><input  onblur='javascript:checkChildParent("+'"'+"inputchild"+i+'"'+");' type='text' name='inputchild"+i+"' id='inputchild"+i+"' value='"+child_array[i].split("##")[1]+"'/><input type='button' class='delete' onclick='javascript:deleteChild("+'"'+"child"+i+""+'"'+","+ '"'+"inputchild"+i+""+'"' +")'/></div>");    											
-        						$("#child_div").append("<div class='ower' id='child"+i+"'><input  type='text' name='inputchild"+i+"' id='inputchild"+i+"' value='"+child_array[i].split("##")[1]+"'/><input type='button' class='delete' onclick='javascript:deleteChild("+'"'+"child"+i+""+'"'+","+ '"'+"inputchild"+i+""+'"' +")'/></div>");    											
-        						$("#inputchild"+i).autocomplete(selectRequest,{ mustMatch:true,matchContains:1} );
-        						
+        			            $('<input type="text" class="input-xlarge" style="margin-top:4px;" id="input_child_' + i + '" value="'+ child_array[i].split("##")[1] +'"><span id="input_child_' + i + '_del" class="delate-table" onclick=javascript:request.req_delChild("input_child_' + i + '")></span></br>').insertBefore($("#addchild_btn"));
+        						$("#input_child_"+i).autocomplete(selectRequest,{ mustMatch:true,matchContains:1} );
         					}
+        					$("#maxchildcount").val(child_array.length - 1);
         				}else{
-        					//$("#child_div").html("<div class='ower' id='child0'><input  onblur='javascript:checkChildParent("+'"'+"inputchild0"+'"'+");' type='text' name='inputchild0' id='inputchild0' value=''/><input type='button' class='delete' onclick='javascript:deleteChild("+'"'+"child0"+'"'+","+'"'+"inputchild0"+'"'+")'/></div>");
-        					$("#child_div").html("<div class='ower' id='child0'><input type='text' name='inputchild0' id='inputchild0' value=''/><input type='button' class='delete' onclick='javascript:deleteChild("+'"'+"child0"+'"'+","+'"'+"inputchild0"+'"'+")'/></div>");
-        					$("#inputchild0").autocomplete(selectRequest,{ mustMatch:true,matchContains:1} );    										
+							$('<input type="text" class="input-xlarge" id="input_child_0"><span class="delate-table"></span></br>').insertBefore($("#addchild_btn"));
+        					$("#input_child_0").autocomplete(selectRequest,{ mustMatch:true,matchContains:1} );    										
         				}
-        				
         			} 
 
         			

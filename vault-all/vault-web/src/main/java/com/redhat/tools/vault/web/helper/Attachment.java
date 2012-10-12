@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
+
 import org.jboss.logging.Logger;
 
 import com.redhat.tools.vault.bean.Request;
@@ -165,12 +166,73 @@ public class Attachment {
         }
         removeFile(file);
     }
+    
+    public static void remove(Long id) throws IOException {
+        String to = MGProperties.getInstance().getValue(
+                MGProperties.KEY_ATTACHEMENTPATH)
+                + REQUESTPATH + id;
+        remove(to);
+    }
 
     private static void removeFile(File file) throws IOException {
         if (file.delete()) {
             log.debug("deleted.");
         } else {
             throw new IOException("Cannot delete file. " + file.getAbsolutePath());
+        }
+    }
+    
+    public static void move(String from, Long id) throws IOException {
+        String to = MGProperties.getInstance().getValue(
+                MGProperties.KEY_ATTACHEMENTPATH);
+        to += REQUESTPATH + id.toString();
+        remove(to);
+        File current = new File(to);
+        if (!current.exists())
+            current.mkdirs();
+        File dir = new File(from);
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                file.renameTo(new File(to, file.getName()));
+            }
+        }
+        else {
+            log.warn("No files found.");
+        }
+    }
+    
+    public static void copyTo(String to, int id) throws IOException {
+        String from = MGProperties.getInstance().getValue(
+                MGProperties.KEY_ATTACHEMENTPATH);
+        from += REQUESTPATH + id;
+        File current = new File(to);
+        if (!current.exists())
+            current.mkdirs();
+        File dir = new File(from);
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                String src = from + "/" + file.getName();
+                String dest = to + "/" + file.getName();
+                copyTransfer(src, dest);
+            }
+        }
+        else {
+            log.warn("No files found.");
+        }
+    }
+    
+    private static void copyTransfer(String srcPath, String destPath)
+            throws IOException {
+        FileChannel srcChannel = new FileInputStream(srcPath).getChannel();
+        FileChannel destChannel = new FileOutputStream(destPath).getChannel();
+        try {
+            srcChannel.transferTo(0, srcChannel.size(), destChannel);
+        }
+        finally {
+            srcChannel.close();
+            destChannel.close();
         }
     }
 

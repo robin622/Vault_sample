@@ -132,12 +132,12 @@ public class RequestRelationshipDAO {
 			List<RequestRelationship> rls = get(condition);
 			if (rls != null && rls.size() > 0) {
 				sess = dao.getSession();
-				trans = sess.beginTransaction();
+				//trans = sess.beginTransaction();
 				for (RequestRelationship r : rls) {
 					sess.delete(r);
 				}
-				trans.commit();
-				trans = null;
+				//trans.commit();
+				//trans = null;
 				sess.flush();
 			}
 

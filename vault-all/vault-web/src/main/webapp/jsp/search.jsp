@@ -82,7 +82,7 @@
     	<div class="span8">
             <div class="modal hide fade" id="myModal">
                 <div class="modal-header">
-                  <button data-dismiss="modal" class="close">×</button>
+                  <button data-dismiss="modal" class="close">x</button>
                   <h3>Please input query name</h3>
                 </div>
                 <div class="modal-body">

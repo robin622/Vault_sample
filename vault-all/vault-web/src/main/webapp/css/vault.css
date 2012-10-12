@@ -17,8 +17,8 @@
 .eso-table-inner tr:hover td{background:ce6  !important;}
 .eso-table tbody td a:link, .eso-table tbody td a:visited { width:auto!important;}
 .span8{ width:250px!important; float:right!important;}
-#delete{background:url(../images/btn-delete.png) no-repeat 0px 2px; width:16px!important; line-height:18px; height:18px; display: inline-block; float:left; margin-left:5px;}
-a#delete:hover{ background:url("../images/btn-delete-hover.png") no-repeat scroll 0 2px transparent;}
+.delete{background:url(../images/btn-delete.png) no-repeat 0px 2px; width:16px!important; line-height:18px; height:18px; display: inline-block; float:left; margin-left:5px;}
+a.delete:hover{ background:url("../images/btn-delete-hover.png") no-repeat scroll 0 2px transparent;}
 #table1 tr:nth-child(2n) td{ background: none;}
 #table1 tr:nth-child(1n) td{ background: ;}
 .red{ color:#990000; margin:0px 5px;}

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -93,6 +94,9 @@ public class ShowRequestServlet extends HttpServlet {
 		request.setAttribute("displaySignoffOnBehalf", displaySignoffOnBehalf);
 		request.setAttribute("requestName_unescape", requestName_unescape);
 		request.setAttribute("judgeDetailValue", judgeDetailValue);
+		
+		Map<String,Long> counts = reqService.getRequestCount(userName, userEmail);
+        request.setAttribute("reqCounts", counts);
 		request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
 	}
 }

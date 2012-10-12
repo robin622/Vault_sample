@@ -202,7 +202,19 @@ $(document)
 										"sPaginationType" : "bootstrap",
 										"oLanguage" : {
 											"sLengthMenu" : "Show_MENU_ entries"
-										}
+										},
+										"aoColumns": [
+										              { "sType": "numeric" },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true }
+										              ]
 									});
 				});
 
@@ -210,14 +222,33 @@ $(document)
 $(document)
 		.ready(
 				function() {
-					$('#example2')
+				myrequestTable = $('#myrequest_table')
 							.dataTable(
 									{
 										"sDom" : "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
 										"sPaginationType" : "bootstrap",
 										"oLanguage" : {
 											"sLengthMenu" : "Show_MENU_ entries"
-										}
+										},
+										"aoColumns": [
+										              { "bSortable": false },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true }
+										              ],
+							              "fnDrawCallback": function() {
+							            	  $("#checkAllMyRequest").click(function(){
+							          				$('input', myrequestTable.fnGetNodes()).attr('checked',this.checked);
+							          		  });
+							              }
 									});
 				});
 /* Table initialisation */
@@ -231,7 +262,19 @@ $(document)
 										"sPaginationType" : "bootstrap",
 										"oLanguage" : {
 											"sLengthMenu" : "Show_MENU_ entries"
-										}
+										},
+										"aoColumns": [
+										              { "sType": "numeric" },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true }
+										]
 									});
 				});
 
@@ -254,14 +297,32 @@ $(document)
 $(document)
 		.ready(
 				function() {
-					$('#example6')
+					searchoTable = $('#searchreq_table')
 							.dataTable(
 									{
 										"sDom" : "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
 										"sPaginationType" : "bootstrap",
 										"oLanguage" : {
 											"sLengthMenu" : "Show_MENU_ entries"
-										}
+										},
+										"aoColumns": [
+											              { "bSortable": false },
+											              { "bSortable": true },
+											              { "bSortable": true },
+											              { "bSortable": true },
+											              { "bSortable": true },
+											              { "bSortable": true },
+											              { "bSortable": true },
+											              { "bSortable": true },
+											              { "bSortable": true },
+											              { "bSortable": true },
+											              { "bSortable": true }
+											              ],
+								         "fnDrawCallback": function() {
+								           	  $("#checkAllSearchRequest").click(function(){
+								         			$('input', searchoTable.fnGetNodes()).attr('checked',this.checked);
+								         	  });
+								         }
 									});
 				});
 /* Table initialisation */

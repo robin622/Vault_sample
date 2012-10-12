@@ -220,11 +220,11 @@
   <ul class="nav">
     <li class="active"><a href="index.html">Home</a></li>
    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a></li>
-    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval<span class="number"> ( 3 )</span></a></li>
-    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests<span class="number"> ( 10 )</span></a></li>
-    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed <span class="number">( 8 )</span></a></li>
-    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me<span class="number"> ( 100 )</span></a></li>
-    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CanViewRequest>I Can View <span class="number">( 568 )</span></a></li>
+    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval<span class="number"> ( ${reqCounts.waiting} )</span></a></li>
+    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests<span class="number"> ( ${reqCounts.myrequest} )</span></a></li>
+    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed <span class="number">( ${reqCounts.signed} )</span></a></li>
+    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me<span class="number"> ( ${reqCounts.cc} )</span></a></li>
+    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CanViewRequest>I Can View <span class="number">( ${reqCounts.canview} )</span></a></li>
   </ul>
 </div>
 <div class="content">
@@ -242,10 +242,10 @@
 	<%@ include file="needApproval.jsp"%>
 	<%@ include file="signed.jsp" %>
 	<%@ include file="viewrequest.jsp" %>
-	<%@ include file="newrequest.jsp" %>
 	<%@ include file="searchrequest.jsp" %>
 	<%@ include file="cctomerequest.jsp" %>
 	<%@ include file="myrequest.jsp" %>
+	<%@ include file="newrequest.jsp" %>
 </div>
 <footer class="footer">
     <div class="hss-logo"></div>
@@ -260,6 +260,7 @@
 <script>
 	//$(".chzn-select").chosen(); 
 	//$(".chzn-select-deselect").chosen({allow_single_deselect:true}); 
+	adaptTimeZone();
 </script>	
     </div>
  </body>

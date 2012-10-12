@@ -1,7 +1,7 @@
 <table class="eso-table" id="searchrequest">
 	  <thead>
 	    <tr>
-      		<th>Search Request</th>
+      		<th>Search Request<a href="#" class="float-right"><button class="btn" onclick="javascript:request.req_sumReport('search')">Summary Report</button></a></th>
         </tr>
       </thead>
 	  <tbody>
@@ -10,9 +10,10 @@
 	        
 	        
 	        <div class="list-margin-top">
-	          <table id="example6" class="eso-table table-striped eso-table-inner ">
+	          <table id="searchreq_table" class="eso-table table-striped eso-table-inner ">
 <thead>
-    <tr>        
+    <tr>
+    	<th><input type="checkbox" value="option1" id="checkAllSearchRequest"></th>        
         <th>ID</th>
         <th>Request Name</th>
          <th>Product</th>
@@ -27,9 +28,10 @@
 </thead>
 <tbody>
 	<c:forEach var="searchRequest" items="${searchRequests}">
-    <tr>        
-    <td><a href="request_details.html">${searchRequest.requestid}</a></td>
-    <td><a href="request_details.html">${searchRequest.requestname}</a></td>
+    <tr>
+    <td><input type="checkbox" name="chkltSearchRequest" id="chkltSearchRequest${searchRequest.requestid}" value="${searchRequest.requestid}"></td>
+    <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${searchRequest.requestid} title="View Request">${searchRequest.requestid}</a></td>
+    <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${searchRequest.requestid} title="View Request">${searchRequest.requestname}</a></td>
     <td>${searchRequest.productname}</td>
     <td>${searchRequest.versiondesc}</td>
     <td>${searchRequest.createdby}</td>

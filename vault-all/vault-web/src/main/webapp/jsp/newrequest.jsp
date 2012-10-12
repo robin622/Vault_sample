@@ -15,10 +15,11 @@
 <input type="hidden" name="parentStr" id="parentStr" value=""/>
 <input type="hidden" name="childrenStr" id="childrenStr" value=""/>
 <input type="hidden" name="detailStr" id="detailStr" value=""/>
+<input type="hidden" name="gap" id="gap" value=""/>
 
 		<table class="eso-table new-request" id="newrequest_tbl">
   <thead>
-  	<th colspan="2">Create Request</th>
+  	<th id="div_name" colspan="2">Create Request</th>
 <tbody>
     <tr>
     <td width="9%" ><span> Name:</span><span class="red">*</span></td>
@@ -39,7 +40,7 @@
     </tr>
     <tr>
       <td ><span>Sign off by:</span><span class="red">*</span></td>
-      <td >
+      <td id="signofftd">
       	<a title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to 'Waiting' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</a>
       	<select id="notifyoption0" data-placeholder=""  class="chzn-select creat-request-select" tabindex="6">
         <option value="1">Reset and require new sign off</option>
@@ -60,7 +61,7 @@
     </tr>
     <tr>
     <td ><span>Due date:</span></td>
-    <td ><input type="text" class="input-xlarge" id="requesttime" name="requesttime"><input type="text" class="input-xlarge times" name="requestdatetime" id="requestdatetime"> GMT+0800 (CST)</td>
+    <td ><input type="text" class="input-xlarge" id="requesttime" name="requesttime"><input type="text" class="input-xlarge times" name="requestdatetime" id="requestdatetime"> <script type="text/javascript">OutputLoc()</script></td>
    
     </tr>
     <tr>
@@ -70,7 +71,7 @@
     </tr>
     <tr>
     <td ><span>Child:</span></td>
-    <td >
+    <td id="childtd">
     <input type="text" class="input-xlarge" id="input_child_0"><span class="delate-table"></span></br>
     <input type="button" id="addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addChild()" value="Add More">
     </td>
@@ -101,7 +102,7 @@
     </tr>
     
     <tr>
-    <td colspan="2" ><input type="button" class="btn btn-primary quary" value="Create" onclick="javascript:request.req_commit()"><input type="button" value="Cancel" class="btn quary"></td>
+    <td colspan="2" ><input id="create_btn" type="button" class="btn btn-primary quary" value="Create" onclick="javascript:request.req_commit()"><input type="button" value="Cancel" class="btn quary"></td>
    
     </tr>
 

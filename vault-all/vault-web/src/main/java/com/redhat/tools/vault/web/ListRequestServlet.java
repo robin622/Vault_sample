@@ -2,6 +2,7 @@ package com.redhat.tools.vault.web;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -51,30 +52,24 @@ public class ListRequestServlet extends HttpServlet {
             List<Request> canViewRequests = reqService.getCanViewRequests(userName, userEmail);
             request.setAttribute("canViewRequests", canViewRequests);
             request.setAttribute("operationstatus", "CanView");
-            request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
         }else if("WaitRequest".equalsIgnoreCase(operation)){
-            List<Request> waitRequests = reqService.getCanViewRequests(userName, userEmail);
+            List<Request> waitRequests = reqService.getWaitRequests(userName, userEmail);
             request.setAttribute("waitRequests", waitRequests);
             request.setAttribute("operationstatus", "wait");
-            request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
         }else if("SignedRequest".equalsIgnoreCase(operation)){
             List<Request> signedOffRequests = reqService.getSignedOffRequests(userName, userEmail);
             request.setAttribute("signedOffRequests", signedOffRequests);
             request.setAttribute("operationstatus", "signed");
-            request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
         }else if("CCToMeRequest".equalsIgnoreCase(operation)){
             List<Request> ccToMeRequests = reqService.getCCToMeRequests(userName, userEmail);
             request.setAttribute("ccToMeRequests", ccToMeRequests);
             request.setAttribute("operationstatus", "cctome");
-            request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
         }else if("MyRequest".equalsIgnoreCase(operation)){
             List<Request> myRequests = reqService.getMyRequest(userName);
             request.setAttribute("myRequests", myRequests);
             request.setAttribute("operationstatus", "myrequest");
-            request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
         }else if("NewRequest".equalsIgnoreCase(operation)){
             request.setAttribute("operationstatus", "newrequest");
-            request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
         }else if("Search".equalsIgnoreCase(operation)){
             String          requestName       =   (String) request.getParameter("requestName");
             String          type            =   (String) request.getParameter("type");
@@ -86,8 +81,10 @@ public class ListRequestServlet extends HttpServlet {
             List<Request> requests = reqService.advanceSearch(requestName, creator, versionid, productid, status, owneremail, userName, userEmail);
             request.setAttribute("searchRequests", requests);
             request.setAttribute("is_search", "is_search");
-            request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
         }
+        Map<String,Long> counts = reqService.getRequestCount(userName, userEmail);
+        request.setAttribute("reqCounts", counts);
+        request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
 	}
 
 }

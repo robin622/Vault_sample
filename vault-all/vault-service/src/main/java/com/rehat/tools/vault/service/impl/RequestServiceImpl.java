@@ -1,8 +1,9 @@
 package com.rehat.tools.vault.service.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -13,14 +14,19 @@ import org.apache.commons.lang.StringUtils;
 import org.jboss.logging.Logger;
 
 import com.redhat.tools.vault.bean.Product;
+import com.redhat.tools.vault.bean.ReplyComment;
 import com.redhat.tools.vault.bean.Request;
 import com.redhat.tools.vault.bean.RequestHistory;
 import com.redhat.tools.vault.bean.RequestRelationship;
+import com.redhat.tools.vault.bean.SendemailCount;
 import com.redhat.tools.vault.bean.Version;
+import com.redhat.tools.vault.dao.CommentRelationshipDAO;
 import com.redhat.tools.vault.dao.ProductDAO;
+import com.redhat.tools.vault.dao.ReplyCommentDAO;
 import com.redhat.tools.vault.dao.RequestDAO;
 import com.redhat.tools.vault.dao.RequestHistoryDAO;
 import com.redhat.tools.vault.dao.RequestRelationshipDAO;
+import com.redhat.tools.vault.dao.SendemailCountDAO;
 import com.redhat.tools.vault.dao.VAUserDAO;
 import com.redhat.tools.vault.dao.VersionDAO;
 import com.redhat.tools.vault.service.RequestService;
@@ -41,6 +47,12 @@ public class RequestServiceImpl implements RequestService{
 	private VaultSendMail mailer;
 	@Inject
 	private RequestRelationshipDAO relationshipDAO;
+	@Inject
+    private ReplyCommentDAO replyCommentDAO;
+	@Inject 
+    private CommentRelationshipDAO commentRelationDAO;
+	@Inject
+	private SendemailCountDAO countDAO;
 	
 	private static final Logger log = Logger.getLogger(RequestServiceImpl.class);
 
@@ -632,5 +644,237 @@ public class RequestServiceImpl implements RequestService{
 		}
 		return joReturn;
 	}
+
+    public void deleteRequest(Request request) {
+        RequestHistory history = new RequestHistory();
+        List<RequestHistory> historys = null;
+        List<Request> deleteRequest = null;
+        try {
+            deleteRequest = requestDAO.get(request);
+            if (deleteRequest != null && deleteRequest.size() > 0) {
+                requestDAO.deleteRequest(request);
+                history.setRequestid(request.getRequestid());
+                RequestHistoryDAO historyDAO = new RequestHistoryDAO();
+                historys = historyDAO.get(history, false);
+                if (historys != null && historys.size() > 0) {
+                    for (RequestHistory temp : historys) {
+                        historyDAO.deleteHistory(temp);
+                        //delete reply
+                        List<Long> replyIdList = commentRelationDAO.getReplyIdListByHistoryId(temp.getHistoryid());
+                        commentRelationDAO.deleteRelationByHistoryid(temp.getHistoryid());
+                        List<ReplyComment> replyList = replyCommentDAO.getReplyCommentListByIdList(replyIdList);
+                        replyCommentDAO.deleteReplyCommentList(replyList);
+                    }
+                }
+
+                RequestRelationship rl = new RequestRelationship();
+                rl.setRelationshipId(request.getRequestid());
+                relationshipDAO.delete(rl);
+                rl = new RequestRelationship();
+                rl.setRequestId(request.getRequestid());
+                relationshipDAO.delete(rl);
+                /*VaultSendMail mailer = new VaultSendMail();
+                mailer.sendEmail(request, deleteRequest.get(0), null, 
+                        "", "", "delete", "");*/
+            }
+        }
+        catch (Exception e) {
+            log.error(e.getMessage(),e);
+        }
+        
+    }
+
+    public List<Request> findByIds(Long[] requestIds) {
+        List<Request> requests = null;
+        try{
+            requests = requestDAO.findByIds(requestIds);
+            if (requests != null && requests.size() > 0) {
+                for (Request r : requests) {
+                    r.setRequestname(StringEscapeUtils.escapeHtml(r
+                            .getRequestname()));
+                    r = getDetailedStatus(r, historyDAO);
+                }
+            }
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+        }
+        return requests;
+    }
+    
+    private Request getDetailedStatus(Request r, RequestHistoryDAO histDao)
+            throws Exception {
+        // RequestHistoryDAO histDao = new RequestHistoryDAO();
+        String waiting = "";
+        String comment = "";
+        String reject = "";
+        String signoff = "";
+        boolean isSignOnBehalf = false;
+        if ("".equals(r.getOwner()) || r.getOwner() == null)
+            return r;
+        String[] signatories = r.getOwner().split(",");
+        List<String> signatoryList = Arrays.asList(signatories);
+        for (int i = 0; i < signatories.length; i++) {
+            RequestHistory hist = new RequestHistory();
+            hist.setRequestid(r.getRequestid());
+            hist.setUseremail(signatories[i]);
+            hist.setIsHistory(false);
+            List<RequestHistory> hists = histDao.get(hist, false);
+            if (hists != null && hists.size() > 0) {
+                boolean isSignedOrRejected = false;
+                for (RequestHistory h : hists) {
+                    if (h.getStatus().equals(Request.SIGNED)
+                            || h.getStatus().equals(Request.SIGNED_BY)) {
+                        signoff += signatories[i] + ",";
+                        isSignedOrRejected = true;
+                        break;
+                    }
+                    else if (h.getStatus().equals(Request.REJECTED)) {
+                        reject += signatories[i] + ",";
+                        isSignedOrRejected = true;
+                        break;
+                    }
+                }
+                if (!isSignedOrRejected) {
+                    comment += signatories[i] + ",";
+                }
+
+            }
+            else {
+                waiting += signatories[i] + ",";
+            }
+        }
+
+        RequestHistory hist = new RequestHistory();
+        hist.setRequestid(r.getRequestid());
+        hist.setIsHistory(false);
+        List<RequestHistory> hists = histDao.get(hist, true);
+        List<String> tempUserMail = new ArrayList<String>();
+        if (hists != null && hists.size() > 0) {
+            for (RequestHistory h : hists) {
+                if (!signatoryList.contains(h.getUseremail())
+                        && h.getStatus().equals(Request.COMMENTS)
+                        && !tempUserMail.contains(h.getUseremail())) {
+                    tempUserMail.add(h.getUseremail());
+                    comment += h.getUseremail() + ",";
+                }
+                if (h.getEditedby().equals(r.getCreatedby())
+                        && h.getStatus().equals(Request.SIGNED_ONBEHALF)) {
+                    isSignOnBehalf = true;
+                }
+            }
+        }
+
+        if (waiting.length() > 0) {
+            waiting = waiting.substring(0, waiting.lastIndexOf(","));
+        }
+        if (comment.length() > 0) {
+            comment = comment.substring(0, comment.lastIndexOf(","));
+        }
+        if (reject.length() > 0) {
+            reject = reject.substring(0, reject.lastIndexOf(","));
+        }
+        if (signoff.length() > 0) {
+            signoff = signoff.substring(0, signoff.lastIndexOf(","));
+        }
+        r.setWaitingList(waiting);
+        r.setCommentList(comment);
+        r.setSignoffList(signoff);
+        r.setRejectedList(reject);
+        r.setIsSignOnBehalf(isSignOnBehalf);
+        return r;
+    }
+
+    public void updateEmailCount(Request request) {
+        SendemailCount emailCount = new SendemailCount();
+        try{
+            emailCount.setRequestid(request.getRequestid());
+            List<SendemailCount> sends = countDAO.get(emailCount);
+            emailCount.setCount(0L);
+            emailCount.setRequesttime(request.getRequesttime());
+            if (sends != null && sends.size() > 0) {
+                emailCount.setSendid(sends.get(0).getSendid());
+                countDAO.update(emailCount);
+            }
+            else {
+                countDAO.save(emailCount);
+            }
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+        }
+        
+    }
+
+    public Map<String, Long> getRequestCount(String userName, String userEmail) {
+        Map<String, Long> counts = null;
+        try{
+            counts = requestDAO.getRequestCount(userName, userEmail);
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+        }
+        return counts;
+    }
+
+    public Request getRequest(Request request) {
+        Request req = null;
+        try{
+            List<Request> reqList = requestDAO.get(request);
+            if(reqList != null && reqList.size() > 0){
+                req = reqList.get(0);
+            }
+        }catch(Exception e){
+            log.error(e.getMessage(), e);
+        }
+        return req;
+    }
+
+    public Long getParentId(Request current) {
+        Long parentId = null;
+        try{
+            parentId = relationshipDAO.getParentId(current);
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+        }
+        return parentId;
+    }
+
+    public List<Long> getChildId(Request current) {
+        List<Long> childIds = null;
+        try{
+            childIds = relationshipDAO.getChildId(current);
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+        }
+        return childIds;
+    }
+
+    public List<RequestHistory> getHistory(RequestHistory history,boolean b) {
+        List<RequestHistory> historys = null;
+        try{
+            historys = historyDAO.get(history, b);
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+        }
+        return historys;
+    }
+
+    public void disableHistory(RequestHistory history) {
+        try{
+            historyDAO.deleteHistory(history);
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+        }
+        
+    }
+
+    public String compare(Request current,Request request) {
+        String result = "";
+        try{
+            result = requestDAO.compare(current, request);
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+        }
+        return result;
+    }
+
 
 }

@@ -96,6 +96,8 @@ public class MGProperties {
 			synchronized(MGProperties.class){
 				if(instance == null){
 					instance = new MGProperties();
+					//TODO temp
+					instance.prop.setProperty("attachmentpath", "/home/wguo/data/vault/");
 				}
 			}
 		}

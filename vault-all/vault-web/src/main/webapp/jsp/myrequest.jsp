@@ -1,7 +1,7 @@
 <table class="eso-table" id="myrequest">
   <thead>
     <tr>
-      <th>My Requests<a href="Summary Report.html" class="float-right"><button class="btn">Summary Report</button></a></th>
+      <th>My Requests<a href="#" class="float-right"><button class="btn" onclick="javascript:request.req_sumReport()">Summary Report</button></a></th>
       
       </tr>
     </thead>
@@ -11,10 +11,10 @@
         
         
         <div class="list-margin-top">
-          <table id="example2" class="eso-table table-striped eso-table-inner ">
+          <table id="myrequest_table" class="eso-table table-striped eso-table-inner ">
 <thead>
     <tr>
-        <th><input type="checkbox" value="option1" id="inlineCheckbox1"></th>
+        <th><input type="checkbox" value="option1" id="checkAllMyRequest"></th>
         <th>ID</th>
         <th>Request Name</th>
          <th>Product</th>
@@ -47,8 +47,7 @@
 			    <c:choose>
 	                <c:when test="${myRequest.from eq 0}">
 						<div id="deletemyrequest${myRequest.requestid}">
-							<a href="javascript:confirmDelete('index.do?operation=DeleteRequest
-							&requestid=${myRequest.requestid}', '${myRequest.requestname}')">Delete</a>
+							<a href="javascript:request.req_delRequest('${myRequest.requestid}', '${myRequest.requestname}')">Delete</a>
 						</div>
 					</c:when>
 					<c:otherwise>

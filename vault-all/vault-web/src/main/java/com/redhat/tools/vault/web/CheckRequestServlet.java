@@ -50,6 +50,7 @@ public class CheckRequestServlet extends HttpServlet {
             String result = "";
             String childStr = (String) req.getParameter("child");// requestId
                                                                     // requestName,
+            String currentRequestId = (String) req.getParameter("id");//
             String message = "ok";
             try {
                 if (childStr != null && !"".equals(childStr)) {
@@ -69,6 +70,9 @@ public class CheckRequestServlet extends HttpServlet {
                                 String parentStr = parentArray[0];
                                 if (parentStr != null
                                         && parentStr.length() > 0) {
+                                    if (!parentStr.split("##")[1]
+                                            .split("  ")[0]
+                                            .equals(currentRequestId)) {
                                         // childId+"  "+childName+##+parentId+"  "+parentName
                                         result += requestId.toString()
                                                 + "  "
@@ -76,6 +80,7 @@ public class CheckRequestServlet extends HttpServlet {
                                                 + "##"
                                                 + parentStr.split("##")[1]
                                                 + ",";
+                                    }
                                 }
                             }
                         }

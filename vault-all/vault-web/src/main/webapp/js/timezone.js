@@ -39,13 +39,14 @@ var zone_patern=/\d{1,4}\-\d{1,2}\-\d{1,2} \d{1,2}:\d{1,2}/g;
 	}
 	function adaptTimeZone(){
 		//console.info('adaptTimeZone');
-		toreplace("myrequest_tbl");
-		toreplace("canviewrequest_tbl");
-		toreplace("waitrequest_tbl");
-		toreplace("signedrequest_tbl");
-		toreplace("searchrequest_tbl");
-		toreplace("detail_tbl");
-		//toreplace("reception_tbl");
+		toreplace("myrequest");
+		toreplace("canviewrequest");
+		toreplace("waitrequest");
+		toreplace("signedrequest");
+		toreplace("searchrequest");
+		toreplace("detail_name_table");
+		toreplace("reception_tbl");
+		toreplace("detail_comment");
 	}
 	function toreplace2(componentid){
 		console.info('componentid is'+ componentid);

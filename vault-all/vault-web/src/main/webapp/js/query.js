@@ -30,6 +30,8 @@ window.query = {
 						data : "operation=saveQuery&queryName="+queryName+"&requestName="+requestName+"&creator="+creator
 							+ "&owner=" + owner + "&status=" + status + "&productId="+productId+"&versionId="+versionId,
 						success : function(rtnData){
+							$("#myModal").modal("hide");
+							$("#queryName").val("");
 							query.qry_getUserQuery();
 						}
 					});

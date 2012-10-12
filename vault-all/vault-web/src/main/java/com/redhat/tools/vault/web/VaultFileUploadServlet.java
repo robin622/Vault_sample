@@ -51,8 +51,8 @@ public class VaultFileUploadServlet extends HttpServlet {
 						throw new Exception("Cannot obtain attachments.");
 					}
 					synchronized(this) {
-//						Attachment.remove(createPath(req));
-//						Attachment.copyTo(createPath(req), Integer.parseInt(id));
+						Attachment.remove(createPath(req));
+						Attachment.copyTo(createPath(req), Integer.parseInt(id));
 						
 					}
 				} else if("delete".equals(operation)) {
@@ -96,9 +96,33 @@ public class VaultFileUploadServlet extends HttpServlet {
 					//itr = fileItems.iterator();
 					while (itr.hasNext()) {
 						FileItem item = (FileItem)itr.next();
+						String itemType = "";
+                        String itemfileName = "";
+                        if (item.getContentType() != null) {
+                            itemType = item.getContentType().toLowerCase();
+                        }
+                        if (item.getName() != null) {
+                            itemfileName = new File(item.getName()).getName();
+                        }
+                        boolean isAllowedType = false;
+                        if (itemType.contains("vnd.oasis.opendocument")
+                                || itemType.contains("pdf")
+                                || itemType.contains("text")
+                                || (itemType.contains("octet-stream")
+                                        && !itemfileName.contains(".jsp") && !itemfileName
+                                        .contains(".inc"))
+                                || itemType.contains("image")
+                                || itemType.contains("x-gzip")
+                                || itemType.contains("x-bzip")
+                                || itemType.contains("x-rar")
+                                || itemType.contains("zip")
+                                || itemType.contains("x-compress")
+                                || itemType.contains("x-tar")) {
+                            isAllowedType = true;
+                        }
 						if (!item.isFormField()) {
 							String sFilename = item.getName();
-							if (!"".equals(sFilename)) {
+							if (!"".equals(sFilename) && isAllowedType) {
 								String fileName= (new File(sFilename)).getName();
 								item.write(new File(writePath + "/" + fileName));
 							}

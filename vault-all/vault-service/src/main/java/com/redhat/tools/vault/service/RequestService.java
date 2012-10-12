@@ -1,8 +1,12 @@
 package com.redhat.tools.vault.service;
 
 import java.util.List;
+import java.util.Map;
+
 import net.sf.json.JSONObject;
+
 import com.redhat.tools.vault.bean.Request;
+import com.redhat.tools.vault.bean.RequestHistory;
 import com.redhat.tools.vault.bean.RequestRelationship;
 
 public interface RequestService {
@@ -45,5 +49,25 @@ public interface RequestService {
     public void disableRelationShip(RequestRelationship childR);
     
     public JSONObject EditVersion(String versionid);
+
+    public void deleteRequest(Request request);
+
+    public List<Request> findByIds(Long[] requestIds);
+
+    public void updateEmailCount(Request request);
+    
+    public Map<String,Long> getRequestCount(String userName,String userEmail);
+
+    public Request getRequest(Request request);
+
+    public Long getParentId(Request current);
+
+    public List<Long> getChildId(Request current);
+
+    public List<RequestHistory> getHistory(RequestHistory history,boolean b);
+
+    public void disableHistory(RequestHistory history);
+
+    public String compare(Request current,Request request);
 
 }
