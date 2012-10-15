@@ -32,6 +32,7 @@ table.blod{border-bottom:1px dotted #CCC;}
 /*td.clear-padding:hover { background: #000000 !important;}*/
 .table-width tr td:first-child{ width:150px;}
 .control-group{ margin-top:10px;}
+
 .select-text{ display:block; height:25px; line-height:25px; float:left; margin:0px 5px;}
 .input-xlarge{ margin-bottom:0px;}
 .vault-new{ width:1000px; left:40%; }
@@ -45,12 +46,13 @@ tr.become-due td{ background: #FFE6B8!important;}
 .search-ad{ margin:10px 50px;}
 .comment div:last-child{ border-bottom:none;}
 .comment_line{ padding-bottom:10px;   color: #999;}
-.comment_list{ padding:10px; padding-bottom:0px; padding-left:20px; border-bottom: 1px solid #b9b9b9; margin-bottom:10px; }
+.comment_list{ padding:10px; padding-bottom:10px; padding-left:20px; border-bottom: 1px solid #b9b9b9; margin-bottom:10px; }
 .Signed{background:url("../images/ico_signed.png") no-repeat scroll 0 10px transparent;}
 .edite{background:url("../images/btn-edit-1.png") no-repeat scroll left center; float:right; padding-left:20px; margin-right:20px;}
 .add{background:url("../images/add-child.png") no-repeat scroll left center; float:right; padding-left:20px; margin-right:20px;}
 .report{background:url("../images/btn-report.png") no-repeat scroll left center; float:right; padding-left:20px; margin-right:20px;}
 .Comments{background:url("../images/ico_comment.png") no-repeat scroll 0 10px transparent;}
+.Comment{background:url("../images/ico_comment.png") no-repeat scroll left center transparent; padding-left:20px;}
 .Rejected{background:url("../images/reject.png") no-repeat scroll left center transparent;padding-left:20px;}
 .SignedOnBehalf{background:url("../images/behalf.png") no-repeat scroll 0 10px transparent;}
 .comment_list ul li{border-bottom:1px dotted #CCC;margin-bottom:5px; padding-bottom:5px;}
@@ -68,7 +70,8 @@ tr.become-due td{ background: #FFE6B8!important;}
 .sing-off-bt a{ float:left; }
 table button{ margin-left:10px;}
 .table-sign-off-by{ border:none;}
-input, textarea, select, .uneditable-input{ margin-bottom:5px;  padding:2px;}
+input, textarea, select, .uneditable-input{padding:2px;}
+input, textarea, select, .uneditable-input{margin-bottom:0;}
 div.dataTables_filter label input{ height:20px;}
 .float-right{ float:right;}
 .form-area select{ width:275px;}
@@ -90,7 +93,10 @@ div.dataTables_filter label input{ height:20px;}
 .add-width{ width:400px;}
 .delate-table{background:url("../images/delete.gif") no-repeat scroll left center transparent; display: inline-block; width:16px; height:16px; border:none; cursor:pointer;}
 .span-top{ margin-top:5px;}
+.span-bottom{ margin-bottom:5px;}
 .times{ margin-left:5px;}
+select, input[type="file"]{height:24px;}
+.table-top{ margin-top:10px;}
 /* form-area ========================================*/
 .form-area{width:98%;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;background-color:#F7F7F7;margin:8px auto;margin-right:auto;margin-left:auto;border:1px solid #E4E4E4;margin-top:10px;margin-bottom:15px;padding-top:20px;}
 .form-area-left,.form-area-right{float:left;padding-left:10px;}
