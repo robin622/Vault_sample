@@ -19,7 +19,6 @@
 		<table class="eso-table new-request" id="newrequest_tbl">
   <thead>
   	<th colspan="2">Create Request</th>
-  
 <tbody>
     <tr>
     <td width="9%" ><span> Name:</span><span class="red">*</span></td>

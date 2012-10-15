@@ -186,7 +186,6 @@
 	<script type='text/javascript' src="<%=request.getContextPath()%>/js/timezone.js"></script>
 </head>
 <body id='eso-body' onload="rmloading();">
-<div class="server"><div>stage server</div></div>
 <div class="eso-inner">
 <header id='eso-topbar'>
   <a href="index.html" title="go back home" class="logo">Vault</a>
@@ -247,7 +246,6 @@
 	<%@ include file="searchrequest.jsp" %>
 	<%@ include file="cctomerequest.jsp" %>
 	<%@ include file="myrequest.jsp" %>
-
 </div>
 <footer class="footer">
     <div class="hss-logo"></div>

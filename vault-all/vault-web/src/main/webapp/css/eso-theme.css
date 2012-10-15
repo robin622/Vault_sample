@@ -1037,7 +1037,7 @@ button.close {padding: 0; cursor: pointer; background: transparent; border: 0; -
 .footer a:hover{ color: #fff; text-decoration: underline}
 
 
-.hss-logo{ width:42px; height:47px; float:left; background:url(https://ucd.englab.nay.redhat.com/ucd/logo/logo.png) no-repeat; margin-top:4px;}
+.hss-logo{ width:42px; height:47px; float:left; background:url(http://ucd.englab.nay.redhat.com/ucd/logo/logo.png) no-repeat; margin-top:4px;}
 .copyright{margin-left:45px;}
 .activetracking{ float: right; padding-left:10px; margin-left: 10px; height: 33px; }
 .poweredby{ float: right;border-right: solid 1px #aaa; }

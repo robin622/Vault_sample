@@ -350,7 +350,7 @@ function viewRequest(requestId,url) {
 			<td class="sing-off-bt">
 				<a href="#">
 					<input type="hidden" name="requestid" id="requestid" value="" />
-						<button class="btn btn-primary" onclick="javascript:addComment()">Comment</button>
+						
 				</a> 
 			</td>
 		</tr>
@@ -359,7 +359,7 @@ function viewRequest(requestId,url) {
 				<div class="tablefooter">
 					<div class="tablefooterleft">
 						<input type="hidden" name="judgeSignOff" id="judgeSignOff"
-							value="0" /> <input type="button" value="Sign Off" class="btn"
+							value="0" /><button class="btn btn-primary" onclick="javascript:addComment()">Comment</button> <input type="button" value="Sign Off" class="btn"
 							id="sign_btn" onclick="javascript:commitSignOff('1','')" />
 						<!-- <input type="button" value="Sign Off On Behalf Of"  class="btn"  id="sign_onbehalf_btn" onclick="javascript:commitSignOff('2')"/>  -->
 						<input type="button" value="Sign Off On Behalf Of" class="btn"
@@ -539,7 +539,7 @@ function viewRequest(requestId,url) {
            function showTextArea(i,baseid,j){
              jQuery(function($){
                if(document.getElementById("input"+i+"_"+j).innerHTML == ""){
-                 $("#input"+i+"_"+j).append("<textarea name='replyComment"+i+"_"+j+"' id='replyComment"+i+"_"+j+"'></textarea><input id='comment_btn' class='btn clear' type='button' value='Submit' onclick='javascript:addReply(&quot;"+i+"_"+j+"&quot;,"+baseid+")'>");
+                 $("#input"+i+"_"+j).append("<textarea name='replyComment"+i+"_"+j+"' id='replyComment"+i+"_"+j+"'></textarea></br><input id='comment_btn' class='btn clear' type='button' value='Submit' onclick='javascript:addReply(&quot;"+i+"_"+j+"&quot;,"+baseid+")'>");
                }else{
                  $("#input"+i+"_"+j).html("");
                }
