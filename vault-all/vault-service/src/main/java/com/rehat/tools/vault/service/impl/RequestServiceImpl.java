@@ -585,4 +585,52 @@ public class RequestServiceImpl implements RequestService{
         
     }
 
+	public JSONObject EditVersion(String versionid) {
+		StringBuffer sb = new StringBuffer();
+		JSONObject joReturn = new JSONObject();
+		Version version = new Version();
+		List<Version> versions = new ArrayList<Version>();
+		Long productid = null;
+		Version productVersion = new Version();
+		List<Version> list = new ArrayList<Version>();
+		versionDAO = new VersionDAO();
+		try {
+			version.setId(Long.parseLong(versionid));
+			versions = versionDAO.get(version);
+			if (versions != null && versions.size() > 0) {
+				productid = versions.get(0).getProduct_id();
+
+				productVersion.setProduct_id(productid);
+				list = versionDAO.get(productVersion);
+				if (list != null && list.size() > 0) {
+					sb.append("<option value='-1'>------</option>");
+					for (int i = 0; i < list.size(); i++) {
+						if (list.get(i).getId() == Long
+								.parseLong(versionid)) {
+							sb.append("<option value='"
+									+ list.get(i).getId()
+									+ "' selected='selected' id='versionid'>"
+									+ list.get(i).getValue()
+									+ "</option>");
+						}
+						else {
+							sb.append("<option value='"
+									+ list.get(i).getId() + "'>"
+									+ list.get(i).getValue()
+									+ "</option>");
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		finally {
+			joReturn.put("sboption", sb.toString());
+			joReturn.put("productid", productid.toString());
+		}
+		return joReturn;
+	}
+
 }

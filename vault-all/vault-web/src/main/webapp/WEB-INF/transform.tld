@@ -33,10 +33,16 @@
   	<function-class>com.redhat.tools.vault.web.helper.Attachment</function-class>
   	<function-signature>java.lang.String createFileInfo(com.redhat.tools.vault.bean.Request,java.lang.String)</function-signature>	
   </function>
-    <function>
+  <function>
   	<description>get request sign</description>
   	<name>getRequestSign</name>
   	<function-class>com.redhat.tools.vault.web.helper.VaultHelper</function-class>
   	<function-signature>java.lang.String getRequestSign(java.lang.String)</function-signature>	
+  </function>
+  <function>
+  	<description>replace character</description>
+  	<name>replaceCharacter</name>
+  	<function-class>com.redhat.tools.vault.web.helper.VaultHelper</function-class>
+  	<function-signature>java.lang.String replaceCharacter(java.lang.String)</function-signature>	
   </function>
 </taglib>

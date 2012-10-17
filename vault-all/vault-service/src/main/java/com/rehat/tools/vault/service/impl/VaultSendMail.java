@@ -453,7 +453,8 @@ public class VaultSendMail {
 			sb.append("Commented by " + bean.getEditedby() + "@redhat.com ["
 					+ format.format(bean.getCreatedtime()) + "]:");
 			addLine(sb);
-			sb.append(StringUtil.showInEmail(bean.getComment()));
+			String comm=(bean.getComment()==null?"":bean.getComment());
+			sb.append(StringUtil.showInEmail(comm));
 			addLine(sb);
 			// addPlainDetailLink(sb,url);
 			// addPlainDetail(sb,bean);

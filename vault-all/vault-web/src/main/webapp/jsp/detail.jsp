@@ -61,7 +61,7 @@ function viewRequest(requestId,url) {
 		<tr>
 			<th colspan="5"><c:if
 					test="${not empty detailRequest.requestname}">${detailRequest.requestid} ${detailRequest.requestname}</c:if>
-				<form action="<%=request.getContextPath()%>/rp" method="POST"
+				<form action="<%=request.getContextPath()%>/ReportServlet" method="POST"
 					name="formReport" id="formReport" style="display: inline;">
 					<a href="javascript:report()" class="report">Report This
 						Request</a><a href="#" id="new_child_request" class="add">Create
@@ -96,7 +96,7 @@ function viewRequest(requestId,url) {
 		</tr>
 		<tr>
 			<td><span>Due date:</span></td>
-			<td>${tran:transformByFormat(detailRequest.requesttime,"yyyy-MM-dd
+			<td id="requesttime_value">${tran:transformByFormat(detailRequest.requesttime,"yyyy-MM-dd
 				HH:mm")}<script>OutputLoc();</script>
 			</td>
 			<td class="bg-gray">Create Date:</td>
@@ -182,11 +182,13 @@ function viewRequest(requestId,url) {
 		</tr>
 	</tbody>
 </table>
-<table class="eso-table" id="reception_tbl" style="display: none">
+<table style="width:100%;max-width: 100%;" id="detail_sub_tbl">
 	<tr>
 		<td colspan="4" style="border: none; height: 30; padding: 0px;"
-			id="detail_td"><c:if test="${not empty detailRequest.requestid}">
-				<script type="text/javascript">
+			id="detail_td">
+			<table class="eso-table" id="reception_tbl" style="display: none">
+				<c:if test="${not empty detailRequest.requestid}">
+					<script type="text/javascript">
 	                    	jQuery(function($){
 	                    		var url = "<%=request.getContextPath()%>/RequestHistory";
 	                    		$.ajax({
@@ -275,7 +277,7 @@ function viewRequest(requestId,url) {
 	        							}
 	    								if (typeof iTable != 'undefined'){
 	    									$("#detail_td").html("");
-	    									$("#detail_td").append("<table cellpadding='0' cellspacing='0' class='list_table' width='100%' id='reception_tbl'></table>");
+	    									$("#detail_td").append("<table cellpadding='0' cellspacing='0' class='eso-table' width='100%' id='reception_tbl'></table>");
 	    								}
 	    								iTable = $('#reception_tbl').dataTable({
 	    								    "iDisplayLength": 100,
@@ -287,6 +289,7 @@ function viewRequest(requestId,url) {
 	    									"bLengthChange": false,
 	    									"bPaginate": false,
 	    									"bSort": false,
+	    									"bDestroy":false,
 	    									"sPaginationType": "full_numbers",
 	    									"aoColumns": [
 	    									  { "sTitle": "ID",
@@ -317,7 +320,9 @@ function viewRequest(requestId,url) {
 	                    		});
 							});
 	                  	</script>
-			</c:if></td>
+				</c:if>
+			</table>
+		</td>
 	</tr>
 </table>
 <table class="eso-table tableWidth" id="detail_comment"
@@ -337,22 +342,19 @@ function viewRequest(requestId,url) {
 						Comments </legend>
 					<legend class="legend-vault img2 display-none" id="turn2">Turn
 						On Comments </legend>
-					<div class="comments" id="addcomment_div"></div> 
-               </fieldset>
-           </td>
-        </tr>
-		<tr>
-			<td class="new_bg_white" id="comment_td" colspan='2'>
-				<textarea name="comment" id="comment"></textarea>
+					<div class="comments" id="addcomment_div"></div>
+				</fieldset>
 			</td>
 		</tr>
 		<tr>
-			<td class="sing-off-bt">
-				<a href="#">
-					<input type="hidden" name="requestid" id="requestid" value="" />
-						
-				</a> 
-			</td>
+			<td class="new_bg_white" id="comment_td" colspan='2'><textarea
+					name="comment" id="comment"></textarea></td>
+		</tr>
+		<tr>
+			<td class="sing-off-bt"><a href="#"> <input type="hidden"
+					name="requestid" id="requestid" value="" />
+					<button class="btn btn-primary" onclick="javascript:addComment()">Comment</button>
+			</a></td>
 		</tr>
 		<tr>
 			<th colspan="3">
@@ -372,9 +374,6 @@ function viewRequest(requestId,url) {
 				</div>
 			</th>
 		</tr>
-		
-		
-		
 </table>
 
 <table cellpadding="0" cellspacing="0" class="home_table margin_top"
@@ -498,7 +497,7 @@ function viewRequest(requestId,url) {
 						document.getElementById("comment").value = "";
 						if (typeof iTable != 'undefined'){
 							$("#detail_td").html("");
-							$("#detail_td").append("<table cellpadding='0' cellspacing='0' class='list_table' width='100%' id='reception_tbl'></table>");
+							$("#detail_td").append("<table cellpadding='0' cellspacing='0' class='eso-table' width='100%' id='reception_tbl'></table>");
 							//iTable.fnClearTable( 0 );
 							//iTable.fnDraw();
 						}
@@ -507,6 +506,9 @@ function viewRequest(requestId,url) {
 							"aaSorting": [[ 1, "desc" ]],
 							"aaData": data2,
 							"bAutoWidth": false,
+							"bDestroy":false,
+							"bFilter": false,
+							"bPaginate": false,
 							"sPaginationType": "full_numbers",
 							"aoColumns": [
 							  { "sTitle": "ID",
@@ -637,7 +639,7 @@ function viewRequest(requestId,url) {
 		   
            function edit(){
         		jQuery(function($){
-        			var url = "<%=request.getContextPath()%>/servlet/ShowRequestServlet";
+        			var url = "<%=request.getContextPath()%>/editVersion";
         			$("table#newrequest_tbl").attr("style","display");
         			$("table#myrequest").hide();
         			$("table#allrequest").hide();
@@ -646,8 +648,10 @@ function viewRequest(requestId,url) {
         			$("table#canviewrequest").hide();
         			$("table#detail_name_table").hide();
         			$("table#detail_tbl").hide();
-
-        			$("#div_name").html("Edit Request")
+        			$("table#detail_sub_tbl").hide();
+        			$("table#detail_comment").hide();
+        			
+        			$("#div_name").html("Edit Request");
         			
         			var requestid = $("#requestid").val();
         			
@@ -660,21 +664,21 @@ function viewRequest(requestId,url) {
         			var versionid = $("#versionid").val();
         			$("#selectversionid").attr("value",versionid);
         			if(versionid == "-1"){
-        				$("#productoption option[value=-1]").attr("selected", true);
-        				$("#versionoption").html("<option value='-1'>------</option>");
-        				$("#versionoption option[value=-1]").attr("selected", true);
+        				$("#request_selectPro option[value=-1]").attr("selected", true);
+        				$("#request_selectVersion").html("<option value='-1'>------</option>");
+        				$("#request_selectVersion option[value=-1]").attr("selected", true);
         			}else{
         				$.ajax({
         					type: "POST",
         					url: url,
-        					data: "operation=editVersion"+"&id="+versionid,
+        					data: "id="+versionid,
         					success: function(rtnData) {
         						rtnData = eval("(" + rtnData + ")");
         						var productid = rtnData.productid;
         						var sboption = rtnData.sboption;
         						$("#selectproductid").attr("value",productid);
-        						$("#productoption option[value="+productid+"]").attr("selected",true);
-        						$("#versionoption").html(sboption)
+        						$("#request_selectPro option[value="+productid+"]").attr("selected",true);
+        						$("#request_selectVersion").html(sboption)
         						.fadeIn("slow");
         					}
         				});
@@ -699,7 +703,7 @@ function viewRequest(requestId,url) {
         			//$("#detail").html($("#detail_value").html());
         			$("#Attachment_div_request").html("");
         			document.getElementById("requestAttachment").value = "";
-        			url = "<%=request.getContextPath()%>/servlet/VaultFileUploadServlet";
+        			url = "<%=request.getContextPath()%>/VaultFileUpload";
         			$.post(url,{
         				operation:"list",
         				id:requestid
@@ -714,8 +718,6 @@ function viewRequest(requestId,url) {
         			} 
         			$("#create_btn").attr("value", "Change");
 
-
-        			////
         			setUserAndRequest();
         			$("#cc_div").html("");
         			if(globalRequests != null && globalRequests != ""){

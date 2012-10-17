@@ -53,4 +53,8 @@ public class VaultHelper {
 		}
 		return mark;
 	}
+	
+	public static String replaceCharacter(String old){
+		return old.replaceAll("&amp;","&");
+	}
 }

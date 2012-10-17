@@ -36,7 +36,7 @@ public class HomeServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userName="jskeoch";
+		String userName="wezhao";
 		String userEmail="wezhao@redhat.com";
 		request.getSession().setAttribute("userName", userName);
 		request.getSession().setAttribute("userEmail", userEmail);
