@@ -15,7 +15,7 @@ window.query = {
 		$.ajax({
 			type: "POST",
 			url: url,
-			data: "operation=verifyQueryName&queryName="+queryName,
+			data: "operation=verifyQueryName&queryName="+encodeURI(queryName),
 			dataType:'json',
 			success: function(rtnData) {
 				var queryExist = rtnData[0].queryExist;
@@ -27,7 +27,7 @@ window.query = {
 					$.ajax({
 						type : "POST",
 						url : url,
-						data : "operation=saveQuery&queryName="+queryName+"&requestName="+requestName+"&creator="+creator
+						data : "operation=saveQuery&queryName="+encodeURI(queryName)+"&requestName="+encodeURI(requestName)+"&creator="+creator
 							+ "&owner=" + owner + "&status=" + status + "&productId="+productId+"&versionId="+versionId,
 						success : function(rtnData){
 							$("#myModal").modal("hide");

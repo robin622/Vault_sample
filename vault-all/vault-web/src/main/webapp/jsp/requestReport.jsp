@@ -43,14 +43,14 @@
 </head>
 <body>
 	<div class="content margin padding">
-		<c:forEach var="request" items="${multiRequests}">
+		<c:forEach var="request" items="${multiRequests}" varStatus="status">
 
 			<span class="flow-left state">[ ${request.status} ]</span>
 			<a
 				href="${pageContext.request.contextPath}/showRequest?requestid=${request.requestid}"
 				class="flow-left margin-right"><span><h4>&nbsp;&nbsp;${request.requestid}
 						${request.requestname}</h4></span></a>
-			<table class="eso-table blod font-normal" id="sumreport"
+			<table class="eso-table blod font-normal" id="sumreport${status.index}"
 				style="font-size: 13px;">
 				<thead>
 					<tr>
@@ -93,7 +93,7 @@
 					<c:if
 						test="${request.commentList!=null && request.commentList!=''}">
 						<tr>
-							<td><span class="signed">Comment</span></td>
+							<td><span class="Comment">Comment</span></td>
 							<td>
 							<c:forTokens items="${request.commentList}" delims="," var="comment">
 							<a href="#">${comment }</a>
@@ -109,7 +109,7 @@
 					<c:if
 						test="${request.rejectedList!=null && request.rejectedList!=''}">
 						<tr>
-							<td><span class="signed">Reject</span></td>
+							<td><span class="Rejected">Reject</span></td>
 							<td>
 							<c:forTokens items="${request.rejectedList}" delims="," var="reject">
 								<a href="#">${reject }</a>
@@ -124,11 +124,11 @@
 
 				</tbody>
 			</table>
+			<script type="text/javascript">
+				toreplace('sumreport${status.index}');
+			</script>
 		</c:forEach>
 		<a href="#" class="margin">Link to quick access this report</a>
 		<div class="clear"></div>
 	</div>
-	<script type="text/javascript">
-		toreplace('sumreport');
-	</script>
 </body>

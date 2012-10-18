@@ -195,6 +195,23 @@ $
 $(document)
 		.ready(
 				function() {
+					jQuery.fn.dataTableExt.oSort['num-html-asc'] = function(a,b) {
+						var x = a.replace( /<.*?>/g, "" );
+						var y = b.replace( /<.*?>/g, "" );
+						x = parseFloat( x );
+						y = parseFloat( y );
+						return ((x < y || isNaN(y) ) ? -1 : ((x > y || isNaN(x)) ? 1 : 0));
+						};
+
+						jQuery.fn.dataTableExt.oSort['num-html-desc'] = function(a,b) {
+						var x = a.replace( /<.*?>/g, "" );
+						var y = b.replace( /<.*?>/g, "" );
+						x = parseFloat( x );
+						y = parseFloat( y );
+						return ((x < y || isNaN(x)) ? 1 : ((x > y || isNaN(y) ) ? -1 : 0));
+						}; 
+					
+					
 					$('#example')
 							.dataTable(
 									{
@@ -203,8 +220,9 @@ $(document)
 										"oLanguage" : {
 											"sLengthMenu" : "Show_MENU_ entries"
 										},
+										"aaSorting": [[ 0, "desc" ]],
 										"aoColumns": [
-										              { "sType": "numeric" },
+										              { "sType": "num-html"},
 										              { "bSortable": true },
 										              { "bSortable": true },
 										              { "bSortable": true },
@@ -263,8 +281,9 @@ $(document)
 										"oLanguage" : {
 											"sLengthMenu" : "Show_MENU_ entries"
 										},
+										"aaSorting": [[ 0, "desc" ]],
 										"aoColumns": [
-										              { "sType": "numeric" },
+										              { "sType": "num-html"},
 										              { "bSortable": true },
 										              { "bSortable": true },
 										              { "bSortable": true },
@@ -289,7 +308,20 @@ $(document)
 										"sPaginationType" : "bootstrap",
 										"oLanguage" : {
 											"sLengthMenu" : "Show_MENU_ entries"
-										}
+										},
+										"aaSorting": [[ 0, "desc" ]],
+										"aoColumns": [
+										              { "sType": "num-html"},
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true }
+										]
 									});
 				});
 
@@ -305,9 +337,10 @@ $(document)
 										"oLanguage" : {
 											"sLengthMenu" : "Show_MENU_ entries"
 										},
+										"aaSorting": [[ 1, "desc" ]],
 										"aoColumns": [
 											              { "bSortable": false },
-											              { "bSortable": true },
+											              { "sType": "num-html"},
 											              { "bSortable": true },
 											              { "bSortable": true },
 											              { "bSortable": true },
@@ -336,6 +369,19 @@ $(document)
 										"sPaginationType" : "bootstrap",
 										"oLanguage" : {
 											"sLengthMenu" : "Show_MENU_ entries"
-										}
+										},
+										"aaSorting": [[ 0, "desc" ]],
+										"aoColumns": [
+										              { "sType": "num-html"},
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true },
+										              { "bSortable": true }
+										]
 									});
 				});

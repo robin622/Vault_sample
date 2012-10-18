@@ -89,6 +89,10 @@ var zone_patern=/\d{1,4}\-\d{1,2}\-\d{1,2} \d{1,2}:\d{1,2}/g;
 					for(var k=0;k<tds.length;k++){
 						////console.info('intext is'+ tds[k].innerHTML);
 						var intext=tds[k].innerHTML;
+						//temp solution
+						if(typeof intext != "undefined"){
+							intext = intext.replace(/\s+/g," ");
+						}
 						if(typeof intext != "undefined" && intext.search(zone_patern)!=-1 && tds[k].id!="detail_td" && tds[k].id!="comment_td"){
 							//console.info('success');
 							 var arr=intext.match(zone_patern);

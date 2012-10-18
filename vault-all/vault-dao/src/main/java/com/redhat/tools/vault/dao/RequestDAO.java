@@ -106,7 +106,8 @@ public class RequestDAO {
 				criteria.add(Expression.lt(Request.PROPERTY_REQUESTTIME,
 						DateUtil.dateTomorrow(condition.getRequesttime())));
 			}
-			criteria.addOrder(Order.desc((Request.PROPERTY_EDITEDTIME)));
+			//criteria.addOrder(Order.desc((Request.PROPERTY_EDITEDTIME)));
+			criteria.addOrder(Order.desc((Request.PROPERTY_REQUESTID)));
 			List<Request> list = criteria.list();
 			if (list != null && list.size() > 0) {
 				for (Request s : list) {
@@ -868,6 +869,7 @@ public class RequestDAO {
 				queryString += " and a.owner like ?";
 			}
 			queryString += " and (a.createdby = ? or a.is_public = 1 or a.owner like ? or a.forward like ?)";
+			queryString += " order by requestid desc";
 			queryObject = sess.createQuery(queryString);
 			if (requestName != null && !"".equals(requestName)) {
 				queryObject.setString(++i, "%" + requestName + "%");

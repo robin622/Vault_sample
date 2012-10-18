@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,6 +31,8 @@ public class VaultFileUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	/** The logger. */
 	private static final Logger log = Logger.getLogger(VaultFileUploadServlet.class);
+	
+	private Lock lock = new ReentrantLock();
 
 	@SuppressWarnings("unchecked")
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -50,10 +54,12 @@ public class VaultFileUploadServlet extends HttpServlet {
 					if(id == null || "".equals(id)) {
 						throw new Exception("Cannot obtain attachments.");
 					}
-					synchronized(this) {
-						Attachment.remove(createPath(req));
-						Attachment.copyTo(createPath(req), Integer.parseInt(id));
-						
+					lock.lock();
+					try{
+					    Attachment.remove(createPath(req));
+                        Attachment.copyTo(createPath(req), Integer.parseInt(id));
+					}finally{
+					    lock.unlock();
 					}
 				} else if("delete".equals(operation)) {
 					String ref = req.getParameter("ref");

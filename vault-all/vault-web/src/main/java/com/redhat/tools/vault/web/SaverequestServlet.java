@@ -126,7 +126,7 @@ public class SaverequestServlet extends HttpServlet {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             DateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 
-            Date date = new Date();
+            Date date = DateUtil.getLocalUTCTime();
             if (requestTime != null && !"".equals(requestTime)) {
                 try {
                     date = dateFormat.parse(requestTime);

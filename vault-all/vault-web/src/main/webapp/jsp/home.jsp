@@ -34,6 +34,7 @@
 		function OutputLoc(){
 			document.write(loc);
 		}
+		var currentMenu = "navHome";
 		jQuery(function($){
 			if("${is_search}" != "" || "${queryName}" != ""){
 				$("table#searchrequest").attr("style","display");
@@ -63,6 +64,9 @@
 				$("div#query-area").hide();
 				$("div#advance_query").hide();
 				$("fieldset#advance_set").hide();
+
+				$("#subMenu").html("<a href=${pageContext.request.contextPath}/showRequest?requestid=${detailRequest.requestid}>Request Detail ${detailRequest.requestid}</a>");
+				
 			}
 			else if("${operationstatus}" != "null" && "${operationstatus}" == "wait"){
 				$("table#waitrequest").attr("style","display");
@@ -75,6 +79,11 @@
 				$("table#newrequest_tbl").hide();
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
+
+				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval</a>");
+				$("#" + currentMenu).removeClass("active");
+				$("#navWait").addClass("active");
+				currentMenu = "navWait";
 			}
 			else if("${operationstatus}" != "null" && "${operationstatus}" == "signed"){
 				$("table#signedrequest").attr("style","display");
@@ -87,6 +96,11 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
+
+				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed </a>");
+				$("#" + currentMenu).removeClass("active");
+				$("#navSign").addClass("active");
+				currentMenu = "navSign";
 			}
 			else if("${operationstatus}" != "null" && "${operationstatus}" == "CanView"){
 				$("table#canviewrequest").attr("style","display");
@@ -99,6 +113,11 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
+
+				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=CanViewRequest>I Can View </a>");
+				$("#" + currentMenu).removeClass("active");
+				$("#navView").addClass("active");
+				currentMenu = "navView";
 			}
 			else if("${operationstatus}" != "null" && "${operationstatus}" == "cctome"){
 				$("table#cctomerequest").attr("style","display");
@@ -111,6 +130,11 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
+
+				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me </a>");
+				$("#" + currentMenu).removeClass("active");
+				$("#navCC").addClass("active");
+				currentMenu = "navCC";
 			}
 			else if("${operationstatus}" != "null" && "${operationstatus}" == "myrequest"){
 				$("table#myrequest").attr("style","display");
@@ -123,6 +147,12 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
+
+				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests </a>");
+
+				$("#" + currentMenu).removeClass("active");
+				$("#navMy").addClass("active");
+				currentMenu = "navMy";
 			}
 			else if("${operationstatus}" != "" && "${operationstatus}" == "newrequest"){
 				$("table#newrequest_tbl").attr("style","display");
@@ -138,6 +168,12 @@
 				$("div#query-area").hide();
 				$("div#advance_query").hide();
 				$("fieldset#advance_set").hide();
+
+				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a>");
+				$("#" + currentMenu).removeClass("active");
+				$("#navNew").addClass("active");
+				currentMenu = "navNew";
+				
 			}
 			else {
 				$("table#myrequest").attr("style","display");
@@ -188,7 +224,7 @@
 <body id='eso-body' onload="rmloading();">
 <div class="eso-inner">
 <header id='eso-topbar'>
-  <a href="index.html" title="go back home" class="logo">Vault</a>
+  <a href="${pageContext.request.contextPath}" title="go back home" class="logo">Vault</a>
   <a href="https://engineering.redhat.com/hss-portal" class="eso-logo"><img src="<%=request.getContextPath()%>/images/header-logo-eso-developed.png" alt="Developed by HSS"></a>
   <ul class="quick-menu unstyled">
   <li class="dropdown">
@@ -218,20 +254,20 @@
 
 <div class="navbar">
   <ul class="nav">
-    <li class="active"><a href="index.html">Home</a></li>
-   <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a></li>
-    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval<span class="number"> ( ${reqCounts.waiting} )</span></a></li>
-    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests<span class="number"> ( ${reqCounts.myrequest} )</span></a></li>
-    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed <span class="number">( ${reqCounts.signed} )</span></a></li>
-    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me<span class="number"> ( ${reqCounts.cc} )</span></a></li>
-    <li class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CanViewRequest>I Can View <span class="number">( ${reqCounts.canview} )</span></a></li>
+    <li id="navHome" class="active"><a href=${pageContext.request.contextPath}>Home</a></li>
+   <li id="navNew" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a></li>
+    <li id="navWait" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval<span class="number"> ( ${reqCounts.waiting} )</span></a></li>
+    <li id="navMy" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests<span class="number"> ( ${reqCounts.myrequest} )</span></a></li>
+    <li id="navSign" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed <span class="number">( ${reqCounts.signed} )</span></a></li>
+    <li id="navCC" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me<span class="number"> ( ${reqCounts.cc} )</span></a></li>
+    <li id="navView" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CanViewRequest>I Can View <span class="number">( ${reqCounts.canview} )</span></a></li>
   </ul>
 </div>
 <div class="content">
    
 <div class="breadcrumb">
-    <ul class="pull-left">
-        <li><a href="index.html">Home</a> <span class="divider">/</span></li>
+    <ul id="breadcrumbul" class="pull-left">
+        <li><a href=${pageContext.request.contextPath}>Home</a> <span class="divider">/</span> <span id="subMenu"></span></li>
     </ul>
         
     

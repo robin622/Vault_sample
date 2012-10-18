@@ -79,6 +79,8 @@ window.request = {
 		
 		
 		$("#new_child_request").click(function(){
+			$("#subMenu").html("Creat Child Request");
+			
 			$("table#newrequest_tbl").attr("style","display");
 			$("table#canviewrequest").hide();
 			$("table#myrequest").hide();
@@ -105,10 +107,8 @@ window.request = {
 			document.getElementById("maxchildcount").value = "0";
 			document.getElementById("requestname").value = "";
 			document.getElementById("newrequestid").value = "";
-			$("#request_selectPro option[value=-1]").attr("selected", true);
-			//$("#notifyoption option[value=-1]").attr("selected", true);
-			$("#request_selectVersion").html("<option value='-1'>----------</option>");
-			$("#request_selectVersion option[value=-1]").attr("selected", true);
+			request.req_initProduct();
+			request.req_initVersion();
 
 			$("#signofftd").html('<input type="button" id="sign_addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addOwner()" value="Add More">');
 			request.req_addOwner(2,"",true);
@@ -166,14 +166,16 @@ window.request = {
 			optionStr += '<option value="3">Do not notify</option>';
 		}
 		var link = '';
+		var tip = '';
 		if(firstOption){
 			link = '<a title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to \'Waiting\' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</a>';
+			tip = 'You can input multiple E-mail and separated by commas.';
 		}
 		$(link + '<select id="notifyoption' + newownercount + '" data-placeholder=""  class="chzn-select creat-request-select" style="margin-top:4px;margin-right:4px;" tabindex="6"> '
 				  +  optionStr
 			      +  '</select>'
 			      +  '<input type="text" class="input-xlarge add-width" id="input_owner_' + newownercount + '" value="' + defaultValue + '">'
-			      +  '<span id="input_owner_' + newownercount + '_del" class="delate-table" onclick=javascript:request.req_delOwner("input_owner_' + newownercount + '",' + newownercount + ')></span></br>').insertBefore($('#sign_addchild_btn'));
+			      +  '<span id="input_owner_' + newownercount + '_del" class="delate-table" onclick=javascript:request.req_delOwner("input_owner_' + newownercount + '",' + newownercount + ')></span>' + tip + '</br>').insertBefore($('#sign_addchild_btn'));
 		if(selectedIndex){
 			$("#notifyoption"+newownercount+" option[value=" + selectedIndex + "]").attr("selected",true);
 		}
@@ -213,6 +215,10 @@ window.request = {
 	
 	req_delOwner : function(inputownerid,index){
 		var ownercount = $("#ownercount").val();
+		if(ownercount == 0 && index == 0){
+			$("#"+inputownerid).val("");
+			return;
+		}
 		$("#notifyoption"+index).val("");
 		$("#notifyoption"+index).remove();
 		$("#"+inputownerid).val("");
@@ -256,7 +262,7 @@ window.request = {
 	req_delChild : function(inputchildid){
 		var childcount = parseInt($("#maxchildcount").val());
         if(inputchildid == "input_child_0" && childcount==0){
-            
+        	$("#"+inputchildid).val("");
         }else{
             $("#"+inputchildid).val("");
             $("#"+inputchildid).remove();
@@ -603,6 +609,7 @@ window.request = {
 	},
 	
 	req_initProduct : function(){
+		$('#request_selectPro').html('');
 		$("#request_selectPro").append("<option value='-1'>------------</option>");
 		$("#request_selectVersion").html("<option value='-1'>Please select product</option>");
 		$("#request_selectVersion option[value=-1]").attr("selected", true);

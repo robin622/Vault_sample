@@ -679,6 +679,8 @@ function viewRequest(requestId,url) {
 		   
            function edit(){
         		jQuery(function($){
+        			$("#subMenu").html("Edit Request " + $("#requestid").val());
+
         			var url = "<%=request.getContextPath()%>/editVersion";
         			$("table#newrequest_tbl").attr("style","display");
         			$("table#myrequest").hide();
@@ -705,7 +707,7 @@ function viewRequest(requestId,url) {
         			$("#selectversionid").attr("value",versionid);
         			if(versionid == "-1"){
         				$("#request_selectPro option[value=-1]").attr("selected", true);
-        				$("#request_selectVersion").html("<option value='-1'>------</option>");
+        				$("#request_selectVersion").html("<option value='-1'>------------</option>");
         				$("#request_selectVersion option[value=-1]").attr("selected", true);
         			}else{
         				$.ajax({
@@ -786,12 +788,12 @@ function viewRequest(requestId,url) {
         					var child_array = child_str.split(",");
         					for (var i=0;i<child_array.length;i++){								
         			            $('<input type="text" class="input-xlarge" style="margin-top:4px;" id="input_child_' + i + '" value="'+ child_array[i].split("##")[1] +'"><span id="input_child_' + i + '_del" class="delate-table" onclick=javascript:request.req_delChild("input_child_' + i + '")></span></br>').insertBefore($("#addchild_btn"));
-        						$("#input_child_"+i).autocomplete(selectRequest,{ mustMatch:true,matchContains:1} );
+        						$("#input_child_"+i).autocomplete(request.selectRequest,{ mustMatch:true,matchContains:1} );
         					}
         					$("#maxchildcount").val(child_array.length - 1);
         				}else{
 							$('<input type="text" class="input-xlarge" id="input_child_0"><span class="delate-table"></span></br>').insertBefore($("#addchild_btn"));
-        					$("#input_child_0").autocomplete(selectRequest,{ mustMatch:true,matchContains:1} );    										
+        					$("#input_child_0").autocomplete(request.selectRequest,{ mustMatch:true,matchContains:1} );    										
         				}
         			} 
 
