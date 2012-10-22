@@ -211,11 +211,16 @@ window.request = {
 		}else{
 			$("#input_owner_"+newownercount).focus().autocomplete(request.selectUser,{multiple:true,matchContains:1});
 		}
+		
+		ownercount1 = $("#ownercount").val();
+		if(parseInt(ownercount1) == 2){
+			$('#sign_addchild_btn').hide();
+		}
 	},
 	
 	req_delOwner : function(inputownerid,index){
 		var ownercount = $("#ownercount").val();
-		if(ownercount == 0 && index == 0){
+		if(inputownerid == 'input_owner_0' && index == 0){
 			$("#"+inputownerid).val("");
 			return;
 		}
@@ -227,6 +232,11 @@ window.request = {
         $("#"+ inputownerid + "_del").remove();
         $("#ownercount").val(ownercount-parseInt(1));
         request.option['notifyoption'+index] = -1;
+        
+        ownercount1 = $("#ownercount").val();
+		if(parseInt(ownercount1) == 1){
+			$('#sign_addchild_btn').show();
+		}
 	},
 	
 	req_addChild : function(){

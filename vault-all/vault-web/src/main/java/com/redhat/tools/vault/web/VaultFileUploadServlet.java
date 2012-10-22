@@ -20,6 +20,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.jboss.logging.Logger;
 
 import com.redhat.tools.vault.web.helper.Attachment;
+import com.redhat.tools.vault.web.helper.MGProperties;
 
 /**
  * @author <a href="mailto:speng@redhat.com">Peng Song</a>
@@ -40,9 +41,11 @@ public class VaultFileUploadServlet extends HttpServlet {
 		String operation = null;
 		StringBuffer sb = new StringBuffer();
 		try {
-			/*int maxsize = Integer.parseInt(
-					(String)getServletConfig().getInitParameter("maxsizeKbyte"));*/
+			String maxsizeStr = MGProperties.getInstance().getValue(MGProperties.KEY_MAXUPLOAD_SIZE);
 			int maxsize = 102400;
+			if(maxsizeStr != null && !"".equals(maxsizeStr)){
+			    maxsize = Integer.parseInt(maxsizeStr);
+			}
 			res.setContentType("text/html;charset=UTF-8");
 			res.setHeader("Cache-Control", "no-chche");
 			String writePath = null;

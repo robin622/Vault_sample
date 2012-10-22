@@ -48,7 +48,7 @@
         <option value="3">Do not notify</option>
       </select>
       <input type="text" class="input-xlarge add-width" id="input_owner_0" value="">
-      <span class="delate-table"></span>
+      <span class="delate-table" onclick="javascript:request.req_delOwner('input_owner_0',0)"></span>
       You can input multiple E-mail and separated by commas.
       </br>
       <input type="button" id="sign_addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addOwner()" value="Add More">
@@ -72,7 +72,7 @@
     <tr>
     <td ><span>Child:</span></td>
     <td id="childtd">
-    <input type="text" class="input-xlarge" id="input_child_0"><span class="delate-table"></span></br>
+    <input type="text" class="input-xlarge" id="input_child_0"><span class="delate-table" onclick="javascript:request.req_delChild('input_child_0')"></span></br>
     <input type="button" id="addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addChild()" value="Add More">
     </td>
    

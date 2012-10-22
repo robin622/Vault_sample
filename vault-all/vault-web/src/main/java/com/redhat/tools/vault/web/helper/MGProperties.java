@@ -21,7 +21,12 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.                   *
  ******************************************************************************/
 package com.redhat.tools.vault.web.helper;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.jboss.logging.Logger;
 
 /**
@@ -41,6 +46,13 @@ public class MGProperties {
 
 	private MGProperties() {
 		prop = new Properties();
+		try {
+            prop.load(this.getClass().getClassLoader().getResourceAsStream("config.properties"));
+        } catch (FileNotFoundException e) {
+            log.error("config file is not found !",e);
+        } catch (IOException e) {
+            log.error(e.getMessage(),e);
+        }
 	}
 
 	public static String KEY_CHECKNAME = "checkname";
@@ -80,6 +92,8 @@ public class MGProperties {
 	public static String NAME_TIME_MRANGE = "mg.til.time.mrange";
 
 	public static String NAME_CHECKEXP = "checkexpression";
+	
+	public static String KEY_MAXUPLOAD_SIZE = "maxsizeKbyte";
 
 	public static Integer COUNT_SEND_EMAIL = 0;
 
@@ -90,16 +104,17 @@ public class MGProperties {
 	public static String URL_ACTION = null;
 
 	public static String USER_NAME = null;
+	
+	public static Lock lock = new ReentrantLock(); 
 
 	public static MGProperties getInstance() {
-		if (instance == null) {
-			synchronized(MGProperties.class){
-				if(instance == null){
-					instance = new MGProperties();
-					//TODO temp
-					instance.prop.setProperty("attachmentpath", "/home/wguo/data/vault/");
-				}
-			}
+	    lock.lock();
+		try{
+		    if (instance == null) {
+                instance = new MGProperties();
+		    }
+		}finally{
+		    lock.unlock();
 		}
 		return instance;
 	}
