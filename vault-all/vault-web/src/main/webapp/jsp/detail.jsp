@@ -55,7 +55,7 @@ function viewRequest(requestId,url) {
 
 </script>
 <input type="hidden" name="versionid" id="versionid" value="-1" />
-<table class="eso-table tableWidth table-top" id="detail_name_table"
+<table class="eso-table tableWidth table-top detail-table" id="detail_name_table"
 	style="display: none">
 	<thead>
 		<tr>
@@ -105,7 +105,7 @@ function viewRequest(requestId,url) {
 			</td>
 		</tr>
 		<tr>
-			<td><span>creator:</span></td>
+			<td><span>Creator:</span></td>
 			<td colspan="3">${detailRequest.createdby}</td>
 		</tr>
 		<tr>
@@ -149,7 +149,7 @@ function viewRequest(requestId,url) {
 				</c:if></td>
 		</tr>
 		<tr>
-			<td height="38"><span>Attachment:</span></td>
+			<td ><span>Attachment:</span></td>
 			<td>
 				<div id="requestAttachment_value">
 					<c:if test="${not empty detailRequest}">
@@ -345,7 +345,7 @@ function viewRequest(requestId,url) {
 	    									  { "sTitle": "Status",
 	    										"fnRender":function(obj){
 	    						            	  var status = obj.aData[4];
-	    										  var sReturn = "<span class='"+status+"'>"+status+"</span>";
+	    										  var sReturn = "<span class='"+status+"m'>"+status+"</span>";
 	    										  return sReturn;
 	    					              		}
 	    									  }
@@ -401,14 +401,14 @@ function viewRequest(requestId,url) {
 				<div class="tablefooter">
 					<div class="tablefooterleft">
 						<input type="hidden" name="judgeSignOff" id="judgeSignOff"
-							value="0" /><input type="button" value="Comment" class="btn btn-primary" onclick="javascript:addComment()"> <input type="button" value="Sign Off" class="btn"
+							value="0" /><input type="button" value="Comment" class="btn btn-primary btn-wide" onclick="javascript:addComment()"> <input type="button" value="Sign Off" class="btn"
 							id="sign_btn" onclick="javascript:commitSignOff('1','')" />
 						<!-- <input type="button" value="Sign Off On Behalf Of"  class="btn"  id="sign_onbehalf_btn" onclick="javascript:commitSignOff('2')"/>  -->
 						<input type="button" value="Sign Off On Behalf Of" class="btn"
 							id="sign_onbehalf_btn" onclick="javascript:behalf_click(this)" />
 						<input type="button" value="Reject" class="btn" id="reject_btn"
 							onclick="javascript:commitReject()" /> <input type="button"
-							value="Cancel" class="btn" id="canceldetail" />
+							value="Cancel" class="btn btn-wide" id="canceldetail" />
 					</div>
 					<div class="tablefooterright"></div>
 				</div>
@@ -565,7 +565,7 @@ function viewRequest(requestId,url) {
 							  { "sTitle": "Status",
 								"fnRender":function(obj){
 				            	  var status = obj.aData[4];
-								  var sReturn = "<span class='"+status+"'>"+status+"</span>";
+								  var sReturn = "<span class='"+status+"m'>"+status+"</span>";
 								  return sReturn;
 			              		}
 							  }

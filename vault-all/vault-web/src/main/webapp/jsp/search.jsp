@@ -82,15 +82,16 @@
     	<div class="span8">
             <div class="modal hide fade" id="myModal">
                 <div class="modal-header">
-                  <button data-dismiss="modal" class="close">x</button>
+                  <button data-dismiss="modal" class="close">x—</button>
                   <h3>Please input query name</h3>
                 </div>
                 <div class="modal-body">
                 	<p><input type="text" class="input-xlarge" id="queryName"></p>
                 </div>
                 <div class="modal-footer">
+                  
+                  <button class="btn btn-primary" href="javascript:query.qry_save()">Save</button>
                   <a data-dismiss="modal" class="btn" href="#">Close</a>
-                  <a class="btn btn-primary" href="javascript:query.qry_save()">Save</a>
                 </div>
           </div>
            

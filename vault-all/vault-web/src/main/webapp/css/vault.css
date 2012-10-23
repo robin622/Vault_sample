@@ -44,6 +44,7 @@ tr.past-due td{ background: #FFB8B8!important;}
 tr.become-due td{ background: #FFE6B8!important;}
 .flow-left{ float:left;}
 .search-ad{ margin:10px 50px;}
+.input-xlarge{width:273px;}
 .comment div:last-child{ border-bottom:none;}
 .comment_line{ padding-bottom:10px;   color: #999;}
 .comment_list{ padding:10px; padding-bottom:10px; padding-left:20px; border-bottom: 1px solid #b9b9b9; margin-bottom:10px; }
@@ -87,6 +88,7 @@ div.dataTables_filter label input{ height:20px;}
 .list-margin-top{margin-top:5px;}
 .background-fff{ background:#fff;}
 .creat-request-select{width:280px;}
+.creat-request-select-sign-off{width:210px;}
 .off-margin{ margin:0;}
 .state{ margin-left:12px;}
 .time{margin:0 10px; color:#999;}
@@ -95,18 +97,32 @@ div.dataTables_filter label input{ height:20px;}
 .span-top{ margin-top:5px;}
 .span-bottom{ margin-bottom:5px;}
 .times{ margin-left:5px;}
+.date-width{width:130px;}
 select, input[type="file"]{height:24px;}
 .table-top{ margin-top:10px;}
+.detail-table tr td:first-child{background:#F5F5F5!important; font-weight:bold;}
+.detail-table tr:nth-child(2n) td{background:none;}
+
+.btn-narrow{padding:1px 5px!important;}
+.btn-wide{padding:4px 10px!important;}
+.row-fluid{margin-bottom:px;}
+
+.Signedm{background:url("../images/ico_signed.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
+.Commentsm{background:url("../images/ico_comment.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
+.Waitingm{background:url("../images/icon.png") no-repeat scroll 0px -117px transparent; padding-left:20px;}
+
 /* form-area ========================================*/
-.form-area{width:98%;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;background-color:#F7F7F7;margin:8px auto;margin-right:auto;margin-left:auto;border:1px solid #E4E4E4;margin-top:10px;margin-bottom:15px;padding-top:20px;}
+form{margin:0px;}
+.form-area{width:98%;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;background-color:#F7F7F7;margin:0px auto;margin-right:auto;margin-left:auto;border:1px solid #E4E4E4;margin-bottom:15px;padding-top:20px;}
 .form-area-left,.form-area-right{float:left;padding-left:10px;}
-.bottom{height:40px;float:left;clear:both;padding-left:430px;}
+.bottom{height:40px;float:left;clear:both;padding-left:455px;}
 .clear{clear:both;}
 .select-width{width:280px;}
-.btn{padding:1px 10px!important;}
+.btn{padding:1px 10px;}
 div.dataTables_length select{margin-left:4px;}
 .modal-footer{text-align:left;}
 .modal{width:450px; margin:-250px 0 0 -200px;}
 textarea{width:300px;}
+
 
 
