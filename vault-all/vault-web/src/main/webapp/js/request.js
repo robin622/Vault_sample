@@ -525,7 +525,11 @@ window.request = {
         if(detail == "") {
             alert("Please enter Detail Description.");
             return false;
-        }        
+        }
+        if(detail.length > 27000){
+        	alert("Description is too long.It should not be more than 27000 characters");
+        	return false;
+        }
         
         detail = detail.replaceAll("\r\n",'<br>');
         detail = detail.replaceAll("\n\r",'<br>');
