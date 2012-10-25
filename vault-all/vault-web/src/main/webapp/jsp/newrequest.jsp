@@ -40,18 +40,18 @@
     </tr>
     <tr>
       <td ><span>Sign off by:</span><span class="red">*</span></td>
-      <td id="signofftd">
-      	<a title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to 'Waiting' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</a>
-      	<select id="notifyoption0" data-placeholder=""  class="chzn-select creat-request-select" tabindex="6">
+      <td >
+      	<span title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to 'Waiting' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</span></br>
+      	<select id="notifyoption0" data-placeholder=""  class="chzn-select creat-request-select creat-request-select-sign-off" tabindex="6">
         <option value="1">Reset and require new sign off</option>
         <option value="2" selected= "selected">Send email notification</option>
         <option value="3">Do not notify</option>
       </select>
       <input type="text" class="input-xlarge add-width" id="input_owner_0" value="">
       <span class="delate-table" onclick="javascript:request.req_delOwner('input_owner_0',0)"></span>
-      You can input multiple E-mail and separated by commas.
+      Tips: can type multiple emails.
       </br>
-      <input type="button" id="sign_addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addOwner()" value="Add More">
+      <input type="button" id="sign_addchild_btn" class ="btn off-margin span-top btn-narrow" onclick="javascript:request.req_addOwner()" value="Add more">
       </td>
     </tr>
     <tr>
@@ -61,7 +61,7 @@
     </tr>
     <tr>
     <td ><span>Due date:</span></td>
-    <td ><input type="text" class="input-xlarge" id="requesttime" name="requesttime"><input type="text" class="input-xlarge times" name="requestdatetime" id="requestdatetime"> <script type="text/javascript">OutputLoc()</script></td>
+    <td ><input type="text" class="input-xlarge date-width" id="requesttime" name="requesttime"><input type="text" class="input-xlarge times date-width" name="requestdatetime" id="requestdatetime"><script type="text/javascript">OutputLoc()</script></td>
    
     </tr>
     <tr>
@@ -73,7 +73,7 @@
     <td ><span>Child:</span></td>
     <td id="childtd">
     <input type="text" class="input-xlarge" id="input_child_0"><span class="delate-table" onclick="javascript:request.req_delChild('input_child_0')"></span></br>
-    <input type="button" id="addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addChild()" value="Add More">
+    <input type="button" id="addchild_btn" class ="btn off-margin span-top btn-narrow" onclick="javascript:request.req_addChild()" value="Add More">
     </td>
    
     </tr>
@@ -102,7 +102,7 @@
     </tr>
     
     <tr>
-    <td colspan="2" ><input id="create_btn" type="button" class="btn btn-primary quary" value="Create" onclick="javascript:request.req_commit()"><input type="button" value="Cancel" class="btn quary"></td>
+    <td colspan="2" ><input type="button" class="btn btn-primary quary btn-wide" value="Create" onclick="javascript:request.req_commit()"></td>
    
     </tr>
 

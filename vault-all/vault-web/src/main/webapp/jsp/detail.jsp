@@ -91,7 +91,7 @@ function viewRequest(requestId,url) {
 		<tr>
 			<td width="11%"><span>Product:</span></td>
 			<td width="32%">${detailRequest.productname}</td>
-			<td width="7%" class="bg-gray">Version:</td>
+			<td width="7%" class="bg-gray font">Version:</td>
 			<td width="50%">${detailRequest.versiondesc}</td>
 		</tr>
 		<tr>
@@ -99,7 +99,7 @@ function viewRequest(requestId,url) {
 			<td id="requesttime_value">${tran:transformByFormat(detailRequest.requesttime,"yyyy-MM-dd
 				HH:mm")}<script>OutputLoc();</script>
 			</td>
-			<td class="bg-gray">Create Date:</td>
+			<td class="bg-gray font">Create Date:</td>
 			<td>${tran:transformByFormat(detailRequest.createdtime,"yyyy-MM-dd
 				HH:mm")}<script>OutputLoc();</script>
 			</td>
@@ -157,7 +157,7 @@ function viewRequest(requestId,url) {
 	       			</c:if>
 				</div>
 			</td>
-			<td class="bg-gray">Public:</td>
+			<td class="bg-gray font">Public:</td>
 			<td><input type="hidden" name="public_temp" id="public_temp"
 				value="0" /> <c:if test="${not empty detailRequest.is_public}">
 					<c:choose>
@@ -404,7 +404,7 @@ function viewRequest(requestId,url) {
 							value="0" /><input type="button" value="Comment" class="btn btn-primary btn-wide" onclick="javascript:addComment()"> <input type="button" value="Sign Off" class="btn"
 							id="sign_btn" onclick="javascript:commitSignOff('1','')" />
 						<!-- <input type="button" value="Sign Off On Behalf Of"  class="btn"  id="sign_onbehalf_btn" onclick="javascript:commitSignOff('2')"/>  -->
-						<input type="button" value="Sign Off On Behalf Of" class="btn"
+						<input type="button" value="Sign Off On Behalf Of" class="btn btn-wide"
 							id="sign_onbehalf_btn" onclick="javascript:behalf_click(this)" />
 						<input type="button" value="Reject" class="btn" id="reject_btn"
 							onclick="javascript:commitReject()" /> <input type="button"
@@ -421,9 +421,12 @@ function viewRequest(requestId,url) {
 
 	<tr>
 		<td class="new_bg"><span class="detail_title">On behalf
-				of:</span></td>
+				of :</span></td>
 		<td class="new_bg_white" colspan='2'>
-			<div id="onbehalf_div"></div> <input type="button"
+			<div id="onbehalf_div" class="state" ></div> 
+		</td>
+		<td>
+			<input type="button" class="state"
 			name="Submit_onbehalf" value="Confirm"
 			onclick="javascript:click_onbehalf_confirm()" /> <input
 			type="button" name="Cancel_onbehalf" value="Cancel"

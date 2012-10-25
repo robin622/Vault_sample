@@ -100,17 +100,18 @@ div.dataTables_filter label input{ height:20px;}
 .date-width{width:130px;}
 select, input[type="file"]{height:24px;}
 .table-top{ margin-top:10px;}
-.detail-table tr td:first-child{background:#F5F5F5!important; font-weight:bold;}
+.detail-table tr td:first-child{background:#F5F5F5!important;}
 .detail-table tr:nth-child(2n) td{background:none;}
-
+.font{font-weight:normal;}
 .btn-narrow{padding:1px 5px!important;}
 .btn-wide{padding:4px 10px!important;}
 .row-fluid{margin-bottom:px;}
-
+.eso-table thead th{vertical-align:top;}
 .Signedm{background:url("../images/ico_signed.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
 .Commentsm{background:url("../images/ico_comment.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
 .Waitingm{background:url("../images/icon.png") no-repeat scroll 0px -117px transparent; padding-left:20px;}
-
+.longtext{word-wrap:break-word; word-spacing:normal;overflow:hidden;word-break:break-all;white-space: white-space: normal;}
+.bgnone tr:nth-child(2n) td{background: none;}
 /* form-area ========================================*/
 form{margin:0px;}
 .form-area{width:98%;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;background-color:#F7F7F7;margin:0px auto;margin-right:auto;margin-left:auto;border:1px solid #E4E4E4;margin-bottom:15px;padding-top:20px;}

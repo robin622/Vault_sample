@@ -171,10 +171,10 @@ window.request = {
 			link = '<a title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to \'Waiting\' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</a>';
 			tip = 'You can input multiple E-mail and separated by commas.';
 		}
-		$(link + '<select id="notifyoption' + newownercount + '" data-placeholder=""  class="chzn-select creat-request-select" style="margin-top:4px;margin-right:4px;" tabindex="6"> '
+		$(link + '<select id="notifyoption' + newownercount + '" data-placeholder=""  class="chzn-select creat-request-select creat-request-select-sign-off" style="margin-top:4px;margin-right:4px;" tabindex="6"> '
 				  +  optionStr
 			      +  '</select>'
-			      +  '<input type="text" class="input-xlarge add-width" id="input_owner_' + newownercount + '" value="' + defaultValue + '">'
+			      +  '<input type="text" class="input-xlarge add-width creat-request-select-sign-off" style="margin-top:4px;margin-right:4px;" id="input_owner_' + newownercount + '" value="' + defaultValue + '">'
 			      +  '<span id="input_owner_' + newownercount + '_del" class="delate-table" onclick=javascript:request.req_delOwner("input_owner_' + newownercount + '",' + newownercount + ')></span>' + tip + '</br>').insertBefore($('#sign_addchild_btn'));
 		if(selectedIndex){
 			$("#notifyoption"+newownercount+" option[value=" + selectedIndex + "]").attr("selected",true);

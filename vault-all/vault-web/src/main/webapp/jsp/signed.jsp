@@ -16,12 +16,12 @@
         <th>ID</th>
         <th>Request Name</th>
          <th>Product</th>
-        <th>Vertion</th>
+        <th>Version</th>
         <th>Creator</th>
-        <th>Created date</th>
-        <th>	Due date</th>
-        <th>Last modified</th>
-         <th>Modified date</th>
+        <th>Created Date</th>
+        <th>	Due Date</th>
+        <th>Last Modified</th>
+         <th>Modified Date</th>
         <th>Status</th>
     </tr>
 </thead>

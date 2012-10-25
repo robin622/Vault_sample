@@ -23,14 +23,14 @@
 </head>
 <body>
 	<div class="content margin padding">
-		<table class="eso-table table-width blod " id="home_table">
+		<table class="eso-table table-width blod bgnone detail-table" id="home_table">
 			<thead>
 				<tr>
 					<th colspan="3"><h3>${requestId}&nbsp;&nbsp;${requestname}</h3>
 					</th>
 					<th width="52%"><a
 						href="<%=request.getContextPath()%>/ReportServlet?doExport=export&id=${reportRequest.requestid}"
-						class="float-right">Export The Report As XML</a></th>
+						class="float-right report">Export The Report As XML</a></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -58,7 +58,7 @@
 						<div id="detail_value" class="description"></div>
 				</tr>
 				<tr>
-					<td height="38"><span>Attachment:</span></td>
+					<td><span>Attachment:</span></td>
 					<td colspan="3">${tran:createFileInfo(reportRequest,pageContext.request.contextPath)}</td>
 				</tr>
 			</tbody>
@@ -82,7 +82,7 @@
 							<c:set value="${ele}" var="elementofreport"></c:set>
 						</c:forEach>
 						<tr>
-							<td><span class="${elementofreport.reportStatus}">${elementofreport.reportStatus}</span>
+							<td><span class="${elementofreport.reportStatus}m">${elementofreport.reportStatus}</span>
 							</td>
 							<td><a href="#">${elementofreport.useremail}</a></td>
 							<td>${tran:transformByFormat(reportRequest.requesttime,"yyyy-MM-dd

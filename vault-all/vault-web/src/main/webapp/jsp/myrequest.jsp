@@ -11,19 +11,19 @@
         
         
         <div class="list-margin-top">
-          <table id="myrequest_table" class="eso-table table-striped eso-table-inner ">
+          <table id="myrequest_table" class="eso-table table-striped eso-table-inner " >
 <thead>
     <tr>
         <th><input type="checkbox" value="option1" id="checkAllMyRequest"></th>
         <th>ID</th>
-        <th>Request Name</th>
+        <th style="width: 150px;">Request Name</th>
          <th>Product</th>
-        <th>Vertion</th>
+        <th>Version</th>
         <th>Creator</th>
-        <th>Created date</th>
-        <th>Due date</th>
-        <th>Last modified</th>
-         <th>Modified date</th>
+        <th>Created Date</th>
+        <th>Due Date</th>
+        <th>Last Modified</th>
+         <th>Modified Date</th>
         <th>Status</th>
         <th>Action</th>
     </tr>
@@ -33,7 +33,7 @@
 			<tr id="myrequestlist${myRequest.requestid}">
 			<td><input type="checkbox" name="chkltMyRequest" id="chkltMyRequest${myRequest.requestid}" value="${myRequest.requestid}"></td>
 			<td>${myRequest.requestid}</td>
-			<td nowrap><a href=${pageContext.request.contextPath}/showRequest?requestid=${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
+			<td nowrap><a class="longtext" href=${pageContext.request.contextPath}/showRequest?requestid=${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
 			<td nowrap>${myRequest.productname}</td>
 			<td>${myRequest.versiondesc}</td>
 			<td>${myRequest.createdby}</td>
