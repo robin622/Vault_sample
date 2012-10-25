@@ -2,6 +2,7 @@ package com.redhat.tools.vault.web;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -52,6 +53,9 @@ public class DeleteRequestServlet extends HttpServlet {
             List<Request> myRequests = service.getMyRequest(userName);
             req.setAttribute("myRequests", myRequests);
             req.setAttribute("operationstatus", "myrequest");
+            
+            Map<String,Long> counts = service.getRequestCount(userName, "");
+            req.setAttribute("reqCounts", counts);
             req.getRequestDispatcher("/jsp/home.jsp").forward(req, res);
         }catch (Exception e) {
             

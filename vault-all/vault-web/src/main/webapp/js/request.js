@@ -96,6 +96,7 @@ window.request = {
 			$("table#detail_tbl").hide();
 			$("table#detail_sub_tbl").hide();
 			$("table#detail_comment").hide();
+			$("table#onbehalf_table").hide();
 			$("#div_name").html("Create Request");
 			
 			document.getElementById("selectproductid").value = "-1";
@@ -169,7 +170,7 @@ window.request = {
 		var tip = '';
 		if(firstOption){
 			link = '<a title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to \'Waiting\' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</a>';
-			tip = 'You can input multiple E-mail and separated by commas.';
+			tip = 'Tips: can type multiple emails.';
 		}
 		$(link + '<select id="notifyoption' + newownercount + '" data-placeholder=""  class="chzn-select creat-request-select creat-request-select-sign-off" style="margin-top:4px;margin-right:4px;" tabindex="6"> '
 				  +  optionStr
@@ -530,7 +531,6 @@ window.request = {
         	alert("Description is too long.It should not be more than 27000 characters");
         	return false;
         }
-        
         detail = detail.replaceAll("\r\n",'<br>');
         detail = detail.replaceAll("\n\r",'<br>');
         detail = detail.replaceAll("\n",'<br>');

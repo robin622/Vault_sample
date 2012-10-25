@@ -264,28 +264,31 @@ function viewRequest(requestId,url) {
 	        								
 	        								var optionIndex = 0;
 	        								var firstOption =true;
-											if(edit_option1Str != ""){
+	        								if(edit_option2Str != ""){
 												if(!firstOption){
-													optionIndex++;
-												}else{ 
-													request.req_addOwner(1,edit_option1Str,firstOption);
-													firstOption = false;
-												};
-											}
-											if(edit_option2Str != ""){
-												if(!firstOption){
+													request.req_addOwner(2,edit_option2Str,firstOption);
 													optionIndex++;
 												}else{ 
 													request.req_addOwner(2,edit_option2Str,firstOption);
 													firstOption = false;
 												};
 											}
-											if(edit_option3Str != ""){
+											if(edit_option1Str != ""){
 												if(!firstOption){
 													request.req_addOwner(1,edit_option1Str,firstOption);
 													optionIndex++;
+												}else{ 
+													request.req_addOwner(1,edit_option1Str,firstOption);
+													firstOption = false;
+												};
+											}
+											if(edit_option3Str != ""){
+												if(!firstOption){
+													request.req_addOwner(3,edit_option3Str,firstOption); 
+													optionIndex++;
 												}else{
-													request.req_addOwner(3,edit_option3Str,firstOption); firstOption = false;
+													request.req_addOwner(3,edit_option3Str,firstOption); 
+													firstOption = false;
 												};
 											}
 											
@@ -695,6 +698,7 @@ function viewRequest(requestId,url) {
         			$("table#detail_tbl").hide();
         			$("table#detail_sub_tbl").hide();
         			$("table#detail_comment").hide();
+        			$("table#onbehalf_table").hide();
         			
         			$("#div_name").html("Edit Request");
         			

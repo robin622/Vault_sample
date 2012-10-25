@@ -40,7 +40,7 @@
     </tr>
     <tr>
       <td ><span>Sign off by:</span><span class="red">*</span></td>
-      <td >
+      <td id="signofftd">
       	<span title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to 'Waiting' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</span></br>
       	<select id="notifyoption0" data-placeholder=""  class="chzn-select creat-request-select creat-request-select-sign-off" tabindex="6">
         <option value="1">Reset and require new sign off</option>
@@ -102,7 +102,7 @@
     </tr>
     
     <tr>
-    <td colspan="2" ><input type="button" class="btn btn-primary quary btn-wide" value="Create" onclick="javascript:request.req_commit()"></td>
+    <td colspan="2" ><input id="create_btn" type="button" class="btn btn-primary quary btn-wide" value="Create" onclick="javascript:request.req_commit()"></td>
    
     </tr>
 

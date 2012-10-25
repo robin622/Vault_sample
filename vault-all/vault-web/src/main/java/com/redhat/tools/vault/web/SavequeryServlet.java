@@ -19,6 +19,7 @@ import com.redhat.tools.vault.bean.Product;
 import com.redhat.tools.vault.bean.Savequery;
 import com.redhat.tools.vault.bean.Version;
 import com.redhat.tools.vault.service.SavequeryService;
+import com.redhat.tools.vault.util.DateUtil;
 import com.redhat.tools.vault.util.StringUtil;
 
 /**
@@ -108,7 +109,7 @@ public class SavequeryServlet extends HttpServlet {
                 Savequery query         = new Savequery();
                 query.setQueryname(queryName);
                 query.setCreatedby("wguo");
-                query.setCreatedtime(new Date());
+                query.setCreatedtime(DateUtil.getLocalUTCTime());
                 query.setSearchname(requestName);
                 query.setType("1");
                 try {

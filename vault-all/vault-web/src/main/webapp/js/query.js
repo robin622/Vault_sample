@@ -138,6 +138,9 @@ window.query = {
 	 * @param versionId
 	 */
 	qry_initVersion : function(productId,versionId){
+		if(!productId){
+			return;
+		}
 		var url = "SavequeryServlet";
 		$.ajax({
 			type: 'POST',

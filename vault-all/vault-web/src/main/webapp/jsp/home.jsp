@@ -47,6 +47,7 @@
 				$("table#newrequest_tbl").hide();
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
+				$("table#onbehalf_table").hide();
 			}
 			else 
 				if("${judgeDetailValue}" == "true"){
@@ -64,6 +65,7 @@
 				$("div#query-area").hide();
 				$("div#advance_query").hide();
 				$("fieldset#advance_set").hide();
+				$("table#onbehalf_table").hide();
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/showRequest?requestid=${detailRequest.requestid}>Request Detail ${detailRequest.requestid}</a>");
 				
@@ -79,6 +81,7 @@
 				$("table#newrequest_tbl").hide();
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
+				$("table#onbehalf_table").hide();
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval</a>");
 				$("#" + currentMenu).removeClass("active");
@@ -96,6 +99,7 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
+				$("table#onbehalf_table").hide();
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed </a>");
 				$("#" + currentMenu).removeClass("active");
@@ -113,6 +117,7 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
+				$("table#onbehalf_table").hide();
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=CanViewRequest>I Can View </a>");
 				$("#" + currentMenu).removeClass("active");
@@ -130,6 +135,7 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
+				$("table#onbehalf_table").hide();
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me </a>");
 				$("#" + currentMenu).removeClass("active");
@@ -147,6 +153,7 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
+				$("table#onbehalf_table").hide();
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests </a>");
 
@@ -168,6 +175,7 @@
 				$("div#query-area").hide();
 				$("div#advance_query").hide();
 				$("fieldset#advance_set").hide();
+				$("table#onbehalf_table").hide();
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a>");
 				$("#" + currentMenu).removeClass("active");
@@ -186,6 +194,7 @@
 				$("table#newrequest_tbl").hide();
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
+				$("table#onbehalf_table").hide();
 			}
 		});
 		var selectRequest,selectUser;
