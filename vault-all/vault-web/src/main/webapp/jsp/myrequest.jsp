@@ -16,14 +16,14 @@
     <tr>
         <th><input type="checkbox" value="option1" id="checkAllMyRequest"></th>
         <th>ID</th>
-        <th style="width: 150px;">Request Name</th>
+        <th class="nowrep">Request Name</th>
          <th>Product</th>
         <th>Version</th>
         <th>Creator</th>
-        <th>Created Date</th>
+        <th class="nowrep">Created Date</th>
         <th>Due Date</th>
-        <th>Last Modified</th>
-         <th>Modified Date</th>
+        <th class="nowrep">Last Modified</th>
+         <th class="nowrep">Modified Date</th>
         <th>Status</th>
         <th>Action</th>
     </tr>
@@ -33,16 +33,16 @@
 			<tr id="myrequestlist${myRequest.requestid}">
 			<td><input type="checkbox" name="chkltMyRequest" id="chkltMyRequest${myRequest.requestid}" value="${myRequest.requestid}"></td>
 			<td>${myRequest.requestid}</td>
-			<td nowrap><a class="longtext" href=${pageContext.request.contextPath}/showRequest?requestid=${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
-			<td nowrap>${myRequest.productname}</td>
+			<td ><a href=${pageContext.request.contextPath}/showRequest?requestid=${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
+			<td>${myRequest.productname}</td>
 			<td>${myRequest.versiondesc}</td>
 			<td>${myRequest.createdby}</td>
-			<td nowrap>${tran:transformByFormat(myRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
-			<td nowrap>${tran:transformByFormat(myRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
-			<td nowrap>${myRequest.editedby}</td>
-			<td nowrap>${tran:transformByFormat(myRequest.editedtime,"yyyy-MM-dd HH:mm")}</td>
-			<td nowrap>${myRequest.status}</td>
-			<td nowrap>
+			<td class="nowrep">${tran:transformByFormat(myRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
+			<td class="nowrep">${tran:transformByFormat(myRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
+			<td class="nowrep">${myRequest.editedby}</td>
+			<td class="nowrep">${tran:transformByFormat(myRequest.editedtime,"yyyy-MM-dd HH:mm")}</td>
+			<td class="nowrep">${myRequest.status}</td>
+			<td class="nowrep">
 			<c:if test="${myRequest.status ne 'withdrawn'}">
 			    <c:choose>
 	                <c:when test="${myRequest.from eq 0}">

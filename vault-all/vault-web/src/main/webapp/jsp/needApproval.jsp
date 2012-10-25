@@ -14,30 +14,30 @@
 <thead>
     <tr>        
         <th>ID</th>
-        <th>Request Name</th>
+        <th class="nowrep">Request Name</th>
          <th>Product</th>
         <th>Version</th>
         <th>Creator</th>
-        <th>Created Date</th>
-        <th>	Due Date</th>
-        <th>Last Modified</th>
-         <th>Modified Date</th>
+        <th class="nowrep">Created Date</th>
+        <th class="nowrep">Due Date</th>
+        <th class="nowrep">Last Modified</th>
+        <th class="nowrep">Modified Date</th>
         <th>Status</th>
     </tr>
 </thead>
 <tbody>
 <c:forEach var="waitRequest" items="${waitRequests}">
     <tr>        
-    <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${waitRequest.requestid} title="View Request">${waitRequest.requestid}</a></td>
+    <td ><a href=${pageContext.request.contextPath}/showRequest?requestid=${waitRequest.requestid} title="View Request">${waitRequest.requestid}</a></td>
     <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${waitRequest.requestid} title="View Request">${waitRequest.requestname}</a></td>
     <td>${waitRequest.productname}</td>
     <td>${waitRequest.versiondesc}</td>
-    <td>${waitRequest.createdby}</td>
-    <td>${tran:transformByFormat(waitRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
-    <td>${tran:transformByFormat(waitRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
-    <td>${waitRequest.editedby}</td>
-    <td>${tran:transformByFormat(waitRequest.editedtime,"yyyy-MM-dd HH:mm")}</a></td>
-    <td>${waitRequest.status}</td>
+    <td class="nowrep">${waitRequest.createdby}</td>
+    <td class="nowrep">${tran:transformByFormat(waitRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
+    <td class="nowrep">${tran:transformByFormat(waitRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
+    <td class="nowrep">${waitRequest.editedby}</td>
+    <td class="nowrep">${tran:transformByFormat(waitRequest.editedtime,"yyyy-MM-dd HH:mm")}</a></td>
+    <td class="nowrep">${waitRequest.status}</td>
     </tr>
     </c:forEach>
 </tbody>

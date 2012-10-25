@@ -14,14 +14,14 @@
 <thead>
     <tr>        
         <th>ID</th>
-        <th>Request Name</th>
+        <th class="nowrep">Request Name</th>
          <th>Product</th>
         <th>Version</th>
         <th>Creator</th>
-        <th>Created Date</th>
+        <th class="nowrep">Created Date</th>
         <th>	Due Date</th>
-        <th>Last Modified</th>
-         <th>Modified Date</th>
+        <th class="nowrep">Last Modified</th>
+         <th class="nowrep">Modified Date</th>
         <th>Status</th>
     </tr>
 </thead>
@@ -32,12 +32,12 @@
     <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${canViewRequest.requestid} title="View Request">${canViewRequest.requestname}</a></td>
     <td>${canViewRequest.productname}</td>
     <td>${canViewRequest.versiondesc}</td>
-    <td>${canViewRequest.createdby}</td>
-    <td>${tran:transformByFormat(canViewRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
-    <td>${tran:transformByFormat(canViewRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
-    <td>${canViewRequest.editedby}</td>
-    <td>${tran:transformByFormat(canViewRequest.editedtime,"yyyy-MM-dd HH:mm")}</a></td>
-    <td>${canViewRequest.status}</td>
+    <td class="nowrep">${canViewRequest.createdby}</td>
+    <td class="nowrep">${tran:transformByFormat(canViewRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
+    <td class="nowrep">${tran:transformByFormat(canViewRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
+    <td class="nowrep">${canViewRequest.editedby}</td>
+    <td class="nowrep">${tran:transformByFormat(canViewRequest.editedtime,"yyyy-MM-dd HH:mm")}</a></td>
+    <td class="nowrep">${canViewRequest.status}</td>
     </tr>
     </c:forEach>
 </tbody>

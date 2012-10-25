@@ -14,14 +14,14 @@
 <thead>
     <tr>        
         <th>ID</th>
-        <th>Request Name</th>
-         <th>Product</th>
+        <th class="nowrep">Request Name</th>
+         <th >Product</th>
         <th>Version</th>
         <th>Creator</th>
-        <th>Created Date</th>
-        <th>	Due Date</th>
-        <th>Last Modified</th>
-         <th>Modified Date</th>
+        <th class="nowrep">Created Date</th>
+        <th class="nowrep">Due Date</th>
+        <th class="nowrep">Last Modified</th>
+         <th class="nowrep">Modified Date</th>
         <th>Status</th>
     </tr>
 </thead>
@@ -32,12 +32,12 @@
     <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${signedOffRequest.requestid} title="View Request">${signedOffRequest.requestname}</a></td>
     <td>${signedOffRequest.productname}</td>
     <td>${signedOffRequest.versiondesc}</td>
-    <td>${signedOffRequest.createdby}</td>
-    <td>${tran:transformByFormat(signedOffRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
-    <td>${tran:transformByFormat(signedOffRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
-    <td>${signedOffRequest.editedby}</td>
-    <td>${tran:transformByFormat(signedOffRequest.editedtime,"yyyy-MM-dd HH:mm")}</a></td>
-    <td>${signedOffRequest.status}</td>
+    <td class="nowrep">${signedOffRequest.createdby}</td>
+    <td class="nowrep">${tran:transformByFormat(signedOffRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
+    <td class="nowrep">${tran:transformByFormat(signedOffRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
+    <td class="nowrep">${signedOffRequest.editedby}</td>
+    <td class="nowrep">${tran:transformByFormat(signedOffRequest.editedtime,"yyyy-MM-dd HH:mm")}</a></td>
+    <td class="nowrep">${signedOffRequest.status}</td>
     </tr>
     </c:forEach>
 </tbody>

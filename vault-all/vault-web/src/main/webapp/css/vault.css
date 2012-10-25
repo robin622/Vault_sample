@@ -75,7 +75,7 @@ input, textarea, select, .uneditable-input{padding:2px;}
 input, textarea, select, .uneditable-input{margin-bottom:0;}
 div.dataTables_filter label input{ height:20px;}
 .float-right{ float:right;}
-.form-area select{ width:275px;}
+.form-area select{ width:278px;}
 .padding{ padding:10px;}
 .margin{ margin:10px;}
 .waiting{background:url("../images/icon.png") no-repeat scroll 0px -117px transparent; padding-left:20px; margin-right:20px;}
@@ -105,13 +105,21 @@ select, input[type="file"]{height:24px;}
 .font{font-weight:normal;}
 .btn-narrow{padding:1px 5px!important;}
 .btn-wide{padding:4px 10px!important;}
-.row-fluid{margin-bottom:px;}
+.row-fluid{width:99.3%;}
 .eso-table thead th{vertical-align:top;}
 .Signedm{background:url("../images/ico_signed.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
 .Commentsm{background:url("../images/ico_comment.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
 .Waitingm{background:url("../images/icon.png") no-repeat scroll 0px -117px transparent; padding-left:20px;}
+.SignedByRequestorm{background:url("../images/behalf.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
 .longtext{word-wrap:break-word; word-spacing:normal;overflow:hidden;word-break:break-all;white-space: white-space: normal;}
 .bgnone tr:nth-child(2n) td{background: none;}
+.icon-mean{margin-left:15px; display:inline-black;}
+.iconmean-out{clear:both;}
+#eso-topbar .eso-logo{margin-top:11px;}
+.nowrep{white-space: nowrap;}
+/*word wrap============================*/
+.wordwrap{word-wrap:break-word;word-break:break-all;-moz-binding: url("wordwrap.xml#wordwrap");overflow: hidden;}
+
 /* form-area ========================================*/
 form{margin:0px;}
 .form-area{width:98%;-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;background-color:#F7F7F7;margin:0px auto;margin-right:auto;margin-left:auto;border:1px solid #E4E4E4;margin-bottom:15px;padding-top:20px;}

@@ -264,7 +264,7 @@
 <div class="navbar">
   <ul class="nav">
     <li id="navHome" class="active"><a href=${pageContext.request.contextPath}>Home</a></li>
-   <li id="navNew" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a></li>
+    <li id="navNew" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a></li>
     <li id="navWait" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval<span class="number"> ( ${reqCounts.waiting} )</span></a></li>
     <li id="navMy" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests<span class="number"> ( ${reqCounts.myrequest} )</span></a></li>
     <li id="navSign" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed <span class="number">( ${reqCounts.signed} )</span></a></li>

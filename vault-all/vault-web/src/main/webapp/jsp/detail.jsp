@@ -122,7 +122,7 @@ function viewRequest(requestId,url) {
 		</tr>
 		<tr>
 			<td><span>Description:</span></td>
-			<td id="detail_value" colspan="3"><c:if test="${not empty detailRequest.detail}">
+			<td id="detail_value" colspan="3" class="wordwrap"><c:if test="${not empty detailRequest.detail}">
 					<script type="text/javascript">
 			       		jQuery(function($){
 			       			var detail = "${detailRequest.detail}";
@@ -378,8 +378,10 @@ function viewRequest(requestId,url) {
 	<tbody>
 		<tr>
 			<td class="background-fff">
-
-				<fieldset class="fieldset-vault">
+			<div class="iconmean-out">
+              <span class="Signedm icon-mean">Signed</span ><span class="Commentsm icon-mean">Comments</span><span class="Waitingm icon-mean">Waiting</span><span class="SignedByRequestorm icon-mean">Signed by Requestor</span>
+			</div>	
+				<fieldset class="fieldset-vault wordwrap">
 					<legend class="legend-vault img1" id="turn">Turn Off
 						Comments </legend>
 					<legend class="legend-vault img2 display-none" id="turn2">Turn

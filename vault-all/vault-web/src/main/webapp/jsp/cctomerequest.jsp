@@ -14,14 +14,14 @@
 <thead>
     <tr>        
         <th>ID</th>
-        <th>Request Name</th>
+        <th class="nowrep">Request Name</th>
          <th>Product</th>
         <th>Version</th>
         <th>Creator</th>
-        <th>Created Date</th>
-        <th>	Due Date</th>
-        <th>Last Modified</th>
-         <th>Modified Date</th>
+        <th class="nowrep">Created Date</th>
+        <th class="nowrep">Due Date</th>
+        <th class="nowrep">Last Modified</th>
+         <th class="nowrep">Modified Date</th>
         <th>Status</th>
     </tr>
 </thead>
@@ -32,12 +32,12 @@
     <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${ccToMeRequest.requestid} title="View Request">${ccToMeRequest.requestname}</a></td>
     <td>${ccToMeRequest.productname}</td>
     <td>${ccToMeRequest.versiondesc}</td>
-    <td>${ccToMeRequest.createdby}</td>
-    <td>${tran:transformByFormat(ccToMeRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
-    <td>${tran:transformByFormat(ccToMeRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
-    <td>${ccToMeRequest.editedby}</td>
-    <td>${tran:transformByFormat(ccToMeRequest.editedtime,"yyyy-MM-dd HH:mm")}</a></td>
-    <td>${ccToMeRequest.status}</td>
+    <td class="nowrep">${ccToMeRequest.createdby}</td>
+    <td class="nowrep">${tran:transformByFormat(ccToMeRequest.createdtime,"yyyy-MM-dd HH:mm")}</td>
+    <td class="nowrep">${tran:transformByFormat(ccToMeRequest.requesttime,"yyyy-MM-dd HH:mm")}</td>
+    <td class="nowrep">${ccToMeRequest.editedby}</td>
+    <td class="nowrep">${tran:transformByFormat(ccToMeRequest.editedtime,"yyyy-MM-dd HH:mm")}</a></td>
+    <td class="nowrep">${ccToMeRequest.status}</td>
     </tr>
     </c:forEach>
 </tbody>
