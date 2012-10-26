@@ -105,7 +105,7 @@ window.request = {
 			document.getElementById("maxownercount").value = "0";
 			document.getElementById("ownercount").value = "0";
 			document.getElementById("maxcccount").value = "0";
-			document.getElementById("maxchildcount").value = "0";
+			document.getElementById("maxchildcount").value = "-1";
 			document.getElementById("requestname").value = "";
 			document.getElementById("newrequestid").value = "";
 			request.req_initProduct();
@@ -272,7 +272,7 @@ window.request = {
 	
 	req_delChild : function(inputchildid){
 		var childcount = parseInt($("#maxchildcount").val());
-        if(inputchildid == "input_child_0" && childcount==0){
+        if(inputchildid == "input_child_0"){
         	$("#"+inputchildid).val("");
         }else{
             $("#"+inputchildid).val("");

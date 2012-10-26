@@ -97,9 +97,9 @@ public class SavequeryServlet extends HttpServlet {
     		        log.error(e.getMessage(),e);
     		    }
     		}else if(operation.equals("saveQuery")){
+    			String userName=(String) request.getSession().getAttribute("userName");
     		    JSONObject json = new JSONObject();
                 String type             = (String) request.getParameter("type");
-                String userName         = (String) request.getParameter("userName");
                 String creator          = (String) request.getParameter("creator");
                 String versionid        = (String) request.getParameter("versionId");
                 String productid        = (String) request.getParameter("productId");
@@ -109,7 +109,7 @@ public class SavequeryServlet extends HttpServlet {
                 String requestName      = (String) request.getParameter("requestName");
                 Savequery query         = new Savequery();
                 query.setQueryname(queryName);
-                query.setCreatedby(creator);
+                query.setCreatedby(userName);
                 query.setCreatedtime(new Date());
                 query.setSearchname(requestName);
                 query.setType("1");

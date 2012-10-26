@@ -2,6 +2,7 @@ package com.redhat.tools.vault.dao;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -57,6 +58,18 @@ public class SavequeryDAO {
 			criteria.addOrder(Order.desc((Savequery.PROPERTY_CREATEDTIME)));
 			List<Savequery> list = criteria.list();
 			for (Savequery s : list) {
+				if(s.getQueryname() != null){
+					s.setQueryname(StringEscapeUtils.escapeHtml(s.getQueryname()));
+				}
+				if(s.getSearchname() != null){
+					s.setSearchname(StringEscapeUtils.escapeHtml(s.getSearchname()));
+				}
+				if(s.getSearchcreator() != null){
+					s.setSearchcreator(StringEscapeUtils.escapeHtml(s.getSearchcreator()));
+				}
+				if(s.getOwner() != null){
+					s.setOwner(StringEscapeUtils.escapeHtml(s.getOwner()));
+				}
 				log.debug("Review=" + s);
 			}
 			return list;

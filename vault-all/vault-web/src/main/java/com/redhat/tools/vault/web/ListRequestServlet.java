@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.redhat.tools.vault.bean.Request;
 import com.redhat.tools.vault.service.RequestService;
 
@@ -78,6 +80,15 @@ public class ListRequestServlet extends HttpServlet {
             String          productid       =   (String) request.getParameter("productid");
             String          status          =   (String) request.getParameter("status");
             String          owneremail      =   (String) request.getParameter("owneremail");
+            if(requestName != null){
+            	requestName = StringEscapeUtils.escapeHtml(requestName);
+            }
+            if(creator != null){
+            	creator = StringEscapeUtils.escapeHtml(creator);
+            }
+            if(owneremail != null){
+            	owneremail = StringEscapeUtils.escapeHtml(owneremail);
+            }
             List<Request> requests = reqService.advanceSearch(requestName, creator, versionid, productid, status, owneremail, userName, userEmail);
             request.setAttribute("searchRequests", requests);
             request.setAttribute("is_search", "is_search");

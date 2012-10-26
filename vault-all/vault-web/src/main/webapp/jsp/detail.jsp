@@ -792,6 +792,7 @@ function viewRequest(requestId,url) {
         			
         			//child list
         			$("#childtd").html('<input type="button" id="addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addChild()" value="Add More">');
+        			$("#maxchildcount").val(0);
         			if(globalRequests != null && globalRequests != ""){
         				var child_str = globalRequests[0].children;
         				if(child_str != null && child_str != ""){
