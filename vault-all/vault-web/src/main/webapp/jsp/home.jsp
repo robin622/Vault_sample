@@ -248,15 +248,12 @@
         <li><a href="mailto:eng-ops@redhat.com">Eng-ops Request</a></li>
         <li><a href="mailto:hss-ied-list@redhat.com">Application Request</a></li>
         <li class="divider"></li>
-        <li><a href="mailto:hss-ied-list@redhat.com">Contact developers</a></li>
+        <li><a href="mailto:eng-ops-appsupport@redhat.com">Contact developers</a></li>
       </ul>
     </li>
  <li class="dropdown header-user">
-   <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="User Info">erousseau<b class="caret"></b></a>
-    <ul class="dropdown-menu">
-        <li><a href="#">Profile</a></li>
-    </ul>
-    </li>
+   <a class="dropdown-toggle" href="#" title="User Info">Hello,${userName}</a>
+ </li>
  </ul>
 
 </header>

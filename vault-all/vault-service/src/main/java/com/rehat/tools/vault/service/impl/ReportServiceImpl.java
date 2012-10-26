@@ -85,7 +85,7 @@ public class ReportServiceImpl implements ReportService {
 				try {
 					versions = versionDAO.get(version);
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.error(e.getMessage());
 				}
 				if (versions != null && versions.size() > 0) {
 					requests.get(0).setVersiondesc(
@@ -94,7 +94,7 @@ public class ReportServiceImpl implements ReportService {
 					try {
 						products = productDAO.get(product);
 					} catch (Exception e) {
-						e.printStackTrace();
+						log.error(e.getMessage());
 					}
 					if (products != null && products.size() > 0) {
 						requests.get(0).setProductname(
@@ -122,13 +122,13 @@ public class ReportServiceImpl implements ReportService {
 							try {
 								replyIdList = commentRelationDAO.getReplyIdListByHistoryId(historyid);
 							} catch (Exception e) {
-								e.printStackTrace();
+								log.error(e.getMessage());
 							}
 							List<ReplyComment> replyList=null;
 							try {
 								replyList = replyCommentDAO.getReplyCommentListByIdList(replyIdList);
 							} catch (Exception e) {
-								e.printStackTrace();
+								log.error(e.getMessage());
 							}	
 							replys.put(r.getHistoryid(), replyList);
 						}
@@ -177,7 +177,7 @@ public class ReportServiceImpl implements ReportService {
 					parentAndChildren = requestDAO
 							.generateParent(rq);
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.error(e.getMessage());
 				}
 				// get parent
 				if (!"".equals(parentAndChildren[0])) {
@@ -190,7 +190,7 @@ public class ReportServiceImpl implements ReportService {
 							pRequest = getDetailedStatus(pRequest,
 									historyDAO);
 						} catch (Exception e) {
-							e.printStackTrace();
+							log.error(e.getMessage());
 						}
 				}
 
@@ -208,7 +208,7 @@ public class ReportServiceImpl implements ReportService {
 									cRequest = getDetailedStatus(cRequest,
 											historyDAO);
 								} catch (Exception e) {
-									e.printStackTrace();
+									log.error(e.getMessage());
 								}
 								cRequests.add(cRequest);
 							}

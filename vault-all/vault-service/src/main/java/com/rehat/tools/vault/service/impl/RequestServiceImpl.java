@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 
 import net.sf.json.JSONObject;
 
@@ -31,7 +35,7 @@ import com.redhat.tools.vault.dao.VAUserDAO;
 import com.redhat.tools.vault.dao.VersionDAO;
 import com.redhat.tools.vault.service.RequestService;
 import com.redhat.tools.vault.util.DateUtil;
-
+@Path("/request")
 public class RequestServiceImpl implements RequestService{
 	@Inject
 	private RequestDAO requestDAO;
@@ -55,8 +59,11 @@ public class RequestServiceImpl implements RequestService{
 	private SendemailCountDAO countDAO;
 	
 	private static final Logger log = Logger.getLogger(RequestServiceImpl.class);
-
-	public List<Request> getMyRequest(String username) {
+	
+	@GET
+	@Path("{username}")
+	@Produces({"application/xml"})
+	public List<Request> getMyRequest(@PathParam("username") String username) {
 		Request condition = new Request();
 		condition.setCreatedby(username);
 		List<Request> myRequests  = requestDAO.get(condition);
@@ -102,8 +109,11 @@ public class RequestServiceImpl implements RequestService{
 		request.setParent(requestDAO.generateParent(request)[0]);
 		request.setChildren(requestDAO.generateParent(request)[1]);
 	}
-
-	public List<Request> getDetailRequest(String requestid) {
+	
+	@GET
+	@Path("/id/{requestid}")
+	@Produces({"application/xml"})
+	public List<Request> getDetailRequest(@PathParam("requestid") String requestid) {
 		Request detailRequest = new Request();
 		List<Request> detailRequests = null;
 		detailRequest.setRequestid(Long.parseLong(requestid));
@@ -317,7 +327,7 @@ public class RequestServiceImpl implements RequestService{
 			try {
 				historyDAO.save(rh);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 
 			request.setComment(comment);
@@ -333,7 +343,7 @@ public class RequestServiceImpl implements RequestService{
 				mailer.sendEmail(null, request, null, null,
 						"showrequest", "reject", "");
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 
 		}
@@ -350,7 +360,7 @@ public class RequestServiceImpl implements RequestService{
 			try {
 				historyDAO.save(rh);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 
 			request.setComment(comment);
@@ -369,7 +379,7 @@ public class RequestServiceImpl implements RequestService{
 				mailer.sendEmail(null, request, null, null,
 						"showrequest", "signoff", "");
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 
 			message = "Sign Off success!";
@@ -395,7 +405,7 @@ public class RequestServiceImpl implements RequestService{
 				try {
 					historyDAO.save(rh);
 				} catch (Exception e) {
-					e.printStackTrace();
+					log.error(e.getMessage());
 				}
 			}
 
@@ -412,7 +422,7 @@ public class RequestServiceImpl implements RequestService{
 			try {
 				historyDAO.save(rh);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 
 			request.setComment(comment);
@@ -434,7 +444,7 @@ public class RequestServiceImpl implements RequestService{
 				mailer.sendEmail(null, request, null, null,
 						"showrequest", "signoffOnBehalf", "");
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 		}
 		joReturn.put("message", message);
@@ -587,7 +597,7 @@ public class RequestServiceImpl implements RequestService{
         try {
             parentArray = requestDAO.generateParent(requestId);
         } catch (Exception e) {
-            e.printStackTrace();
+        	log.error(e.getMessage());
         }
         return parentArray;
     }

@@ -91,7 +91,7 @@ public class CheckRequestServlet extends HttpServlet {
                 }
             } catch (Exception e) {
                 message = "error";
-                e.printStackTrace();
+                log.error(e.getMessage());
             } finally {
                 joReturn.put("result", result);
                 joReturn.put("message", message);

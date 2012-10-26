@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 import com.redhat.tools.vault.service.RequestService;
 
-/**
- * Servlet implementation class ListRequestServlet
- */
 @WebServlet("/editVersion")
 public class EditVersionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

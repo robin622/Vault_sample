@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.redhat.tools.vault.util.DateUtil;
 
 /**
  * @author wezhao
  * 
  */
+@XmlRootElement(name="request")
 public class Request {
 	private static final long serialVersionUID = 1L;
 

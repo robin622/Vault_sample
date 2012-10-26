@@ -1,6 +1,7 @@
 package com.redhat.tools.vault.web;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.redhat.tools.vault.bean.Request;
 import com.redhat.tools.vault.service.RequestService;
+import com.redhat.tools.vault.web.helper.VaultHelper;
 
 /**
  * @author wezhao
@@ -37,9 +39,8 @@ public class HomeServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userName="wguo";
-		String userEmail="wguo@redhat.com";
-
+		String userName=VaultHelper.getUserNameFromRequest(request);
+		String userEmail=VaultHelper.getEmailFromName(userName);
 		request.getSession().setAttribute("userName", userName);
 		request.getSession().setAttribute("userEmail", userEmail);
 		List<Request> myRequests=service.getMyRequest(userName);
@@ -55,5 +56,7 @@ public class HomeServlet extends HttpServlet {
         request.setAttribute("reqCounts", counts);
 		request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
 	}
+	
+	
 
 }

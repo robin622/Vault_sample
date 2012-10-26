@@ -41,9 +41,9 @@ public class ListRequestServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    String userName="wguo";
-        String userEmail="wguo@redhat.com";
-
+	    String userName=(String) request.getSession().getAttribute("userName");
+        String userEmail=(String) request.getSession().getAttribute("userEmail");
+        
         String operation=request.getParameter("operation");
         operation=operation==null?"":operation;
         response.setContentType("text/html;charset=UTF-8");

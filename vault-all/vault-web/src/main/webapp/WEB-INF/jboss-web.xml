@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jboss-web>
+	<security-domain>REDHAT.COM</security-domain>
+	<disable-audit>true</disable-audit>
+	<context-root>vault-web</context-root>
+	<valve>
+		<class-name>org.jboss.security.negotiation.NegotiationAuthenticator</class-name>
+	</valve>
+</jboss-web>

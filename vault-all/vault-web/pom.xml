@@ -54,8 +54,30 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlrpc</groupId>
+			<artifactId>xmlrpc-server</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.tuckey</groupId>
+			<artifactId>urlrewrite</artifactId>
+			<version>2.5.2</version>
+		</dependency>
 	</dependencies>
 	<build>
-		<finalName>vault-web</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Dependencies>org.jboss.security.negotiation</Dependencies>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 </project>

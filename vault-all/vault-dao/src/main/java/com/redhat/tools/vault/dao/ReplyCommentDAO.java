@@ -109,7 +109,6 @@ public class ReplyCommentDAO {
 			return replyList;
 		}
 		catch (Exception e) {
-			e.printStackTrace();
 			log.error(e.getMessage());
 			throw e;
 		}
@@ -118,7 +117,6 @@ public class ReplyCommentDAO {
 				dao.closeSession(session);
 			}
 			catch (Exception e) {
-				e.printStackTrace();
 				log.error(e.getMessage());
 			}
 		}

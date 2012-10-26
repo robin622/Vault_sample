@@ -57,7 +57,8 @@ public class SavequeryServlet extends HttpServlet {
 		try{
     		if(operation.equals("getUserQuery")){
     		    try{
-    		        List<Savequery> querys = queryService.getUserquery("wguo");
+    		    	String userName=(String) request.getSession().getAttribute("userName");
+    		        List<Savequery> querys = queryService.getUserquery(userName);
                     if(querys != null && querys.size() > 0){
                         for(Savequery query : querys){
                             JSONObject json = new JSONObject();
@@ -108,8 +109,8 @@ public class SavequeryServlet extends HttpServlet {
                 String requestName      = (String) request.getParameter("requestName");
                 Savequery query         = new Savequery();
                 query.setQueryname(queryName);
-                query.setCreatedby("wguo");
-                query.setCreatedtime(DateUtil.getLocalUTCTime());
+                query.setCreatedby(creator);
+                query.setCreatedtime(new Date());
                 query.setSearchname(requestName);
                 query.setType("1");
                 try {

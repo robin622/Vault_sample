@@ -557,6 +557,7 @@ function viewRequest(requestId,url) {
 							"bDestroy":false,
 							"bFilter": false,
 							"bPaginate": false,
+							"bInfo": false,
 							"sPaginationType": "full_numbers",
 							"aoColumns": [
 							  { "sTitle": "ID",

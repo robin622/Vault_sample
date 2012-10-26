@@ -49,7 +49,7 @@ public class DeleteRequestServlet extends HttpServlet {
             request.setRequestid(Long.parseLong(requestid));
             service.deleteRequest(request);
             
-            String userName="wguo";
+            String userName=(String) req.getSession().getAttribute("userName");
             List<Request> myRequests = service.getMyRequest(userName);
             req.setAttribute("myRequests", myRequests);
             req.setAttribute("operationstatus", "myrequest");

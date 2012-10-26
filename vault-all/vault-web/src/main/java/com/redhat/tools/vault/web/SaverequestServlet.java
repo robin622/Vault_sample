@@ -70,7 +70,7 @@ public class SaverequestServlet extends HttpServlet {
         String requestDatetime =   null;
         String detail          =   null;
         String isPublic        =   null;
-        String userName        =   "wguo";
+        String userName        =   (String) req.getSession().getAttribute("userName");
         String owner           =   null;
         String notifyMap       =   null; 
         String cc              =   null;

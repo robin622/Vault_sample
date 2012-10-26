@@ -298,7 +298,7 @@ public class VaultSendMail {
 		}
 
 		fromUserName = "Vault";
-		fromUserAddress = email;
+		fromUserAddress = userName+"@redhat.com";
 		if (!"signoffOnBehalf".equals(status) && !"signoff".equals(status)
 				&& !"reject".equals(status) && !"delete".equals(status)
 				&& !"withdraw".equals(status)) {

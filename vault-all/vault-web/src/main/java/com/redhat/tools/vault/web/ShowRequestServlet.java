@@ -16,6 +16,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringEscapeUtils;
 import com.redhat.tools.vault.bean.Request;
 import com.redhat.tools.vault.service.RequestService;
+import com.redhat.tools.vault.web.helper.VaultHelper;
 
 /**
  * @author wezhao
@@ -41,11 +42,19 @@ public class ShowRequestServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String userName="wguo";
-		String userEmail="wguo@redhat.com";
+		String userName=(String) request.getSession().getAttribute("userName");
+		String userEmail=(String) request.getSession().getAttribute("userEmail");
+		if(userName==null||"".equals(userName.trim())){
+			userName=VaultHelper.getUserNameFromRequest(request);
+			if(userName!=null&&!"".equals(userName.trim())){
+				userEmail=VaultHelper.getEmailFromName(userName);
+			}else{
+				//jump to error page
+				return;
+			}
+		}
 		response.setContentType("text/html;charset=UTF-8");
 		response.setHeader("Cache-Control", "no-chche");
-		
 		String requestid=request.getParameter("requestid");
 		List<Request> detailRequests=reqService.getDetailRequest(requestid);
 		String detailRequestName = null;

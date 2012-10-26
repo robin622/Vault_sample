@@ -16,9 +16,36 @@
 		<org.hibernate.version>3.2.5.ga</org.hibernate.version>
 		<commons.collections.version>3.2.1</commons.collections.version>
 		<javax.mail.version>1.4.1</javax.mail.version>
-	    <commons.lang.version>2.5</commons.lang.version>
-	    <commons.logging.version>1.1.1</commons.logging.version>
+		<commons.lang.version>2.5</commons.lang.version>
+		<commons.logging.version>1.1.1</commons.logging.version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>jboss-public-repository-group</id>
+			<name>JBoss Public Maven Repository Group</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>repository.jboss.org</id>
+			<url>http://repository.jboss.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 	<dependencyManagement>
 		<dependencies>

@@ -48,6 +48,19 @@ var zone_patern=/\d{1,4}\-\d{1,2}\-\d{1,2} \d{1,2}:\d{1,2}/g;
 		toreplace("reception_tbl");
 		toreplace("detail_comment");
 	}
+	function toreplace3(componentid){
+		var componentId=document.getElementById(componentid);
+		if(typeof componentId == "undefined" || componentId==null)return;
+			var intext=componentId.innerHTML;
+			if(typeof intext != "undefined" && intext.search(zone_patern)!=-1){
+				 var arr=intext.match(zone_patern);
+				 for(var m=0;m<arr.length;m++)
+		         {
+					 intext=intext.replace(arr[m],calculateTime(arr[m]));
+		         }
+				 componentId.innerHTML=intext;
+			}
+	}
 	function toreplace2(componentid){
 		console.info('componentid is'+ componentid);
 		var componentId=document.getElementById(componentid);

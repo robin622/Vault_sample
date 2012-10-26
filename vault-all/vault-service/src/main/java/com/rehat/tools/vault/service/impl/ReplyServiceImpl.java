@@ -75,7 +75,6 @@ public class ReplyServiceImpl implements ReplyService{
 			List<Long> replyIdList = commentRelationDAO.getReplyIdListByHistoryId(Long.parseLong(historyid));
 			replyList = replyCommentDAO.getReplyCommentListByIdList(replyIdList);					
 		} catch (Exception e) {
-			e.printStackTrace();
 			log.error(e.getMessage());
 		} finally {
 			joReturn.put("replyList", replyList);

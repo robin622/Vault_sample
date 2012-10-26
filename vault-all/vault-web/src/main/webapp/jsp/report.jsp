@@ -12,7 +12,7 @@
 <link href="<%=request.getContextPath()%>/css/vault.css"
 	rel="stylesheet">
 <link
-	href="<%=request.getContextPath()%>/js/jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css"
+	href="<%=request.getContextPath()%>/css/jquery-ui-1.8.20.custom.css"
 	rel="stylesheet" />
 <link href="<%=request.getContextPath()%>/images/favicon.ico"
 	rel="shortcut icon">
@@ -20,6 +20,8 @@
 <script src="<%=request.getContextPath()%>/js/dropdown.js"></script>
 <script src="<%=request.getContextPath()%>/js/modal.js"></script>
 <script src="<%=request.getContextPath()%>/js/datatable.js"></script>
+<script type='text/javascript' src="<%=request.getContextPath()%>/js/timezone.js"></script> 
+<script type='text/javascript' src="<%=request.getContextPath()%>/js/vault_js.js"></script> 
 </head>
 <body>
 	<div class="content margin padding">
@@ -78,9 +80,7 @@
 				<c:if test="${not empty reports}">
 					<c:forEach items="${reports}" var="report" varStatus="reportstatus">
 						<c:set value="${report}" var="temps"></c:set>
-						<c:forEach items="${report}" var="ele" begin="0" end="1">
-							<c:set value="${ele}" var="elementofreport"></c:set>
-						</c:forEach>
+						<c:set value="${tran:getReportStatus(report)}" var="elementofreport"></c:set>
 						<tr>
 							<td><span class="${elementofreport.reportStatus}m">${elementofreport.reportStatus}</span>
 							</td>
@@ -262,6 +262,7 @@
 							});
 		});
 		toreplace("home_table");
+		toreplace("report_tbl");
 	</script>
 </body>
 </html>

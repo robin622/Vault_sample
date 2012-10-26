@@ -45,4 +45,10 @@
   	<function-class>com.redhat.tools.vault.web.helper.VaultHelper</function-class>
   	<function-signature>java.lang.String replaceCharacter(java.lang.String)</function-signature>	
   </function>
+  <function>
+  	<description>get latest status of reports</description>
+  	<name>getReportStatus</name>
+  	<function-class>com.redhat.tools.vault.web.helper.VaultHelper</function-class>
+  	<function-signature>com.redhat.tools.vault.bean.RequestHistory getReportStatus(java.util.List)</function-signature>	
+  </function>
 </taglib>

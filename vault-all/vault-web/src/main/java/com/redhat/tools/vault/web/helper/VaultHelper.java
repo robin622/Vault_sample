@@ -1,6 +1,12 @@
 package com.redhat.tools.vault.web.helper;
 
+import java.security.Principal;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.redhat.tools.vault.bean.Request;
+import com.redhat.tools.vault.bean.RequestHistory;
 
 public class VaultHelper {
 	
@@ -56,5 +62,28 @@ public class VaultHelper {
 	
 	public static String replaceCharacter(String old){
 		return old.replaceAll("&amp;","&");
+	}
+	
+	public static String getUserNameFromRequest(HttpServletRequest request) {
+		Principal userPrincipal = request.getUserPrincipal();
+		String userName = null;
+		if (userPrincipal != null) {
+			userName = userPrincipal.getName();
+			if (userName.contains("@")) {
+				userName = userName.substring(0, userName.indexOf('@'));
+			}
+		}
+		if(null==userName||"".equals(userName)){
+			userName="wezhao";
+		}
+		return userName;
+	}
+	
+	public static String getEmailFromName(String userName){
+		return userName+"@redhat.com";
+	}
+	
+	public static RequestHistory getReportStatus(List<RequestHistory> list){
+		return list.get(0);
 	}
 }
