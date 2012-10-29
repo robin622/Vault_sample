@@ -89,13 +89,13 @@ function viewRequest(requestId,url) {
 	</thead>
 	<tbody>
 		<tr>
-			<td width="11%"><span>Product:</span></td>
+			<td width="11%">Product:</td>
 			<td width="32%">${detailRequest.productname}</td>
 			<td width="7%" class="bg-gray font">Version:</td>
 			<td width="50%">${detailRequest.versiondesc}</td>
 		</tr>
 		<tr>
-			<td><span>Due date:</span></td>
+			<td>Due date:</td>
 			<td id="requesttime_value">${tran:transformByFormat(detailRequest.requesttime,"yyyy-MM-dd
 				HH:mm")}<script>OutputLoc();</script>
 			</td>
@@ -105,23 +105,23 @@ function viewRequest(requestId,url) {
 			</td>
 		</tr>
 		<tr>
-			<td><span>Creator:</span></td>
+			<td>Creator:</td>
 			<td colspan="3">${detailRequest.createdby}</td>
 		</tr>
 		<tr>
-			<td><span>CC:</span></td>
+			<td>CC:</td>
 			<td colspan="3">${detailRequest.forward}</td>
 		</tr>
 		<tr>
-			<td><span>Parent:</span></td>
+			<td>Parent:</td>
 			<td colspan="3">${tran:getParent(detailRequest.parent,pageContext.request.contextPath)}</td>
 		</tr>
 		<tr>
-			<td><span>Child:</span></td>
+			<td>Child:</td>
 			<td colspan="3">${tran:getChildren(detailRequest.children,pageContext.request.contextPath)}</td>
 		</tr>
 		<tr>
-			<td><span>Description:</span></td>
+			<td>Description:</td>
 			<td id="detail_value" colspan="3" class="wordwrap"><c:if test="${not empty detailRequest.detail}">
 					<script type="text/javascript">
 			       		jQuery(function($){
@@ -149,7 +149,7 @@ function viewRequest(requestId,url) {
 				</c:if></td>
 		</tr>
 		<tr>
-			<td ><span>Attachment:</span></td>
+			<td >Attachment:</td>
 			<td>
 				<div id="requestAttachment_value">
 					<c:if test="${not empty detailRequest}">
@@ -371,16 +371,16 @@ function viewRequest(requestId,url) {
 	style="display: none">
 	<thead>
 		<tr>
-			<th colspan="2">Comment</th>
+			<th colspan="2" class="iconmean">Comment 
+              <span class="SignedByRequestorm icon-mean spanright">Signed by Requestor</span><span class="Waitingm icon-mean">Waiting</span><span class="Commentsm icon-mean">Comments</span><span class="Signedm icon-mean">Signed</span >
+			</th>
 
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<td class="background-fff">
-			<div class="iconmean-out">
-              <span class="Signedm icon-mean">Signed</span ><span class="Commentsm icon-mean">Comments</span><span class="Waitingm icon-mean">Waiting</span><span class="SignedByRequestorm icon-mean">Signed by Requestor</span>
-			</div>	
+			
 				<fieldset class="fieldset-vault wordwrap">
 					<legend class="legend-vault img1" id="turn">Turn Off
 						Comments </legend>

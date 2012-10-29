@@ -13,15 +13,15 @@
 	          <table id="example3" class="eso-table table-striped eso-table-inner ">
 <thead>
     <tr>        
-        <th>ID</th>
-        <th class="nowrep">Request Name</th>
-         <th>Product</th>
+        <th >ID</th>
+        <th>Request Name</th>
+         <th class="productwidth">Product</th>
         <th>Version</th>
         <th>Creator</th>
-        <th class="nowrep">Created Date</th>
+        <th >Created Date</th>
         <th>	Due Date</th>
-        <th class="nowrep">Last Modified</th>
-         <th class="nowrep">Modified Date</th>
+        <th>Last Modified</th>
+         <th >Modified Date</th>
         <th>Status</th>
     </tr>
 </thead>

@@ -114,9 +114,13 @@ select, input[type="file"]{height:24px;}
 .longtext{word-wrap:break-word; word-spacing:normal;overflow:hidden;word-break:break-all;white-space: white-space: normal;}
 .bgnone tr:nth-child(2n) td{background: none;}
 .icon-mean{margin-left:15px; display:inline-black;}
-.iconmean-out{clear:both;}
+
+.iconmean span{float:right;font-weight:normal;}
 #eso-topbar .eso-logo{margin-top:11px;}
 .nowrep{white-space: nowrap;}
+.addwidth{width:500px;}
+.spanright{margin-right:5px;}
+.productwidth{width:150px;}
 /*word wrap============================*/
 .wordwrap{word-wrap:break-word;word-break:break-all;-moz-binding: url("wordwrap.xml#wordwrap");overflow: hidden;}
 
@@ -131,7 +135,7 @@ form{margin:0px;}
 div.dataTables_length select{margin-left:4px;}
 .modal-footer{text-align:left;}
 .modal{width:450px; margin:-250px 0 0 -200px;}
-textarea{width:300px;}
+textarea{width:500px;}
 
 
 

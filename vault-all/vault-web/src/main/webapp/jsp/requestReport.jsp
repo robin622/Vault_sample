@@ -128,7 +128,7 @@
 				toreplace('sumreport${status.index}');
 			</script>
 		</c:forEach>
-		<a href="#" class="margin">Link to quick access this report</a>
+		
 		<div class="clear"></div>
 	</div>
 </body>

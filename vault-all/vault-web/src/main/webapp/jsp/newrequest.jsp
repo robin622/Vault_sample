@@ -79,7 +79,7 @@
     </tr>
     <tr>
     <td ><span>Description:</span><span class="red">*</span></td>
-    <td ><textarea class="input-xlarge" name="detail" id="detail" rows="3"></textarea></td>
+    <td ><textarea class="input-xlarge addwidth" name="detail" id="detail" rows="3"></textarea></td>
    
     </tr>
     <tr>
