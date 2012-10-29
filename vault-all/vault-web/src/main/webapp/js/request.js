@@ -795,6 +795,29 @@ window.request = {
 			}
 		}
 		return false;
+	},
+	req_updateProducts : function() {
+		var url = "ProductUpdate";
+		var flag = "";
+		var awccc = "";
+		jQuery (function($) {
+			$.ajax ({
+				type: "POST",
+                url: url,
+                dataType:"json",
+				success: function (rtnData) {
+//					rtnData = eval("(" + rtnData + ")");
+					flag = rtnData.flag;
+					if (flag == "success") {
+//						request.req_initProduct();
+//						request.req_initVersion();
+						location.reload();
+					} else {
+						alert("Sorry, update failed! Please contact the administrator.");
+					}
+				}
+			});
+		});
 	}
 };
 

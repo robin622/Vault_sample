@@ -60,4 +60,74 @@ public class VersionDAO {
 			}
 		}
 	}
+	@SuppressWarnings("unchecked")
+	public List<Version> getAllVersions() throws Exception {
+		try {
+			session = dao.getSession();
+			Criteria criteria = session.createCriteria(Version.class);
+			criteria.addOrder(Order.asc((Version.PROPERTY_ID)));
+			List<Version> versions = criteria.list();
+			return versions;
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			throw e;
+		} finally {
+			try {
+				dao.closeSession(session);
+			} catch (Exception e) {
+				log.error(e.getMessage());
+				throw e;
+			}
+		}
+	}
+	
+	public void updateVersion(Version version) throws Exception{
+//		Transaction trans = null;
+		try{
+			session = dao.getSession();
+//			trans = session.beginTransaction();
+			session.update(version);
+//			trans.commit();
+//			trans = null;
+			session.flush();
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			throw e;
+		} finally {
+			try {
+//				if (trans != null) {
+//					trans.rollback();
+//				}
+				dao.closeSession(session);
+			} catch (Exception e) {
+				log.error(e.getMessage());
+				throw e;
+			}
+		}
+	}
+	
+	public void saveVersion(Version version) throws Exception{
+//		Transaction trans = null;
+		try{
+			session = dao.getSession();
+//			trans = session.beginTransaction();
+			session.save(version);
+//			trans.commit();
+//			trans = null;
+			session.flush();
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			throw e;
+		} finally {
+			try {
+//				if (trans != null) {
+//					trans.rollback();
+//				}
+				dao.closeSession(session);
+			} catch (Exception e) {
+				log.error(e.getMessage());
+				throw e;
+			}
+		}
+	}
 }
