@@ -93,7 +93,7 @@ div.dataTables_filter label input{ height:20px;}
 .state{ margin-left:12px;}
 .time{margin:0 10px; color:#999;}
 .add-width{ width:400px;}
-.delate-table{background:url("../images/delete.gif") no-repeat scroll left center transparent; display: inline-block; width:16px; height:16px; border:none; cursor:pointer;}
+.delate-table{background:url("../images/delete.gif") no-repeat scroll left 3px; transparent; display: inline-block; width:16px; height:16px; border:none; cursor:pointer;}
 .span-top{ margin-top:5px;}
 .span-bottom{ margin-bottom:5px;}
 .times{ margin-left:5px;}
@@ -111,6 +111,8 @@ select, input[type="file"]{height:24px;}
 .Commentsm{background:url("../images/ico_comment.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
 .Waitingm{background:url("../images/icon.png") no-repeat scroll 0px -117px transparent; padding-left:20px;}
 .SignedByRequestorm{background:url("../images/behalf.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
+.SignedonBehalfm{background:url("../images/behalf.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
+.Rejectedm{background:url("../images/reject.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
 .longtext{word-wrap:break-word; word-spacing:normal;overflow:hidden;word-break:break-all;white-space: white-space: normal;}
 .bgnone tr:nth-child(2n) td{background: none;}
 .icon-mean{margin-left:15px; display:inline-black;}
@@ -121,6 +123,7 @@ select, input[type="file"]{height:24px;}
 .addwidth{width:500px;}
 .spanright{margin-right:5px;}
 .productwidth{width:150px;}
+.w400{width:400px;}
 /*word wrap============================*/
 .wordwrap{word-wrap:break-word;word-break:break-all;-moz-binding: url("wordwrap.xml#wordwrap");overflow: hidden;}
 

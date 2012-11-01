@@ -95,7 +95,7 @@ function viewRequest(requestId,url) {
 			<td width="50%">${detailRequest.versiondesc}</td>
 		</tr>
 		<tr>
-			<td>Due date:</td>
+			<td>Due Date:</td>
 			<td id="requesttime_value">${tran:transformByFormat(detailRequest.requesttime,"yyyy-MM-dd
 				HH:mm")}<script>OutputLoc();</script>
 			</td>
@@ -372,7 +372,7 @@ function viewRequest(requestId,url) {
 	<thead>
 		<tr>
 			<th colspan="2" class="iconmean">Comment 
-              <span class="SignedByRequestorm icon-mean spanright">Signed by Requestor</span><span class="Waitingm icon-mean">Waiting</span><span class="Commentsm icon-mean">Comments</span><span class="Signedm icon-mean">Signed</span >
+              <span class="Rejectedm icon-mean spanright">Rejected</span><span class="SignedByRequestorm icon-mean ">Signed by Requestor</span><span class="Waitingm icon-mean">Waiting</span><span class="Commentsm icon-mean">Comments</span><span class="Signedm icon-mean">Signed</span >
 			</th>
 
 		</tr>
@@ -406,12 +406,12 @@ function viewRequest(requestId,url) {
 				<div class="tablefooter">
 					<div class="tablefooterleft">
 						<input type="hidden" name="judgeSignOff" id="judgeSignOff"
-							value="0" /><input type="button" value="Comment" class="btn btn-primary btn-wide" onclick="javascript:addComment()"> <input type="button" value="Sign Off" class="btn"
+							value="0" /><input type="button" value="Comment" class="btn btn-primary btn-wide" onclick="javascript:addComment()"> <input type="button" value="Sign Off" class="btn btn-wide"
 							id="sign_btn" onclick="javascript:commitSignOff('1','')" />
 						<!-- <input type="button" value="Sign Off On Behalf Of"  class="btn"  id="sign_onbehalf_btn" onclick="javascript:commitSignOff('2')"/>  -->
 						<input type="button" value="Sign Off On Behalf Of" class="btn btn-wide"
 							id="sign_onbehalf_btn" onclick="javascript:behalf_click(this)" />
-						<input type="button" value="Reject" class="btn" id="reject_btn"
+						<input type="button" value="Reject" class="btn btn-wide" id="reject_btn"
 							onclick="javascript:commitReject()" /> <input type="button"
 							value="Cancel" class="btn btn-wide" id="canceldetail" />
 					</div>

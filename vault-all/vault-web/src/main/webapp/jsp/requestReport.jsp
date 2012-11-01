@@ -55,9 +55,9 @@
 				<thead>
 					<tr>
 						<th width="13%">Status</th>
-						<th width="13%">Sign off by</th>
-						<th width="13%">Due date</th>
-						<th width="61%">Last modified</th>
+						<th width="13%">Sign Off By</th>
+						<th width="13%">Due Date</th>
+						<th width="61%">Last Modified</th>
 					</tr>
 				</thead>
 				<tbody>

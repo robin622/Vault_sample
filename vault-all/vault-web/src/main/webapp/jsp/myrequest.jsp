@@ -16,14 +16,14 @@
     <tr>
         <th><input type="checkbox" value="option1" id="checkAllMyRequest"></th>
         <th>ID</th>
-        <th>Request Name</th>
-         <th>Product</th>
+        <th class="w400">Request Name</th>
+        <th class="productwidth">Product</th>
         <th>Version</th>
         <th>Creator</th>
-        <th >Created Date</th>
+        <th>Created Date</th>
         <th>Due Date</th>
-        <th >Last Modified</th>
-         <th >Modified Date</th>
+        <th>Last Modified</th>
+        <th>Modified Date</th>
         <th>Status</th>
         <th>Action</th>
     </tr>

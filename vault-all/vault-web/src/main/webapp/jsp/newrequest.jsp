@@ -49,7 +49,7 @@
       <span class="delate-table" onclick="javascript:request.req_delOwner('input_owner_0',0)"></span>
       Tips: can type multiple emails.
       </br>
-      <input type="button" id="sign_addchild_btn" class ="btn off-margin span-top btn-narrow" onclick="javascript:request.req_addOwner()" value="Add more">
+      <input type="button" id="sign_addchild_btn" class ="btn off-margin span-top btn-narrow" onclick="javascript:request.req_addOwner()" value="Add More">
       </td>
     </tr>
     <tr>
@@ -58,7 +58,7 @@
       
     </tr>
     <tr>
-    <td ><span>Due date:</span></td>
+    <td ><span>Due Date:</span></td>
     <td ><input type="text" class="input-xlarge date-width" id="requesttime" name="requesttime"><input type="text" class="input-xlarge times date-width" name="requestdatetime" id="requestdatetime"><script type="text/javascript">OutputLoc()</script></td>
    
     </tr>

@@ -252,7 +252,7 @@
       </ul>
     </li>
  <li class="dropdown header-user">
-   <a class="dropdown-toggle" href="#" title="User Info">Hello,${userName}</a>
+   <a class="dropdown-toggle" href="#" title="User Info">Hello, ${userName}</a>
  </li>
  </ul>
 

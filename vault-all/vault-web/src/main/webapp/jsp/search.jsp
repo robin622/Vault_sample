@@ -63,7 +63,7 @@
             </div>
             
             <div class="control-group">
-                <label class="control-label">Sign off by: </label>
+                <label class="control-label">Sign Off By: </label>
                 <div class="controls">
                <input type="text" class="input-xlarge" id="search_signoff">
                 </div>

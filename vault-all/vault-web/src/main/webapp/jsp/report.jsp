@@ -43,7 +43,7 @@
 					<td>${reportRequest.versiondesc}</td>
 				</tr>
 				<tr>
-					<td>Due date:</td>
+					<td>Due Date:</td>
 					<td>${tran:transformByFormat(reportRequest.requesttime,"yyyy-MM-dd
 						HH:mm")}</td>
 					<td class="bg-gray">Create Date:</td>
@@ -70,9 +70,9 @@
 			<thead>
 				<tr>
 					<th width="13%">Status</th>
-					<th width="16%">Sign off by</th>
-					<th width="14%">Due date</th>
-					<th width="14%">Last modified</th>
+					<th width="16%">Sign Off By</th>
+					<th width="14%">Due Date</th>
+					<th width="14%">Last Modified</th>
 					<th width="43%">Comment</th>
 				</tr>
 			</thead>
