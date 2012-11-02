@@ -50,11 +50,12 @@ public class DeleteRequestServlet extends HttpServlet {
             service.deleteRequest(request);
             
             String userName=(String) req.getSession().getAttribute("userName");
+            String userEmail=(String) req.getSession().getAttribute("userEmail");
             List<Request> myRequests = service.getMyRequest(userName);
             req.setAttribute("myRequests", myRequests);
             req.setAttribute("operationstatus", "myrequest");
             
-            Map<String,Long> counts = service.getRequestCount(userName, "");
+            Map<String,Long> counts = service.getRequestCount(userName, userEmail);
             req.setAttribute("reqCounts", counts);
             req.getRequestDispatcher("/jsp/home.jsp").forward(req, res);
         }catch (Exception e) {

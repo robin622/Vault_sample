@@ -15,20 +15,20 @@ window.query = {
 		$.ajax({
 			type: "POST",
 			url: url,
-			data: "operation=verifyQueryName&queryName="+encodeURI(queryName),
+			data: "operation=verifyQueryName&queryName="+encodeURIComponent(queryName),
 			dataType:'json',
 			success: function(rtnData) {
 				var queryExist = rtnData[0].queryExist;
 				if(queryExist) {
-					alert("The queryName has already exist.Please enter another one");
+					alert("The query name has already exist.Please enter another one");
 					return;
 				}else {
 					//save process
 					$.ajax({
 						type : "POST",
 						url : url,
-						data : "operation=saveQuery&queryName="+encodeURI(queryName)+"&requestName="+encodeURI(requestName)+"&creator="+creator
-							+ "&owner=" + owner + "&status=" + status + "&productId="+productId+"&versionId="+versionId,
+						data : "operation=saveQuery&queryName="+encodeURIComponent(queryName)+"&requestName="+encodeURIComponent(requestName)+"&creator="+encodeURIComponent(creator)
+							+ "&owner=" + encodeURIComponent(owner) + "&status=" + status + "&productId="+productId+"&versionId="+versionId,
 						success : function(rtnData){
 							$("#myModal").modal("hide");
 							$("#queryName").val("");
@@ -71,14 +71,14 @@ window.query = {
 					if(index > 4){
 						return;
 					}
-					content = content + '<a id=query_' + item.queryId + ' href=javascript:query.qry_setQuery(' + escape(JSON.stringify(item)) + ') class=quary>' 
-							+ item.queryName + '</a><a href=javascript:query.qry_del(' + escape(JSON.stringify(item)) + ') class=quary-img><img src=images/delete.gif  alt=""></a>';
+					content = content + '<a id=query_' + item.queryId + ' href=javascript:query.qry_setQuery(' + encodeURIComponent(JSON.stringify(item)) + ') class=quary>' 
+							+ item.queryName + '</a><a href=javascript:query.qry_del(' + encodeURIComponent(JSON.stringify(item)) + ') class=quary-img><img src=images/delete.gif  alt=""></a>';
 				});
 				if(rtnData.length > 5){
 					content = content + '<span class="quary-more"  id="quary-js">';
 					for(var i = 5;i<rtnData.length;i++){
-						content = content + '<a id=query_' + rtnData[i].queryId + ' href=javascript:query.qry_setQuery(' + escape(JSON.stringify(rtnData[i])) + ') class="quary">' 
-								+ rtnData[i].queryName + '</a><a href=javascript:query.qry_del(' + escape(JSON.stringify(rtnData[i])) + ') class="quary-img"><img src="images/delete.gif"  alt=""></a>';
+						content = content + '<a id=query_' + rtnData[i].queryId + ' href=javascript:query.qry_setQuery(' + encodeURIComponent(JSON.stringify(rtnData[i])) + ') class="quary">' 
+								+ rtnData[i].queryName + '</a><a href=javascript:query.qry_del(' + encodeURIComponent(JSON.stringify(rtnData[i])) + ') class="quary-img"><img src="images/delete.gif"  alt=""></a>';
 					}
 					content = content + '</span><a href="#" class="quary" id="more">more...</a><a href="#" class="quary display-none" id="hide">hide...</a>';
 				}
@@ -208,7 +208,7 @@ window.query = {
     	var status = $('#search_status').val() == "" ? "-1" : $('#search_status').val();
     	var owneremail = $('#search_signoff').val();
     	var productid = $('#search_productid').val() == "" ? "-1" : $('#search_productid').val();
-    	var action = "listRequest?operation=Search&requestName="+requestName +"&creator=" + creator + "&versionid=" + versionid+ "&productid=" + productid+ "&status="+status+"&owneremail="+owneremail;
+    	var action = "listRequest?operation=Search&requestName="+encodeURIComponent(requestName) +"&creator=" + encodeURIComponent(creator) + "&versionid=" + versionid+ "&productid=" + productid+ "&status="+status+"&owneremail="+encodeURIComponent(owneremail);
     	window.location.href = action;
 	},
 	
@@ -218,7 +218,7 @@ window.query = {
 			alert("Please enter Search Keyword.");
 			return;
 		}
-    	var action = "listRequest?operation=Search&requestName="+requestName;
+    	var action = "listRequest?operation=Search&requestName="+encodeURIComponent(requestName);
     	window.location.href = action;
 	}
 };

@@ -63,63 +63,58 @@
 				<tbody>
 					<c:if
 						test="${request.waitingList!=null && request.waitingList!=''}">
-						<tr>
-							<td><span class="waiting">Waiting</span></td>
-							<td>
-							<c:forTokens items="${request.waitingList}" delims="," var="wait">
-							<a href="#">${wait }</a>
-							</c:forTokens>
-							</td>
-							<td>${tran:transformByFormat(request.requesttime,"yyyy-MM-dd
-								HH:mm")}</td>
-							<td>${tran:transformByFormat(request.editedtime,"yyyy-MM-dd
-								HH:mm")}</td>
-						</tr>
+						<c:forTokens items="${request.waitingList}" delims="," var="wait">
+							<tr>
+								<td><span class="waiting">Waiting</span></td>
+								<td>
+								<a href="#">${wait}</a>
+								</td>
+								<td>${tran:transformByFormat(request.requesttime,"yyyy-MM-dd
+									HH:mm")}</td>
+								<td></td>
+							</tr>
+						</c:forTokens>
 					</c:if>
 					<c:if
 						test="${request.signoffList!=null && request.signoffList!=''}">
-						<tr>
-							<td><span class="signed">Signed</span></td>
-							<td>
-							<c:forTokens items="${request.signoffList}" delims="," var="signoff">
-							<a href="#">${signoff }</a>
-							</c:forTokens>
-							<td>${tran:transformByFormat(request.requesttime,"yyyy-MM-dd
-								HH:mm")}</td>
-							<td>${tran:transformByFormat(request.editedtime,"yyyy-MM-dd
-								HH:mm")}</td>
-						</tr>
+						<c:forTokens items="${request.signoffList}" delims="," var="signoff">
+							<tr>
+								<td><span class="signed">Signed</span></td>
+								<td>
+								<a href="#">${fn:substringBefore(signoff, '|')}</a>
+								<td>${tran:transformByFormat(request.requesttime,"yyyy-MM-dd
+									HH:mm")}</td>
+								<td>${fn:substringAfter(signoff, '|')}</td>
+							</tr>
+						</c:forTokens>
 					</c:if>
 					<c:if
 						test="${request.commentList!=null && request.commentList!=''}">
-						<tr>
-							<td><span class="Comment">Comment</span></td>
-							<td>
-							<c:forTokens items="${request.commentList}" delims="," var="comment">
-							<a href="#">${comment }</a>
-							</c:forTokens>
-							</td>
-							<td>${tran:transformByFormat(request.requesttime,"yyyy-MM-dd
-								HH:mm")}</td>
-							<td>${tran:transformByFormat(request.editedtime,"yyyy-MM-dd
-								HH:mm")}</td>
-						</tr>
-						
+						<c:forTokens items="${request.commentList}" delims="," var="comment">
+							<tr>
+								<td><span class="Comment">Comment</span></td>
+								<td>
+								<a href="#">${fn:substringBefore(comment, '|')}</a>
+								</td>
+								<td>${tran:transformByFormat(request.requesttime,"yyyy-MM-dd
+									HH:mm")}</td>
+								<td>${fn:substringAfter(comment, '|')}</td>
+							</tr>
+						</c:forTokens>
 					</c:if>
 					<c:if
 						test="${request.rejectedList!=null && request.rejectedList!=''}">
-						<tr>
-							<td><span class="Rejected">Reject</span></td>
-							<td>
-							<c:forTokens items="${request.rejectedList}" delims="," var="reject">
-								<a href="#">${reject }</a>
-							</c:forTokens>
-							</td>
-							<td>${tran:transformByFormat(request.requesttime,"yyyy-MM-dd
-								HH:mm")}</td>
-							<td>${tran:transformByFormat(request.editedtime,"yyyy-MM-dd
-								HH:mm")}</td>
-						</tr>
+						<c:forTokens items="${request.rejectedList}" delims="," var="reject">
+							<tr>
+								<td><span class="Rejected">Reject</span></td>
+								<td>
+									<a href="#">${fn:substringBefore(reject, '|')}</a>
+								</td>
+								<td>${tran:transformByFormat(request.requesttime,"yyyy-MM-dd
+									HH:mm")}</td>
+								<td>${fn:substringAfter(reject, '|')}</td>
+							</tr>
+						</c:forTokens>
 					</c:if>
 
 				</tbody>

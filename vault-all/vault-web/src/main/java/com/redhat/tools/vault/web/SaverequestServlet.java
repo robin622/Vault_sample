@@ -112,10 +112,10 @@ public class SaverequestServlet extends HttpServlet {
                 request.setEditedtime(DateUtil.getLocalUTCTime());
                 // maps.addAll(request.getMaps());//add exsisting maps
                 // to changed request.
-                for (RequestMap m : request.getMaps()) {
+                /*for (RequestMap m : request.getMaps()) {
                     m.setMapid(null);
                     maps.add(m);
-                }
+                }*/
                 Attachment.remove(requestId);
             }else{
                 request.setRequestVersion(1);

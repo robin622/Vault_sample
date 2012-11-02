@@ -328,14 +328,19 @@ window.request = {
 	},
 	//sign off and cc cannot be same
 	req_checkSignOffAndCC : function(){
-		var ownercount = $("#maxownercount").val();	
+		var ownercount = $("#maxownercount").val();
         var intownercount = parseInt(ownercount);
+        var flagResult = 0;
 		for ( var i = 0; i <= intownercount; i++) {
 			var owner = $("#input_owner_"+i).val();
 			if(typeof owner  != "undefined"){
 				if(owner != ""){
-					if(!this.req_checkMail(owner)) {
+					flagResult = this.req_checkMail(owner);
+					if(flagResult == 1) {
 						alert("Please enter valid Red Hat email address.");
+						return false;
+					}else if(flagResult == 2){
+						alert("Please split the emails with comma.");
 						return false;
 					}
 				}
@@ -344,8 +349,12 @@ window.request = {
         }
         
 		var cc = $("#input_cc").val();
-		if(!this.req_checkMail(cc)) {
+		flagResult = this.req_checkMail(cc);
+		if(flagResult == 1) {
 			alert("Please enter valid Red Hat email address.");
+			return false;
+		}else if(flagResult == 2){
+			alert("Please split the emails with comma.");
 			return false;
 		}
 
@@ -361,7 +370,7 @@ window.request = {
 						if($.trim(ownerArray1[r])=="" || $.trim(ownerArray1[r+1])==""){
 							continue;
 						}
-						if (ownerArray1[r]==ownerArray1[r+1]){
+						if ($.trim(ownerArray1[r])==$.trim(ownerArray1[r+1])){
 							alert("Sign off field have same email：" + ownerArray1[r]);
 							return false;
 						}
@@ -377,7 +386,7 @@ window.request = {
 										if($.trim(ownerArray1[r])=="" || $.trim(ownerArray2[k])==""){
 											continue;
 										}
-										if(ownerArray1[r] == ownerArray2[k]){
+										if($.trim(ownerArray1[r]) == $.trim(ownerArray2[k])){
 											alert("Two sign off fields have same email:" + ownerArray1[r]);
 											return false;
 										}
@@ -396,7 +405,7 @@ window.request = {
 									if($.trim(ownerArray1[r])=="" || $.trim(ccArray[k])==""){
 										continue;
 									}
-									if(ownerArray1[r] == ccArray[k]){
+									if($.trim(ownerArray1[r]) == $.trim(ccArray[k])){
 										alert("Sign off and Cc have same email:" + ownerArray1[r]);
 										return false;
 									}
@@ -417,7 +426,7 @@ window.request = {
 				}
 			}
         }
-		document.getElementById("owner").value = ownerstr;
+		document.getElementById("owner").value = ownerstr.toLowerCase();
 	    document.getElementById("notifyOption").value = notifystr;	
 
 
@@ -427,51 +436,74 @@ window.request = {
 				var ccArray = cc_str.split(',');
 				ccArray.sort();
 				for(var r=0;r<ccArray.length-1;r++){
-					if (ccArray[r]==ccArray[r+1]){
+					if ($.trim(ccArray[r])==$.trim(ccArray[r+1])){
 						alert("Cc field have same email：" + ccArray[r]);
 						return false;
 					}
 				}
 			}
 		}
-		document.getElementById("cc").value = cc_str;
+		document.getElementById("cc").value = cc_str.toLowerCase();
 		return true;
 	},
 	/**
 	 * check mail 
+	 * flag : 0  normal
+	 *        1  suffix is wrong
+	 *        2  not separated with comma
 	 * @param mailList  (the user mails separated with ",")
 	 */
 	req_checkMail : function(mailList){
-		var flag = true;
+		var flag = 0;
+		var pattern = /^([a-zA-Z0-9_-])+@redhat.com+/;
 		if(typeof mailList != "undefined"){
+			mailList = mailList.toLowerCase();
 			var mailArray = mailList.split(',');
 			$.each(mailArray,function(index,item){
 				if(typeof item != "undefined"){
 					if(item != "" && jQuery.trim(item) != ""){
-						if(item.indexOf("redhat.com") != -1 || item.indexOf("REDHAT.COM") != -1){
-							
-						}else{
-							flag = false;
-							return;
+						chkFlag = pattern.test(jQuery.trim(item));
+						if(!chkFlag){
+							flag = 1;
+							return false;
 						}
 					}
 				}
 			});
+			
+			var mailArray2 = mailList.split("redhat.com");
+			for(var i = 1;i<mailArray2.length-1;i++){
+				if(mailArray2[i].indexOf(",") == -1){
+					flag =2;
+					break;
+				}
+			}
 		}
 		return flag;
 	},
 
-	req_ckDate : function(datestr) {
-		if(!datestr.match(/^\d{4}\-\d{2}\-\d{2}$/)){
+	req_ckDate : function(datestr,timestr) {
+		if(!datestr.match(/^\d{4}\-\d{2}\-\d{2}$/) || !timestr.match(/^\d{1,2}\:\d{2}\s*(A|P|a|p)(M|m)$/)){
     		return false;
 		}
 		var vYear = datestr.substr(0, 4) - 0;
 		var vMonth = datestr.substr(5, 2) - 1;
 		var vDay = datestr.substr(8, 2) - 0;
-		if(vMonth >= 0 && vMonth <= 11 && vDay >= 1 && vDay <= 31){
-			var vDt = new Date(vYear, vMonth, vDay);
+		
+		timestr = $.trim(timestr);
+		
+		var vHour = timestr.substring(0,timestr.indexOf(":"));
+		var vMin = timestr.substr(timestr.indexOf(":") + 1, 2);
+		if(timestr.toLocaleUpperCase().indexOf('PM') != -1){
+			vHour = parseInt(vHour)+parseInt(12);
+			if(vHour == 24){
+				vHour = 0;
+			}
+		}
+		if(vMonth >= 0 && vMonth <= 11 && vDay >= 1 && vDay <= 31 && vHour >=0 && vHour <= 23 && vMin >= 0 && vMin <= 59){
+			var vDt = new Date(vYear, vMonth, vDay, vHour, vMin);
 			var nowDate = new Date();
-			var nowNewDate  = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
+			var nowNewDate  = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), nowDate.getHours(), nowDate.getMinutes());
 			if(isNaN(vDt)){
 				return false;
 			}else if(vDt < nowNewDate){
@@ -503,6 +535,7 @@ window.request = {
 	req_checkRequest : function(){
 		var requestname = $("#requestname").val();
 		var requesttime = $("#requesttime").val();
+		var requestdatetime = $("#requestdatetime").val();
 		var detail = $("#detail").val();
 		
         if(requestname == "") {
@@ -516,9 +549,9 @@ window.request = {
         }
         
         if(typeof requesttime != "undefined"){
-        	if(requesttime != "") {
-        		 if(!this.req_ckDate(requesttime.Trim())){
-                 	alert("Due Date must be greater than today");
+        	if(requesttime != "" && requestdatetime!="") {
+        		 if(!this.req_ckDate(requesttime.Trim(),requestdatetime.Trim())){
+                 	alert("Due Date must be greater than now!");
                  	return false;
                  }
             }
@@ -721,17 +754,16 @@ window.request = {
 	},
 	
 	req_sumReport : function(table){
-		 /*var arr = $("#myrequest input[type=checkbox]:checked").map(function() { 
+		/*var arr = $("#myrequest input[type=checkbox]:checked").map(function() { 
              var obj = $(this).parent().next();
-             //obj.text(), obj.next().text(), obj.text(), obj.parent().next().text()
              return [obj.text()];
          }).get();
         if (arr == null || arr.length == 0){
             alert("Please select requests by clicking on check box.");
             return false;
         }
-		var selectedRpts = arr.join("_");
-        */
+		var selectedRpts = arr.join("_");*/
+        
 		var sData = "";
 		if(table == "search"){
 			sData = $('input', searchoTable.fnGetNodes()).serialize();

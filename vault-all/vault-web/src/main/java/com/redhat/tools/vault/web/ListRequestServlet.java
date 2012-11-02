@@ -80,7 +80,7 @@ public class ListRequestServlet extends HttpServlet {
             String          productid       =   (String) request.getParameter("productid");
             String          status          =   (String) request.getParameter("status");
             String          owneremail      =   (String) request.getParameter("owneremail");
-            if(requestName != null){
+            /*if(requestName != null){
             	requestName = StringEscapeUtils.escapeHtml(requestName);
             }
             if(creator != null){
@@ -88,7 +88,7 @@ public class ListRequestServlet extends HttpServlet {
             }
             if(owneremail != null){
             	owneremail = StringEscapeUtils.escapeHtml(owneremail);
-            }
+            }*/
             List<Request> requests = reqService.advanceSearch(requestName, creator, versionid, productid, status, owneremail, userName, userEmail);
             request.setAttribute("searchRequests", requests);
             request.setAttribute("is_search", "is_search");

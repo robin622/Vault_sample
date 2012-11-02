@@ -126,7 +126,8 @@ public class VaultFileUploadServlet extends HttpServlet {
                                 || itemType.contains("x-rar")
                                 || itemType.contains("zip")
                                 || itemType.contains("x-compress")
-                                || itemType.contains("x-tar")) {
+                                || itemType.contains("x-tar")
+                                || itemType.contains("application/json")) {
                             isAllowedType = true;
                         }
 						if (!item.isFormField()) {

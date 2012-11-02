@@ -231,7 +231,7 @@ public class RequestHistoryDAO {
 			session.delete(deletedRequestHistory);
 			//trans.commit();
 			trans = null;
-			//session.flush();
+			session.flush();
 		}
 		catch (HibernateException e) {
 			log.error(e.getMessage());

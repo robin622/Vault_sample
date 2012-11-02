@@ -37,7 +37,6 @@
 		var currentMenu = "navHome";
 		jQuery(function($){
 			if("${is_search}" != "" || "${queryName}" != ""){
-				$("table#searchrequest").attr("style","display");
 				$("table#allrequest").hide();
 				$("table#myrequest").hide();
 				$("table#waitrequest").hide();
@@ -48,12 +47,10 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#onbehalf_table").hide();
+				$("table#searchrequest").attr("style","display");
 			}
 			else 
 				if("${judgeDetailValue}" == "true"){
-				$("table#detail_name_table").attr("style","display");
-                $("table#reception_tbl").attr("style","display");
-				$("table#detail_comment").attr("style","display");
 				$("table#searchrequest").hide();
 				$("table#myrequest").hide();
 				$("table#cctomerequest").hide();
@@ -66,12 +63,14 @@
 				$("div#advance_query").hide();
 				$("fieldset#advance_set").hide();
 				$("table#onbehalf_table").hide();
+				$("table#detail_name_table").attr("style","display");
+                $("table#reception_tbl").attr("style","display");
+				$("table#detail_comment").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/showRequest?requestid=${detailRequest.requestid}>Request Detail ${detailRequest.requestid}</a>");
 				
 			}
 			else if("${operationstatus}" != "null" && "${operationstatus}" == "wait"){
-				$("table#waitrequest").attr("style","display");
 				$("table#myrequest").hide();
 				$("table#cctomerequest").hide();
 				$("table#allrequest").hide();
@@ -82,6 +81,7 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#onbehalf_table").hide();
+				$("table#waitrequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval</a>");
 				$("#" + currentMenu).removeClass("active");
@@ -89,7 +89,6 @@
 				currentMenu = "navWait";
 			}
 			else if("${operationstatus}" != "null" && "${operationstatus}" == "signed"){
-				$("table#signedrequest").attr("style","display");
 				$("table#cctomerequest").hide();
 				$("table#myrequest").hide();
 				$("table#allrequest").hide();
@@ -100,6 +99,7 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
+				$("table#signedrequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed </a>");
 				$("#" + currentMenu).removeClass("active");
@@ -107,7 +107,6 @@
 				currentMenu = "navSign";
 			}
 			else if("${operationstatus}" != "null" && "${operationstatus}" == "CanView"){
-				$("table#canviewrequest").attr("style","display");
 				$("table#cctomerequest").hide();
 				$("table#myrequest").hide();
 				$("table#allrequest").hide();
@@ -118,6 +117,8 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
+				$("table#canviewrequest").attr("style","display");
+				
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=CanViewRequest>I Can View </a>");
 				$("#" + currentMenu).removeClass("active");
@@ -125,7 +126,6 @@
 				currentMenu = "navView";
 			}
 			else if("${operationstatus}" != "null" && "${operationstatus}" == "cctome"){
-				$("table#cctomerequest").attr("style","display");
 				$("table#canviewrequest").hide();
 				$("table#myrequest").hide();
 				$("table#allrequest").hide();
@@ -136,6 +136,7 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
+				$("table#cctomerequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me </a>");
 				$("#" + currentMenu).removeClass("active");
@@ -143,7 +144,6 @@
 				currentMenu = "navCC";
 			}
 			else if("${operationstatus}" != "null" && "${operationstatus}" == "myrequest"){
-				$("table#myrequest").attr("style","display");
 				$("table#canviewrequest").hide();
 				$("table#cctomerequest").hide();
 				$("table#allrequest").hide();
@@ -154,6 +154,7 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
+				$("table#myrequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests </a>");
 
@@ -162,7 +163,6 @@
 				currentMenu = "navMy";
 			}
 			else if("${operationstatus}" != "" && "${operationstatus}" == "newrequest"){
-				$("table#newrequest_tbl").attr("style","display");
 				$("table#canviewrequest").hide();
 				$("table#myrequest").hide();
 				$("table#allrequest").hide();
@@ -176,6 +176,7 @@
 				$("div#advance_query").hide();
 				$("fieldset#advance_set").hide();
 				$("table#onbehalf_table").hide();
+				$("table#newrequest_tbl").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a>");
 				$("#" + currentMenu).removeClass("active");
@@ -184,8 +185,7 @@
 				
 			}
 			else {
-				$("table#myrequest").attr("style","display");
-				$("table#waitrequest").attr("style","display");
+				//ooTable1();
 				$("table#canviewrequest").hide();
 				$("table#cctomerequest").hide();
 				$("table#searchrequest").hide();
@@ -195,6 +195,8 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#onbehalf_table").hide();
+				$("table#myrequest").attr("style","display");
+				$("table#waitrequest").attr("style","display");
 			}
 		});
 		var selectRequest,selectUser;
@@ -248,7 +250,7 @@
         <li><a href="mailto:eng-ops@redhat.com">Eng-ops Request</a></li>
         <li><a href="mailto:hss-ied-list@redhat.com">Application Request</a></li>
         <li class="divider"></li>
-        <li><a href="mailto:eng-ops-appsupport@redhat.com">Contact developers</a></li>
+        <li><a href="mailto:vault-service@redhat.com">Contact developers</a></li>
       </ul>
     </li>
  <li class="dropdown header-user">
@@ -303,6 +305,7 @@
 	//$(".chzn-select").chosen(); 
 	//$(".chzn-select-deselect").chosen({allow_single_deselect:true}); 
 	adaptTimeZone();
+	javascript:scroll(0,0);
 </script>	
     </div>
  </body>

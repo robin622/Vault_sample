@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +20,7 @@ import com.redhat.tools.vault.bean.Product;
 import com.redhat.tools.vault.bean.ReplyComment;
 import com.redhat.tools.vault.bean.Request;
 import com.redhat.tools.vault.bean.RequestHistory;
+import com.redhat.tools.vault.bean.RequestMap;
 import com.redhat.tools.vault.bean.Version;
 import com.redhat.tools.vault.dao.CommentRelationshipDAO;
 import com.redhat.tools.vault.dao.ProductDAO;
@@ -327,9 +330,8 @@ public class ReportServiceImpl implements ReportService {
 					.get(0).getRequesttime(), "yyyy-MM-dd HH:mm");
 			String path = "http://" + request.getServerName()
 					+ "/Vault";
-			//String element_attachment = Attachment.exportFileInfo(
-			//		requests.get(0), path).toString();
-			String element_attachment = "";
+			String element_attachment = exportAttachFileInfo(
+					requests.get(0), path).toString();
 			if (element_attachment == null
 					|| element_attachment.equals(""))
 				element_attachment = "Unspecified";
@@ -350,7 +352,7 @@ public class ReportServiceImpl implements ReportService {
 			e_request.addContent(new Element("createDate").setText(element_createDate));
 			e_request.addContent(new Element("dueDate").setText(element_dueDate));
 			e_request.addContent(new Element("detailedDescription")
-				.setText(replaceStr("~~<br>"+ requests.get(0).getDetail()+ "<br>~~")));
+				.setText(replaceStr("<br>"+ requests.get(0).getDetail()+ "<br>")));
 			e_request.addContent(new Element("attachment").setText(element_attachment));
 			e_request.addContent(new Element("cc").setText(element_cc));
 			if (reports != null && reports.size() > 0) {
@@ -495,6 +497,23 @@ public class ReportServiceImpl implements ReportService {
 			return doc;
 		}
 		
+		private String exportAttachFileInfo(Request request, String path) {
+			Set<RequestMap> maps = request.getMaps();
+			StringBuffer fileName = new StringBuffer();
+			for(RequestMap map : maps){
+			if (map.getMapname().equals(Request.PROPERTY_REQUEST_ATTACHMENT)
+					&& map.getRequestVersion().intValue() == request
+							.getRequestVersion().intValue()) {
+					if(fileName.toString().length() > 0){
+						fileName.append(" | ").append(map.getMapvalue());
+					}else{
+						fileName.append(map.getMapvalue());
+					}
+				}
+			}
+			return fileName.toString();
+		}
+
 		private String replaceStr(String str) {
 			str = str.replaceAll("&amp;amp;", "&");
 			str = str.replaceAll("&amp;", "&");

@@ -42,7 +42,7 @@ public class RequestDAO {
 
 	Session session = null;
 	
-	private static final String QUERY_SIGNEDREQ = "from Request as a where (a.owner like ? or a.owner like ?) and a.requestid in(select distinct b.requestid from RequestHistory b where b.editedby = ? and (b.status = ? or b.status = ? or b.status = ?) and b.isHistory = 0 ) order by requestid desc";
+	private static final String QUERY_SIGNEDREQ = "from Request as a where (a.owner like ? or a.owner like ?) and a.requestid in(select distinct b.requestid from RequestHistory b where b.editedby = ? and (b.status = ? or b.status = ? or b.status = ? or b.status = ?) and b.isHistory = 0 ) order by requestid desc";
 	private static final String QUERY_WAITINGREQ = "from Request as a where (a.owner like ? or a.owner like ?) and a.status = ? and a.requestid not in(select distinct b.requestid from RequestHistory b where b.editedby = ? and (b.status = ? or b.status = ? or b.status = ?) and b.isHistory = 0 ) order by requestid desc";
 	private static final String QUERY_CANVIEWREQ = "from Request as a where a.is_public = 1 or a.createdby = ? or (a.owner like ? or a.owner like ?) or (a.forward like ? or a.forward like ?) order by requestid desc";
 	private static final String QUERY_CCTOMEREQ = "from Request as a where (a.forward like ? or a.forward like ?) order by requestid desc";
@@ -550,6 +550,7 @@ public class RequestDAO {
 				queryObject.setString(3, Request.SIGNED);
 				queryObject.setString(4, Request.REJECTED);
 				queryObject.setString(5, Request.WITHDRAW);
+				queryObject.setString(6, Request.SIGNED_BY);
 				requests = queryObject.list();
 				if (requests != null && requests.size() > 0) {
 					for (Request s : requests) {
@@ -1683,6 +1684,7 @@ public class RequestDAO {
             queryObject.setString(3, Request.SIGNED);
             queryObject.setString(4, Request.REJECTED);
             queryObject.setString(5, Request.WITHDRAW);
+            queryObject.setString(6, Request.SIGNED_BY);
             List<Long> temp = queryObject.list();
             if(temp != null && temp.size() > 0){
                 counts.put("signed", temp.get(0));

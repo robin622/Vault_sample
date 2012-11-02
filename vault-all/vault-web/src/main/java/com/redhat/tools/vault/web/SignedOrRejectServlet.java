@@ -48,6 +48,12 @@ public class SignedOrRejectServlet extends HttpServlet {
 		String flag = request.getParameter("onbehalf");
 		String onBehalfUsers = request.getParameter("onbehalfUsers");
 		joReturn=service.SignedOrRject(requestId, username, comment, type, useremail, flag, onBehalfUsers);
+		
+		boolean isSignatory = service.displaySignButton(userName,Long.parseLong(requestId));
+        boolean displaySignoffOnBehalf=service.displaySignOnBehalfButton(userName,Long.parseLong(requestId));
+        
+        joReturn.put("isSignatory", isSignatory);
+        joReturn.put("displaySignoffOnBehalf", displaySignoffOnBehalf);
 		response.getWriter().print(joReturn);
 	}
 }

@@ -28,7 +28,7 @@
 		<table class="eso-table table-width blod bgnone detail-table" id="home_table">
 			<thead>
 				<tr>
-					<th colspan="3"><h3>${requestId}&nbsp;&nbsp;${requestname}</h3>
+					<th colspan="3"><h3>${reportRequest.requestid}&nbsp;&nbsp;${reportRequest.requestname}</h3>
 					</th>
 					<th width="52%"><a
 						href="<%=request.getContextPath()%>/ReportServlet?doExport=export&id=${reportRequest.requestid}"
@@ -162,32 +162,32 @@
 							<c:if test="${pRequest.status ne Request.INACTIVE}">${pRequest.status}</c:if>
 				</span></td>
 			</tr>
-			<c:if test="${not empty pRequest.WaitingList}">
+			<c:if test="${not empty pRequest.waitingList}">
 				<tr>
 					<td class="new_bg" width="35%"><span class="detail_title">Waiting:</span></td>
-					<td class="new_bg_white" width="65%">${pRequest.WaitingList}</td>
+					<td class="new_bg_white" width="65%">${pRequest.waitingList}</td>
 				</tr>
 			</c:if>
 
-			<c:if test="${not empty pRequest.CommentList}">
+			<c:if test="${not empty pRequest.commentList}">
 				<tr>
 					<td class="new_bg" width="35%"><span class="detail_title">Comment:</span></td>
-					<td class="new_bg_white" width="65%">${pRequest.CommentList}</td>
+					<td class="new_bg_white" width="65%">${pRequest.commentList}</td>
 				</tr>
 			</c:if>
 
-			<c:if test="${not empty pRequest.RejectedList}">
+			<c:if test="${not empty pRequest.rejectedList}">
 				<tr>
 					<td class="new_bg" width="35%"><span class="detail_title">Reject:</span></td>
-					<td class="new_bg_white" width="65%">${pRequest.RejectedList}
+					<td class="new_bg_white" width="65%">${pRequest.rejectedList}
 					</td>
 				</tr>
 			</c:if>
 
-			<c:if test="${not empty pRequest.SignoffList}">
+			<c:if test="${not empty pRequest.signoffList}">
 				<tr>
 					<td class="new_bg" width="35%"><span class="detail_title">Sign-off:</span></td>
-					<td class="new_bg_white" width="65%">${pRequest.SignoffList}</td>
+					<td class="new_bg_white" width="65%">${pRequest.signoffList}</td>
 				</tr>
 			</c:if>
 		</table>
@@ -206,30 +206,30 @@
 							<c:if test="${rq.status ne Request.INACTIVE}">${rq.status}</c:if>
 					</span></td>
 				</tr>
-				<c:if test="${not empty rq.WaitingList}">
+				<c:if test="${not empty rq.waitingList}">
 					<tr>
 						<td class="new_bg" width="35%"><span class="detail_title">Waiting:</span></td>
-						<td class="new_bg_white" width="65%">${rq.WaitingList}</td>
+						<td class="new_bg_white" width="65%">${rq.waitingList}</td>
 					</tr>
 				</c:if>
-				<c:if test="${not empty rq.CommentList}">
+				<c:if test="${not empty rq.commentList}">
 					<tr>
 						<td class="new_bg" width="35%"><span class="detail_title">Comment:</span></td>
-						<td class="new_bg_white" width="65%">${rq.CommentList()}</td>
+						<td class="new_bg_white" width="65%">${rq.commentList()}</td>
 					</tr>
 				</c:if>
 
-				<c:if test="${not empty rq.RejectedList}">
+				<c:if test="${not empty rq.rejectedList}">
 					<tr>
 						<td class="new_bg" width="35%"><span class="detail_title">Reject:</span></td>
-						<td class="new_bg_white" width="65%">${rq.RejectedList()}</td>
+						<td class="new_bg_white" width="65%">${rq.rejectedList()}</td>
 					</tr>
 				</c:if>
 
-				<c:if test="${not empty rq.SignoffList}">
+				<c:if test="${not empty rq.signoffList}">
 					<tr>
 						<td class="new_bg" width="35%"><span class="detail_title">Sign-off:</span></td>
-						<td class="new_bg_white" width="65%">${rq.SignoffList()}</td>
+						<td class="new_bg_white" width="65%">${rq.signoffList()}</td>
 					</tr>
 				</c:if>
 

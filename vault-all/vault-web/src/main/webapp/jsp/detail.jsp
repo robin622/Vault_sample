@@ -65,7 +65,7 @@ function viewRequest(requestId,url) {
 					name="formReport" id="formReport" style="display: inline;">
 					<a href="javascript:report()" class="report">Report This
 						Request</a><a href="#" id="new_child_request" class="add">Create
-						Child Request</a><a href="javascript:edit()" class="edite">Edit</a></th>
+						Child Request</a><a href="javascript:edit()" class="edite" id="edit_tr">Edit</a></th>
 			<input type="hidden" id="requestNameUnescape"
 				value="${requestName_unescape}" />
 			<script type="text/javascript">
@@ -201,6 +201,7 @@ function viewRequest(requestId,url) {
 	    							success: function(rtnData) {
 	    								rtnData = eval("(" + rtnData + ")");
 	    								var historys = rtnData.historys;
+	    								var maps = rtnData.requests[0].maps;
 	    								globalRequests = rtnData.requests;
 	    								var comments = rtnData.comments;
 	    								var data1 = null;
@@ -229,12 +230,8 @@ function viewRequest(requestId,url) {
 	    								$("#maxchildcount").val("${detailRequest.getChildCount()}");
 	    								if(historys != null && historys != ""){
 	    									$("#reception_div").html("");
-	    									$("#signofftd").html('<input type="button" id="sign_addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addOwner()" value="Add More">');
 	    									//var count = -1;
 	    									var index=0;
-	    									var edit_option1Str = "";
-	    									var edit_option2Str = "";
-	    									var edit_option3Str = "";
 	    									$.each(historys, function(i, n){
 	    										//var editedtime = "";
 	    										var now = "";
@@ -249,15 +246,54 @@ function viewRequest(requestId,url) {
 	    										data1[3] = now;
 	    										data1[4] = n.status;
 	    										data2[i] = data1;
-	    										if(n.displayFlag == "0"){
-													if(n.notifiyOptionValue == 1){
-														edit_option1Str += n.useremail + ', ';
-													}else if(n.notifiyOptionValue == 2){
-														edit_option2Str += n.useremail + ', ';
-													}else if(n.notifiyOptionValue == 3){
-														edit_option3Str += n.useremail + ', ';
+	    										index++;
+	    									
+	        								});
+	        								
+	    									if(globalRequests != null && globalRequests != ""){
+												if (${isEditable}){
+													$("#edit_tr").show();
+												}else{
+													$("#edit_tr").hide();
+												}
+												if (${isSignatory}){	
+													$("#sign_btn").show();
+													$("#reject_btn").show();
+												}else{
+													$("#sign_btn").hide();
+													$("#reject_btn").hide();
+												}
+											}
+	
+	    									if (${displaySignoffOnBehalf}){
+												$("#sign_onbehalf_btn").show();											
+											}else{
+												$("#sign_onbehalf_btn").hide();
+											}
+	        							}
+	    								
+	    								if(maps != null && maps != ""){
+	    									$("#signofftd").html('<input type="button" id="sign_addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addOwner()" value="Add More">');
+	    									//var count = -1;
+	    									var index=0;
+	    									var edit_option1Str = "";
+	    									var edit_option2Str = "";
+	    									var edit_option3Str = "";
+	    									$.each(maps, function(i, m){
+	    										var tempvalue = m.mapvalue;
+	    										if(tempvalue){
+	    											var tempearray = tempvalue.split(":");
+	    											var tempemail = $.trim(tempearray[0]);
+	    											var tempoption = tempearray[1];
+	    											
+													if(tempoption == 1){
+														edit_option1Str += tempemail + ', ';
+													}else if(tempoption == 2){
+														edit_option2Str += tempemail + ', ';
+													}else if(tempoption == 3){
+														edit_option3Str += tempemail + ', ';
 													};
-	    										};
+	    										}
 	    										index++;
 	    									
 	        								});
@@ -291,32 +327,10 @@ function viewRequest(requestId,url) {
 													firstOption = false;
 												};
 											}
-											
 											$("#maxownercount").val(optionIndex);
 											$("#ownercount").val(optionIndex);
-											
-	    									
-	    									if(globalRequests != null && globalRequests != ""){
-												if (${isEditable}){
-													$("#edit_tr").show();
-												}else{
-													$("#edit_tr").hide();
-												}
-												if (${isSignatory}){	
-													$("#sign_btn").show();
-													$("#reject_btn").show();
-												}else{
-													$("#sign_btn").hide();
-													$("#reject_btn").hide();
-												}
-											}
-	
-	    									if (${displaySignoffOnBehalf}){
-												$("#sign_onbehalf_btn").show();											
-											}else{
-												$("#sign_onbehalf_btn").hide();
-											}
-	        							}
+	    								}
+	    								
 	    								if (typeof iTable != 'undefined'){
 	    									$("#detail_td").html("");
 	    									$("#detail_td").append("<table cellpadding='0' cellspacing='0' class='eso-table' width='100%' id='reception_tbl'></table>");
@@ -336,15 +350,15 @@ function viewRequest(requestId,url) {
 	    									"aoColumns": [
 	    									  { "sTitle": "ID",
 	    										"bVisible":false },
-	    									  { "sTitle": "Sign&nbsp;off&nbsp;by",
+	    									  { "sTitle": "Sign&nbsp;Off&nbsp;By",
 	    										"fnRender": function(obj){
 	    											var reception = obj.aData[1];
 	    							            	var	sReturn = "<a href='#'>"+reception+"</a>"
 	    											return sReturn;
 	    						              	}
 	    									  },
-	    									  { "sTitle": "Due&nbsp;date"},
-	    									  { "sTitle": "Last&nbsp;modified"},
+	    									  { "sTitle": "Due&nbsp;Date"},
+	    									  { "sTitle": "Last&nbsp;Modified"},
 	    									  { "sTitle": "Status",
 	    										"fnRender":function(obj){
 	    						            	  var status = obj.aData[4];
@@ -891,10 +905,20 @@ function viewRequest(requestId,url) {
 										alert("There have some errors! Please send eamil to "+email+".");
 										return;
 									}else{
-										$("#sign_btn").hide();
-										$("#sign_onbehalf_btn").hide();
-										$("#reject_btn").hide();
-										document.getElementById("judgeSignOff").value = "1";
+										if(rtnData.isSignatory){
+											$("#sign_btn").show();
+											$("#reject_btn").show();
+										}else{
+											$("#sign_btn").hide();
+											$("#reject_btn").hide();
+										}
+										if(rtnData.displaySignoffOnBehalf){
+											$("#sign_onbehalf_btn").show();
+										}else{
+											$("#sign_onbehalf_btn").hide();	
+										}
+										
+										//document.getElementById("judgeSignOff").value = "1";
 										refresh_tables("<%=request.getContextPath()%>/RequestHistory",requestid);    											
 									}
 									
@@ -902,8 +926,8 @@ function viewRequest(requestId,url) {
 								}
 						
                 			});
-                			$("#sign_btn").attr("disable","false");	
-							$("#sign_onbehalf_btn").attr("disable","false");
+                			//$("#sign_btn").attr("disable","false");	
+							//$("#sign_onbehalf_btn").attr("disable","false");
                      }else if(judgeSignOff == "1"){
 						alert('You have already signed this request.');
 						return;

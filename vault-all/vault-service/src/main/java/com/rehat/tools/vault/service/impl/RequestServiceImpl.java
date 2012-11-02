@@ -2,6 +2,8 @@ package com.rehat.tools.vault.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -718,6 +720,7 @@ public class RequestServiceImpl implements RequestService{
         String comment = "";
         String reject = "";
         String signoff = "";
+        Date tempDate = null;
         boolean isSignOnBehalf = false;
         if ("".equals(r.getOwner()) || r.getOwner() == null)
             return r;
@@ -726,7 +729,7 @@ public class RequestServiceImpl implements RequestService{
         for (int i = 0; i < signatories.length; i++) {
             RequestHistory hist = new RequestHistory();
             hist.setRequestid(r.getRequestid());
-            hist.setUseremail(signatories[i]);
+            hist.setUseremail(signatories[i].trim());
             hist.setIsHistory(false);
             List<RequestHistory> hists = histDao.get(hist, false);
             if (hists != null && hists.size() > 0) {
@@ -734,19 +737,24 @@ public class RequestServiceImpl implements RequestService{
                 for (RequestHistory h : hists) {
                     if (h.getStatus().equals(Request.SIGNED)
                             || h.getStatus().equals(Request.SIGNED_BY)) {
-                        signoff += signatories[i] + ",";
+                        signoff += signatories[i] + "|" + DateUtil.toString(h.getEditedtime(), "yyyy-MM-dd HH:mm") + ",";
                         isSignedOrRejected = true;
                         break;
                     }
                     else if (h.getStatus().equals(Request.REJECTED)) {
-                        reject += signatories[i] + ",";
+                        reject += signatories[i] + "|" + DateUtil.toString(h.getEditedtime(), "yyyy-MM-dd HH:mm") +  ",";
                         isSignedOrRejected = true;
                         break;
                     }
+                    /*if(tempDate == null){
+                    	tempDate = h.getEditedtime();
+                    }else if(h.getEditedtime().getTime() > tempDate.getTime()){
+                    	tempDate = h.getEditedtime();
+                    }*/
                 }
-                if (!isSignedOrRejected) {
-                    comment += signatories[i] + ",";
-                }
+                /*if (!isSignedOrRejected) {
+                    comment += signatories[i] + "|" + DateUtil.toString(tempDate, "yyyy-MM-dd HH:mm") + ",";
+                }*/
 
             }
             else {
@@ -758,14 +766,21 @@ public class RequestServiceImpl implements RequestService{
         hist.setRequestid(r.getRequestid());
         hist.setIsHistory(false);
         List<RequestHistory> hists = histDao.get(hist, true);
-        List<String> tempUserMail = new ArrayList<String>();
+        Map<String,Date> commentDateMap = new HashMap<String,Date>();
         if (hists != null && hists.size() > 0) {
             for (RequestHistory h : hists) {
-                if (!signatoryList.contains(h.getUseremail())
-                        && h.getStatus().equals(Request.COMMENTS)
-                        && !tempUserMail.contains(h.getUseremail())) {
-                    tempUserMail.add(h.getUseremail());
-                    comment += h.getUseremail() + ",";
+                if (h.getStatus().equals(Request.COMMENTS)) {
+                	if(!commentDateMap.keySet().contains(h.getUseremail())){
+                		commentDateMap.put(h.getUseremail(), h.getEditedtime());
+                	}else{
+                		if(commentDateMap.get(h.getUseremail()) == null){
+                			commentDateMap.put(h.getUseremail(), h.getEditedtime());
+                		}else{
+                			if(commentDateMap.get(h.getUseremail()).getTime() < h.getEditedtime().getTime()){
+                				commentDateMap.put(h.getUseremail(), h.getEditedtime());
+                			}
+                		}
+                	}
                 }
                 if (h.getEditedby().equals(r.getCreatedby())
                         && h.getStatus().equals(Request.SIGNED_ONBEHALF)) {
@@ -773,7 +788,9 @@ public class RequestServiceImpl implements RequestService{
                 }
             }
         }
-
+        for(String useremail : commentDateMap.keySet()){
+        	comment += useremail + "|" + DateUtil.toString(commentDateMap.get(useremail), "yyyy-MM-dd HH:mm") + ",";
+        }
         if (waiting.length() > 0) {
             waiting = waiting.substring(0, waiting.lastIndexOf(","));
         }
