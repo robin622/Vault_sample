@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.redhat.tools.vault</groupId>
-	<artifactId>vault-all</artifactId>
+	<artifactId>Vault3</artifactId>
 	<version>1.0</version>
 	<packaging>pom</packaging>
 
-	<name>vault-all</name>
+	<name>Vault3</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -88,4 +88,17 @@
 		<module>vault-util</module>
 		<module>vault-test</module>
 	</modules>
+	
+	<distributionManagement>
+		<repository>
+			<id>repository.engineering.redhat.com</id>
+			<name>RedHat Engineering Operations</name>
+			<url>https://repository.engineering.redhat.com/nexus/content/repositories/hss-tools</url>
+		</repository>
+	</distributionManagement>
+	<scm>
+         <url>http://git.app.eng.bos.redhat.com/?p=vault3.git;a=summary</url>
+         <developerConnection>scm:git:ssh://git.app.eng.bos.redhat.com/srv/git/vault3.git</developerConnection>
+         <connection>scm:git:ssh://git.app.eng.bos.redhat.com/srv/git/vault3.git</connection>
+    </scm>
 </project>

@@ -42,7 +42,7 @@
         <servlet-name>XmlRpcServlet</servlet-name>
         <url-pattern>/xmlrpcforcontent</url-pattern>
     </servlet-mapping>
-	<!--security-constraint>
+	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>VaultWeb</web-resource-name>
 			<url-pattern>/*</url-pattern>
@@ -54,5 +54,5 @@
 	<login-config>
 		<auth-method>SPNEGO</auth-method>
 		<realm-name>Vault</realm-name>
-	</login-config-->
+	</login-config>
 </web-app>

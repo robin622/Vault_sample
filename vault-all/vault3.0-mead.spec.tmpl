@@ -1,0 +1,80 @@
+# Make this rpm compatible with older RHEL versions
+%global _source_filedigest_algorithm 1
+%global _binary_filedigest_algorithm 1
+%global _binary_payload w9.gzdio
+%global _source_payload w9.gzdio
+
+%define  _webappsdir %{_datadir}/webapps
+%define  _jbossasdir /usr/share/jbossas
+
+Name: vault3
+Version: $version
+Release: $release
+#if $epoch
+Epoch: $epoch
+#end if
+License: OpenSource
+Summary: Artifacts from Vault3.0
+Group: Development/Libraries/Java
+URL: http://www.redhat.com/
+
+#set $i = 0
+#for $artifact in $all_artifacts
+Source$i: $artifact
+#set $i += 1
+#end for
+
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch: noarch
+
+%description
+Artifacts from Vault that is maintained by Red Hat Hosted and Shared Service Team.
+
+%prep
+
+%build
+
+%install
+rm -rf %{buildroot}
+/usr/bin/install -d %{buildroot}%{_webappsdir}
+/usr/bin/install -d %{buildroot}%{_webappsdir}/%{name}
+/usr/bin/install -d %{buildroot}%{_sysconfdir}/httpd/conf.d
+/usr/bin/install -d %{buildroot}%{_jbossasdir}
+/usr/bin/install -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
+unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-Vault3-%{version}-sources.zip vault-all/release/etc/httpd/conf.d/vault.conf -d %{buildroot}%{_sysconfdir}/httpd/conf.d
+unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-Vault3-%{version}-sources.zip vault-all/release/modules/com/redhat/tools/vault/conf/main/config.properties -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
+unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-Vault3-%{version}-sources.zip vault-all/release/modules/com/redhat/tools/vault/conf/main/module.xml -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
+
+#set $i = 0
+#for $artifact in $all_artifacts
+  #if $artifact.endswith('.war')
+mkdir %{buildroot}%{_webappsdir}/%{name}/$artifact
+unzip -d %{buildroot}%{_webappsdir}/%{name}/$artifact %{SOURCE$i}
+  #elif $artifact.endswith('.ear')
+mkdir %{buildroot}%{_webappsdir}/%{name}/$artifact
+unzip -d %{buildroot}%{_webappsdir}/%{name}/$artifact %{SOURCE$i}
+  #elif $artifact.endswith('-sources.zip')
+echo "Skipping artifact"
+  #else
+/usr/bin/install -m 644 %{SOURCE$i} %{buildroot}%{_webappsdir}/%{name}
+  #end if
+  #set $i += 1
+#end for
+cd %{buildroot}%{_webappsdir}/%{name}
+ln -s Vault3-%{version}.war Vault3.war
+cd -
+
+%clean
+rm -rf %{buildroot}
+
+%files
+%dir %{_webappsdir}
+%dir %{_webappsdir}/%{name}
+%{_webappsdir}/%{name}/*
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/vault.conf
+%config(noreplace) %{_jbossasdir}/deploy/modules/com/redhat/tools/vault/conf/main/config.properties
+%config(noreplace) %{_jbossasdir}/deploy/modules/com/redhat/tools/vault/conf/main/module.xml
+
+%changelog
+* Wed Nov 05 2012 Wei Zhao<wezhao@redhat.com> - 1.0.0-0
+- Initial version
