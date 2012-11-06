@@ -12,8 +12,15 @@ function checkInterval() {
 	return flag;
 }
 function checkCommentLength(comment) {
-	if(comment.length>65500) {
-		alert("Comment is too long.It should not have more than 65000 characters!");
+	if(comment.length>65000) {
+		alert("Comment is too long.It should not be more than 65000 characters.");
+		return false;
+	}
+	else return true;
+}
+function checkReplyLength(reply) {
+	if(reply.length>65000) {
+		alert("Reply is too long.It should not be more than 65000 characters.");
 		return false;
 	}
 	else return true;
@@ -621,6 +628,7 @@ function viewRequest(requestId,url) {
 		     if(replyComment == ""){
 		       alert("Please enter Reply.");
 		     }else{
+		       if(!checkReplyLength(replyComment)) return false;
 		       replyComment = replyComment.replaceAll("\n",'<br>');
 		       replyComment = replyComment.replaceAll("\r",'<br>');
 		       replyComment = replyComment.replaceAll("\r\n",'<br>');
@@ -660,7 +668,7 @@ function viewRequest(requestId,url) {
     		             toreplace2("reply"+i);
     		           }
     		         }else{
-    		           alert("There have some errors! Please send eamil to "+email+".");
+    		        	 alert("There are some errors, please send eamil to "+email+".");
     		         }
     		       }                   
                  });
@@ -833,13 +841,13 @@ function viewRequest(requestId,url) {
 				 alert("Please enter Comment.");
 		         return false;
 			}
+			if(!checkCommentLength(comment)) return false;
 			comment = comment.replaceAll("\n",'<br>');
 			comment = comment.replaceAll("\r",'<br>');
 			comment = comment.replaceAll("\r\n",'<br>');
 			comment = encodeURI(comment);
 			comment = comment.replace(/\+/g, "%2B");
 			comment = comment.replace(/\&/g, "%26");
-			if(!checkCommentLength(comment)) return false;
 			var url = "<%=request.getContextPath()%>/Addcomment";
 			jQuery(function($){
 				var requestid = $("#requestid").val();
@@ -857,7 +865,7 @@ function viewRequest(requestId,url) {
 						//var historyid = rtnData.historyid;
 						if(message != "Add comment success!"){
 							$('#loadingDiv').remove(); 
-							alert("There have some errors! Please send eamil to "+email+".");
+							alert("There are some errors, please send eamil to "+email+".");
 							return;
 						}else{
 							refresh_tables("<%=request.getContextPath()%>/RequestHistory",requestid);
@@ -878,13 +886,13 @@ function viewRequest(requestId,url) {
                 		var judgeSignOff = $("#judgeSignOff").val();
                 		if(judgeSignOff == "0"){
                 			var comment = document.getElementById("comment").value;
-                 		comment = comment.replaceAll("\n",'<br>');
-						comment = comment.replaceAll("\r",'<br>');
-						comment = comment.replaceAll("\r\n",'<br>');
-						comment = encodeURI(comment);
-						comment = comment.replace(/\+/g, "%2B");
-						comment = comment.replace(/\&/g, "%26");
-						if(!checkCommentLength(comment)) return false;
+                			if(!checkCommentLength(comment)) return false;
+                 			comment = comment.replaceAll("\n",'<br>');
+							comment = comment.replaceAll("\r",'<br>');
+							comment = comment.replaceAll("\r\n",'<br>');
+							comment = encodeURI(comment);
+							comment = comment.replace(/\+/g, "%2B");
+							comment = comment.replace(/\&/g, "%26");
                 			var url = "<%=request.getContextPath()%>/SignedOrRject";
                 			var requestid = $("#requestid").val();
                 			$.ajax({
@@ -902,7 +910,7 @@ function viewRequest(requestId,url) {
 									if(message != "Sign Off success!"){
 										$('#loadingDiv').remove();
 										$("#sign_btn").attr("disable","false");
-										alert("There have some errors! Please send eamil to "+email+".");
+										alert("There are some errors, please send eamil to "+email+".");
 										return;
 									}else{
 										if(rtnData.isSignatory){
@@ -942,13 +950,14 @@ function viewRequest(requestId,url) {
                       		var judgeSignOff = $("#judgeSignOff").val();
                       		if(judgeSignOff == "0"){
                       			var comment = document.getElementById("comment").value;
-                       		comment = comment.replaceAll("\n",'<br>');
-							comment = comment.replaceAll("\r",'<br>');
-							comment = comment.replaceAll("\r\n",'<br>');
-							comment = encodeURI(comment);
-							comment = comment.replace(/\+/g, "%2B");
-							comment = comment.replace(/\&/g, "%26");
-							if(!checkCommentLength(comment)) return false;
+                      			if(!checkCommentLength(comment)) return false;
+                       			comment = comment.replaceAll("\n",'<br>');
+								comment = comment.replaceAll("\r",'<br>');
+								comment = comment.replaceAll("\r\n",'<br>');
+								comment = encodeURI(comment);
+								comment = comment.replace(/\+/g, "%2B");
+								comment = comment.replace(/\&/g, "%26");
+							
                       			var url = "<%=request.getContextPath()%>/SignedOrRject";
                       			var requestid = $("#requestid").val();
                       			$.ajax({
@@ -968,7 +977,7 @@ function viewRequest(requestId,url) {
   										//var historyid = rtnData.historyid;
   										if(message != "Reject success!"){
   											$('#loadingDiv').remove();
-  											alert("There have some errors! Please send eamil to "+email+".");
+  											alert("There are some errors, please send eamil to "+email+".");
   											return;
   										}else{
   											refresh_tables("<%=request.getContextPath()%>/RequestHistory",requestid);

@@ -285,7 +285,7 @@ public class VaultSendMail {
 			// + bean.getRequestid();
 			// url =
 			// "http://localhost:8080/Vault/showRequest/"+bean.getRequestid();
-			url = "https://" + serverName + "/Vault/showRequest/"
+			url = "https://" + serverName + "/vault-web/showRequest/"
 					+ bean.getRequestid();
 			// url = "<a href='"+url+"'><strong>View This Request</strong></a>";
 			/*
