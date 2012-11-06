@@ -827,31 +827,30 @@ window.request = {
 			}
 		}
 		return false;
-	},
-	req_updateProducts : function() {
-		var url = "ProductUpdate";
-		var flag = "";
-		var awccc = "";
-		jQuery (function($) {
-			$.ajax ({
-				type: "POST",
-                url: url,
-                dataType:"json",
-				success: function (rtnData) {
-//					rtnData = eval("(" + rtnData + ")");
-					flag = rtnData.flag;
-					if (flag == "success") {
-//						request.req_initProduct();
-//						request.req_initVersion();
-						location.reload();
-					} else {
-						alert("Sorry, update failed! Please contact the administrator.");
-					}
-				}
-			});
-		});
 	}
-};
+	/** not in using now, cut the function of updating on page, only run task in cycles */
+	//<input type="button" value="Update" class="btn quary" onclick="javascript:request.req_updateProducts()">
+//		req_updateProducts : function() {
+//			var url = "ProductUpdate";
+//			var flag = "";
+//			jQuery (function($) {
+//				$.ajax ({
+//					type: "POST",
+//	                url: url,
+//	                dataType:"json",
+//					success: function (rtnData) {
+//						flag = rtnData.flag;
+//						if (flag == "success") {
+//							alert("Congratulations! Update success!");
+//							location.reload();
+//						} else {
+//							alert("Sorry, update failed! Please contact the administrator.");
+//						}
+//					}
+//				});
+//			});
+//		}
+	};
 
 request.req_init();
 request.req_initProduct();

@@ -55,4 +55,7 @@
 		<auth-method>SPNEGO</auth-method>
 		<realm-name>Vault</realm-name>
 	</login-config>
+	<listener>
+		<listener-class>com.redhat.tools.vault.listener.UpdateServletListener</listener-class>   
+	</listener>
 </web-app>

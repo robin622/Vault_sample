@@ -28,7 +28,7 @@
     <tr>
     <td >Product:</td>
     <td ><select id="request_selectPro" data-placeholder="" class="chzn-select creat-request-select" tabindex="6">   
-      </select><input type="button" value="Update" class="btn quary" onclick="javascript:request.req_updateProducts()"></td>  
+      </select></td>  
     </tr>
     <tr>
     <td ><span>Version:</span></td>
