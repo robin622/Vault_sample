@@ -94,7 +94,9 @@ public class MGProperties {
 	public static String NAME_CHECKEXP = "checkexpression";
 	
 	public static String KEY_MAXUPLOAD_SIZE = "maxsizeKbyte";
-
+	
+	public static String KEY_UPDATE_PERIOD_DAY = "updatePeriodDay";
+	
 	public static Integer COUNT_SEND_EMAIL = 0;
 
 	public static String NAME_SERVER = null;

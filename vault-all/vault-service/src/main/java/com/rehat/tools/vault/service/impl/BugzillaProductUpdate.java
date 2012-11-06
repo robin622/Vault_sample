@@ -20,38 +20,68 @@ import com.redhat.tools.vault.dao.VersionDAO;
  */
 public class BugzillaProductUpdate {
 	
-	@Inject
-	public ProductDAO productDAO;
+//	@Inject
+//	private ProductDAO productDAO;
+//	
+//	@Inject
+//	private VersionDAO versionDAO;
 	
-	@Inject
-	public VersionDAO versionDAO;
+	private ProductDAO productDAO = null;	
+	private VersionDAO versionDAO = null;
+
+	public BugzillaProductUpdate() {
+		productDAO = new ProductDAO();
+		versionDAO = new VersionDAO();
+	}
 
 	/** The logger. */
 	protected static final Logger log = Logger.getLogger(BugzillaProductUpdate.class);
-	
-	public JSONObject productVersionUpdate() throws Exception {
-		JSONObject joReturn = new JSONObject();
-		String flag = "failed";
+
+	public void productVersionUpdateTask() throws Exception {
 		Class.forName("org.teiid.jdbc.TeiidDriver");
 		Connection conn = DriverManager.getConnection("jdbc:teiid:EngVDBF@mms://vdb.engineering.redhat.com:31000", "teiid", "teiid");
 		try {
 			this.productUpdate(conn);
 			this.versionUpdate(conn);
-			flag = "success";
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			throw e;
 		} finally {
 			try {
-				joReturn.put("flag", flag);
 				conn.close();
+//				productDAO = null;
+//				versionDAO = null;
 			} catch (Exception e) {
 				log.error(e.getMessage());
 				throw e;
 			}
 		}
-		return joReturn;
 	}
+	
+	/** not in using now, cut the function of updating on page, only run task in cycles */
+//	public JSONObject productVersionUpdate() throws Exception {
+//		JSONObject joReturn = new JSONObject();
+//		String flag = "failed";
+//		Class.forName("org.teiid.jdbc.TeiidDriver");
+//		Connection conn = DriverManager.getConnection("jdbc:teiid:EngVDBF@mms://vdb.engineering.redhat.com:31000", "teiid", "teiid");
+//		try {
+//			this.productUpdate(conn);
+//			this.versionUpdate(conn);
+//			flag = "success";
+//		} catch (Exception e) {
+//			log.error(e.getMessage());
+//			throw e;
+//		} finally {
+//			try {
+//				joReturn.put("flag", flag);
+//				conn.close();
+//			} catch (Exception e) {
+//				log.error(e.getMessage());
+//				throw e;
+//			}
+//		}
+//		return joReturn;
+//	}
 	
 	/** Union bugzilla_products to vault_products */
 	private void productUpdate(Connection conn) throws Exception {

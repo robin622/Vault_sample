@@ -13,6 +13,8 @@ ${JBOSSAS-7_HOME}/modules/com/redhat/tools/vault/conf/main/module.xml
 
 attachmentpath=/home/wguo/data/vault/
 maxsizeKbyte=102400 
+### updatePeriodDay should be  >= 1 day ###
+updatePeriodDay=1
 
 3 . Add the properties files to the module
 

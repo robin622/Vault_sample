@@ -11,7 +11,7 @@ import org.jboss.logging.Logger;
 import com.redhat.tools.vault.bean.Version;
 
 /**
- * @author wezhao
+ * @author wezhao, maying
  */
 public class VersionDAO {
 

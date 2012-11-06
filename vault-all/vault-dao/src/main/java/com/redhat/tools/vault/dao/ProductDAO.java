@@ -11,8 +11,7 @@ import org.jboss.logging.Logger;
 import com.redhat.tools.vault.bean.Product;
 
 /**
- * @author <a href="mailto:speng@redhat.com">Peng Song</a>
- * @version $Revision$
+ * @author PengSong, maying
  */
 public class ProductDAO {
 

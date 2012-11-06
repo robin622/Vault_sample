@@ -41,7 +41,7 @@ window.query = {
 	},
 	
 	qry_del : function(squery){
-		var r=confirm("Are you sure delete " + squery.queryName + " ???");
+		var r=confirm("Are you sure to delete " + squery.queryName + " ?");
 		if (r==true){
 			var url = "SavequeryServlet";
 			$.ajax({
@@ -50,7 +50,6 @@ window.query = {
 				data: "operation=delQuery&queryId=" + squery.queryId,
 				dataType:'json',
 				success: function(rtnData) {
-					alert("Delete " + squery.queryName + " success!!");
 					query.qry_getUserQuery();
 				}
 			});
