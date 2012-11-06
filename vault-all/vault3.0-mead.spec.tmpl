@@ -41,9 +41,9 @@ rm -rf %{buildroot}
 /usr/bin/install -d %{buildroot}%{_sysconfdir}/httpd/conf.d
 /usr/bin/install -d %{buildroot}%{_jbossasdir}
 /usr/bin/install -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
-unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-Vault3-%{version}-sources.zip vault-all/release/etc/httpd/conf.d/vault.conf -d %{buildroot}%{_sysconfdir}/httpd/conf.d
-unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-Vault3-%{version}-sources.zip vault-all/release/modules/com/redhat/tools/vault/conf/main/config.properties -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
-unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-Vault3-%{version}-sources.zip vault-all/release/modules/com/redhat/tools/vault/conf/main/module.xml -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
+unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/etc/httpd/conf.d/vault.conf -d %{buildroot}%{_sysconfdir}/httpd/conf.d
+unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/modules/com/redhat/tools/vault/conf/main/config.properties -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
+unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/modules/com/redhat/tools/vault/conf/main/module.xml -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
 
 #set $i = 0
 #for $artifact in $all_artifacts
