@@ -244,7 +244,7 @@ public class RequestServiceImpl implements RequestService{
 			if (rqsts != null && rqsts.size() > 0) {
 				for (Request r : rqsts) {
 					requests_s.add(r.getRequestid().toString() + "  "
-							+ r.getRequestname());
+							+ r.getRequestname().trim());
 				}
 			}
 		}
