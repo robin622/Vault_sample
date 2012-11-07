@@ -234,7 +234,7 @@
 <body id='eso-body' onload="rmloading();">
 <div class="eso-inner">
 <header id='eso-topbar'>
-  <a href="${pageContext.request.contextPath}" title="go back home" class="logo">Vault</a>
+  <a href="${pageContext.request.contextPath}/HomeServlet" title="go back home" class="logo">Vault</a>
   <a href="https://engineering.redhat.com/hss-portal" class="eso-logo"><img src="<%=request.getContextPath()%>/images/header-logo-eso-developed.png" alt="Developed by HSS"></a>
   <ul class="quick-menu unstyled">
   <li class="dropdown">
@@ -261,7 +261,7 @@
 
 <div class="navbar">
   <ul class="nav">
-    <li id="navHome" class="active"><a href=${pageContext.request.contextPath}>Home</a></li>
+    <li id="navHome" class="active"><a href=${pageContext.request.contextPath}/HomeServlet>Home</a></li>
     <li id="navNew" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a></li>
     <li id="navWait" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval<span class="number"> ( ${reqCounts.waiting} )</span></a></li>
     <li id="navMy" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests<span class="number"> ( ${reqCounts.myrequest} )</span></a></li>

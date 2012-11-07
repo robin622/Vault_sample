@@ -111,7 +111,7 @@ select, input[type="file"]{height:24px;}
 .Commentsm{background:url("../images/ico_comment.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
 .Waitingm{background:url("../images/icon.png") no-repeat scroll 0px -117px transparent; padding-left:20px;}
 .SignedByRequestorm{background:url("../images/behalf.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
-.SignedonBehalfm{background:url("../images/behalf.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
+.SignedOnBehalfm{background:url("../images/behalf.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
 .Rejectedm{background:url("../images/reject.png") no-repeat scroll 0px 0px transparent; padding-left:20px;}
 .longtext{word-wrap:break-word; word-spacing:normal;overflow:hidden;word-break:break-all;white-space: white-space: normal;}
 .bgnone tr:nth-child(2n) td{background: none;}
