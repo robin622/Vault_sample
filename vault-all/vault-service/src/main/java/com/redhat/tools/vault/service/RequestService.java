@@ -69,5 +69,7 @@ public interface RequestService {
     public void disableHistory(RequestHistory history);
 
     public String compare(Request current,Request request);
+    
+    public void withdrawRequest(Request current, String requestid, String requestVersion, String userName, String userEmail);
 
 }

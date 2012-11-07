@@ -915,5 +915,31 @@ public class RequestServiceImpl implements RequestService{
         return result;
     }
 
+	public void withdrawRequest(Request request,String requestid, String requestVersion, String userName, String userEmail) {
+		List<Request> withDrawRequest = null;
+		withDrawRequest = requestDAO.get(request);
+		if (withDrawRequest != null && withDrawRequest.size() > 0) {
+			request.setStatus(Request.WITHDRAW);
+			requestDAO.update(request);
+			//save to history
+			RequestHistory rh = new RequestHistory();
+			rh.setIsHistory(false);
+			rh.setStatus(Request.WITHDRAW);
+			rh.setRequestid(Long.parseLong(requestid));
+			rh.setEditedby(userName);
+			rh.setEditedtime(DateUtil.getLocalUTCTime());
+			rh.setComment("");
+			rh.setUseremail(userEmail);
+			rh.setRequestVersion(Integer.parseInt(requestVersion));
+			try {	
+				historyDAO.save(rh);
+				mailer.sendEmail(request, withDrawRequest.get(0),null,
+						"", "", "withdraw", "");
+			} catch (Exception e) {
+				log.error(e.getMessage(),e);
+			}
+		}
+	}
+
 
 }

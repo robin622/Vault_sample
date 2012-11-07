@@ -3,7 +3,7 @@
 <jboss-web>
 	<security-domain>REDHAT.COM</security-domain>
 	<disable-audit>true</disable-audit>
-	<context-root>vault-web</context-root>
+	<context-root>/</context-root>
 	<valve>
 		<class-name>org.jboss.security.negotiation.NegotiationAuthenticator</class-name>
 	</valve>
