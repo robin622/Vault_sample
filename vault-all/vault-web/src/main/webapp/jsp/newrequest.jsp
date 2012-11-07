@@ -17,7 +17,7 @@
 <input type="hidden" name="detailStr" id="detailStr" value=""/>
 <input type="hidden" name="gap" id="gap" value=""/>
 
-		<table class="eso-table new-request" id="newrequest_tbl">
+		<table class="eso-table new-request" id="newrequest_tbl" style="display:none">
   <thead>
   	<th id="div_name" colspan="2">Create Request</th>
 <tbody>

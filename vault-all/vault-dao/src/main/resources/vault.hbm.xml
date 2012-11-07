@@ -69,7 +69,7 @@
 			update="true" insert="true" not-null="true">
 			<column name="[from]" default="0" />
 		</property> 
-		<set name="maps" table="VA_requestmap" lazy="false" inverse="false"
+		<set name="maps" table="VA_requestmap" lazy="true" inverse="false"
 			cascade="all" sort="unsorted">
 			<cache usage="read-write" />
 			<key column="requestid" />

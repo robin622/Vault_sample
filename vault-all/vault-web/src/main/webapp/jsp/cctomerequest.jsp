@@ -1,4 +1,4 @@
-<table class="eso-table" id="cctomerequest">
+<table class="eso-table" id="cctomerequest" style="display:none">
 	  <thead>
 	    <tr>
       		<th>CC Me Request</th>

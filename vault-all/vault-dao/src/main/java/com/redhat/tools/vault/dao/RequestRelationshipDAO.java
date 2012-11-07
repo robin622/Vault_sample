@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Expression;
@@ -89,6 +91,31 @@ public class RequestRelationshipDAO {
 		return null;
 	}
 
+	public List<RequestRelationship> getRelationShips(RequestRelationship condition){
+		Session sess = null;
+		List<RequestRelationship> ships = new ArrayList<RequestRelationship>();
+		try {
+			sess = dao.getSession();
+			String queryString = "from RequestRelationship as a where (a.requestId = ? or a.relationshipId = ?) and a.enable = true";
+			
+			Query query = sess.createQuery(queryString);
+			query.setLong(0, condition.getRequestId());
+			query.setLong(1, condition.getRelationshipId());
+			ships = query.list();
+
+			return ships;
+		}
+		catch (Exception re) {
+			log.error("find requests failed", re);
+		}
+		finally {
+			if (sess != null) {
+				sess.close();
+			}
+		}
+		return ships;
+	}
+	
 	public RequestRelationship update(RequestRelationship relation) {
 		try {
 			session = dao.getSession();

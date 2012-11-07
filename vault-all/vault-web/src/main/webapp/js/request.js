@@ -20,7 +20,7 @@ window.request = {
                 }
             });
         }else{
-        	$("#input_parent").autocomplete(childstr,{mustMatch:true,matchContains:1});
+        	$("#input_parent").autocomplete(request.selectRequest,{mustMatch:true,matchContains:1});
         	$("#input_child_0").autocomplete(request.selectRequest,{ mustMatch:true,matchContains:1} );
         }
 		
@@ -538,7 +538,7 @@ window.request = {
 		var requestdatetime = $("#requestdatetime").val();
 		var detail = $("#detail").val();
 		
-        if(requestname == "") {
+        if($.trim(requestname) == "") {
             alert("Please enter request name.");
             return false;
         }
@@ -763,7 +763,6 @@ window.request = {
             return false;
         }
 		var selectedRpts = arr.join("_");*/
-        
 		var sData = "";
 		if(table == "search"){
 			sData = $('input', searchoTable.fnGetNodes()).serialize();

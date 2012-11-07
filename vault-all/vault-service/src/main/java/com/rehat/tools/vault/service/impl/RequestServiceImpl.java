@@ -91,25 +91,33 @@ public class RequestServiceImpl implements RequestService{
 		}
 		else {
 			Version version = new Version();
-			List<Version> versions = null;
 			Product product = new Product();
-			List<Product> products = null;
 			version.setId(request.getVersionid());
-			versions = versionDAO.get(version);
-			if (versions != null && versions.size() > 0) {
-				request.setVersiondesc(versions.get(0).getValue());
-				product.setId(versions.get(0).getProduct_id());
-				products = productDAO.get(product);
-				if (products != null && products.size() > 0) {
-					request.setProductname(products.get(0).getName());
+			if(VaultCacheHandler.getObject(VaultCacheHandler.PRODUCT_KEY) == null){
+				List<Product> tempProducts = null;
+	        	tempProducts = productDAO.get(new Product());
+	            VaultCacheHandler.putToCache(VaultCacheHandler.PRODUCT_KEY, tempProducts);
+	            
+	            List<Version> tempVersions = versionDAO.get(new Version());
+	            VaultCacheHandler.putToCache(VaultCacheHandler.VERSION_KEY, tempVersions);
+			}
+			
+			Version result = VaultCacheHandler.getVersion(version);
+			if(result != null){
+				request.setVersiondesc(result.getValue());
+				product.setId(result.getProduct_id());
+				Product pro = VaultCacheHandler.getProduct(product);
+				if(pro != null){
+					request.setProductname(pro.getName());
 				}
 			}
 		}
 	}
 	
 	private void setParentAndChildren(Request request) throws Exception {
-		request.setParent(requestDAO.generateParent(request)[0]);
-		request.setChildren(requestDAO.generateParent(request)[1]);
+		String[] shipArray = requestDAO.generateParent(request);
+		request.setParent(shipArray[0]);
+		request.setChildren(shipArray[1]);
 	}
 	
 	@GET
@@ -253,7 +261,12 @@ public class RequestServiceImpl implements RequestService{
 		List<String> emails = null;
 		userDAO = new VAUserDAO();
 		try {
-			emails = userDAO.findAllUserEmails();
+			if(VaultCacheHandler.getObject(VaultCacheHandler.EMAIL_KEY) != null){
+				emails = (List<String>) VaultCacheHandler.getObject(VaultCacheHandler.EMAIL_KEY);
+			}else{
+				emails = userDAO.findAllUserEmails();
+				VaultCacheHandler.putToCache(VaultCacheHandler.EMAIL_KEY, emails);
+			}
 		}
 		catch (Exception e) {
 			log.error(e.getMessage());
@@ -440,7 +453,6 @@ public class RequestServiceImpl implements RequestService{
 			requestDAO.update(request);
 
 			request = requestDAO.get(new Request(requestId)).get(0);
-			VaultSendMail mailer = new VaultSendMail();
 			message = "Sign Off success!";
 			try {
 				mailer.sendEmail(null, request, null, null,
@@ -507,7 +519,7 @@ public class RequestServiceImpl implements RequestService{
                         .escapeHtml(viewRequest.getRequestname()));
                 try {
                     setVersionAndProduct(viewRequest);
-                    setParentAndChildren(viewRequest);
+                    //setParentAndChildren(viewRequest);
                 } catch (Exception e) {
                     
                 }

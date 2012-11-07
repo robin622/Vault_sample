@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
+
+import com.redhat.tools.vault.bean.MGProperties;
 import com.redhat.tools.vault.service.RequestService;
 
 /**
@@ -44,9 +46,9 @@ public class SignedOrRejectServlet extends HttpServlet {
 		comment = comment.replaceAll(" ", "&nbsp;");
 		String type = request.getParameter("type");
 		String useremail = request.getParameter("useremail");
-		String actionURL = request.getParameter("actionURL");
 		String flag = request.getParameter("onbehalf");
 		String onBehalfUsers = request.getParameter("onbehalfUsers");
+		
 		joReturn=service.SignedOrRject(requestId, username, comment, type, useremail, flag, onBehalfUsers);
 		
 		boolean isSignatory = service.displaySignButton(userName,Long.parseLong(requestId));
