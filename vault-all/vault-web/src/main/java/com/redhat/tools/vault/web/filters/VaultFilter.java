@@ -11,6 +11,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
+import com.redhat.tools.vault.bean.MGProperties;
+import com.redhat.tools.vault.web.helper.VaultHelper;
+
 @WebFilter(urlPatterns = { "/Addcomment", "/AddReply", "/Checkrequest",
 		"/deleteRequest", "/editVersion", "/FindRequest", "/HomeServlet",
 		"/ListNoneSign", "/listRequest", "/ReportServlet", "/RequestHistory",
@@ -25,6 +28,19 @@ public class VaultFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
+		
+		HttpServletRequest req = (HttpServletRequest)request;
+		String userName=(String) req.getSession().getAttribute("userName");
+		if(userName == null){
+			String user=VaultHelper.getUserNameFromRequest(req);
+			String userEmail=VaultHelper.getEmailFromName(userName);
+			req.getSession().setAttribute("userName", user);
+			req.getSession().setAttribute("userEmail", userEmail);
+		}
+		
+		MGProperties.NAME_SERVER = req.getServerName();
+		MGProperties.PORT_SERVER = req.getServerPort();
+		
 		XssServletWrapper xssRequest = new XssServletWrapper(
 				(HttpServletRequest) request);
 		chain.doFilter(xssRequest, response);

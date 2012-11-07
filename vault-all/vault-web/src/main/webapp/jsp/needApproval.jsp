@@ -1,4 +1,4 @@
-<table class="eso-table" id="waitrequest">
+<table class="eso-table" id="waitrequest" style="display:none">
 	  <thead>
 	    <tr>
       		<th>Requests Needing My Approval</th>

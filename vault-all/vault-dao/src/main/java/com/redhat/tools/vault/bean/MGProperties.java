@@ -89,7 +89,7 @@ public class MGProperties {
 
 	public static Integer PORT_SERVER = null;
 
-	public static String URL_ACTION = null;
+	public static String URL_ACTION = "";
 
 	public static String USER_NAME = null;
 

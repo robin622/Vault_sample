@@ -648,8 +648,8 @@ public class RequestDAO {
 				requests = queryObject.list();
 				if (requests != null && requests.size() > 0) {
 					for (Request s : requests) {
-						Hibernate.initialize(s.getMaps());
-						Hibernate.initialize(s.getRelations());
+						//Hibernate.initialize(s.getMaps());
+						//Hibernate.initialize(s.getRelations());
 						// log.debug("flow=" + s);
 					}
 				}
@@ -994,7 +994,7 @@ public class RequestDAO {
 
 			if (requests != null && requests.size() > 0) {
 				for (Request s : requests) {
-					Hibernate.initialize(s.getMaps());
+					//Hibernate.initialize(s.getMaps());
 				}
 			}
 			return requests;
@@ -1058,62 +1058,49 @@ public class RequestDAO {
 		String[] result = new String[2];
 		String parent = "";
 		String children = "";
-		String status = "";
 		RequestRelationship condition = new RequestRelationship();
 		condition.setRequestId(request.getRequestid());
+		condition.setRelationshipId(request.getRequestid());
 		condition.setEnable(true);
 		RequestRelationshipDAO rDao = new RequestRelationshipDAO();
 
-		List<RequestRelationship> rls = rDao.get(condition);
+		List<RequestRelationship> rls = rDao.getRelationShips(condition);
 		if (rls != null && rls.size() > 0) {
 			for (RequestRelationship r : rls) {
 				String rlStatus = Request.ACTIVE;
 				String rlRequestName = "";
-				Request rlRequest = find(r.getRelationshipId());
-				if (rlRequest != null) {
-					rlStatus = rlRequest.getStatus();
-					rlRequestName = rlRequest.getRequestname();
+				Request rlRequest = null;
+				if(r.getRequestId().equals(request.getRequestid())){
+				    rlRequest = find(r.getRelationshipId());
+				    if (rlRequest != null) {
+						rlStatus = rlRequest.getStatus();
+						rlRequestName = rlRequest.getRequestname();
 
+					}
+					if (r.getIsParent()) {
+						parent += rlStatus + "##"
+								+ r.getRelationshipId().toString() + "  "
+								+ StringEscapeUtils.escapeHtml(rlRequestName) + ",";
+					}else {
+						children += rlStatus + "##"
+								+ r.getRelationshipId().toString() + "  "
+								+ StringEscapeUtils.escapeHtml(rlRequestName) + ",";
+					}
+				}else if(r.getRelationshipId().equals(request.getRequestid())){
+					rlRequest = find(r.getRequestId());
+					if (rlRequest != null) {
+						rlStatus = rlRequest.getStatus();
+						rlRequestName = rlRequest.getRequestname();
+					}
+					if (r.getIsParent()) {
+						children += rlStatus + "##" + r.getRequestId() + "  "
+								+ rlRequestName + ",";
+					}else {
+						parent += rlStatus + "##" + r.getRequestId() + "  "
+								+ rlRequestName + ",";
+					}
 				}
-				if (r.getIsParent()) {
-					// parent +=
-					// rlStatus+"##"+r.getRelationshipRequestName()+",";
-					parent += rlStatus + "##"
-							+ r.getRelationshipId().toString() + "  "
-							+ StringEscapeUtils.escapeHtml(rlRequestName) + ",";
-				}
-				else {
-					// children +=
-					// rlStatus+"##"+r.getRelationshipRequestName()+",";
-					children += rlStatus + "##"
-							+ r.getRelationshipId().toString() + "  "
-							+ StringEscapeUtils.escapeHtml(rlRequestName) + ",";
-				}
-			}
-		}
-		condition = new RequestRelationship();
-		condition.setRelationshipId(request.getRequestid());
-		condition.setEnable(true);
-		rls = rDao.get(condition);
-		if (rls != null && rls.size() > 0) {
-			for (RequestRelationship r : rls) {
-				String rlStatus = Request.ACTIVE;
-				String rlRequestName = "";
-				Request rlRequest = find(r.getRequestId());
-				if (rlRequest != null) {
-					rlStatus = rlRequest.getStatus();
-					rlRequestName = rlRequest.getRequestname();
-				}
-				if (r.getIsParent()) {
-					// children += rlStatus+"##"+r.getRequestName()+",";
-					children += rlStatus + "##" + r.getRequestId() + "  "
-							+ rlRequestName + ",";
-				}
-				else {
-					// parent += rlStatus+"##"+r.getRequestName()+",";
-					parent += rlStatus + "##" + r.getRequestId() + "  "
-							+ rlRequestName + ",";
-				}
+				
 			}
 		}
 

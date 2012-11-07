@@ -185,7 +185,6 @@
 				
 			}
 			else {
-				//ooTable1();
 				$("table#canviewrequest").hide();
 				$("table#cctomerequest").hide();
 				$("table#searchrequest").hide();

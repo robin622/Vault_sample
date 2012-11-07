@@ -1,4 +1,4 @@
-<table class="eso-table" id="canviewrequest">
+<table class="eso-table" id="canviewrequest" style="display:none">
 	  <thead>
 	    <tr>
       		<th>Requests I Can View</th>

@@ -1,4 +1,4 @@
-<table class="eso-table" id="myrequest">
+<table class="eso-table" id="myrequest" style="display:none">
   <thead>
     <tr>
       <th>My Requests<a href="#" class="float-right"><button class="btn" onclick="javascript:request.req_sumReport()">Summary Report</button></a></th>

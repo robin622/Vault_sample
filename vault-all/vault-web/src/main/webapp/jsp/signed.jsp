@@ -1,4 +1,4 @@
-<table class="eso-table" id="signedrequest">
+<table class="eso-table" id="signedrequest" style="display:none">
 	  <thead>
 	    <tr>
       		<th>Requests I Have Signed</th>

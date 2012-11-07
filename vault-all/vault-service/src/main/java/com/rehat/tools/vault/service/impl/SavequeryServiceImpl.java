@@ -66,7 +66,16 @@ public class SavequeryServiceImpl implements SavequeryService {
     public List<Product> getAllProduct() throws Exception {
         List<Product> products = null;
         try{
-            products = productDAO.get(new Product());
+            if(VaultCacheHandler
+					.getObject(VaultCacheHandler.PRODUCT_KEY) == null){
+            	products = productDAO.get(new Product());
+	            VaultCacheHandler.putToCache(VaultCacheHandler.PRODUCT_KEY, products);
+	            List<Version> versions = versionDAO.get(new Version());
+	            VaultCacheHandler.putToCache(VaultCacheHandler.VERSION_KEY, versions);
+            }else{
+				products = (List<Product>) VaultCacheHandler
+						.getObject(VaultCacheHandler.PRODUCT_KEY);
+            }
         }catch(Exception e){
             log.error(e.getMessage(),e);
         }
