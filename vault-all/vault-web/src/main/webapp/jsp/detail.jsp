@@ -509,7 +509,7 @@ function viewRequest(requestId,url) {
 					}
            }
            function click_onbehalf_cancel(){
-	           	document.getElementById("sign_onbehalf_btn").show();
+	           	document.getElementById("sign_onbehalf_btn").style.display = "";
 	           	document.getElementById("onbehalf_table").style.display = "none";               
            }
 

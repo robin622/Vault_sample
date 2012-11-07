@@ -26,7 +26,6 @@ import com.rehat.tools.vault.service.impl.VaultSendMail;
 
 public class ContentAPI{
 	
-	
 	protected static final Logger log = Logger.getLogger(ContentAPI.class);
 	private static HttpServletRequest pRequest=null;
 	public static void setRequest(HttpServletRequest request){
@@ -236,7 +235,6 @@ public class ContentAPI{
 		//	rh.setRequestVersion(Integer.parseInt(requestVersion));
 			try {	
 				historyDAO.save(rh);
-				VaultSendMail mailer = new VaultSendMail();
 				mailer.sendEmail(pRequest, withDrawRequest.get(0),null,
 						"", "", "withdraw", "");
 			} catch (Exception e) {
@@ -506,7 +504,7 @@ public class ContentAPI{
 		map.put(rq.PROPERTY_COMMET, rq.getComment()==null?"":rq.getComment());
 		map.put(rq.PROPERTY_VERSIONID, String.valueOf(rq.getVersionid())==null?"":String.valueOf(rq.getVersionid()));
 		map.put(rq.PROPERTY_IS_PUBLIC,String.valueOf(rq.getIs_public())==null?"":String.valueOf(rq.getIs_public()));
-		map.put(rq.PROPERTY_CREATEDBY, rq.getEditedby()==null?"":rq.getEditedby());
+		map.put(rq.PROPERTY_EDITEDBY, rq.getEditedby()==null?"":rq.getEditedby());
 		map.put(rq.PROPERTY_EDITEDTIME, rq.getEditedtime()==null?"":rq.getEditedtime().toString());
 		map.put(rq.PROPERTY_FORWARD, rq.getForward()==null?"":rq.getForward());
 		map.put(rq.PROPERTY_REQUEST_VERSION, String.valueOf(rq.getRequestVersion())==null?"":String.valueOf(rq.getRequestVersion()));

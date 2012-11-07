@@ -52,8 +52,7 @@
 					</c:when>
 					<c:otherwise>
 						<div id="withdrawmyrequest${myRequest.requestid}">
-						<a href="javascript:confirmWithDraw('index.do?operation=WithDrawRequest
-						    &requestid=${myRequest.requestid}', '${myRequest.requestname}')">Withdraw</a>
+						<a href="javascript:confirmWithDraw('${pageContext.request.contextPath}/withDrawRequest?requestid=${myRequest.requestid}&requestversion=${myRequest.requestVersion}', '${myRequest.requestname}')">Withdraw</a>
 							</div>
 					</c:otherwise>
 				</c:choose>
