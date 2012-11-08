@@ -124,8 +124,9 @@ select, input[type="file"]{height:24px;}
 .spanright{margin-right:5px;}
 .productwidth{width:150px;}
 .w400{width:400px;}
+.w800{width:800px;display:inline-block;word-break:break-all;}
 /*word wrap============================*/
-.wordwrap{word-wrap:break-word;word-break:break-all;-moz-binding: url("wordwrap.xml#wordwrap");overflow: hidden;}
+.wordwrap{word-wrap:break-word;word-break:break-all;}
 
 /* form-area ========================================*/
 form{margin:0px;}

@@ -29,7 +29,7 @@
 	<c:forEach var="ccToMeRequest" items="${ccToMeRequests}">
     <tr>        
     <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${ccToMeRequest.requestid} title="View Request">${ccToMeRequest.requestid}</a></td>
-    <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${ccToMeRequest.requestid} title="View Request">${ccToMeRequest.requestname}</a></td>
+    <td class="wordwrap"><a href=${pageContext.request.contextPath}/showRequest?requestid=${ccToMeRequest.requestid} title="View Request">${ccToMeRequest.requestname}</a></td>
     <td>${ccToMeRequest.productname}</td>
     <td>${ccToMeRequest.versiondesc}</td>
     <td class="nowrep">${ccToMeRequest.createdby}</td>

@@ -29,7 +29,7 @@
 <c:forEach var="waitRequest" items="${waitRequests}">
     <tr>        
     <td ><a href=${pageContext.request.contextPath}/showRequest?requestid=${waitRequest.requestid} title="View Request">${waitRequest.requestid}</a></td>
-    <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${waitRequest.requestid} title="View Request">${waitRequest.requestname}</a></td>
+    <td class="wordwrap"><a href=${pageContext.request.contextPath}/showRequest?requestid=${waitRequest.requestid} title="View Request">${waitRequest.requestname}</a></td>
     <td>${waitRequest.productname}</td>
     <td>${waitRequest.versiondesc}</td>
     <td class="nowrep">${waitRequest.createdby}</td>

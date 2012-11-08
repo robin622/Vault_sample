@@ -542,7 +542,10 @@ window.request = {
             alert("Please enter request name.");
             return false;
         }
-        
+        if(requestname.length > 255){
+        	alert("Request name is too long.It should not be more than 255 characters");
+        	return false;
+        }
         if($('#owner').val() == ''){
         	alert('Please enter signoff user.');
         	return false;

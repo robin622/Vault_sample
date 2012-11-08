@@ -67,7 +67,7 @@ function viewRequest(requestId,url) {
 	<thead>
 		<tr>
 			<th colspan="5"><c:if
-					test="${not empty detailRequest.requestname}"><span id="hiddenRequestName">${detailRequest.requestid}  ${detailRequest.requestname}</span></c:if>
+					test="${not empty detailRequest.requestname}"><span id="hiddenRequestName" class="w800">${detailRequest.requestid}  ${detailRequest.requestname}</span></c:if>
 				<form action="<%=request.getContextPath()%>/ReportServlet" method="POST"
 					name="formReport" id="formReport" style="display: inline;">
 					<a href="javascript:report()" class="report">Report This
@@ -433,8 +433,7 @@ function viewRequest(requestId,url) {
 						<input type="button" value="Sign Off On Behalf Of" class="btn btn-wide"
 							id="sign_onbehalf_btn" onclick="javascript:behalf_click(this)" />
 						<input type="button" value="Reject" class="btn btn-wide" id="reject_btn"
-							onclick="javascript:commitReject()" /> <input type="button"
-							value="Cancel" class="btn btn-wide" id="canceldetail" />
+							onclick="javascript:commitReject()" /> 
 					</div>
 					<div class="tablefooterright"></div>
 				</div>
