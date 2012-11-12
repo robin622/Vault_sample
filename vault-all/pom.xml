@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.redhat.tools.vault</groupId>
-	<artifactId>Vault3</artifactId>
+	<artifactId>vault3</artifactId>
 	<version>1.0</version>
 	<packaging>pom</packaging>
 
@@ -52,7 +52,7 @@
 			<dependency>
 				<groupId>org.jboss.weld.servlet</groupId>
 				<artifactId>weld-servlet-parent</artifactId>
-				<version>1.1.9.Final</version>
+				<version>1.1.8.Final</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -68,13 +68,13 @@
 			<dependency>
 				<groupId>jboss</groupId>
 				<artifactId>jboss-common</artifactId>
-				<version>1.0</version>
+				<version>4.0.2</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.jboss</groupId>
 				<artifactId>jboss-ejb-client</artifactId>
-				<version>1.0.11.Final</version>
+				<version>1.0.0.Final</version>
 				<scope>provided</scope>
 			</dependency>
 		</dependencies>

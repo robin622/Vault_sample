@@ -41,9 +41,15 @@ rm -rf %{buildroot}
 /usr/bin/install -d %{buildroot}%{_sysconfdir}/httpd/conf.d
 /usr/bin/install -d %{buildroot}%{_jbossasdir}
 /usr/bin/install -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
+/usr/bin/install -d %{buildroot}%{_webappsdir}/%{name}/data
+/usr/bin/install -d %{buildroot}%{_webappsdir}/%{name}/mysql
+/usr/bin/install -d %{buildroot}%{_jbossasdir}/standalone/configuration
 unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/etc/httpd/conf.d/vault.conf -d %{buildroot}%{_sysconfdir}/httpd/conf.d
 unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/modules/com/redhat/tools/vault/conf/main/config.properties -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
 unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/modules/com/redhat/tools/vault/conf/main/module.xml -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
+unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/user/share/jbossas/standalone/configuration/standalone-full.xml -d %{buildroot}%{_jbossasdir}/standalone/configuration
+unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/user/share/java/mysql-connector-java.jar -d %{buildroot}%{_webappsdir}/%{name}/mysql
+unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/data/* -d %{buildroot}%{_webappsdir}/%{name}/data
 
 #set $i = 0
 #for $artifact in $all_artifacts
@@ -61,7 +67,7 @@ echo "Skipping artifact"
   #set $i += 1
 #end for
 cd %{buildroot}%{_webappsdir}/%{name}
-ln -s Vault3-%{version}.war Vault3.war
+ln -s vault-web-%{version}.war vault-web.war
 cd -
 
 %clean
@@ -72,8 +78,9 @@ rm -rf %{buildroot}
 %dir %{_webappsdir}/%{name}
 %{_webappsdir}/%{name}/*
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/vault.conf
-%config(noreplace) %{_jbossasdir}/deploy/modules/com/redhat/tools/vault/conf/main/config.properties
-%config(noreplace) %{_jbossasdir}/deploy/modules/com/redhat/tools/vault/conf/main/module.xml
+%config(noreplace) %{_jbossasdir}/modules/com/redhat/tools/vault/conf/main/config.properties
+%config(noreplace) %{_jbossasdir}/modules/com/redhat/tools/vault/conf/main/module.xml
+%config(noreplace) %{_jbossasdir}/standalone/configuration/standalone-full.xml
 
 %changelog
 * Wed Nov 05 2012 Wei Zhao<wezhao@redhat.com> - 1.0.0-0
