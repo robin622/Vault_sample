@@ -873,10 +873,10 @@ public class RequestDAO {
 			queryString += " order by requestid desc";
 			queryObject = sess.createQuery(queryString);
 			if (requestName != null && !"".equals(requestName)) {
-				queryObject.setString(++i, "%" + requestName + "%");
+				queryObject.setString(++i, "%" + replaceSpecialSQLChar(requestName) + "%");
 			}
 			if (creator != null && !"".equals(creator)) {
-				queryObject.setString(++i, "%" + creator + "%");
+				queryObject.setString(++i, "%" + replaceSpecialSQLChar(creator) + "%");
 			}
 			if (versionid != null && !"-1".equals(versionid)) {
 				queryObject.setLong(++i, Long.parseLong(versionid));
@@ -888,7 +888,7 @@ public class RequestDAO {
 				queryObject.setString(++i, status);
 			}
 			if (owneremail != null && !"".equals(owneremail)) {
-				queryObject.setString(++i, "%" + owneremail + "%");
+				queryObject.setString(++i, "%" + replaceSpecialSQLChar(owneremail) + "%");
 			}
 			queryObject.setString(++i, userName);
 			queryObject.setString(++i, "%" + userEmail + "%");
@@ -913,6 +913,11 @@ public class RequestDAO {
 			}
 		}
 		return null;
+	}
+
+	private String replaceSpecialSQLChar(String source) {
+		//mysql specialchar % _ 
+		return source.replace("%", "\\%").replace("_", "\\_");
 	}
 
 	@SuppressWarnings("unchecked")

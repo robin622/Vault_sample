@@ -420,8 +420,8 @@ window.request = {
 						if($.trim(ownerArray1[r])==""){
 							continue;
 						}
-						ownerstr += ownerArray1[r] + ",";
-						notifystr += ownerArray1[r] +":" + notifyVal+ ",";
+						ownerstr += $.trim(ownerArray1[r]) + ",";
+						notifystr += $.trim(ownerArray1[r]) +":" + notifyVal+ ",";
 					}
 				}
 			}
