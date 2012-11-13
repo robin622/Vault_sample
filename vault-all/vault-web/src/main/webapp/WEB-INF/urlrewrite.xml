@@ -4,7 +4,7 @@
 <urlrewrite>
     <rule>
         <from casesensitive="true">/showRequest/([0-9]+)</from>
-        <to type="redirect">/vault-web/showRequest?requestid=$1</to>
+        <to type="redirect">/showRequest?requestid=$1</to>
     </rule>
 </urlrewrite>
 

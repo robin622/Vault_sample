@@ -12,15 +12,15 @@ function checkInterval() {
 	return flag;
 }
 function checkCommentLength(comment) {
-	if(comment.length>65000) {
-		alert("Comment is too long.It should not be more than 65000 characters.");
+	if(comment.length>10000) {
+		alert("Comment is too long.It should not be more than 10000 characters.");
 		return false;
 	}
 	else return true;
 }
 function checkReplyLength(reply) {
-	if(reply.length>65000) {
-		alert("Reply is too long.It should not be more than 65000 characters.");
+	if(reply.length>10000) {
+		alert("Reply is too long.It should not be more than 10000 characters.");
 		return false;
 	}
 	else return true;
