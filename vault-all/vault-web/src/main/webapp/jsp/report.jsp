@@ -28,7 +28,7 @@
 		<table class="eso-table table-width blod bgnone detail-table" id="home_table">
 			<thead>
 				<tr>
-					<th colspan="3"><h3>${reportRequest.requestid}&nbsp;&nbsp;${reportRequest.requestname}</h3>
+					<th colspan="3"><h3 class="w800 wordwrap">${reportRequest.requestid}&nbsp;&nbsp;${reportRequest.requestname}</h3>
 					</th>
 					<th width="52%"><a
 						href="<%=request.getContextPath()%>/ReportServlet?doExport=export&id=${reportRequest.requestid}"
@@ -37,8 +37,8 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td width="8%"><span>Product:</span></td>
-					<td width="32%">${reportRequest.productname}</td>
+					<td><span>Product:</span></td>
+					<td>${reportRequest.productname}</td>
 					<td width="8%" class="bg-gray">Version:</td>
 					<td>${reportRequest.versiondesc}</td>
 				</tr>
@@ -57,7 +57,7 @@
 				<tr>
 					<td><span>Detailed description:</span></td>
 					<td colspan="3">
-						<div id="detail_value" class="description"></div>
+						<div id="detail_value" class="wordwrap"></div>
 				</tr>
 				<tr>
 					<td><span>Attachment:</span></td>

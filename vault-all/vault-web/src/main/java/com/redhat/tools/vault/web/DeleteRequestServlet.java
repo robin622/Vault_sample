@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jboss.logging.Logger;
+
 import com.redhat.tools.vault.bean.Request;
 import com.redhat.tools.vault.service.RequestService;
 
@@ -20,7 +22,7 @@ import com.redhat.tools.vault.service.RequestService;
 @WebServlet("/deleteRequest")
 public class DeleteRequestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+	private static Logger log = Logger.getLogger(DeleteRequestServlet.class);
     @Inject
 	private RequestService service;
     /**
@@ -44,13 +46,13 @@ public class DeleteRequestServlet extends HttpServlet {
 	    res.setContentType("text/html;charset=UTF-8");
         res.setHeader("Cache-Control", "no-chche");
         String requestid = (String) req.getParameter("requestid");
+        String userName=(String) req.getSession().getAttribute("userName");
+        String userEmail=(String) req.getSession().getAttribute("userEmail");
         Request request = new Request();
         try {
             request.setRequestid(Long.parseLong(requestid));
-            service.deleteRequest(request);
+            service.deleteRequest(request,userName);
             
-            String userName=(String) req.getSession().getAttribute("userName");
-            String userEmail=(String) req.getSession().getAttribute("userEmail");
             List<Request> myRequests = service.getMyRequest(userName);
             req.setAttribute("myRequests", myRequests);
             req.setAttribute("operationstatus", "myrequest");
@@ -59,7 +61,10 @@ public class DeleteRequestServlet extends HttpServlet {
             req.setAttribute("reqCounts", counts);
             req.getRequestDispatcher("/jsp/home.jsp").forward(req, res);
         }catch (Exception e) {
-            
+        	log.error(e.getMessage(), e);
+        	if(e.getMessage().contains("No permission to do the operation")){
+            	res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            }
         }
 	}
 

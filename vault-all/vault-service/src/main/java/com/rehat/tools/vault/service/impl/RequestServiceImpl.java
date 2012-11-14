@@ -673,13 +673,16 @@ public class RequestServiceImpl implements RequestService{
 		return joReturn;
 	}
 
-    public void deleteRequest(Request request) {
+    public void deleteRequest(Request request, String userName) throws Exception{
         RequestHistory history = new RequestHistory();
         List<RequestHistory> historys = null;
         List<Request> deleteRequest = null;
         try {
             deleteRequest = requestDAO.get(request);
             if (deleteRequest != null && deleteRequest.size() > 0) {
+            	if(!deleteRequest.get(0).getCreatedby().equals(userName)){
+                	throw new Exception("No permission to do the operation!");
+                }
                 requestDAO.deleteRequest(request);
                 history.setRequestid(request.getRequestid());
                 RequestHistoryDAO historyDAO = new RequestHistoryDAO();
@@ -701,13 +704,13 @@ public class RequestServiceImpl implements RequestService{
                 rl = new RequestRelationship();
                 rl.setRequestId(request.getRequestid());
                 relationshipDAO.delete(rl);
-                /*VaultSendMail mailer = new VaultSendMail();
-                mailer.sendEmail(request, deleteRequest.get(0), null, 
-                        "", "", "delete", "");*/
+                mailer.sendEmail(null, deleteRequest.get(0), null, 
+                        "", "", "delete", "");
             }
         }
         catch (Exception e) {
             log.error(e.getMessage(),e);
+            throw new Exception(e);
         }
         
     }

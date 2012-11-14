@@ -128,7 +128,7 @@ select, input[type="file"]{height:24px;}
 .w80{width:80px;}
 .w130{width:130px;}
 /*word wrap============================*/
-.wordwrap{word-wrap:break-word;word-break:break-all;}
+.wordwrap{word-wrap:break-word; word-break:break-all;}
 .dpyblock{display:inline-block!important;}
 
 /* form-area ========================================*/

@@ -608,7 +608,7 @@ window.request = {
     	        $.ajax({	        	
     	            type: "POST",
     	            url: url,
-    	            data: "operation=CheckChild&child="+childstr + "&id=" + $('#newrequestid').val(),
+    	            data: "operation=CheckChild&child="+encodeURIComponent(childstr) + "&id=" + $('#newrequestid').val(),
     	            dataType:"json",
     	            success: function(rtnData) {
     	                var result_str = rtnData.result;

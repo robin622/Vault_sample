@@ -50,7 +50,7 @@ public interface RequestService {
     
     public JSONObject EditVersion(String versionid);
 
-    public void deleteRequest(Request request);
+    public void deleteRequest(Request request, String userName) throws Exception;
 
     public List<Request> findByIds(Long[] requestIds);
 

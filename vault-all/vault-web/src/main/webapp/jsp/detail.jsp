@@ -67,7 +67,7 @@ function viewRequest(requestId,url) {
 	<thead>
 		<tr>
 			<th colspan="5"><c:if
-					test="${not empty detailRequest.requestname}"><span id="hiddenRequestName" class="w800">${detailRequest.requestid}  ${detailRequest.requestname}</span></c:if>
+					test="${not empty detailRequest.requestname}"><span id="hiddenRequestName" class="w800 wordwrap">${detailRequest.requestid}  ${detailRequest.requestname}</span></c:if>
 				<form action="<%=request.getContextPath()%>/ReportServlet" method="POST"
 					name="formReport" id="formReport" style="display: inline;">
 					<a href="javascript:report()" class="report">Report This

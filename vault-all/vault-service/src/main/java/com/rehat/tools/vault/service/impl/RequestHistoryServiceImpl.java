@@ -113,7 +113,25 @@ public class RequestHistoryServiceImpl implements RequestHistoryService {
 				rHist.setEditedby(signatories[i].substring(0,
 						signatories[i].indexOf("@")).toLowerCase());
 				rHist.setRequestid(Long.parseLong(requestid));
-				rHist.setRequestVersion(request.getRequestVersion());
+				
+				boolean flag = false;
+				if (maps != null && maps.size() > 0) {
+					for (RequestMap rMap : maps) {
+						if (rMap.getMapname().equals(
+								Request.PROPERTY_REQUEST_NOTIFYCATION)
+								&& signatories[i].equalsIgnoreCase(rMap.getMapvalue()
+									.substring(0,rMap.getMapvalue().indexOf(":")))
+								&& rMap.getMapvalue()
+										.substring(rMap.getMapvalue().indexOf(":") + 1)
+										.equals("1")) {
+							flag = true;
+							break;
+						}
+					}
+				}
+				if(flag){
+					rHist.setRequestVersion(request.getRequestVersion());
+				}
 				rHist.setIsHistory(false);
 				List<RequestHistory> rHists = new ArrayList<RequestHistory>();
 				rHists = requestHistoryDAO.get(rHist, false);
