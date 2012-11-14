@@ -37,19 +37,19 @@ public class SignedOrRejectServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userName=(String) request.getSession().getAttribute("userName");
 		String userEmail=(String) request.getSession().getAttribute("userEmail");
-		response.setContentType("text/html;charset=UTF-8");
+		response.setContentType("application/json;charset=UTF-8");
 		response.setHeader("Cache-Control", "no-chche");
 		JSONObject joReturn = new JSONObject();
 		String requestId = request.getParameter("requestid");
-		String username = request.getParameter("username");
+		//String username = request.getParameter("username");
 		String comment = request.getParameter("comment");
 		comment = comment.replaceAll(" ", "&nbsp;");
 		String type = request.getParameter("type");
-		String useremail = request.getParameter("useremail");
+		//String useremail = request.getParameter("useremail");
 		String flag = request.getParameter("onbehalf");
 		String onBehalfUsers = request.getParameter("onbehalfUsers");
 		
-		joReturn=service.SignedOrRject(requestId, username, comment, type, useremail, flag, onBehalfUsers);
+		joReturn=service.SignedOrRject(requestId, userName, comment, type, userEmail, flag, onBehalfUsers);
 		
 		boolean isSignatory = service.displaySignButton(userName,Long.parseLong(requestId));
         boolean displaySignoffOnBehalf=service.displaySignOnBehalfButton(userName,Long.parseLong(requestId));

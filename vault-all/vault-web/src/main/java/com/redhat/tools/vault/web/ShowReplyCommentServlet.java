@@ -49,7 +49,7 @@ public class ShowReplyCommentServlet extends HttpServlet {
 
         String operation = request.getParameter("operation");
         operation = operation == null ? "" : operation;
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Cache-Control", "no-chche");
         JSONObject joReturn = new JSONObject();
         String requestid = (String) request.getParameter("requestid");

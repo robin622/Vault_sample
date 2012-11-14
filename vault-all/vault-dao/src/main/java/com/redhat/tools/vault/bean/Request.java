@@ -586,6 +586,52 @@ public class Request {
 		}
 		return 0;
 	}
+	
+	public boolean isCanView(String userName){
+		boolean canView = false;
+		if(this.getIs_public().intValue() == 1){
+			canView = true;
+		}else{
+			String creator = this.getCreatedby();
+			if(creator != null && creator.equals(userName)){
+				canView = true;
+			}else if(isCanForward(userName) || isCanSignOff(userName)){
+				canView = true;
+			}
+		}
+		return canView;
+	}
+	
+	public boolean isCanSignOff(String userName) {
+		String owner = this.getOwner();
+		String userEmail = userName + "@redhat.com";
+		if(this.getCreatedby().equals(userName)){
+			return true;
+		}
+		if(owner != null){
+			String[] owners = owner.split(",");
+			for(String o : owners){
+				if(userEmail.equals(o.trim())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isCanForward(String userName) {
+		String forward = this.getForward();
+		String userEmail = userName + "@redhat.com";
+		if(forward != null){
+			String[] forwards = forward.split(",");
+			for(String f : forwards){
+				if(userEmail.equals(f.trim())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

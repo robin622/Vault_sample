@@ -215,21 +215,21 @@
 				<c:if test="${not empty rq.commentList}">
 					<tr>
 						<td class="new_bg" width="35%"><span class="detail_title">Comment:</span></td>
-						<td class="new_bg_white" width="65%">${rq.commentList()}</td>
+						<td class="new_bg_white" width="65%">${rq.commentList}</td>
 					</tr>
 				</c:if>
 
 				<c:if test="${not empty rq.rejectedList}">
 					<tr>
 						<td class="new_bg" width="35%"><span class="detail_title">Reject:</span></td>
-						<td class="new_bg_white" width="65%">${rq.rejectedList()}</td>
+						<td class="new_bg_white" width="65%">${rq.rejectedList}</td>
 					</tr>
 				</c:if>
 
 				<c:if test="${not empty rq.signoffList}">
 					<tr>
 						<td class="new_bg" width="35%"><span class="detail_title">Sign-off:</span></td>
-						<td class="new_bg_white" width="65%">${rq.signoffList()}</td>
+						<td class="new_bg_white" width="65%">${rq.signoffList}</td>
 					</tr>
 				</c:if>
 

@@ -19,7 +19,7 @@ public interface RequestService {
 
 	public boolean displaySignOnBehalfButton(String userName, Long requestId);
 
-	public JSONObject findRequest();
+	public JSONObject findRequest(String userName, String userEmail);
 	
 	public JSONObject showAllEmails();
 	

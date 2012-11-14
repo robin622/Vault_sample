@@ -317,7 +317,7 @@ public class ReportServiceImpl implements ReportService {
 			Request pRequest = null;
 			List<Request> cRequests = new ArrayList<Request>();
 			reports=(List<List<RequestHistory>>)objs;
-			replys=(Map<Long, List<ReplyComment>>)objs2;
+			replys=(Map<Long, List<ReplyComment>>)objs1;
 			pRequest=(Request)objs2;
 			cRequests=(List<Request>)objs3;
 			requests.get(0).setRequestname(

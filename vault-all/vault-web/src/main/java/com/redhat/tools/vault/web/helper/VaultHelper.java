@@ -15,12 +15,12 @@ public class VaultHelper {
 		if(parent != null){
 			String[] pArray1 = parent.split("##");
 			if(pArray1!=null && pArray1.length>1){
-				sb.append("<a href=").append(contextPath).append("/showRequest/")
+				sb.append("<a class='dpyblock' href=").append(contextPath).append("/showRequest/")
 				.append(pArray1[1].split("  ")[0]).append(">")
 				.append(pArray1[1]).append("&nbsp;&nbsp;")
-				.append("<span class='").append(pArray1[0].equals(Request.INACTIVE)?Request.SIGNED:Request.WAITING)
+				.append("</a><span class='").append(pArray1[0].equals(Request.INACTIVE)?"signed":"waiting")
 				.append("'>").append(pArray1[0].equals(Request.INACTIVE)?"Signed":pArray1[0])
-				.append("</span></a>");
+				.append("</span>");
 			}
 		}
 		return sb.toString();
@@ -37,12 +37,12 @@ public class VaultHelper {
 						String childId = cArray[1].split("  ")[0];
 						String childStr = cArray[1];
 						String cStatus = cArray[0];
-						sb.append("<a href=").append(contextPath).append("/showRequest/")
+						sb.append("<a class='dpyblock' href=").append(contextPath).append("/showRequest/")
 						.append(childId).append(">")
 						.append(childStr).append("&nbsp;&nbsp;")
-						.append("<span class='").append(cStatus.equals(Request.INACTIVE)?Request.SIGNED:Request.WAITING)
+						.append("</a><span class='").append(cStatus.equals(Request.INACTIVE)?"signed":"waiting")
 						.append("'>").append(cStatus.equals(Request.INACTIVE)?"Signed":cStatus)
-						.append("</span></a><br>");
+						.append("</span><br>");
 					}
 				}
 			}

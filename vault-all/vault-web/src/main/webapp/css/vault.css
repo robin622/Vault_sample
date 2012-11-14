@@ -125,8 +125,11 @@ select, input[type="file"]{height:24px;}
 .productwidth{width:150px;}
 .w400{width:400px;}
 .w800{width:800px;display:inline-block;word-break:break-all;}
+.w80{width:80px;}
+.w130{width:130px;}
 /*word wrap============================*/
 .wordwrap{word-wrap:break-word;word-break:break-all;}
+.dpyblock{display:inline-block!important;}
 
 /* form-area ========================================*/
 form{margin:0px;}

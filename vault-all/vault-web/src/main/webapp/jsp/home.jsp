@@ -207,8 +207,8 @@
 					type: "POST",
 					url: url,
 					async:false,
+					dataType:'json',
 					success: function(rtnData) {
-						rtnData = eval("(" + rtnData + ")");
 						selectRequest = rtnData.rqsts;
 					}
 				});
@@ -217,8 +217,8 @@
 					type: "POST",
 					url: url2,
 					async:false,
+					dataType:'json',
 					success: function(rtnData) {
-						rtnData = eval("(" + rtnData + ")");
 						selectUser = rtnData.emails;
 					}
 				});

@@ -4,5 +4,5 @@ import net.sf.json.JSONObject;
 
 public interface RequestHistoryService {
 	
-	public JSONObject RequestHistory(String requestid);
+	public JSONObject RequestHistory(String requestid, String userName);
 }

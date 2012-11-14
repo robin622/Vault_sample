@@ -18,11 +18,11 @@
         <th class="w400">Request Name</th>
          <th>Product</th>
         <th>Vertion</th>
-        <th>Creator</th>
+        <th class="w80">Creator</th>
         <th>Created date</th>
-        <th>	Due date</th>
-        <th>Last modified</th>
-         <th>Modified date</th>
+        <th>Due date</th>
+        <th class="w130">Last modified</th>
+         <th class="w130">Modified date</th>
         <th>Status</th>
     </tr>
 </thead>

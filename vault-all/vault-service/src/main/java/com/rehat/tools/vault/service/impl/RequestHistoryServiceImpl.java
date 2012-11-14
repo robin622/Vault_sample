@@ -26,7 +26,7 @@ public class RequestHistoryServiceImpl implements RequestHistoryService {
 	
 	private static final Logger log = Logger.getLogger(RequestHistoryServiceImpl.class);
 	
-	public JSONObject RequestHistory(String requestid) {
+	public JSONObject RequestHistory(String requestid, String userName) {
 		List<Request> requests = null;
 		JSONObject joReturn = new JSONObject();
 		RequestHistory history = new RequestHistory();
@@ -43,7 +43,10 @@ public class RequestHistoryServiceImpl implements RequestHistoryService {
 
 		requests = requestDAO.get(searchRequest);
 		Request request = requests.get(0);
-
+		if(!request.isCanView(userName)){
+			joReturn.put("message", "No permission to view the request history!");
+			return joReturn;
+		}
 		// get notifyMap
 		Map<String, String> notifyMap = new HashMap<String, String>();
 		RequestMap requestMap = new RequestMap();
@@ -110,6 +113,7 @@ public class RequestHistoryServiceImpl implements RequestHistoryService {
 				rHist.setEditedby(signatories[i].substring(0,
 						signatories[i].indexOf("@")).toLowerCase());
 				rHist.setRequestid(Long.parseLong(requestid));
+				rHist.setRequestVersion(request.getRequestVersion());
 				rHist.setIsHistory(false);
 				List<RequestHistory> rHists = new ArrayList<RequestHistory>();
 				rHists = requestHistoryDAO.get(rHist, false);

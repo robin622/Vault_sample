@@ -80,11 +80,13 @@ public class SavequeryServlet extends HttpServlet {
     		        log.error(e.getMessage(),e);
     		    }
     		}else if(operation.equals("verifyQueryName")){
+    			String userName=(String) request.getSession().getAttribute("userName");
     		    JSONObject json = new JSONObject();
     		    
     		    String queryName = request.getParameter("queryName");
     		    Savequery query = new Savequery();
     		    query.setQueryname(queryName);
+    		    query.setCreatedby(userName);
     		    try{
     		        List<Savequery> querys = queryService.seachrQuery(query);
                     if(querys != null && querys.size() > 0){

@@ -184,7 +184,7 @@ public class VaultSendMail {
 			throws Exception {
 		final String METHOD = "sendEmail";
 		log.debug(METHOD + ": start");
-		log.debug(bean);
+		//log.debug(bean);
 		userName = null;
 		serverName = null;
 		serverPort = null;

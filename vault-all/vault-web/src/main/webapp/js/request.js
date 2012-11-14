@@ -11,8 +11,8 @@ window.request = {
                 type: "POST",
                 url: url,
                 data: "operation=FindRequest",
+                dataType:"json",
                 success: function(rtnData) {
-                    rtnData = eval("(" + rtnData + ")");
                     var childstr = rtnData.rqsts;
                     $("#input_parent").autocomplete(childstr,{mustMatch:true,matchContains:1});
                     $("#input_child_0").autocomplete(childstr,{ mustMatch:true,matchContains:1} );
@@ -255,8 +255,8 @@ window.request = {
                     type: "POST",
                     url: url,
                     data: "operation=FindRequest",
+                    dataType : "json",
                     success: function(rtnData) {
-                        rtnData = eval("(" + rtnData + ")");
                         var childstr = rtnData.rqsts;
                         $("#input_child_"+newchildcount).focus().autocomplete(childstr,{ mustMatch:true,matchContains:1} );
                         request.selectRequest = childstr;
@@ -365,6 +365,9 @@ window.request = {
 			if(typeof owner1  != "undefined"){
 				if(owner1 != ""){
 					var ownerArray1 = owner1.split(',');
+					for(var r=0;r<ownerArray1.length;r++){
+						ownerArray1[r] = $.trim(ownerArray1[r]);
+					}
 					ownerArray1.sort();
 					for(var r=0;r<ownerArray1.length-1;r++){
 						if($.trim(ownerArray1[r])=="" || $.trim(ownerArray1[r+1])==""){
@@ -434,6 +437,9 @@ window.request = {
 		if(typeof cc_str  != "undefined"){
 			if(cc_str != ""){
 				var ccArray = cc_str.split(',');
+				for(var r=0;r<ccArray.length;r++){
+					ccArray[r] = $.trim(ccArray[r]);
+				}
 				ccArray.sort();
 				for(var r=0;r<ccArray.length-1;r++){
 					if ($.trim(ccArray[r])==$.trim(ccArray[r+1])){
@@ -673,8 +679,8 @@ window.request = {
 				$.each(rtnData,function(index,item){
 					$("#request_selectPro").append("<option value='" + item.productId + "'>"+ item.productName +"</option>");
 				});
-				
-				$('#request_selectPro').change(function(){ 
+				$('#request_selectPro').unbind('change');
+				$('#request_selectPro').change(function(){
 					$("#request_selectVersion").html('');
 					//$("#request_selectVersion").append("<option value='-1'>-----------</option>");
 					jQuery('option:selected', this).each(function(){ 
@@ -689,7 +695,7 @@ window.request = {
 						$("#selectversionid").val("-1");
 					}
 				});
-				
+				$('#request_selectVersion').unbind('change');
 				$('#request_selectVersion').change(function(){
 					jQuery('option:selected', this).each(function(){ 
 						$('#selectversionid').attr('value',this.value);

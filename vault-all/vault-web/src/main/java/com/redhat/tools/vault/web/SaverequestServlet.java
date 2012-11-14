@@ -106,6 +106,9 @@ public class SaverequestServlet extends HttpServlet {
             if(editMode){
                 request.setRequestid(requestId);
                 request = service.getRequest(request);
+                if(!request.getCreatedby().equals(userName)){
+                	throw new Exception("No permission to do the operation!");
+                }
                 requestVersion = request.getRequestVersion();
                 request.setRequestVersion(requestVersion + 1);
                 request.setEditedby(userName);
@@ -349,6 +352,9 @@ public class SaverequestServlet extends HttpServlet {
             req.getRequestDispatcher("/showRequest?requestid=" + request.getRequestid()).forward(req, response);
         }catch(Exception e){
             log.error(e.getMessage(), e);
+            if(e.getMessage().contains("No permission to do the operation")){
+            	response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            }
         }
 	}
 	
@@ -383,8 +389,8 @@ public class SaverequestServlet extends HttpServlet {
                 }
             }
             for (RequestHistory rh : list) {
-                if (needSignOffList.contains(rh.getUseremail().toUpperCase())
-                        || !currentRequest.isSignatory(rh.getEditedby())) {
+                if (!rh.getStatus().equals("Comments") && (needSignOffList.contains(rh.getUseremail().toUpperCase())
+                        || !currentRequest.isSignatory(rh.getEditedby()))) {
                     history.setHistoryid(rh.getHistoryid());
                     service.disableHistory(history);
                 }

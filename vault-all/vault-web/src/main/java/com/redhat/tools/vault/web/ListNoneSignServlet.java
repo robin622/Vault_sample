@@ -38,7 +38,7 @@ public class ListNoneSignServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
+		response.setContentType("application/json;charset=UTF-8");
 		response.setHeader("Cache-Control", "no-chche");
 		String requestId = request.getParameter("requestId");
 		JSONObject joReturn=service.listNoneSign(requestId);

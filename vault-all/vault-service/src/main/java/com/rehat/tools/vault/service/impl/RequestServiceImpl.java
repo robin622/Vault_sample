@@ -235,12 +235,12 @@ public class RequestServiceImpl implements RequestService{
 		return false;
 	}
 
-	public JSONObject findRequest() {
+	public JSONObject findRequest(String userName, String userEmail) {
 		JSONObject joReturn = new JSONObject();
 		List<String> requests_s = new ArrayList<String>();
 		try {
 			requestDAO = new RequestDAO();
-			List<Request> rqsts = requestDAO.findAll();
+			List<Request> rqsts = requestDAO.getCanView(userName, userEmail);
 			if (rqsts != null && rqsts.size() > 0) {
 				for (Request r : rqsts) {
 					requests_s.add(r.getRequestid().toString() + "  "
@@ -324,6 +324,10 @@ public class RequestServiceImpl implements RequestService{
 		String message = "";
 		Long requestId = Long.parseLong(requestid);
 		Request searchRequest = requestDAO.find(requestId);
+		if(!searchRequest.isCanSignOff(username)){
+			joReturn.put("message", "No permission to do the operation!");
+			return joReturn;
+		}
 		Integer requestVersion = searchRequest.getRequestVersion();
 		Request request = new Request();
 		request.setRequestid(requestId);

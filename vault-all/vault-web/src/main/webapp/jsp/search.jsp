@@ -33,32 +33,36 @@
                 </div>
             </div>
         </form>
-        <form class="form-horizontal form-horizontal-vault">
-            <div class="control-group">
+        <form class="form-horizontal">
+        
+        <div class="control-group">
+                <label class="control-label" for="input01">Version:</label>
+                <div class="controls">
+                <select id="search_selectVersion" data-placeholder="Your Favorite Football Team"  class="chzn-select" tabindex="6">
+           </select>
+                </div>
+            </div>
+        
+         
+           </form>
+       
+    </div>
+    <div class="form-area-right">
+        <form class="form-horizontal">
+             
+              <div class="control-group">
                 <label class="control-label" for="input01">Creator:</label>
                   <div class="controls">
              
            <input type="text" class="input-xlarge" id="search_creator">
            </div>
             </div>
-        </form>
-       
-    </div>
-    <div class="form-area-right">
-        <form class="form-horizontal">
-              <div class="control-group">
+            
+            <div class="control-group">
                 <label class="control-label">Status: </label>
                 <div class="controls">
                 <select id="search_selectStatus" data-placeholder="RHEL6"  class="chzn-select select-width" tabindex="6">
                 </select>
-                </div>
-            </div>
-            
-            <div class="control-group">
-                <label class="control-label" for="input01">Version:</label>
-                <div class="controls">
-                <select id="search_selectVersion" data-placeholder="Your Favorite Football Team"  class="chzn-select" tabindex="6">
-           </select>
                 </div>
             </div>
             

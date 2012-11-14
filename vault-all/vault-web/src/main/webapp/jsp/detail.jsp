@@ -47,8 +47,8 @@ function viewRequest(requestId,url) {
 			type: "POST",
 			url: canViewUrl,
 			data: "operation=canViewRequest"+"&requestId="+requestId+"&userName=${userName}",
+			dataType:"json",
 			success: function(rtnData) {
-				rtnData = eval("(" + rtnData + ")");
 				var canView = rtnData.canView;
 				if(canView) {
 					location.href = url;
@@ -202,11 +202,11 @@ function viewRequest(requestId,url) {
 	    							type: "POST",
 	    							url: url,
 	    							data: "requestid=${detailRequest.requestid}&userEmail=${userEmail}&userName=${userName}",
+	    							dataType:'json',
 	    							beforeSend:function(){	    										
 										$(document.body).append(loadingDiv);
 									},
 	    							success: function(rtnData) {
-	    								rtnData = eval("(" + rtnData + ")");
 	    								var historys = rtnData.historys;
 	    								var maps = rtnData.requests[0].maps;
 	    								globalRequests = rtnData.requests;
@@ -475,8 +475,8 @@ function viewRequest(requestId,url) {
         			type: "POST",
         			url: url,
         			data: "requestId=${detailRequest.requestid}",
+        			dataType: 'json',
         			success: function(rtnData) {
-        				rtnData = eval("(" + rtnData + ")");
         				var users = rtnData.noneSignUsers;
         				//console.log("users = "+users);
         				$("#onbehalf_div").html("");
@@ -518,8 +518,8 @@ function viewRequest(requestId,url) {
 					type: "POST",
 					url: url,
 					data: "requestid="+requestid+"&userEmail=${userEmail}&userName=${userName}",
+					dataType:"json",
 					success: function(rtnData1) {
-						rtnData1 = eval("(" + rtnData1 + ")");
 						var comments = rtnData1.comments;
 						var historys = rtnData1.historys;
 						globalRequests = rtnData1.requests;
@@ -643,9 +643,9 @@ function viewRequest(requestId,url) {
                  $.ajax({
                    type: "POST",
                    url: url,
+                   dataType : 'json',
                    data: "requestid="+requestid+"&editedby=${userName}&replyComment="+replyComment+"&historyid="+historyid+"&baseid="+baseid,
 				   success: function(rtnData) {
-				     rtnData = eval("(" + rtnData + ")");
     		         addedReplyList = rtnData.addedReplyList;
     		         flag = rtnData.flag;
     		         if(flag == "success"){
@@ -685,8 +685,8 @@ function viewRequest(requestId,url) {
                  type: "POST",
                  url: url,
                  data: "requestid="+requestid+"&historyid="+historyid,
+                 dataType:"json",
 				 success: function(rtnData) {
-    			   rtnData = eval("(" + rtnData + ")");
     			   replyList = rtnData.replyList;
                    if(replyList != null && replyList != ""){
                    document.getElementById("reply"+i).style.display="block";
@@ -745,8 +745,8 @@ function viewRequest(requestId,url) {
         					type: "POST",
         					url: url,
         					data: "id="+versionid,
+        					dataType: 'json',
         					success: function(rtnData) {
-        						rtnData = eval("(" + rtnData + ")");
         						var productid = rtnData.productid;
         						var sboption = rtnData.sboption;
         						$("#selectproductid").attr("value",productid);
@@ -853,13 +853,13 @@ function viewRequest(requestId,url) {
 				$.ajax({
 					type: "POST",
 					url: url,
+					dataType:'json',
 					data: "requestid="+requestid+"&username=${userName}&useremail=${userEmail}&comment="+comment + "&actionURL=",
 					beforeSend:function(){
 						$("#comment_btn").attr("disable","true");	    										
 						$(document.body).append(loadingDiv);
 					},
 					success: function(rtnData) {
-						rtnData = eval("(" + rtnData + ")");
 						var message = rtnData.message;
 						//var historyid = rtnData.historyid;
 						if(message != "Add comment success!"){
@@ -898,13 +898,13 @@ function viewRequest(requestId,url) {
 								type: "POST",
 								url: url,
 								data: "requestid="+requestid+"&onbehalf="+flag+"&username=${userName}&useremail=${userEmail}"+"&comment="+comment + "&type=${tran:getRequestSign('signed')}&actionURL=&onbehalfUsers="+onbehalf_users,
+								dataType:"json",
 								beforeSend:function(){	    				
 									$("#sign_btn").attr("disable","true");		
 									$("#sign_onbehalf_btn").attr("disable","true");				
 									$(document.body).append(loadingDiv);
 								},	    									
-								success: function(rtnData) {	    										    										
-									rtnData = eval("(" + rtnData + ")");
+								success: function(rtnData) {
 									var message = rtnData.message;
 									if(message != "Sign Off success!"){
 										$('#loadingDiv').remove();
@@ -963,6 +963,7 @@ function viewRequest(requestId,url) {
   									type: "POST",
   									url: url,
   									data: "requestid="+requestid+"&username=${userName}&useremail=${userEmail}"+"&comment="+comment + "&type=${tran:getRequestSign('reject')}&actionURL=",
+  									dataType:"json",
   									beforeSend:function(){	  
   										$("#reject_btn").attr("disable","true");	  										
   										$(document.body).append(loadingDiv);
@@ -971,7 +972,6 @@ function viewRequest(requestId,url) {
   										$("#sign_btn").hide();
  										$("#sign_onbehalf_btn").hide();
 										$("#reject_btn").hide();
-  										rtnData = eval("(" + rtnData + ")");
   										var message = rtnData.message;
   										//var historyid = rtnData.historyid;
   										if(message != "Reject success!"){
