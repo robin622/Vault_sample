@@ -90,7 +90,10 @@
             <div class="controls">
               <input class="input-file" id="requestAttachment" name="requestAttachment" type="file">
             </div>
-          </div> allowable file types: image, openoffice, pdf, text, plain-text, package(gz,tgz,bz2,z,rar,zip,tar) </td>
+          </div>
+        allowable file types: image, openoffice, pdf, text, plain-text, package(gz,tgz,bz2,z,rar,zip,tar)<br>
+    	the upload files names should only contain letters, numbers and underline. 
+    </td>
    
     </tr>
     <tr>

@@ -128,7 +128,13 @@ public class VaultFileUploadServlet extends HttpServlet {
                                 || itemType.contains("x-compress")
                                 || itemType.contains("x-tar")
                                 || itemType.contains("application/json")) {
-                            isAllowedType = true;
+                        	if (itemfileName.lastIndexOf(".") >= 0){
+                        		String truefilename = itemfileName.substring(0, itemfileName.lastIndexOf("."));
+                            	if (truefilename.matches("^[0-9a-zA-Z/_]*$"))	isAllowedType = true;
+                        	} else if (itemfileName.matches("^[0-9a-zA-Z/_]*$")){
+                        		isAllowedType = true;
+                        	}
+
                         }
 						if (!item.isFormField()) {
 							String sFilename = item.getName();
