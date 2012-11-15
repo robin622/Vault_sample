@@ -349,7 +349,7 @@ public class SaverequestServlet extends HttpServlet {
                         "showrequest", "change", compare);
             }
             log.info("save request successfully !");
-            req.getRequestDispatcher("/showRequest?requestid=" + request.getRequestid()).forward(req, response);
+            response.sendRedirect(req.getContextPath() + "/showRequest?requestid=" + request.getRequestid());
         }catch(Exception e){
             log.error(e.getMessage(), e);
             if(e.getMessage().contains("No permission to do the operation")){
