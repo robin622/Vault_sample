@@ -13,16 +13,16 @@
 	          <table id="example4" class="eso-table table-striped eso-table-inner ">
 <thead>
     <tr>        
-        <th>ID</th>
+        <th class="w50">ID</th>
         <th class="w400">Request Name</th>
         <th class="productwidth">Product</th>
         <th>Version</th>
         <th class="w80">Creator</th>
-        <th>Created Date</th>
-        <th>Due Date</th>
+        <th class="w110">Created Date</th>
+        <th class="w110">Due Date</th>
         <th class="w130">Last Modified</th>
         <th class="w130">Modified Date</th>
-        <th>Status</th>
+        <th class="w110">Status</th>
     </tr>
 </thead>
 <tbody>

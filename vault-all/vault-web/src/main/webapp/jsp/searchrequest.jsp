@@ -14,16 +14,16 @@
 <thead>
     <tr>
     	<th><input type="checkbox" value="option1" id="checkAllSearchRequest"></th>        
-        <th>ID</th>
+        <th class="w50">ID</th>
         <th class="w400">Request Name</th>
          <th>Product</th>
-        <th>Vertion</th>
+        <th class="w110">Vertion</th>
         <th class="w80">Creator</th>
-        <th>Created date</th>
-        <th>Due date</th>
+        <th class="w110">Created date</th>
+        <th class="w110">Due date</th>
         <th class="w130">Last modified</th>
-         <th class="w130">Modified date</th>
-        <th>Status</th>
+        <th class="w130">Modified date</th>
+        <th class="w110">Status</th>
     </tr>
 </thead>
 <tbody>

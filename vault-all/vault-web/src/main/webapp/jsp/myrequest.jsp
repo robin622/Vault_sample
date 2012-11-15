@@ -15,17 +15,17 @@
 <thead>
     <tr>
         <th><input type="checkbox" value="option1" id="checkAllMyRequest"></th>
-        <th>ID</th>
+        <th class="w50">ID</th>
         <th class="w400">Request Name</th>
         <th class="productwidth">Product</th>
         <th>Version</th>
         <th class="w80">Creator</th>
-        <th>Created Date</th>
-        <th>Due Date</th>
+        <th class="w110">Created Date</th>
+        <th class="w110">Due Date</th>
         <th class="w130">Last Modified</th>
         <th class="w130">Modified Date</th>
-        <th>Status</th>
-        <th>Action</th>
+        <th class="w110">Status</th>
+        <th class="w110">Action</th>
     </tr>
 </thead>
 <tbody>
