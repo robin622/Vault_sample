@@ -274,7 +274,7 @@
    
 <div class="breadcrumb">
     <ul id="breadcrumbul" class="pull-left">
-        <li><a href=${pageContext.request.contextPath}>Home</a> <span class="divider">/</span> <span id="subMenu"></span></li>
+        <li><a href=${pageContext.request.contextPath}/HomeServlet>Home</a> <span class="divider">/</span> <span id="subMenu"></span></li>
     </ul>
         
     
