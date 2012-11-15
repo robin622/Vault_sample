@@ -23,19 +23,17 @@ import com.redhat.tools.vault.dao.RequestRelationshipDAO;
 import com.redhat.tools.vault.dao.SendemailCountDAO;
 import com.redhat.tools.vault.util.DateUtil;
 import com.redhat.tools.vault.util.StringUtil;
+import com.redhat.tools.vault.web.helper.VaultHelper;
 import com.rehat.tools.vault.service.impl.VaultSendMail;
 
 public class ContentAPI{
 	
-	protected static final Logger log = Logger.getLogger(ContentAPI.class);
+	private static final Logger log = Logger.getLogger(ContentAPI.class);
 	private static HttpServletRequest pRequest=null;
 	private static VaultSendMail mailer=null;
 	private static String username=null;
 	public static void setRequest(HttpServletRequest request){
 		pRequest=request;
-	}
-	public static HttpServletRequest getRequest(){
-		return pRequest;
 	}
 	public static void setMail(VaultSendMail tmailer) {
 		mailer=tmailer;
@@ -46,6 +44,7 @@ public class ContentAPI{
 	
 	public int createRequest(String requestName, String description, String dueDate, String owner, String productId,
 			String cc, String parent, String children, int is_public){
+		log.info("*****************User:"+username+", visit ContentAPI method************");
 		if(null==requestName || requestName.trim().length()==0)return 0;
 		if(null==description || description.trim().length()==0)return 0;
 		if(null==username || username.trim().length()==0)return 0;

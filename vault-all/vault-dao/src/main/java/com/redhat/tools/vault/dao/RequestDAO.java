@@ -104,10 +104,8 @@ public class RequestDAO {
 			if (condition.getRequesttime() != null) {
 				criteria.add(Expression.ge(Request.PROPERTY_REQUESTTIME,
 						condition.getRequesttime()));
-				System.out.println("condition.getRequesttime() is"+ condition.getRequesttime());
 				criteria.add(Expression.lt(Request.PROPERTY_REQUESTTIME,
 						DateUtil.dateTomorrow(condition.getRequesttime())));
-				System.out.println("condition.getRequesttime() is"+ DateUtil.dateTomorrow(condition.getRequesttime()));
 			}
 			//criteria.addOrder(Order.desc((Request.PROPERTY_EDITEDTIME)));
 			criteria.addOrder(Order.desc((Request.PROPERTY_REQUESTID)));

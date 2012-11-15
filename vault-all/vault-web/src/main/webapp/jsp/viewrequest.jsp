@@ -28,8 +28,8 @@
 <tbody>
 	<c:forEach var="canViewRequest" items="${canViewRequests}">
     <tr>        
-    <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${canViewRequest.requestid} title="View Request">${canViewRequest.requestid}</a></td>
-    <td class="wordwrap"><a href=${pageContext.request.contextPath}/showRequest?requestid=${canViewRequest.requestid} title="View Request">${canViewRequest.requestname}</a></td>
+    <td><a href=${pageContext.request.contextPath}/showRequest/${canViewRequest.requestid} title="View Request">${canViewRequest.requestid}</a></td>
+    <td class="wordwrap"><a href=${pageContext.request.contextPath}/showRequest/${canViewRequest.requestid} title="View Request">${canViewRequest.requestname}</a></td>
     <td>${canViewRequest.productname}</td>
     <td>${canViewRequest.versiondesc}</td>
     <td class="nowrep">${canViewRequest.createdby}</td>

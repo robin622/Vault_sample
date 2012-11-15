@@ -28,8 +28,8 @@
 <tbody>
 	<c:forEach var="signedOffRequest" items="${signedOffRequests}">
     <tr>        
-    <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${signedOffRequest.requestid} title="View Request">${signedOffRequest.requestid}</a></td>
-    <td class="wordwrap"><a href=${pageContext.request.contextPath}/showRequest?requestid=${signedOffRequest.requestid} title="View Request">${signedOffRequest.requestname}</a></td>
+    <td><a href=${pageContext.request.contextPath}/showRequest/${signedOffRequest.requestid} title="View Request">${signedOffRequest.requestid}</a></td>
+    <td class="wordwrap"><a href=${pageContext.request.contextPath}/showRequest/${signedOffRequest.requestid} title="View Request">${signedOffRequest.requestname}</a></td>
     <td>${signedOffRequest.productname}</td>
     <td>${signedOffRequest.versiondesc}</td>
     <td class="nowrep">${signedOffRequest.createdby}</td>

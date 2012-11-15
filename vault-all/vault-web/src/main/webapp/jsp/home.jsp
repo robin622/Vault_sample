@@ -67,7 +67,7 @@
                 $("table#reception_tbl").attr("style","display");
 				$("table#detail_comment").attr("style","display");
 
-				$("#subMenu").html("<a href=${pageContext.request.contextPath}/showRequest?requestid=${detailRequest.requestid}>Request Detail ${detailRequest.requestid}</a>");
+				$("#subMenu").html("<a href=${pageContext.request.contextPath}/showRequest/${detailRequest.requestid}>Request Detail ${detailRequest.requestid}</a>");
 				
 			}
 			else if("${operationstatus}" != "null" && "${operationstatus}" == "wait"){
@@ -243,7 +243,7 @@
   <li class="dropdown header-help">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="User Guide">Help<b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li><a href="https://engineering.redhat.com/docs/en-US/Vault/0.guides/html-single/User_Guide/index.html">User guide</a></li>
+        <li><a href="https://dart.qe.lab.eng.bne.redhat.com/User_Guides/Vault/tmp/en-US/html-single/index.html">User guide</a></li>
         <li class="divider"></li>
         <li><a href="mailto:hss-eip@redhat.com">EIP Request</a></li>
         <li><a href="mailto:eng-ops@redhat.com">Eng-ops Request</a></li>

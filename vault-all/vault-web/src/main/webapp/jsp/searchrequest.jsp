@@ -30,8 +30,8 @@
 	<c:forEach var="searchRequest" items="${searchRequests}">
     <tr>
     <td><input type="checkbox" name="chkltSearchRequest" id="chkltSearchRequest${searchRequest.requestid}" value="${searchRequest.requestid}"></td>
-    <td><a href=${pageContext.request.contextPath}/showRequest?requestid=${searchRequest.requestid} title="View Request">${searchRequest.requestid}</a></td>
-    <td  class="wordwrap"><a href=${pageContext.request.contextPath}/showRequest?requestid=${searchRequest.requestid} title="View Request">${searchRequest.requestname}</a></td>
+    <td><a href=${pageContext.request.contextPath}/showRequest/${searchRequest.requestid} title="View Request">${searchRequest.requestid}</a></td>
+    <td  class="wordwrap"><a href=${pageContext.request.contextPath}/showRequest/${searchRequest.requestid} title="View Request">${searchRequest.requestname}</a></td>
     <td>${searchRequest.productname}</td>
     <td>${searchRequest.versiondesc}</td>
     <td>${searchRequest.createdby}</td>

@@ -33,7 +33,7 @@
 			<tr id="myrequestlist${myRequest.requestid}">
 			<td><input type="checkbox" name="chkltMyRequest" id="chkltMyRequest${myRequest.requestid}" value="${myRequest.requestid}"></td>
 			<td>${myRequest.requestid}</td>
-			<td  class="wordwrap"><a href=${pageContext.request.contextPath}/showRequest?requestid=${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
+			<td  class="wordwrap"><a href=${pageContext.request.contextPath}/showRequest/${myRequest.requestid} title="View Request">${myRequest.requestname}</a></td>
 			<td>${myRequest.productname}</td>
 			<td>${myRequest.versiondesc}</td>
 			<td>${myRequest.createdby}</td>

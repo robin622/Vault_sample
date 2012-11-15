@@ -47,7 +47,7 @@
 
 			<span class="flow-left state">[ ${request.status} ]</span>
 			<a
-				href="${pageContext.request.contextPath}/showRequest?requestid=${request.requestid}"
+				href="${pageContext.request.contextPath}/showRequest/${request.requestid}"
 				class="flow-left margin-right"><span><h4>&nbsp;&nbsp;${request.requestid}
 						${request.requestname}</h4></span></a>
 			<table class="eso-table blod font-normal" id="sumreport${status.index}"
