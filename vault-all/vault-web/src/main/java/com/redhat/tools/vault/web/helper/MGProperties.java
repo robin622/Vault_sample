@@ -156,7 +156,7 @@ public class MGProperties {
 	 */
 	public String getTimerInterval() {
 		String key = NAME_INTERVAL;
-		String value = "3000";
+		String value = "86400000";
 		return getValue(key, value);
 	}
 

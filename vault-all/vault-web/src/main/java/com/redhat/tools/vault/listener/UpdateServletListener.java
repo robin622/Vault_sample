@@ -5,11 +5,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 
+import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
 import org.jboss.logging.Logger;
-
 import com.redhat.tools.vault.web.helper.MGProperties;
 
 /**
@@ -19,12 +18,28 @@ import com.redhat.tools.vault.web.helper.MGProperties;
  */
 public class UpdateServletListener implements ServletContextListener{
 
-    private Timer timer = null;
+    private Timer timer = new Timer();
+    
+    @Inject
+    private VaultTimerTask vaultTimerTask=null;
+    
+    @Inject
+    private UpdateTimer updateTimer=null;
 
 	/** The logger. */
 	protected static final Logger log = Logger.getLogger(UpdateServletListener.class);
 	
 	public void contextInitialized(ServletContextEvent event) {
+		/**
+		 * for the function of reminding email
+		 */
+		// Start Timer Task
+		long interval = Long.parseLong(MGProperties.getInstance().getTimerInterval());
+		log.info("UpdateServletListener for"+interval+"ms");
+		timer.schedule(vaultTimerTask, getRemainSeconds(), interval);
+		/**
+		 * for the function of product and version 
+		 */
 		// default update period is one day
 		Long period = 24l*60*60*1000;
 		String periodDayStr = MGProperties.getInstance().getValue(MGProperties.KEY_UPDATE_PERIOD_DAY);
@@ -40,11 +55,17 @@ public class UpdateServletListener implements ServletContextListener{
 	    log.info("[product update listener] period......"+period+"milliseconds");
 	    log.info("[product update listener] delay......"+delay+"milliseconds");
 		log.info("[product update listener] start......");
-	    timer.schedule(new UpdateTimer(),delay,period);
+	    timer.schedule(updateTimer,delay,period);
 	}
 	
 	public void contextDestroyed(ServletContextEvent event) {
 		timer.cancel();
 		log.info("[product update listener] stop......");
+	}
+	
+	public long getRemainSeconds() {
+		long now = System.currentTimeMillis();
+		now = 86400000L - (now + 28800000L) % 86400000L;
+		return (now + 1800000);
 	}
 }

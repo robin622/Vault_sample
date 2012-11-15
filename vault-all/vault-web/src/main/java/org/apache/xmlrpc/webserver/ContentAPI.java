@@ -2,6 +2,7 @@ package org.apache.xmlrpc.webserver;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,18 +29,26 @@ public class ContentAPI{
 	
 	protected static final Logger log = Logger.getLogger(ContentAPI.class);
 	private static HttpServletRequest pRequest=null;
+	private static VaultSendMail mailer=null;
+	private static String username=null;
 	public static void setRequest(HttpServletRequest request){
 		pRequest=request;
 	}
 	public static HttpServletRequest getRequest(){
 		return pRequest;
 	}
-	private static VaultSendMail mailer=null;
-	public int createRequest(String requestName, String description, String createdBy, String dueDate, String owner, String productId,
+	public static void setMail(VaultSendMail tmailer) {
+		mailer=tmailer;
+	}
+	public static void setUser(String username_p){
+		username=username_p;
+	}
+	
+	public int createRequest(String requestName, String description, String dueDate, String owner, String productId,
 			String cc, String parent, String children, int is_public){
 		if(null==requestName || requestName.trim().length()==0)return 0;
 		if(null==description || description.trim().length()==0)return 0;
-		if(null==createdBy || createdBy.trim().length()==0)return 0;
+		if(null==username || username.trim().length()==0)return 0;
 		if(null==dueDate || dueDate.trim().length()==0)return 0;
 		if(null==owner || owner.trim().length()==0)return 0;
 		if(owner.indexOf("@")==-1)return 0;
@@ -57,7 +66,7 @@ public class ContentAPI{
 		Request request = new Request();
 		request.setRequestname(requestName);
 		request.setDetail(description);
-		request.setCreatedby(createdBy);
+		request.setCreatedby(username);
 		request.setOwner(owner.toString());
 		if(productId!=null && productId.trim().length()!=0){
 			try {
@@ -255,6 +264,7 @@ public class ContentAPI{
 			log.error(e.getMessage());
 			return "";
 		}
+		rq=verifyRequest(rq,username,requestId);
 		List<Request> requestList=requestDAO.get(rq);
 		if(requestList==null || requestList.size()==0 || requestList.get(0)==null)return "";
 		return requestList.get(0).getStatus();
@@ -271,7 +281,11 @@ public class ContentAPI{
 		List<RequestHistory> historys = new ArrayList<RequestHistory>();
 		List<RequestHistory> comments = new ArrayList<RequestHistory>();
 		history.setRequestid(Long.parseLong(requestid));
+		
 		searchRequest.setRequestid(Long.parseLong(requestid));
+		
+		searchRequest=verifyRequest(searchRequest,username,requestid);
+		//searchRequest.setIs_public(1);
 	
 		requestDAO = new RequestDAO();
 		historyDAO = new RequestHistoryDAO();
@@ -423,7 +437,12 @@ public class ContentAPI{
 		if(end_date!=null && end_date.trim().length()!=0){
 			end=DateUtil.toVaultDate(end_date);
 		}
-		List<Request> list=requestDAO.getPeriodSignedRequest(user, start, end);
+		List<Request> list=null;
+		if(user!=null&&username!=null&&user.equals(username)){
+			list=requestDAO.getPeriodSignedRequest(user, start, end);
+		}else{
+			list=requestDAO.getPeriodSignedRequestOfOthers(user, start, end);
+		}
 		List<Map<String, String>> realList = formatRequestData(list);
 		return realList;
 	} 
@@ -450,11 +469,11 @@ public class ContentAPI{
 				requestHistoryDAO, condition);
 	}
 	
-	private List<Map<String, String>> get_comments_common(String username,
+	private List<Map<String, String>> get_comments_common(String user,
 			String start_date, String end_date,
 			RequestHistoryDAO requestHistoryDAO, RequestHistory condition) {
-		if(username!=null && username.trim().length()>0){
-			condition.setEditedby(username);
+		if(user!=null && user.trim().length()>0){
+			condition.setEditedby(user);
 		}
 		if(start_date!=null&& start_date.trim().length()!=0){
 			condition.setStartDate(start_date);
@@ -463,10 +482,31 @@ public class ContentAPI{
 			condition.setEndDate(end_date);
 		}
 		List<RequestHistory> list=requestHistoryDAO.get(condition, false);
+		if(user!=null&&username!=null&&user.equals(username)){
+			//do nothing
+		}else{
+			list=filterpublic(list);
+		}
 		List<Map<String, String>> realList = formatRequestData(list);
 		return realList;
 	}
 	
+	private List<RequestHistory> filterpublic(List<RequestHistory> list) {
+		List<RequestHistory> readyList=new ArrayList<RequestHistory>();
+		Iterator<RequestHistory> iter=list.iterator();
+		Request condition=new Request();
+		while(iter.hasNext()){
+			RequestHistory rh=iter.next();
+			Long requestId=rh.getRequestid();
+			RequestDAO requestDao=new RequestDAO();
+			condition.setRequestid(requestId);
+			List<Request> requests=requestDao.get(condition);
+			if(Request.IS_PUBLIC.equals(requests.get(0).getIs_public())){
+				readyList.add(rh);
+			}
+		}
+		return readyList;
+	}
 	private List<Map<String, String>> formatRequestData(List list) {
 		List<Map<String,String>> realList=new ArrayList<Map<String,String>>();
 		if(list!=null&&list.size()>0){
@@ -521,8 +561,16 @@ public class ContentAPI{
 		map.put(rh.PROPERTY_REQUEST_VERSION, String.valueOf(rh.getRequestVersion())==null?"":String.valueOf(rh.getRequestVersion()));
 		map.put(rh.PROPERTY_IS_HISTORY, String.valueOf(rh.getIsHistory())==null?"":String.valueOf(rh.getIsHistory()));
 	}
-	public static void setMail(VaultSendMail tmailer) {
-		mailer=tmailer;
-	}
 	
+	private static Request verifyRequest(Request req,String creator,String requestid){
+		RequestDAO requestDAO = new RequestDAO();
+		Request searchRequest=new Request();
+		searchRequest.setRequestid(Long.parseLong(requestid));
+		searchRequest.setCreatedby(creator);
+		List<Request> list=requestDAO.get(searchRequest);
+		if(null==list||list.size()==0){
+			req.setIs_public(1);
+		}
+		return req;
+	}
 }

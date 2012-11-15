@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -103,8 +104,10 @@ public class RequestDAO {
 			if (condition.getRequesttime() != null) {
 				criteria.add(Expression.ge(Request.PROPERTY_REQUESTTIME,
 						condition.getRequesttime()));
+				System.out.println("condition.getRequesttime() is"+ condition.getRequesttime());
 				criteria.add(Expression.lt(Request.PROPERTY_REQUESTTIME,
 						DateUtil.dateTomorrow(condition.getRequesttime())));
+				System.out.println("condition.getRequesttime() is"+ DateUtil.dateTomorrow(condition.getRequesttime()));
 			}
 			//criteria.addOrder(Order.desc((Request.PROPERTY_EDITEDTIME)));
 			criteria.addOrder(Order.desc((Request.PROPERTY_REQUESTID)));
@@ -177,7 +180,8 @@ public class RequestDAO {
 		}
 		return null;
 	}
-	public List<Request> getPeriodSignedRequest(String username, Date start, Date end) {
+	
+	private List<Request> getPeriodSignedRequestPublic(String username, Date start, Date end){
 		Session sess = null;
 		try {
 			sess = dao.getSession();
@@ -305,6 +309,23 @@ public class RequestDAO {
 				sess.close();
 			}
 		}
+	}
+	public List<Request> getPeriodSignedRequest(String username, Date start, Date end) {
+		return getPeriodSignedRequestPublic(username,start,end);
+	}
+	
+	public List<Request> getPeriodSignedRequestOfOthers(String user,
+			Date start, Date end) {
+		List<Request> list= getPeriodSignedRequest(user,start,end);
+		List<Request> list_ready= new ArrayList<Request>();
+		Iterator<Request> iter=list.iterator();
+		while(iter.hasNext()){
+			Request request=iter.next();
+			if(Request.IS_PUBLIC.equals(request.getIs_public())){
+				list_ready.add(request);
+			}
+		}
+		return list_ready;
 	}
 	
 	public Request update(Request request) {

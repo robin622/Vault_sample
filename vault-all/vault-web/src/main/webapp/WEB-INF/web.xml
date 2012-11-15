@@ -42,6 +42,9 @@
         <servlet-name>XmlRpcServlet</servlet-name>
         <url-pattern>/xmlrpcforcontent</url-pattern>
     </servlet-mapping>
+    <listener>
+		<listener-class>com.redhat.tools.vault.listener.UpdateServletListener</listener-class>
+    </listener>
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>VaultWeb</web-resource-name>
