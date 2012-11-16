@@ -208,7 +208,7 @@ function viewRequest(requestId,url) {
 									},
 	    							success: function(rtnData) {
 	    								var historys = rtnData.historys;
-	    								var maps = rtnData.requests[0].maps;
+	    								var maps = rtnData.maps;
 	    								globalRequests = rtnData.requests;
 	    								var comments = rtnData.comments;
 	    								var data1 = null;

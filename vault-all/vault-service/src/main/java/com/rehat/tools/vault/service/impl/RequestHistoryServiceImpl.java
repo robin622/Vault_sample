@@ -210,6 +210,7 @@ public class RequestHistoryServiceImpl implements RequestHistoryService {
 			joReturn.put("comments", comments);
 			joReturn.put("historys", historys);
 			joReturn.put("requests", requests);
+			joReturn.put("maps", maps);
 			// if (historyid != null) {
 			// joReturn.put("editedtimeHistorys",
 			// editedtimeHistorys);

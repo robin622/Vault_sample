@@ -442,6 +442,9 @@ window.request = {
 				}
 				ccArray.sort();
 				for(var r=0;r<ccArray.length-1;r++){
+//					if($.trim(ccArray[r])=="" || $.trim(ccArray[r+1])==""){
+//						continue;
+//					}
 					if ($.trim(ccArray[r])==$.trim(ccArray[r+1])){
 						alert("Cc field have same email：" + ccArray[r]);
 						return false;
@@ -465,6 +468,7 @@ window.request = {
 		if(typeof mailList != "undefined"){
 			mailList = mailList.toLowerCase();
 			var mailArray = mailList.split(',');
+			var count = mailArray.length;
 			$.each(mailArray,function(index,item){
 				if(typeof item != "undefined"){
 					if(item != "" && jQuery.trim(item) != ""){
@@ -473,6 +477,9 @@ window.request = {
 							flag = 1;
 							return false;
 						}
+					}else if(index+1 < count){
+						flag = 1;
+						return false;
 					}
 				}
 			});

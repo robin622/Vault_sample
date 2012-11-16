@@ -148,18 +148,16 @@
 				</c:if>
 			</tbody>
 		</table>
-		<div class="clear"></div>
-	</div>
 	<c:if test="${not empty pRequest}">
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="detail_title">Parent
-			Request</span>
-		<table cellpadding="0" cellspacing="0" class="home_table_1">
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="detail_title"><h3 class="margin">Parent
+			Request</h3></span>
+		<table cellpadding="0" cellspacing="0" class="eso-table table-width blod">
 			<tr>
 				<td class="new_bg" width="35%"><span class="detail_title">${pRequest.requestid}&nbsp;&nbsp;${pRequest.requestname}</span></td>
 				<td class="new_bg_white" width="65%"><span
-						class='<c:if test="${pRequest.status eq Request.INACTIVE}">${Request.SIGNED}</c:if><c:if test="${pRequest.status ne Request.INACTIVE}">${Request.WAITING}</c:if>'>
-							<c:if test="${pRequest.status eq Request.INACTIVE}">"Signed"</c:if>
-							<c:if test="${pRequest.status ne Request.INACTIVE}">${pRequest.status}</c:if>
+						class='<c:if test="${pRequest.status == \"Approved\"}">signed</c:if><c:if test="${pRequest.status != \"Approved\"}">waiting</c:if>'>
+							<c:if test="${pRequest.status == \"Approved\"}">"Signed"</c:if>
+							<c:if test="${pRequest.status != \"Approved\"}">${pRequest.status}</c:if>
 				</span></td>
 			</tr>
 			<c:if test="${not empty pRequest.waitingList}">
@@ -192,18 +190,17 @@
 			</c:if>
 		</table>
 	</c:if>
-	<div class="clear"></div>
 	<c:if test="${not empty cRequests}">
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="detail_title">Child
-			Request</span>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="detail_title"><h3 class="margin">Child
+			Request</h3></span>
 		<c:forEach items="${cRequests}" var="rq">
-			<table cellpadding="0" cellspacing="0" class="home_table_1">
+			<table cellpadding="0" cellspacing="0" class="eso-table table-width blod">
 				<tr>
 					<td class="new_bg" width="35%"><span class="detail_title">${rq.requestid}&nbsp;&nbsp;${rq.requestname}</span></td>
 					<td class="new_bg_white" width="65%"><span
-						class='<c:if test="${rq.status eq Request.INACTIVE}">${Request.SIGNED}</c:if><c:if test="${rq.status ne Request.INACTIVE}">${Request.WAITING}</c:if>'>
-							<c:if test="${rq.status eq Request.INACTIVE}">"Signed"</c:if>
-							<c:if test="${rq.status ne Request.INACTIVE}">${rq.status}</c:if>
+						class='<c:if test="${rq.status == \"Approved\"}">signed</c:if><c:if test="${rq.status != \"Approved\"}">waiting</c:if>'>
+							<c:if test="${rq.status == \"Approved\"}">"Signed"</c:if>
+							<c:if test="${rq.status != \"Approved\"}">${rq.status}</c:if>
 					</span></td>
 				</tr>
 				<c:if test="${not empty rq.waitingList}">
@@ -236,7 +233,7 @@
 			</table>
 		</c:forEach>
 	</c:if>
-
+</div>
 	<script type="text/javascript" charset="utf-8">
 		jQuery(function($) {
 			$(document)
