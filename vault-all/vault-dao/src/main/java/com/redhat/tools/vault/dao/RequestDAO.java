@@ -134,7 +134,7 @@ public class RequestDAO {
 		return null;
 	}
 	
-	public List<Request> getPeriodRequest(String username, Date start, Date end) {
+	private List<Request> getPeriodCreatedRequestPublic(String username, Date start, Date end) {
 		Session sess = null;
 		try {
 			sess = dao.getSession();
@@ -177,6 +177,25 @@ public class RequestDAO {
 			}
 		}
 		return null;
+	}
+	
+	public List<Request> getPeriodCreatedRequest(String username, Date start, Date end) {
+		return getPeriodCreatedRequestPublic(username, start, end);
+	}
+	
+	public List<Request> getPeriodCreatedRequestOfOthers(String user,
+			Date start, Date end, String currentuser) {
+		List<Request> list= getPeriodCreatedRequestPublic(user,start,end);
+		List<Request> list_ready= new ArrayList<Request>();
+		Iterator<Request> iter=list.iterator();
+		while(iter.hasNext()){
+			Request request=iter.next();
+			if(Request.IS_PUBLIC.equals(request.getIs_public()) || request.getCreatedby().contains(currentuser)
+					|| request.getOwner().contains(currentuser) || request.getForward().contains(currentuser)){
+				list_ready.add(request);
+			}
+		}
+		return list_ready;
 	}
 	
 	private List<Request> getPeriodSignedRequestPublic(String username, Date start, Date end){
@@ -308,18 +327,20 @@ public class RequestDAO {
 			}
 		}
 	}
+
 	public List<Request> getPeriodSignedRequest(String username, Date start, Date end) {
 		return getPeriodSignedRequestPublic(username,start,end);
 	}
 	
 	public List<Request> getPeriodSignedRequestOfOthers(String user,
-			Date start, Date end) {
-		List<Request> list= getPeriodSignedRequest(user,start,end);
+			Date start, Date end, String currentuser) {
+		List<Request> list= getPeriodSignedRequestPublic(user,start,end);
 		List<Request> list_ready= new ArrayList<Request>();
 		Iterator<Request> iter=list.iterator();
 		while(iter.hasNext()){
 			Request request=iter.next();
-			if(Request.IS_PUBLIC.equals(request.getIs_public())){
+			if(Request.IS_PUBLIC.equals(request.getIs_public()) || request.getCreatedby().contains(currentuser)
+					|| request.getOwner().contains(currentuser) || request.getForward().contains(currentuser)){
 				list_ready.add(request);
 			}
 		}

@@ -421,7 +421,12 @@ public class ContentAPI{
 		if(end_date!=null && end_date.trim().length()!=0){
 			end=DateUtil.toVaultDate(end_date);
 		}
-		List<Request> list=requestDAO.getPeriodRequest(user, start, end);
+		List<Request> list=null;
+		if(user!=null&&username!=null&&user.equals(username)){
+			list=requestDAO.getPeriodCreatedRequest(user, start, end);
+		}else{
+			list=requestDAO.getPeriodCreatedRequestOfOthers(user, start, end, username);
+		}
 		List<Map<String, String>> realList = formatRequestData(list);
 		return realList;
 	}
@@ -440,7 +445,7 @@ public class ContentAPI{
 		if(user!=null&&username!=null&&user.equals(username)){
 			list=requestDAO.getPeriodSignedRequest(user, start, end);
 		}else{
-			list=requestDAO.getPeriodSignedRequestOfOthers(user, start, end);
+			list=requestDAO.getPeriodSignedRequestOfOthers(user, start, end, username);
 		}
 		List<Map<String, String>> realList = formatRequestData(list);
 		return realList;
