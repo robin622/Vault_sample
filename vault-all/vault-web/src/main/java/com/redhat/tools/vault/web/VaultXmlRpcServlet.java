@@ -17,7 +17,6 @@ public class VaultXmlRpcServlet extends XmlRpcServlet {
 	private static final Logger log = Logger.getLogger(VaultXmlRpcServlet.class);
 	@Inject
 	private VaultSendMail mailer;
-	
 
 	public void doPost(HttpServletRequest pRequest,
 			HttpServletResponse pResponse) throws IOException, ServletException {

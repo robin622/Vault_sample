@@ -17,9 +17,9 @@
 --
 -- Current Database: `jbossportal`
 --
-CREATE USER 'portal'@'localhost' IDENTIFIED BY 'portalpassword';
+/*CREATE USER 'portal'@'localhost' IDENTIFIED BY 'portalpassword';
 CREATE DATABASE `jbossportal` CHARACTER SET=utf8;
-GRANT ALL PRIVILEGES ON jbossportal.* TO 'portal'@'localhost' IDENTIFIED BY 'portalpassword' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON jbossportal.* TO 'portal'@'localhost' IDENTIFIED BY 'portalpassword' WITH GRANT OPTION;*/
 
 /*DROP DATABASE IF EXISTS  `jbossportal`;
 
