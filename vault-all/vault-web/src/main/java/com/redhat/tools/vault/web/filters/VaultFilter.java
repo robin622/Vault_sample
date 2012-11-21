@@ -33,7 +33,7 @@ public class VaultFilter implements Filter {
 		String userName=(String) req.getSession().getAttribute("userName");
 		if(userName == null){
 			String user=VaultHelper.getUserNameFromRequest(req);
-			String userEmail=VaultHelper.getEmailFromName(userName);
+			String userEmail=VaultHelper.getEmailFromName(user);
 			req.getSession().setAttribute("userName", user);
 			req.getSession().setAttribute("userEmail", userEmail);
 		}

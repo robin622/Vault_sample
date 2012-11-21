@@ -25,9 +25,8 @@ GRANT ALL PRIVILEGES ON jbossportal.* TO 'portal'@'localhost' IDENTIFIED BY 'por
 
 COMMIT;*/
 
-/*CREATE DATABASE*/ /*IF NOT EXISTS `jbossportal` *//*!40100 DEFAULT CHARACTER SET utf8 */;
 
-USE `jbossportal`;
+/*USE `jbossportal`;*/
 
 --
 -- Table structure for table `products`

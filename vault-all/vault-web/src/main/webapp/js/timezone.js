@@ -62,7 +62,7 @@ var zone_patern=/\d{1,4}\-\d{1,2}\-\d{1,2} \d{1,2}:\d{1,2}/g;
 			}
 	}
 	function toreplace2(componentid){
-		console.info('componentid is'+ componentid);
+		//console.info('componentid is'+ componentid);
 		var componentId=document.getElementById(componentid);
 		if(typeof componentId == "undefined" || componentId==null)return;
 		var nl=componentId.childNodes;

@@ -47,7 +47,7 @@ rm -rf %{buildroot}
 unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/etc/httpd/conf.d/vault.conf -d %{buildroot}%{_sysconfdir}/httpd/conf.d
 unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/modules/com/redhat/tools/vault/conf/main/config.properties -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
 unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/modules/com/redhat/tools/vault/conf/main/module.xml -d %{buildroot}%{_jbossasdir}/modules/com/redhat/tools/vault/conf/main
-unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/user/share/jbossas/standalone/configuration/standalone-full.xml -d %{buildroot}%{_jbossasdir}/standalone/configuration
+unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/user/share/jbossas/standalone/configuration/standalone-full.xml -d %{buildroot}%{_webappsdir}/%{name}
 unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/user/share/java/mysql-connector-java.jar -d %{buildroot}%{_webappsdir}/%{name}/mysql
 unzip -j /builddir/build/SOURCES/com.redhat.tools.vault-vault3-%{version}-sources.zip vault-all/release/data/* -d %{buildroot}%{_webappsdir}/%{name}/data
 
@@ -80,9 +80,14 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/vault.conf
 %config(noreplace) %{_jbossasdir}/modules/com/redhat/tools/vault/conf/main/config.properties
 %config(noreplace) %{_jbossasdir}/modules/com/redhat/tools/vault/conf/main/module.xml
-%config(noreplace) %{_jbossasdir}/standalone/configuration/standalone-full.xml
 
 %changelog
+* Mon Dec 03 2012 Wei Zhao<wezhao@redhat.com> - 1.0-8
+- fix bugs 881744,882160,882450
+* Thu Nov 22 2012 Wei Zhao<wezhao@redhat.com> - 1.0-7
+- change the path of file "standalone-full.xml" to %{buildroot}%{_webappsdir}/%{name}
+* Fri Nov 19 2012 Wei Zhao<wezhao@redhat.com> - 1.0-6
+- delete account info from vault_new_create.sql
 * Fri Nov 16 2012 Wei Zhao<wezhao@redhat.com> - 1.0-5
 - fix bugs including 877302 877255 871331 876156 876154
 * Thu Nov 15 2012 Wei Zhao<wezhao@redhat.com> - 1.0-4

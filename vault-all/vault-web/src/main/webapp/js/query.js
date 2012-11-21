@@ -226,4 +226,3 @@ query.qry_clearQuery();
 query.qry_getUserQuery();
 query.qry_initProduct();
 query.qry_initStatus();
-
