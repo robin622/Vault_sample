@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jbosscache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:jboss:jbosscache-core:config:3.1">
+<jbosscache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:jboss:jbosscache-core:config:3.2">
 
     <eviction wakeUpInterval="5000">
         <default algorithmClass="org.jboss.cache.eviction.ExpirationAlgorithm" eventQueueSize="200000">
