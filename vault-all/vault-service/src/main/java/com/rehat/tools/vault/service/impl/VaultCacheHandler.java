@@ -1,5 +1,6 @@
 package com.rehat.tools.vault.service.impl;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.jboss.cache.Cache;
@@ -58,8 +59,9 @@ public class VaultCacheHandler {
 	static {
 		if (vaultCache == null) {
 			final CacheFactory<Object, Object> factory = new DefaultCacheFactory<Object, Object>();
-
-			vaultCache = factory.createCache();
+			InputStream is = VaultCacheHandler.class.getClassLoader()
+                     .getResourceAsStream("conf/jboss-cache-config-vault.xml");
+			vaultCache = factory.createCache(is,false);
 
 			vaultCache.create();
 			vaultCache.start();
