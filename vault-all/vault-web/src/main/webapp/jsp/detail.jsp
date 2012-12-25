@@ -62,12 +62,12 @@ function viewRequest(requestId,url) {
 
 </script>
 <input type="hidden" name="versionid" id="versionid" value="-1" />
-<table class="eso-table tableWidth table-top detail-table" id="detail_name_table"
-	style="display: none">
+<table class="eso-table tableWidth table-top detail-table fix-table" id="detail_name_table"
+	style="display: none; table-layout:fixed;">
 	<thead>
 		<tr>
-			<th colspan="5"><c:if
-					test="${not empty detailRequest.requestname}"><span id="hiddenRequestName" class="w800 wordwrap">${detailRequest.requestid}  ${detailRequest.requestname}</span></c:if>
+			<th colspan="4"><c:if
+					test="${not empty detailRequest.requestname}"><span id="hiddenRequestName">${detailRequest.requestid}  ${detailRequest.requestname}</span></c:if>
 				<form action="<%=request.getContextPath()%>/ReportServlet" method="POST"
 					name="formReport" id="formReport" style="display: inline;">
 					<a href="javascript:report()" class="report">Report This
@@ -227,7 +227,7 @@ function viewRequest(requestId,url) {
 	    										var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|-)+)/g;
 	    			                   			var comment_href = n.comment.replace(reg, '<a href="$1$2" target="_blank">$1$2</a>');
 	    										comment_href = comment_href.replaceAll("&amp;",'&');
-	    										$("#addcomment_div").append("<div class='comment_list "+n.status+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+now+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,-1)'>Reply</span><div>"+opstatus(n.status)+comment_href+"</div><div id ='input"+i+"_"+"-1' class='comment_input'></div><ul id='reply"+i+"' style='display:none'></ul><input type= 'hidden' id ='historyid"+i+"' value='"+n.historyid+"'/></div></div>");
+	    										$("#addcomment_div").append("<div class='comment_list "+n.status+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+now+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,-1)'>Reply</span><div class='w900'>"+opstatus(n.status)+comment_href+"</div><div id ='input"+i+"_"+"-1' class='comment_input'></div><ul id='reply"+i+"' style='display:none'></ul><input type= 'hidden' id ='historyid"+i+"' value='"+n.historyid+"'/></div></div>");
 	    										showReply(i);
 	    									});
 	    								}
@@ -388,31 +388,31 @@ function viewRequest(requestId,url) {
 		</td>
 	</tr>
 </table>
-<table class="eso-table tableWidth" id="detail_comment"
+<table class="eso-table tableWidth fix-table" id="detail_comment"
 	style="display: none">
 	<thead>
 		<tr>
-			<th colspan="2" class="iconmean">Comment 
-              <span class="Rejectedm icon-mean spanright">Rejected</span><span class="SignedByRequestorm icon-mean ">Signed by Requestor</span><span class="Waitingm icon-mean">Waiting</span><span class="Commentsm icon-mean">Comments</span><span class="Signedm icon-mean">Signed</span >
+			<th  class="iconmean">Comment 
+              <span class="Rejectedm icon-mean spanright">Rejected</span><span class="SignedByRequestorm icon-mean ">Signed by Requestor</span><span class="Waitingm icon-mean">Waiting</span><span class="Commentsm icon-mean">Comments</span><span class="Signedm icon-mean">Signed</span ><span>Tips:</span>
 			</th>
 
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="background-fff">
+			<td class="background-fff wordwrap">
 			
 				<fieldset class="fieldset-vault wordwrap">
 					<legend class="legend-vault img1" id="turn">Turn Off
 						Comments </legend>
 					<legend class="legend-vault img2 display-none" id="turn2">Turn
 						On Comments </legend>
-					<div class="comments" id="addcomment_div"></div>
+					<div class="comments wordwrap" id="addcomment_div"></div>
 				</fieldset>
 			</td>
 		</tr>
 		<tr>
-			<td class="new_bg_white" id="comment_td" colspan='2'><textarea
+			<td class="new_bg_white" id="comment_td" ><textarea
 					name="comment" id="comment"></textarea></td>
 		</tr>
 		<!-- <tr>
@@ -423,7 +423,7 @@ function viewRequest(requestId,url) {
 		</tr>-->
 		<input type="hidden" name="requestid" id="requestid" value="" />
 		<tr>
-			<th colspan="3">
+			<th>
 				<div class="tablefooter">
 					<div class="tablefooterleft">
 						<input type="hidden" name="judgeSignOff" id="judgeSignOff"
@@ -558,7 +558,7 @@ function viewRequest(requestId,url) {
 								var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|-)+)/g;
 	                   			var comment_href = n.comment.replace(reg, '<a href="$1$2" target="_blank">$1$2</a>');
 								comment_href = comment_href.replaceAll("&amp;",'&');
-								$("#addcomment_div").append("<div class='comment_list "+n.status+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+now+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,-1)'>Reply</span><div>"+opstatus(n.status)+comment_href+"</div><div id ='input"+i+"_"+"-1' class='comment_input'></div><ul id='reply"+i+"' style='display:none'></ul><input type= 'hidden' id ='historyid"+i+"' value='"+n.historyid+"'/></div></div>");
+								$("#addcomment_div").append("<div class='comment_list "+n.status+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+now+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,-1)'>Reply</span><div class='w900'>"+opstatus(n.status)+comment_href+"</div><div id ='input"+i+"_"+"-1' class='comment_input'></div><ul id='reply"+i+"' style='display:none'></ul><input type= 'hidden' id ='historyid"+i+"' value='"+n.historyid+"'/></div></div>");
 								showReply(i);
 								});
 						}
@@ -656,11 +656,11 @@ function viewRequest(requestId,url) {
     		               if(n.baseid == -1){
     		                 //$("#reply"+i).append("<li id='lireply"+n.replyid+"'><span>"+n.replycomment+"</span><div class='comment_pt'>"+n.editedtime+" "+n.editedby+" Reply<a title='reply' href='javascript:showTextArea("+i+","+n.replyid+")'></a></div></li>");
     		                 //$("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
-    		            	   $("#reply"+i).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+","+n.replyid+","+j+")'>Reply</span><div>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
+    		            	   $("#reply"+i).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+","+n.replyid+","+j+")'>Reply</span><div class='w900'>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
     	    		           $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
     		               }else{
     		                 document.getElementById("ulreply"+n.baseid).style.display="block";
-    		                 $("#ulreply"+n.baseid).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+","+n.replyid+","+j+")'>Reply</span><div>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
+    		                 $("#ulreply"+n.baseid).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+","+n.replyid+","+j+")'>Reply</span><div class='w900'>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
     		                 $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
     		               }
     		             });
@@ -692,11 +692,11 @@ function viewRequest(requestId,url) {
                    document.getElementById("reply"+i).style.display="block";
     		         $.each(replyList, function(j, n){
     		           if(n.baseid == -1){
-    		             $("#reply"+i).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,"+j+")'>Reply</span><div>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
+    		             $("#reply"+i).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,"+j+")'>Reply</span><div class='w900'>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
     		             $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
     		           }else{
     		             document.getElementById("ulreply"+n.baseid).style.display="block";
-    		             $("#ulreply"+n.baseid).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,"+j+")'>Reply</span><div>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
+    		             $("#ulreply"+n.baseid).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,"+j+")'>Reply</span><div class='w900'>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
     		             $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
     		           }
     		         });

@@ -25,7 +25,7 @@
 </head>
 <body>
 	<div class="content margin padding">
-		<table class="eso-table table-width blod bgnone detail-table" id="home_table">
+		<table class="eso-table table-width blod bgnone detail-table fix-table" id="home_table">
 			<thead>
 				<tr>
 					<th colspan="3"><h3 class="w800 wordwrap">${reportRequest.requestid}&nbsp;&nbsp;${reportRequest.requestname}</h3>
@@ -57,7 +57,7 @@
 				<tr>
 					<td><span>Detailed description:</span></td>
 					<td colspan="3">
-						<div id="detail_value" class="wordwrap"></div>
+						<div id="detail_value" class="description wordwrap"></div>
 				</tr>
 				<tr>
 					<td><span>Attachment:</span></td>
@@ -66,7 +66,7 @@
 			</tbody>
 		</table>
 
-		<table class="eso-table blod font-normal" id="report_tbl">
+		<table class="eso-table blod font-normal fix-table" id="report_tbl">
 			<thead>
 				<tr>
 					<th width="13%">Status</th>
@@ -89,7 +89,7 @@
 								HH:mm")}</td>
 							<td>${tran:transformByFormat(elementofreport.editedtime,"yyyy-MM-dd
 								HH:mm")}</td>
-							<td><c:if test="${not empty temps}">
+							<td class="wordwrap"><c:if test="${not empty temps}">
 									<c:forEach items="${temps}" var="temp" varStatus="temptatus">
 										<c:if
 											test="${(not empty temp.editedtime) and (temp.status ne Request.SIGNED_BY)}">

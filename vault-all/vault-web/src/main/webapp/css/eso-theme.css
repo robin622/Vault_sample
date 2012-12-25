@@ -845,7 +845,7 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {*padding-top: 1px;*paddi
 
 
 .nav {margin-bottom:18px; margin-left:0; list-style:none;}
-.nav > li > a {display: block;}
+.nav > li > a {display: block; display:-moz-inline-box;}
 
 .navbar .nav > li >a:before{
   content:'';
@@ -1048,3 +1048,15 @@ button.close {padding: 0; cursor: pointer; background: transparent; border: 0; -
 /* grey theme*/
 body.greytheme{background: url(../images/bg-grey.png) repeat-x #212121 fixed;}
 body.whitetheme{ background: url(../imaes/bg-white.png) repeat-x #bcbcbc fixed}
+
+/*----------------error page*/
+.image-area-404{ background:url(../images/404.png) left 100px no-repeat; margin-left:auto; margin-right:auto; width:400px; height:300px; padding-left:230px; padding-top:190px;}
+.image-area-401{ background:url(../images/401.png) left 70px no-repeat; margin-left:auto; margin-right:auto; width:600px; height:380px; padding-left:200px; padding-top:100px;}
+.image-area-500{ background:url(../images/500.png) left 70px no-repeat; margin-left:auto; margin-right:auto; width:400px; height:350px; padding-left:230px; padding-top:150px;}
+.padding-top10{ padding-top:10px;}
+
+
+/*---warn---*/
+.warn{ background: url(../images/wran.png) left 70px no-repeat; margin-left:auto; margin-right:auto; width:400px; height:350px; padding-left:230px; padding-top:150px;}
+.warn-index{ height:25px; line-height:25px; text-align:center; border:1px solid #F00; background-color: #F1CEC6; color:#000; font-size:18px; display:block;}
+.nologo{color: #FFFFFF;display: inline-block;float: left;font-size: 20px;font-weight: bold;line-height: 30px;text-decoration: none; background-image:none!important; padding-left:0px!important;}

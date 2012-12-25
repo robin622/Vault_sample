@@ -129,9 +129,15 @@ select, input[type="file"]{height:24px;}
 .w130{width:130px;}
 .w110{width:110px;}
 .w50{width:50px;}
+.fix-table{table-layout:fixed;}
+.w900{width:800px;}
 /*word wrap============================*/
-.wordwrap{word-wrap:break-word; word-break:break-all;}
+.wordwrap{word-wrap:break-word; word-break:break-all;overflow:auto;}
 .dpyblock{display:inline-block!important;}
+
+#hack, x:-moz-any-link, x:default {
+
+} 
 
 /* form-area ========================================*/
 form{margin:0px;}
