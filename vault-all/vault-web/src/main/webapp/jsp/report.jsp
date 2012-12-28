@@ -16,9 +16,9 @@
 	rel="stylesheet" />
 <link href="<%=request.getContextPath()%>/images/favicon.ico"
 	rel="shortcut icon">
-<script src="<%=request.getContextPath()%>/js/jquery.js"></script>
-<!--script src="<%=request.getContextPath()%>/js/dropdown.js"></script>
-<script src="<%=request.getContextPath()%>/js/modal.js"></script-->
+<script src="<%=request.getContextPath()%>/js/jquery-1.7.2.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/dropdown.js"></script>
+<script src="<%=request.getContextPath()%>/js/modal.js"></script>
 <script src="<%=request.getContextPath()%>/js/jquery.dataTables.min.js"></script>
 <script type='text/javascript' src="<%=request.getContextPath()%>/js/timezone.js"></script> 
 <script type='text/javascript' src="<%=request.getContextPath()%>/js/vault_js.js"></script> 
