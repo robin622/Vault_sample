@@ -67,7 +67,7 @@ function viewRequest(requestId,url) {
 	<thead>
 		<tr>
 			<th colspan="4"><c:if
-					test="${not empty detailRequest.requestname}"><span id="hiddenRequestName">${detailRequest.requestid}  ${detailRequest.requestname}</span></c:if>
+					test="${not empty detailRequest.requestname}"><span id="hiddenRequestName" class="w800">${detailRequest.requestid}  ${detailRequest.requestname}</span></c:if>
 				<form action="<%=request.getContextPath()%>/ReportServlet" method="POST"
 					name="formReport" id="formReport" style="display: inline;">
 					<a href="javascript:report()" class="report">Report This
@@ -104,20 +104,21 @@ function viewRequest(requestId,url) {
 		<tr>
 			<td>Due Date:</td>
 			<td id="requesttime_value">${tran:transformByFormat(detailRequest.requesttime,"yyyy-MM-dd
-				HH:mm")}<script>OutputLoc();</script>
+				HH:mm")}
 			</td>
 			<td class="bg-gray font">Create Date:</td>
 			<td>${tran:transformByFormat(detailRequest.createdtime,"yyyy-MM-dd
-				HH:mm")}<script>OutputLoc();</script>
+				HH:mm")}
 			</td>
 		</tr>
 		<tr>
 			<td>Creator:</td>
 			<td colspan="3">${detailRequest.createdby}</td>
+			<script type='text/javascript'>addStyle();</script>
 		</tr>
 		<tr>
 			<td>CC:</td>
-			<td colspan="3">${detailRequest.forward}</td>
+			<td colspan="3" id="ccstyle">${detailRequest.forward}</td>
 		</tr>
 		<tr>
 			<td>Parent:</td>
@@ -360,7 +361,7 @@ function viewRequest(requestId,url) {
 	    									  { "sTitle": "Sign&nbsp;Off&nbsp;By",
 	    										"fnRender": function(obj){
 	    											var reception = obj.aData[1];
-	    							            	var	sReturn = "<a href='#'>"+reception+"</a>"
+	    							            	var	sReturn = "<span>"+reception+"</span>"
 	    											return sReturn;
 	    						              	}
 	    									  },
@@ -585,7 +586,7 @@ function viewRequest(requestId,url) {
 							  { "sTitle": "Sign&nbsp;off&nbsp;by",
 								"fnRender": function(obj){
 									var reception = obj.aData[1];
-					            	var	sReturn = "<a href='#'>"+reception+"</a>"
+					            	var	sReturn = "<span>"+reception+"</span>"
 									return sReturn;
 				              	}
 							  },
@@ -619,10 +620,11 @@ function viewRequest(requestId,url) {
            
 		   function addReply(m,baseid){
 		     var replyComment = document.getElementById("replyComment"+m).value;
-		     console.log("i ="+m);
-		     console.log("replyComment="+replyComment);
+		     //console.log("m ="+m);
+		     //console.log("replyComment="+replyComment);
 		     document.getElementById("replyComment"+m).value = "";
 		     i=m.split("_")[0];
+		     //console.log("i ="+i);
 		     var historyid = document.getElementById("historyid"+i).value;
 		     if(replyComment == ""){
 		       alert("Please enter Reply.");
@@ -647,6 +649,7 @@ function viewRequest(requestId,url) {
                    data: "requestid="+requestid+"&editedby=${userName}&replyComment="+replyComment+"&historyid="+historyid+"&baseid="+baseid,
 				   success: function(rtnData) {
     		         addedReplyList = rtnData.addedReplyList;
+    		         //console.log("addedReplyList ="+addedReplyList);
     		         flag = rtnData.flag;
     		         if(flag == "success"){
     		           $("#reply"+i).html("");
@@ -696,7 +699,7 @@ function viewRequest(requestId,url) {
     		             $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
     		           }else{
     		             document.getElementById("ulreply"+n.baseid).style.display="block";
-    		             $("#ulreply"+n.baseid).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,"+j+")'>Reply</span><div class='w900'>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
+    		             $("#ulreply"+n.baseid).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+","+n.replyid+","+j+")'>Reply</span><div class='w900'>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
     		             $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
     		           }
     		         });

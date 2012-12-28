@@ -16,13 +16,13 @@
 <link href="<%=request.getContextPath()%>/images/favicon.ico"
 	rel="shortcut icon" />
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/jquery.js"></script>
+<!--script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/dropdown.js"></script>
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/modal.js"></script>
+	src="<%=request.getContextPath()%>/js/modal.js"></script-->
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/datatable.js"></script>
+	src="<%=request.getContextPath()%>/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/vault.js"></script>
 <script>

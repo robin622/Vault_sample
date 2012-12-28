@@ -124,13 +124,13 @@ select, input[type="file"]{height:24px;}
 .spanright{margin-right:5px;}
 .productwidth{width:150px;}
 .w400{width:400px;}
-.w800{width:800px;display:inline-block;word-break:break-all;}
+.w800{width:55%;display:inline-block;word-break:break-all;}
 .w80{width:80px;}
 .w130{width:130px;}
 .w110{width:110px;}
 .w50{width:50px;}
 .fix-table{table-layout:fixed;}
-.w900{width:800px;}
+.w900{}
 /*word wrap============================*/
 .wordwrap{word-wrap:break-word; word-break:break-all;overflow:auto;}
 .dpyblock{display:inline-block!important;}
@@ -151,6 +151,5 @@ div.dataTables_length select{margin-left:4px;}
 .modal-footer{text-align:left;}
 .modal{width:450px; margin:-250px 0 0 -200px;}
 textarea{width:500px;}
-
-
-
+.cc_style{margin-left:10px;}
+.time-zone{height: 30px; line-height: 30px; margin-right: 20px; font-weight:bold;}

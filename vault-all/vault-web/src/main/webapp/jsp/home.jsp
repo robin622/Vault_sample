@@ -15,15 +15,18 @@
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/ui.datepicker.css" />
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.ptTimeSelect.css" />
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/ui.theme.css" />
-			
+		
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/jquery.autocomplete.css" />
+	
 	<link href="<%=request.getContextPath()%>/images/favicon.ico" rel="shortcut icon" />
+	
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.7.2.min.js" ></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ptTimeSelect.js" ></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/dropdown.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/modal.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/datatable.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/vault.js"></script>
+	
 	<script>
 		var loc;
 		var loc_timezoneOffset=new Date();
@@ -225,40 +228,35 @@
 			});
 		}
 		var loadingDiv = $('<div id="loadingDiv" style="position:fixed; left:'+window.screen.width/2+'px; top:'+window.screen.height/2+'px;"></div>').html("<img src='${pageContext.request.contextPath}/images/loading.gif' /> ");
-		console.info('loading div');
+		//console.info('loading div');
 		$(document.body).append(loadingDiv);
+		function addStyle(){
+			var ccstyle=document.getElementById('ccstyle');
+			if(ccstyle!=""){
+				var ccstyle_val=ccstyle.innerHTML;
+				var arr=ccstyle_val.split(',');
+				var all="";
+				for(var i=0;i<arr.length;i++){
+					if(i==0){
+						all+=arr[i]+",";
+					}else if(i==arr.length-1){
+						all+="<span class='cc_style'>"+arr[i]+"</span>";
+					}else{
+						all+="<span class='cc_style'>"+arr[i]+",</span>";
+					}
+				}
+				document.getElementById('ccstyle').innerHTML=all;
+			}
+		}
 	</script>
 	<script type='text/javascript' src="<%=request.getContextPath()%>/js/vault_js.js"></script> 
 	<script type='text/javascript' src="<%=request.getContextPath()%>/js/timezone.js"></script>
+	<script type='text/javascript' src="<%=request.getContextPath()%>/js/browserdetector.js"></script>
 </head>
-<body id='eso-body' onload="rmloading();">
+<body id='eso-body' onload="rmloading();BrowserDetection.init();addStyle();">
 <div class="eso-inner">
-<header id='eso-topbar'>
-  <a href="${pageContext.request.contextPath}/HomeServlet" title="go back home" class="logo">Vault</a>
-  <a href="https://engineering.redhat.com/hss-portal" class="eso-logo"><img src="<%=request.getContextPath()%>/images/header-logo-eso-developed.png" alt="Developed by HSS"></a>
-  <ul class="quick-menu unstyled">
-  <li class="dropdown">
-    <a href="https://engineering.redhat.com/hss-portal/products/" title="Engineering Services">Engineering Services</a>
-  </li>
-  <li class="dropdown header-help">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="User Guide">Help<b class="caret"></b></a>
-      <ul class="dropdown-menu">
-        <li><a href="https://dart.qe.lab.eng.bne.redhat.com/User_Guides/Vault/tmp/en-US/html-single/index.html">User guide</a></li>
-        <li class="divider"></li>
-        <li><a href="mailto:hss-eip@redhat.com">EIP Request</a></li>
-        <li><a href="mailto:eng-ops@redhat.com">Eng-ops Request</a></li>
-        <li><a href="mailto:hss-ied-list@redhat.com">Application Request</a></li>
-        <li class="divider"></li>
-        <li><a href="mailto:vault-service@redhat.com">Contact developers</a></li>
-      </ul>
-    </li>
- <li class="dropdown header-user">
-   <a class="dropdown-toggle" href="#" title="User Info">Hello, ${userName}</a>
- </li>
- </ul>
-
-</header>
-
+<a href="<%=request.getContextPath()%>/jsp/warn.jsp" class="warn-index" style="display: none" id="warning">Your browser is not supported</a>
+<%@ include file="header.jsp" %>
 <div class="navbar">
   <ul class="nav">
     <li id="navHome" class="active"><a href=${pageContext.request.contextPath}/HomeServlet>Home</a></li>
@@ -276,9 +274,8 @@
     <ul id="breadcrumbul" class="pull-left">
         <li><a href=${pageContext.request.contextPath}/HomeServlet>Home</a> <span class="divider">/</span> <span id="subMenu"></span></li>
     </ul>
-        
-    
-     <div class="clear"></div>
+    <span class="pull-right time-zone"> TimeZone: <script>OutputLoc();</script></span>   
+    <div class="clear"></div>
 </div>
 	<%@ include file="detail.jsp"%>  
         <%@ include file="search.jsp"%>
@@ -290,22 +287,14 @@
 	<%@ include file="myrequest.jsp" %>
 	<%@ include file="newrequest.jsp" %>
 </div>
-<footer class="footer">
-    <div class="hss-logo"></div>
-    <div class='copyright'>
-    <p>Vault 3.0 <a href="https://bugzilla.redhat.com/enter_bug.cgi?product=Vault&version=3.0" target="_blank"> Report an Issue</a></p>
-    <p>Copyright © 2012 Red Hat, Inc. All rights reserved.</p>
-    <p>INTERNAL USE ONLY</p>
-    <!--when the application use some tech supported by opensource, then please mark it here><p>Powered by <a href='http://www.redhat.com/products/jbossenterprisemiddleware/portal/'>@JBoss EAP</a></p><-->
-    </div>
-</footer>
+<%@ include file="footer.jsp" %>
 </div>
 <script>
 	//$(".chzn-select").chosen(); 
 	//$(".chzn-select-deselect").chosen({allow_single_deselect:true}); 
 	adaptTimeZone();
 	javascript:scroll(0,0);
-</script>	
+</script>
     </div>
  </body>
 </html>

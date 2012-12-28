@@ -1066,7 +1066,7 @@ public class VaultSendMail {
 		addLine(sb);
 		sb.append("To learn more about using Vault, visit:");
 		addLine(sb);
-		sb.append("https://riddler.bne.redhat.com/Vault-User_Guide/index.html");
+		sb.append("https://dart.qe.lab.eng.bne.redhat.com/User_Guides/Vault/tmp/en-US/html-single/index.html");
 		addLine(sb);
 		sb.append("Or contact us at ");
 		sb.append(email);

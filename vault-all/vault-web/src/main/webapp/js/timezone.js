@@ -4,7 +4,8 @@ var zone_patern=/\d{1,4}\-\d{1,2}\-\d{1,2} \d{1,2}:\d{1,2}/g;
 		var loadingdiv=document.getElementById('loadingDiv');
 		if(typeof loadingdiv != "undefined" && loadingdiv!=null)
 		{
-			loadingdiv.remove();
+			//loadingdiv.remove();
+			loadingdiv.parentNode.removeChild(loadingdiv);
 		}
 	}
 	function timeParse(timeString,pattern){

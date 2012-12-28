@@ -46,7 +46,8 @@ section{ margin-bottom:50px; margin:15px 15px 50px 15px;}
 .eso-inner {margin: 0 auto; width: 96%;}
 .eso-inner:before, .eso-inner:after {display: table;content: "";}
 .eso-inner:after {clear: both;}
-
+.w780{width:800px;}
+.h250{height:250px!important;}
 
 
 /* Server =================================================*/
