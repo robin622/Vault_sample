@@ -72,5 +72,5 @@ var BrowserDetection = {
            { 'searchString': navigator.platform, 'name': 'Linux', 'subStr': 'Linux' },
            { 'searchString': navigator.userAgent, 'name': 'iPhone', 'subStr': 'iPhone/iPod' }
 	],
-	defaultNotSupportedBrowsers: [{'os': 'Any', 'browser': 'MSIE', 'version': 6},{'os': 'Any', 'browser': 'Firefox', 'version': 3},{'os': 'Any', 'browser': 'Safari', 'version': 4},{'os': 'Any', 'browser': 'Chrome', 'version': 17}]	
+	defaultNotSupportedBrowsers: [{'os': 'Any', 'browser': 'MSIE', 'version': 6},{'os': 'Any', 'browser': 'Firefox', 'version': 3.5},{'os': 'Any', 'browser': 'Safari', 'version': 3.9},{'os': 'Any', 'browser': 'Chrome', 'version': 16.9}]	
 };

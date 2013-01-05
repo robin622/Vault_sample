@@ -234,26 +234,38 @@
 			var ccstyle=document.getElementById('ccstyle');
 			if(ccstyle!=""){
 				var ccstyle_val=ccstyle.innerHTML;
-				var arr=ccstyle_val.split(',');
-				var all="";
-				for(var i=0;i<arr.length;i++){
-					if(i==0){
-						all+=arr[i]+",";
-					}else if(i==arr.length-1){
-						all+="<span class='cc_style'>"+arr[i]+"</span>";
-					}else{
-						all+="<span class='cc_style'>"+arr[i]+",</span>";
+				if(ccstyle_val.trim()!=""){
+					var arr=ccstyle_val.split(',');
+					var all="";
+					for(var i=0;i<arr.length;i++){
+						if(i==0){
+							all+=arr[i]+",";
+						}else if(i==arr.length-1){
+							all+="<span class='cc_style'>"+arr[i]+"</span>";
+						}else{
+							all+="<span class='cc_style'>"+arr[i]+",</span>";
+						}
 					}
+					document.getElementById('ccstyle').innerHTML=all;
 				}
-				document.getElementById('ccstyle').innerHTML=all;
 			}
 		}
 	</script>
 	<script type='text/javascript' src="<%=request.getContextPath()%>/js/vault_js.js"></script> 
 	<script type='text/javascript' src="<%=request.getContextPath()%>/js/timezone.js"></script>
 	<script type='text/javascript' src="<%=request.getContextPath()%>/js/browserdetector.js"></script>
+	<script type="text/javascript">
+		function setWidth(){
+			var wid=Math.ceil(document.body.clientWidth*91/100);
+			var comment=document.getElementById('addcomment_div');
+			comment.setAttribute("style","width:"+wid+"px");
+		}
+		window.onresize=function(){
+			setWidth();	
+		}
+	</script>
 </head>
-<body id='eso-body' onload="rmloading();BrowserDetection.init();addStyle();">
+<body id='eso-body' onload="rmloading();BrowserDetection.init();addStyle();setWidth();">
 <div class="eso-inner">
 <a href="<%=request.getContextPath()%>/jsp/warn.jsp" class="warn-index" style="display: none" id="warning">Your browser is not supported</a>
 <%@ include file="header.jsp" %>
