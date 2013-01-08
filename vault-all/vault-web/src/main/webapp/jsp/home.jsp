@@ -24,7 +24,7 @@
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ptTimeSelect.js" ></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/dropdown.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/modal.js"></script>
-	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/datatable.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/vault.js"></script>
 	
 	<script>
