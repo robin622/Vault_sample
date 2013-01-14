@@ -695,7 +695,7 @@ function viewRequest(requestId,url) {
                    document.getElementById("reply"+i).style.display="block";
     		         $.each(replyList, function(j, n){
     		           if(n.baseid == -1){
-    		             $("#reply"+i).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+",-1,"+j+")'>Reply</span><div class='w900'>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
+    		             $("#reply"+i).append("<li id='lireply"+n.replyid+"'><strong class='ncolor'>"+n.editedby+"</strong><span class='time'>"+n.editedtime+"</span><span class='blu' title='reply' onclick='javascript:showTextArea("+i+","+n.replyid+","+j+")'>Reply</span><div class='w900'>"+opstatus(n.status)+n.replycomment+"</div><div id ='input"+i+"_"+j+"' class='comment_input'></div>");
     		             $("#lireply"+n.replyid).append("<ul id='ulreply"+n.replyid+"' style='display:none'></ul>");
     		           }else{
     		             document.getElementById("ulreply"+n.baseid).style.display="block";
