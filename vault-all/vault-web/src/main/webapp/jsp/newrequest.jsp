@@ -39,7 +39,8 @@
     <tr>
       <td ><span>Sign off by:</span><span class="red">*</span></td>
       <td id="signofftd">
-      	<span title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to 'Waiting' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</span></br>
+      	<span class="flow-left clear" title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to 'Waiting' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</span>
+      	<div class="flow-left clear">     	
       	<select id="notifyoption0" data-placeholder=""  class="chzn-select creat-request-select creat-request-select-sign-off" tabindex="6">
         <option value="1">Reset and require new sign off</option>
         <option value="2" selected= "selected">Send email notification</option>
@@ -49,7 +50,8 @@
       <span class="delate-table" onclick="javascript:request.req_delOwner('input_owner_0',0)"></span>
       Tips: can type multiple emails.
       </br>
-      <input type="button" id="sign_addchild_btn" class ="btn off-margin span-top btn-narrow" onclick="javascript:request.req_addOwner()" value="Add More">
+      </div>
+      <input type="button" id="sign_addchild_btn" class ="btn off-margin span-top btn-narrow flow-left clear" onclick="javascript:request.req_addOwner()" value="Add More">
       </td>
     </tr>
     <tr>
@@ -70,8 +72,8 @@
     <tr>
     <td ><span>Child:</span></td>
     <td id="childtd">
-    <input type="text" class="input-xlarge" id="input_child_0"><span class="delate-table" onclick="javascript:request.req_delChild('input_child_0')"></span></br>
-    <input type="button" id="addchild_btn" class ="btn off-margin span-top btn-narrow" onclick="javascript:request.req_addChild()" value="Add More">
+    <div class="flow-left clear"><input type="text" class="input-xlarge" id="input_child_0"><span class="delate-table" onclick="javascript:request.req_delChild('input_child_0')"></span></div>
+    <input type="button" id="addchild_btn" class ="btn off-margin span-top btn-narrow flow-left clear" onclick="javascript:request.req_addChild()" value="Add More">
     </td>
    
     </tr>

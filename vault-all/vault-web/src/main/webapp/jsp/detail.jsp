@@ -611,7 +611,7 @@ function viewRequest(requestId,url) {
            function showTextArea(i,baseid,j){
              jQuery(function($){
                if(document.getElementById("input"+i+"_"+j).innerHTML == ""){
-                 $("#input"+i+"_"+j).append("<textarea name='replyComment"+i+"_"+j+"' id='replyComment"+i+"_"+j+"'></textarea></br><input id='comment_btn ' class='btn clear span-top span-bottom' type='button' value='Submit' onclick='javascript:addReply(&quot;"+i+"_"+j+"&quot;,"+baseid+")'>");
+                 $("#input"+i+"_"+j).append("<textarea name='replyComment"+i+"_"+j+"' id='replyComment"+i+"_"+j+"'></textarea><br><input id='comment_btn ' class='btn clear span-top span-bottom' type='button' value='Submit' onclick='javascript:addReply(&quot;"+i+"_"+j+"&quot;,"+baseid+")'>");
                }else{
                  $("#input"+i+"_"+j).html("");
                }

@@ -113,7 +113,7 @@ window.request = {
 
 			$("#signofftd").html('<input type="button" id="sign_addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addOwner()" value="Add More">');
 			request.req_addOwner(2,"",true);
-			$("#childtd").html('<input type="button" id="addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addChild()" value="Add More">');
+			$("#childtd").html('<div class="flow-left clear"><input type="button" id="addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addChild()" value="Add More"></div>');
 			request.req_addChild();
 
 			document.getElementById("requesttime").value = "";
@@ -172,11 +172,11 @@ window.request = {
 			link = '<a title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to \'Waiting\' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</a>';
 			tip = 'Tips: can type multiple emails.';
 		}
-		$(link + '<select id="notifyoption' + newownercount + '" data-placeholder=""  class="chzn-select creat-request-select creat-request-select-sign-off" style="margin-top:4px;margin-right:4px;" tabindex="6"> '
+		$(link + '<div class="flow-left clear"><select id="notifyoption' + newownercount + '" data-placeholder=""  class="chzn-select creat-request-select creat-request-select-sign-off" style="margin-top:4px;margin-right:4px;" tabindex="6"> '
 				  +  optionStr
 			      +  '</select>'
 			      +  '<input type="text" class="input-xlarge add-width creat-request-select-sign-off" style="margin-top:4px;margin-right:4px;" id="input_owner_' + newownercount + '" value="' + defaultValue + '">'
-			      +  '<span id="input_owner_' + newownercount + '_del" class="delate-table" onclick=javascript:request.req_delOwner("input_owner_' + newownercount + '",' + newownercount + ')></span>' + tip + '</br>').insertBefore($('#sign_addchild_btn'));
+			      +  '<span id="input_owner_' + newownercount + '_del" class="delate-table" onclick=javascript:request.req_delOwner("input_owner_' + newownercount + '",' + newownercount + ')></span></div>' + tip + '</br>').insertBefore($('#sign_addchild_btn'));
 		if(selectedIndex){
 			$("#notifyoption"+newownercount+" option[value=" + selectedIndex + "]").attr("selected",true);
 		}
@@ -245,7 +245,7 @@ window.request = {
     		var childcount = $("#maxchildcount").val();
             var newchildcount = parseInt(childcount)+parseInt(1);
            
-            $('<input type="text" class="input-xlarge" style="margin-top:4px;" id="input_child_' + newchildcount + '"><span id="input_child_' + newchildcount + '_del" class="delate-table" onclick=javascript:request.req_delChild("input_child_' + newchildcount + '")></span></br>').insertBefore($("#addchild_btn"));
+            $('<div class="flow-left clear"><input type="text" class="input-xlarge" style="margin-top:4px;" id="input_child_' + newchildcount + '"><span id="input_child_' + newchildcount + '_del" class="delate-table" onclick=javascript:request.req_delChild("input_child_' + newchildcount + '")></span></div>').insertBefore($("#addchild_btn"));
             $("#input_child_"+newchildcount).focus();
             $("#maxchildcount").val(newchildcount);
 

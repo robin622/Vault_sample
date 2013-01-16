@@ -42,19 +42,19 @@ table.blod{border-bottom:1px dotted #CCC;}
 .number{ color:#F4999F;}
 tr.past-due td{ background: #FFB8B8!important;}
 tr.become-due td{ background: #FFE6B8!important;}
-.flow-left{ float:left;}
+.flow-left{ float:left!important;}
 .search-ad{ margin:10px 50px;}
 .input-xlarge{width:273px;}
 .comment div:last-child{ border-bottom:none;}
 .comment_line{ padding-bottom:10px;   color: #999;}
 .comment_list{ padding:10px; padding-bottom:10px; padding-left:20px; border-bottom: 1px solid #b9b9b9; margin-bottom:10px; }
-.Signed{background:url("../images/ico_signed.png") no-repeat scroll 0 10px transparent;}
+.Signed{background:url("../images/ico_signed.png") no-repeat scroll 0 10px ;}
 .edite{background:url("../images/btn-edit-1.png") no-repeat scroll left center; float:right; padding-left:20px; margin-right:20px;}
 .add{background:url("../images/add-child.png") no-repeat scroll left center; float:right; padding-left:20px; margin-right:20px;}
 .report{background:url("../images/btn-report.png") no-repeat scroll left center; float:right; padding-left:20px; margin-right:20px;}
 .Comments{background:url("../images/ico_comment.png") no-repeat scroll 0 10px transparent;}
 .Comment{background:url("../images/ico_comment.png") no-repeat scroll left center transparent; padding-left:20px;}
-.Rejected{background:url("../images/reject.png") no-repeat scroll left center transparent;padding-left:20px;}
+.Rejected{background:url("../images/reject.png") no-repeat scroll 0 10px transparent;}
 .SignedOnBehalf{background:url("../images/behalf.png") no-repeat scroll 0 10px transparent;}
 .comment_list ul li{border-bottom:1px dotted #CCC;margin-bottom:5px; padding-bottom:5px;}
 .comment_list ul li:last-child{border-bottom:0px dotted #CCC;padding-top:5px;}
@@ -131,6 +131,7 @@ select, input[type="file"]{height:24px;}
 .w50{width:50px;}
 .fix-table{table-layout:fixed;}
 .w900{}
+.no-underline a:hover{text-decoration:none;}
 /*word wrap============================*/
 .wordwrap{word-wrap:break-word; word-break:break-all;overflow:auto;}
 .dpyblock{display:inline-block!important;}
