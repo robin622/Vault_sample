@@ -1071,7 +1071,6 @@ public class VaultSendMail {
 		sb.append("Or contact us at ");
 		sb.append(email);
 		addLine(sb);
-
 	}
 
 	public void addPlainNewQuestions(StringBuffer sb) {
@@ -1083,7 +1082,7 @@ public class VaultSendMail {
 		addLine(sb);
 		sb.append("To learn more about the Vault sign-off process, visit:");
 		addLine(sb);
-		sb.append("https://riddler.bne.redhat.com/User_Guides/Vault/Book_Sign_Off_Process/tmp/en-US/html-single/index.html");
+		sb.append("https://dart.qe.lab.eng.bne.redhat.com/User_Guides/Vault/tmp/en-US/html-single/index.html");
 		addLine(sb);
 		sb.append("Or contact us at ");
 		sb.append(email);
