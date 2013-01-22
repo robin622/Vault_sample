@@ -123,7 +123,6 @@
 				toreplace('sumreport${status.index}');
 			</script>
 		</c:forEach>
-		
 		<div class="clear"></div>
 	</div>
 </body>
