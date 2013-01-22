@@ -106,7 +106,7 @@
 						test="${request.rejectedList!=null && request.rejectedList!=''}">
 						<c:forTokens items="${request.rejectedList}" delims="," var="reject">
 							<tr>
-								<td><span class="Rejected">Reject</span></td>
+								<td><span class="Rejectedm">Reject</span></td>
 								<td>
 									<a href="#">${fn:substringBefore(reject, '|')}</a>
 								</td>
