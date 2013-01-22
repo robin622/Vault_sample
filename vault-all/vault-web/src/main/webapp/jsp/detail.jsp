@@ -281,7 +281,7 @@ function viewRequest(requestId,url) {
 	        							}
 	    								
 	    								if(maps != null && maps != ""){
-	    									$("#signofftd").html('<input type="button" id="sign_addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addOwner()" value="Add More">');
+	    									$("#signofftd").html('<input type="button" id="sign_addchild_btn" class ="btn off-margin span-top flow-left clear" onclick="javascript:request.req_addOwner()" value="Add More">');
 	    									//var count = -1;
 	    									var index=0;
 	    									var edit_option1Str = "";
@@ -428,7 +428,7 @@ function viewRequest(requestId,url) {
 				<div class="tablefooter">
 					<div class="tablefooterleft">
 						<input type="hidden" name="judgeSignOff" id="judgeSignOff"
-							value="0" /><input type="button" value="Comment" class="btn btn-primary btn-wide" onclick="javascript:addComment()"> <input type="button" value="Sign Off" class="btn btn-wide"
+							value="0" /><input id="details_comment" type="button" value="Comment" class="btn btn-primary btn-wide" onclick="javascript:addComment()"> <input type="button" value="Sign Off" class="btn btn-wide"
 							id="sign_btn" onclick="javascript:commitSignOff('1','')" />
 						<!-- <input type="button" value="Sign Off On Behalf Of"  class="btn"  id="sign_onbehalf_btn" onclick="javascript:commitSignOff('2')"/>  -->
 						<input type="button" value="Sign Off On Behalf Of" class="btn btn-wide"
@@ -464,6 +464,10 @@ function viewRequest(requestId,url) {
 <script type="text/javascript">
  	email="vault-dev-list@redhat.com";
            function behalf_click(obj){
+            //disable other buttons on the bottom
+            document.getElementById("sign_btn").disabled=true;
+            document.getElementById("reject_btn").disabled=true;
+            document.getElementById("details_comment").disabled=true;
         	document.getElementById("sign_onbehalf_btn").style.display="none";
            	//obj.hide();
            	//$("table#onbehalf_table").attr("style","display");
@@ -491,6 +495,9 @@ function viewRequest(requestId,url) {
 
            }
            function click_onbehalf_confirm(){
+        	    document.getElementById("sign_btn").disabled=false;
+                document.getElementById("reject_btn").disabled=false;
+                document.getElementById("details_comment").disabled=false;
 	           	var all_behalf_users = document.getElementsByName("behalfEmails");
 	            var selected_behalf_users = "";
 	            for (i=0; i<all_behalf_users.length; i++){
@@ -510,7 +517,10 @@ function viewRequest(requestId,url) {
            }
            function click_onbehalf_cancel(){
 	           	document.getElementById("sign_onbehalf_btn").style.display = "";
-	           	document.getElementById("onbehalf_table").style.display = "none";               
+	           	document.getElementById("onbehalf_table").style.display = "none";
+	           	document.getElementById("sign_btn").disabled=false;
+	            document.getElementById("reject_btn").disabled=false;
+	            document.getElementById("details_comment").disabled=false;
            }
 
            function refresh_tables(url,requestid){
@@ -760,12 +770,12 @@ function viewRequest(requestId,url) {
         				});
         			}
         			var timeTemp = $("#requesttime_value").html().Trim();
-        			timeTemp = timeTemp.substring(0,timeTemp.indexOf("<"));
-        			//document.getElementById("requesttime").value = timeTemp.split(" ")[0];
-        			document.getElementById("requesttime").value = timeTemp.substring(0,10);
+        			//timeTemp = timeTemp.substring(0,timeTemp.indexOf("<"));
+        			document.getElementById("requesttime").value = timeTemp.split(" ")[0];
+        			//document.getElementById("requesttime").value = timeTemp.substring(0,10);
         			//change to AM or PM
-            		//var allhour=timeTemp.split(" ")[1];
-            		var allhour=$.trim(timeTemp.substr(10));
+            		var allhour=timeTemp.split(" ")[1];
+            		//var allhour=$.trim(timeTemp.substr(10));
             		var firsthour=allhour.split(":")[0];
             		var secondhour=allhour.split(":")[1];
             		if(parseInt(firsthour)>12){
@@ -797,7 +807,7 @@ function viewRequest(requestId,url) {
         				$("#is_public").removeAttr("checked");
         			} 
         			$("#create_btn").attr("value", "Change");
-
+        			$("#create_btn").attr("onClick", "javascript:request.req_commit(1)");
         			setUserAndRequest();
         			$("#cc_div").html("");
         			if(globalRequests != null && globalRequests != ""){
@@ -815,7 +825,7 @@ function viewRequest(requestId,url) {
         			}								
         			
         			//child list
-        			$("#childtd").html('<input type="button" id="addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addChild()" value="Add More">');
+        			$("#childtd").html('<input type="button" id="addchild_btn" class ="btn off-margin span-top flow-left clear" onclick="javascript:request.req_addChild()" value="Add More">');
         			$("#maxchildcount").val(0);
         			if(globalRequests != null && globalRequests != ""){
         				var child_str = globalRequests[0].children;
@@ -827,7 +837,7 @@ function viewRequest(requestId,url) {
         					}
         					$("#maxchildcount").val(child_array.length - 1);
         				}else{
-							$('<input type="text" class="input-xlarge" id="input_child_0"><span class="delate-table"></span></br>').insertBefore($("#addchild_btn"));
+							$('<input type="text" class="input-xlarge" id="input_child_0"><span class="delate-table"></span><br>').insertBefore($("#addchild_btn"));
         					$("#input_child_0").autocomplete(request.selectRequest,{ mustMatch:true,matchContains:1} );    										
         				}
         			} 

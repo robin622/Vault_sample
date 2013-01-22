@@ -111,9 +111,9 @@ window.request = {
 			request.req_initProduct();
 			request.req_initVersion();
 
-			$("#signofftd").html('<input type="button" id="sign_addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addOwner()" value="Add More">');
+			$("#signofftd").html('<input type="button" id="sign_addchild_btn" class ="btn off-margin span-top flow-left clear" onclick="javascript:request.req_addOwner()" value="Add More">');
 			request.req_addOwner(2,"",true);
-			$("#childtd").html('<div class="flow-left clear"><input type="button" id="addchild_btn" class ="btn off-margin span-top" onclick="javascript:request.req_addChild()" value="Add More"></div>');
+			$("#childtd").html('<div class="flow-left clear"><input type="button" id="addchild_btn" class ="btn off-margin span-top flow-left clear" onclick="javascript:request.req_addChild()" value="Add More"></div>');
 			request.req_addChild();
 
 			document.getElementById("requesttime").value = "";
@@ -176,7 +176,7 @@ window.request = {
 				  +  optionStr
 			      +  '</select>'
 			      +  '<input type="text" class="input-xlarge add-width creat-request-select-sign-off" style="margin-top:4px;margin-right:4px;" id="input_owner_' + newownercount + '" value="' + defaultValue + '">'
-			      +  '<span id="input_owner_' + newownercount + '_del" class="delate-table" onclick=javascript:request.req_delOwner("input_owner_' + newownercount + '",' + newownercount + ')></span></div>' + tip + '</br>').insertBefore($('#sign_addchild_btn'));
+			      +  '<span id="input_owner_' + newownercount + '_del" class="delate-table" onclick=javascript:request.req_delOwner("input_owner_' + newownercount + '",' + newownercount + ')></span>' + tip + '</br></div>').insertBefore($('#sign_addchild_btn'));
 		if(selectedIndex){
 			$("#notifyoption"+newownercount+" option[value=" + selectedIndex + "]").attr("selected",true);
 		}
@@ -545,7 +545,7 @@ window.request = {
 		}
 	},
 	
-	req_checkRequest : function(){
+	req_checkRequest : function(flag){
 		var requestname = $("#requestname").val();
 		var requesttime = $("#requesttime").val();
 		var requestdatetime = $("#requestdatetime").val();
@@ -566,10 +566,12 @@ window.request = {
         
         if(typeof requesttime != "undefined"){
         	if(requesttime != "" && requestdatetime!="") {
-        		 if(!this.req_ckDate(requesttime.Trim(),requestdatetime.Trim())){
-                 	alert("Due Date must be greater than now!");
-                 	return false;
-                 }
+        		 if(flag==0){
+	        		 if(!this.req_ckDate(requesttime.Trim(),requestdatetime.Trim())){
+	                 	alert("Due Date must be greater than now!");
+	                 	return false;
+	                 }
+        		 }
             }
         }
         if(detail == "") {
@@ -594,7 +596,7 @@ window.request = {
 		return true;
 	},
 	
-	req_commit : function(){
+	req_commit : function(flag){
 		var requestname = $("#requestname").val();
 		var childstr = "";
 		if(this.req_checkParentAndChild()) {
@@ -604,7 +606,7 @@ window.request = {
 
 		}else return;
         if(childstr == ""){
-        	if(this.req_checkRequest()){
+        	if(this.req_checkRequest(flag)){
         		var form = document.newrequest_form;
     	        form.submit();		        
     	    }

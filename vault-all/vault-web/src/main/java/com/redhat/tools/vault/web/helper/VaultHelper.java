@@ -74,7 +74,7 @@ public class VaultHelper {
 			}
 		}
 		if(null==userName||"".equals(userName)){
-			userName="admin";
+			userName="wezhao";
 		}
 		return userName;
 	}

@@ -51,6 +51,11 @@
 						HH:mm")}</td>
 				</tr>
 				<tr>
+					<td>Creator:</td>
+					<td colspan="3">${reportRequest.createdby}</td>
+					<script type='text/javascript'>addStyle();</script>
+				</tr>
+				<tr>
 					<td><span>CC:</span></td>
 					<td colspan="3">${reportRequest.forward}</td>
 				</tr>

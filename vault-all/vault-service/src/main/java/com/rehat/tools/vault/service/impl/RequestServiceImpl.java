@@ -287,7 +287,15 @@ public class RequestServiceImpl implements RequestService{
 	private List<String> getNoneSigned(Long requestId) {
 		List<String> result = new ArrayList<String>();
 		Request request = new RequestDAO().find(requestId);
-		String[] ownerArr = request.getOwner().split(",");
+		String[] ownerArr_pre = request.getOwner().split(",");
+		List<String> ownerArr = new ArrayList<String>(); 
+		String requester=new StringBuilder(request.getCreatedby()).append("@redhat.com").toString();
+		//filter out the requester
+		for(int i=0;i<ownerArr_pre.length;i++){
+		    if(!ownerArr_pre[i].equals(requester)){
+		        ownerArr.add(ownerArr_pre[i]);
+		    }
+		}
 		RequestHistory rh = new RequestHistory();
 		rh.setRequestid(request.getRequestid());
 		rh.setIsHistory(false);

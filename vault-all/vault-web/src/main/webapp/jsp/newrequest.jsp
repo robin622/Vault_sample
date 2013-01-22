@@ -105,7 +105,7 @@
     </tr>
     
     <tr>
-    <td colspan="2" ><input id="create_btn" type="button" class="btn btn-primary quary btn-wide" value="Create" onclick="javascript:request.req_commit()"></td>
+    <td colspan="2" ><input id="create_btn" type="button" class="btn btn-primary quary btn-wide" value="Create" onclick="javascript:request.req_commit(0)"></td>
    
     </tr>
 
