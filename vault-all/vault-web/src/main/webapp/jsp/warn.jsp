@@ -16,7 +16,7 @@
   <div class="content error-content">
 	<div class="warn h250">
     <h3>Your browser is not supported.</h3>
-    <p> Vault supports <a href="http://www.mozilla.org/en-US/firefox/fx/#desktop">Firefox</a> 3.6, <a href="http://support.apple.com/downloads/#safari">Safari</a> 4.0, <a href="https://www.google.com/intl/en/chrome/browser/?hl=en&brand=CHMI">Chrome</a> 17 and later versions. </p>
+    <p> Vault supports <a href="http://www.mozilla.org/en-US/firefox/fx/#desktop">Firefox</a> 3.6, <a href="https://www.google.com/intl/en/chrome/browser/?hl=en&brand=CHMI">Chrome</a> 17 and later versions. </p>
     <p>Please upgrade your browser. Thanks! </p>
     </div>
   </div>
