@@ -1,7 +1,7 @@
 <table class="eso-table" id="searchrequest" style="display:none">
 	  <thead>
 	    <tr>
-      		<th>Search Request<a href="#" class="float-right"><button class="btn" onclick="javascript:request.req_sumReport('search')">Summary Report</button></a></th>
+      		<th class="no-underline">Search Request<a href="#" class="float-right "><button class="btn" onclick="javascript:request.req_sumReport('search')">Summary Report</button></a></th>
         </tr>
       </thead>
 	  <tbody>

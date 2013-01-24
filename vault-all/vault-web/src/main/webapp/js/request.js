@@ -563,7 +563,9 @@ window.request = {
         	alert('Please enter signoff user.');
         	return false;
         }
-        
+        if(requestdatetime==""){
+        	requestdatetime="00:00 AM";
+        }
         if(typeof requesttime != "undefined"){
         	if(requesttime != "" && requestdatetime!="") {
         		 if(flag==0){
