@@ -40,13 +40,13 @@
       <td ><span>Sign off by:</span><span class="red">*</span></td>
       <td id="signofftd">
       	<span class="flow-left clear" title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to 'Waiting' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</span>
-      	<div class="flow-left clear">     	
+      	<div class="flow-left clear w100p">     	
       	<select id="notifyoption0" data-placeholder=""  class="chzn-select creat-request-select creat-request-select-sign-off" tabindex="6">
         <option value="1">Reset and require new sign off</option>
         <option value="2" selected= "selected">Send email notification</option>
         <option value="3">Do not notify</option>
       </select>
-      <input type="text" class="input-xlarge add-width" id="input_owner_0" value="">
+      <input type="text" class="input-xlarge add-width w50p" id="input_owner_0" value="">
       <span class="delate-table" onclick="javascript:request.req_delOwner('input_owner_0',0)"></span>
       Tips: can type multiple emails.
       </br>
@@ -56,7 +56,7 @@
     </tr>
     <tr>
       <td ><span>CC:</span></td>
-      <td ><input type="text" class="input-xlarge sign add-width" id="input_cc"></td>
+      <td ><input type="text" class="input-xlarge sign add-width w50p" id="input_cc"></td>
       
     </tr>
     <tr>

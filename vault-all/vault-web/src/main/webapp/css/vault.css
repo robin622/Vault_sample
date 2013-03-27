@@ -130,7 +130,8 @@ select, input[type="file"]{height:24px;}
 .w110{width:110px;}
 .w50{width:50px;}
 .fix-table{table-layout:fixed;}
-.w900{}
+.w100p{width:100%!important;}
+.w50p{width:50%!important;}
 .no-underline a:hover{text-decoration:none;}
 /*word wrap============================*/
 .wordwrap{word-wrap:break-word; word-break:break-all;overflow:auto;}
@@ -151,6 +152,6 @@ form{margin:0px;}
 div.dataTables_length select{margin-left:4px;}
 .modal-footer{text-align:left;}
 .modal{width:450px; margin:-250px 0 0 -200px;}
-textarea{width:500px;}
+textarea{width:700px!important;height:150px;min-height:100px;}
 .cc_style{margin-left:10px;}
 .time-zone{height: 30px; line-height: 30px; margin-right: 20px; font-weight:bold;}
