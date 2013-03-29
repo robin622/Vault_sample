@@ -58,6 +58,17 @@ window.request = {
 				url,
 				{operation:"upload"}
 				,function(data){
+				//add some code here
+				if(data=="1"){
+					alert("Please ensure you upload correct file types, Vault supports file types including image, openoffice, pdf, text, plain-text, package(gz,tgz,bz2,z,rar,zip,tar).");
+					data="";
+				}else if(data=="2"){
+					alert("The upload files names should only contain letters, numbers, underline, dot and Horizontal line.");
+					data="";
+				}else if(data=="12"){
+					alert("File types is not supported by Vault and File name contains invalid character.");
+					data="";
+				}	
 				$("#Attachment_div_request").html(data);
 			});
 		});

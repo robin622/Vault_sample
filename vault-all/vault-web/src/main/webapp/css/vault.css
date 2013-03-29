@@ -120,7 +120,7 @@ select, input[type="file"]{height:24px;}
 .iconmean span{float:right;font-weight:normal;}
 #eso-topbar .eso-logo{margin-top:11px;}
 .nowrep{white-space: nowrap;}
-.addwidth{width:500px;}
+.addwidth{width:50%;}
 .spanright{margin-right:5px;}
 .productwidth{width:150px;}
 .w400{width:400px;}
@@ -139,7 +139,7 @@ select, input[type="file"]{height:24px;}
 
 #hack, x:-moz-any-link, x:default {
 
-} 
+} addwidth
 
 /* form-area ========================================*/
 form{margin:0px;}

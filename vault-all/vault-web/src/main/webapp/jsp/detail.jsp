@@ -413,8 +413,8 @@ function viewRequest(requestId,url) {
 			</td>
 		</tr>
 		<tr>
-			<td class="new_bg_white" id="comment_td" ><textarea
-					name="comment" id="comment"></textarea></td>
+			<td class="new_bg_white" id="comment_td"><textarea
+					name="comment" id="comment" rows="5"></textarea></td>
 		</tr>
 		<!-- <tr>
 			<td class="sing-off-bt"><a href="#"> <input type="hidden"
