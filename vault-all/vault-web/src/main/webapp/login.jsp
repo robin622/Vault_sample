@@ -25,7 +25,7 @@
 		</div>
 		<div class="content" style="border-radius: 0px 0px 6px 6px;">
 			<section id="tables" style="margin: 0px 15px 50px;">
-			<div class="row-fluid">
+			<div class="row-fluid mgt0">
 				<div id="content">
 					<div style="display: table;">
 						<div style="width: 320px; display: table-cell; padding: 0 10px;">

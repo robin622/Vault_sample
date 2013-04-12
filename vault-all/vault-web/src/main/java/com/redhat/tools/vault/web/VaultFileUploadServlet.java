@@ -42,6 +42,7 @@ public class VaultFileUploadServlet extends HttpServlet {
         StringBuffer sb = new StringBuffer();
         boolean TypeError = false;
         boolean NameError = false;
+        boolean SameName = false;
         try {
             String maxsizeStr = MGProperties.getInstance().getValue(MGProperties.KEY_MAXUPLOAD_SIZE);
             int maxsize = 102400;
@@ -147,6 +148,15 @@ public class VaultFileUploadServlet extends HttpServlet {
                             String sFilename = item.getName();
                             if (!"".equals(sFilename) && isAllowedType) {
                                 String fileName = (new File(sFilename)).getName();
+                                // to compare file name
+                                File[] files = this.listFiles(createPath(req));
+                                if (files != null) {
+                                    for (File file : files) {
+                                        if (file.getName().equals(fileName)) {
+                                            SameName = true;
+                                        }
+                                    }
+                                }
                                 item.write(new File(writePath + "/" + fileName));
                             }
                         } else {
@@ -161,14 +171,17 @@ public class VaultFileUploadServlet extends HttpServlet {
                     sb.append(Attachment.createFileInfo(file, req.getContextPath()));
                 }
             }
-            if (sb.toString().trim().length() == 0) {
-                if (TypeError) {
-                    sb.append("1");
-                }
-                if (NameError) {
-                    sb.append("2");
-                }
+            // if (sb.toString().trim().length() == 0) {
+            if (TypeError) {
+                sb.append("1");
             }
+            if (NameError) {
+                sb.append("2");
+            }
+            if (SameName) {
+                sb.append("0");
+            }
+            // }
             res.getWriter().write(sb.toString());
         } catch (FileUploadException e) {
             res.getWriter().write(e.getMessage());

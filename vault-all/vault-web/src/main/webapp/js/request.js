@@ -68,7 +68,24 @@ window.request = {
 				}else if(data=="12"){
 					alert("File types is not supported by Vault and File name contains invalid character.");
 					data="";
-				}	
+				}else{
+					if(data.charAt(data.length-1)=="0"){
+						alert('Please do not upload a duplicated file');
+						data=data.substring(0,data.length-2);
+					}
+					else if(data.charAt(data.length-1)=="1"){
+						alert("Please ensure you upload correct file types, Vault supports file types including image, openoffice, pdf, text, plain-text, package(gz,tgz,bz2,z,rar,zip,tar).");
+						data=data.substring(0,data.length-2);
+					}else if(data.charAt(data.length-1)=="2"){
+						if(data.charAt(data.length-2)=="1"){
+							alert("File types is not supported by Vault and File name contains invalid character.");
+							data=data.substring(0,data.length-3);
+						}else{
+							alert("The upload files names should only contain letters, numbers, underline, dot and Horizontal line.");
+							data=data.substring(0,data.length-2);
+						}
+					}
+				}
 				$("#Attachment_div_request").html(data);
 			});
 		});
@@ -183,17 +200,17 @@ window.request = {
 			link = '<a title="1. Reset and require new sign off: Any change to the Vault request will reset the sign off state to \'Waiting\' and require a new sign off. 2. Send email notification: Any change to the Vault request generates an email to the signatory. The sign off state is not changed. 3. Do not notify: Changes to the Vault request produce no notifications." href="javascript:avoid(0);">For any change,</a>';
 			tip = 'Tips: can type multiple emails.';
 		}
-		$(link + '<div class="flow-left clear"><select id="notifyoption' + newownercount + '" data-placeholder=""  class="chzn-select creat-request-select creat-request-select-sign-off" style="margin-top:4px;margin-right:4px;" tabindex="6"> '
+		$(link + '<div class="flow-left clear w100p"><select id="notifyoption' + newownercount + '" data-placeholder=""  class="chzn-select creat-request-select creat-request-select-sign-off" style="margin-top:4px;margin-right:4px;" tabindex="6"> '
 				  +  optionStr
 			      +  '</select>'
-			      +  '<input type="text" class="input-xlarge add-width creat-request-select-sign-off" style="margin-top:4px;margin-right:4px;" id="input_owner_' + newownercount + '" value="' + defaultValue + '">'
+			      +  '<input type="text" class="input-xlarge add-width creat-request-select-sign-off w50p" style="margin-top:4px;margin-right:4px;width:50%;" id="input_owner_' + newownercount + '" value="' + defaultValue + '">'
 			      +  '<span id="input_owner_' + newownercount + '_del" class="delate-table" onclick=javascript:request.req_delOwner("input_owner_' + newownercount + '",' + newownercount + ')></span>' + tip + '</br></div>').insertBefore($('#sign_addchild_btn'));
 		if(selectedIndex){
 			$("#notifyoption"+newownercount+" option[value=" + selectedIndex + "]").attr("selected",true);
 		}
 
 		$("#input_owner_"+newownercount).focus();
-		$("#maxownercount").val(newownercount);
+		$("#maxownercount").val(newownercount);	
 		if(!firstOption){
 			$("#ownercount").val(parseInt(ownercount1) + parseInt(1));
 		}
@@ -296,11 +313,11 @@ window.request = {
 	//parent request and child request cannot be same
 	req_checkParentAndChild : function(){
 		var intchildcount = parseInt($("#maxchildcount").val());
-		var parent = $("#input_parent").val();
+		var parent = $.trim($("#input_parent").val());
 		var childstr = "";
 		if(parent!="") {
 	        for(var i=0;i<=intchildcount;i++){
-				var child = $("#input_child_"+i).val();
+				var child = $.trim($("#input_child_"+i).val());
 				if(typeof child  != "undefined"){
 					if(child != ""){
 						if(request.req_compare(parent,child)) {
@@ -312,11 +329,11 @@ window.request = {
 	        }
 		}
 		for(var i=0;i<=intchildcount;i++) {
-			var child1 = $("#input_child_"+i).val();
+			var child1 = $.trim($("#input_child_"+i).val());
 			if(typeof child1  != "undefined"){
 				if(child1 != ""){
 					for(var j=i+1;j<=intchildcount;j++) {
-						var child2 = $("#input_child_"+j).val();
+						var child2 = $.trim($("#input_child_"+j).val());
 						if(typeof child2  != "undefined"){
 							if(child2 != ""){
 								if(request.req_compare(child1,child2)) {
