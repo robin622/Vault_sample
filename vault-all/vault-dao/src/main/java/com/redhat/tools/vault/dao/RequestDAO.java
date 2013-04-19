@@ -1602,7 +1602,7 @@ public class RequestDAO {
             // cc to me
             queryString = "select count(*) " + QUERY_CCTOMEREQ;
             queryObject = sess.createQuery(queryString);
-            queryObject.setString(0, "%," + userEmail + "%");
+            queryObject.setString(0, "%" + userEmail + "%");
             queryObject.setString(1, userEmail + "%");
             temp = queryObject.list();
             if (temp != null && temp.size() > 0) {

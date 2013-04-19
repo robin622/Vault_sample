@@ -106,7 +106,7 @@
 												<c:if test="${not empty replys.get(temp.historyid)}">
 													<c:set value="${replys.get(temp.historyid)}"
 														var="replyList"></c:set>
-												</c:if>
+													</c:if>
 												<c:if test="${not empty replyList}">
 													<ul id="reply${reportstatus.index}_${temptatus.index}"></ul>
 													<c:forEach items="${replyList}" var="replycomment">
@@ -138,7 +138,7 @@
 																							.append(
 																									"<ul id='ulreply${replycomment.replyid}' style='display:none'></ul>");
 																					</c:if>
-																					toreplace3("lireply${replycomment.replyid}");
+																					//toreplace3("lireply${replycomment.replyid}");
 																				});
 																			});
 														</script>
@@ -146,6 +146,16 @@
 												</c:if>
 											</div>
 										</c:if>
+										<script type="text/javascript">
+											$(document)
+											.ready(
+												function() {
+												jQuery(function(
+														$) {
+												toreplace3("reply${reportstatus.index}_${temptatus.index}");
+												});
+											});
+										</script>
 									</c:forEach>
 								</c:if></td>
 						</tr>

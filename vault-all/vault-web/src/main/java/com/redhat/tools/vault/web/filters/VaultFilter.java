@@ -16,9 +16,9 @@ import com.redhat.tools.vault.bean.MGProperties;
 import com.redhat.tools.vault.web.helper.VaultHelper;
 
 @WebFilter(urlPatterns = { "/Addcomment", "/AddReply", "/Checkrequest", "/deleteRequest", "/editVersion", "/FindRequest",
-        "/HomeServlet", "/ListNoneSign", "/listRequest", "/ReportServlet", "/RequestHistory", "/SavequeryServlet",
-        "/Saverequest", "/ShowAllEmails", "/ShowReplyComment", "/showRequest", "/SignedOrRject", "/download",
-        "/VaultFileUpload", "/vaultSumReport" })
+        "/ListNoneSign", "/showRequest", "/listRequest", "/ReportServlet", "/RequestHistory", "/SavequeryServlet",
+        "/Saverequest", "/ShowAllEmails", "/ShowReplyComment", "/SignedOrRject", "/download", "/VaultFileUpload",
+        "/vaultSumReport" })
 public class VaultFilter implements Filter {
 
     public void init(FilterConfig config) throws ServletException {
@@ -27,14 +27,16 @@ public class VaultFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
-
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse rsp = (HttpServletResponse) response;
         String userName = (String) req.getSession().getAttribute("userName");
         if (userName == null) {
             String user = VaultHelper.getUserNameFromRequest(req);
             if ("".equals(user)) {
-                rsp.sendRedirect("login.jsp");
+                req.getSession().setAttribute("ref",
+                        req.getRequestURI() + (req.getQueryString() == null ? "" : "?" + req.getQueryString()));
+                rsp.sendRedirect("/");
+                // req.getRequestDispatcher("login.jsp").forward(req, rsp);
                 return;
             }
             String userEmail = VaultHelper.getEmailFromName(user);

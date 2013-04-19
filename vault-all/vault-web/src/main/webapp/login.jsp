@@ -20,7 +20,7 @@
 		<%@ include file="jsp/header.jsp"%>
 		<div class="navbar">
 			<ul class="nav">
-				<li class="active"><a href="${pageContext.request.contextPath}/HomeServlet">Home</a></li>
+				<li class="active"><a href="${pageContext.request.contextPath}/">Home</a></li>
 			</ul>
 		</div>
 		<div class="content" style="border-radius: 0px 0px 6px 6px;">

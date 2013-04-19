@@ -20,7 +20,7 @@
 		<%@ include file="jsp/header.jsp"%>
 		<div class="navbar">
 			<ul class="nav">
-				<li class="active"><a href="${pageContext.request.contextPath}/HomeServlet">Home</a></li>
+				<li class="active"><a href="${pageContext.request.contextPath}/HomeServlet">Login</a></li>
 			</ul>
 		</div>
 		<div class="content">
