@@ -47,16 +47,18 @@ public class HomeServlet extends HttpServlet {
                 return;
             }
         }
+        String userName = VaultHelper.getUserNameFromRequest(request);
+        String userEmail = VaultHelper.getEmailFromName(userName);
+        request.getSession().setAttribute("userName", userName);
+        request.getSession().setAttribute("userEmail", userEmail);
+
         String ref = (String) request.getSession().getAttribute("ref");
         if (null != ref && ref.contains("showRequest")) {
             request.getRequestDispatcher(ref).forward(request, response);
             request.getSession().removeAttribute("ref");
             return;
         }
-        String userName = VaultHelper.getUserNameFromRequest(request);
-        String userEmail = VaultHelper.getEmailFromName(userName);
-        request.getSession().setAttribute("userName", userName);
-        request.getSession().setAttribute("userEmail", userEmail);
+
         List<Request> myRequests = service.getMyRequest(userName);
         boolean judgeDetailValue = false;
         request.setAttribute("myRequests", myRequests);
