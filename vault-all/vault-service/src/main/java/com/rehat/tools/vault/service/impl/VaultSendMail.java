@@ -27,6 +27,7 @@ import com.redhat.tools.vault.util.DateUtil;
 import com.redhat.tools.vault.util.StringUtil;
 
 public class VaultSendMail {
+    private static final String MANUAL_LINK = "https://engineering.redhat.com/docs/en-US/Application_Guide/90.User/html/Vault/";
     @Inject
     private RequestDAO requestDAO;
     @Inject
@@ -965,7 +966,7 @@ public class VaultSendMail {
         addLine(sb);
         sb.append("To learn more about using Vault, visit:");
         addLine(sb);
-        sb.append("https://dart.qe.lab.eng.bne.redhat.com/User_Guides/Vault/tmp/en-US/html-single/index.html");
+        sb.append(MANUAL_LINK);
         addLine(sb);
         sb.append("Or contact us at ");
         sb.append(email);
@@ -981,7 +982,7 @@ public class VaultSendMail {
         addLine(sb);
         sb.append("To learn more about the Vault sign-off process, visit:");
         addLine(sb);
-        sb.append("https://dart.qe.lab.eng.bne.redhat.com/User_Guides/Vault/tmp/en-US/html-single/index.html");
+        sb.append(MANUAL_LINK);
         addLine(sb);
         sb.append("Or contact us at ");
         sb.append(email);
