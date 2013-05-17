@@ -187,6 +187,29 @@
 				currentMenu = "navNew";
 				
 			}
+			else if("${operationstatus}" != "" && "${operationstatus}" == "staticsrequest"){
+				$("table#canviewrequest").hide();
+				$("table#myrequest").hide();
+				$("table#allrequest").hide();
+				$("table#searchrequest").hide();
+				$("table#signedrequest").hide();
+				$("table#cctomerequest").hide();
+				$("table#detail_name_table").hide();
+				$("table#detail_tbl").hide();
+				$("table#waitrequest").hide();
+				$("div#query-area").hide();
+				$("div#advance_query").hide();
+				$("fieldset#advance_set").hide();
+				$("table#onbehalf_table").hide();
+				$("table#newrequest_tbl").hide();
+				$("div#statics").attr("style","display");
+				
+				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=StaticsRequest >Statics</a>");
+				$("#" + currentMenu).removeClass("active");
+				$("#navStatics").addClass("active");
+				currentMenu = "navStatics";
+				
+			}
 			else {
 				$("table#canviewrequest").hide();
 				$("table#cctomerequest").hide();
@@ -278,6 +301,7 @@
     <li id="navSign" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed <span class="number">( ${reqCounts.signed} )</span></a></li>
     <li id="navCC" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me<span class="number"> ( ${reqCounts.cc} )</span></a></li>
     <li id="navView" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CanViewRequest>I Can View <span class="number">( ${reqCounts.canview} )</span></a></li>
+    <li id="navStatics" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=StaticsRequest>Statics </a></li>
   </ul>
 </div>
 <div class="content">
@@ -298,6 +322,7 @@
 	<%@ include file="cctomerequest.jsp" %>
 	<%@ include file="myrequest.jsp" %>
 	<%@ include file="newrequest.jsp" %>
+	<%@ include file="statics.jsp" %>
 </div>
 <%@ include file="footer.jsp" %>
 </div>

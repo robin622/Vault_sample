@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 import com.redhat.tools.vault.bean.Request;
 import com.redhat.tools.vault.service.RequestService;
 
@@ -21,10 +19,11 @@ import com.redhat.tools.vault.service.RequestService;
  */
 @WebServlet("/listRequest")
 public class ListRequestServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-    
-	@Inject 
+    private static final long serialVersionUID = 1L;
+
+    @Inject
     private RequestService reqService;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -32,70 +31,71 @@ public class ListRequestServlet extends HttpServlet {
         super();
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
-	}
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doPost(request, response);
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    String userName=(String) request.getSession().getAttribute("userName");
-        String userEmail=(String) request.getSession().getAttribute("userEmail");
-        
-        String operation=request.getParameter("operation");
-        operation=operation==null?"":operation;
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String userName = (String) request.getSession().getAttribute("userName");
+        String userEmail = (String) request.getSession().getAttribute("userEmail");
+
+        String operation = request.getParameter("operation");
+        operation = operation == null ? "" : operation;
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Cache-Control", "no-chche");
-        if("CanViewRequest".equalsIgnoreCase(operation)){
+        if ("CanViewRequest".equalsIgnoreCase(operation)) {
             List<Request> canViewRequests = reqService.getCanViewRequests(userName, userEmail);
             request.setAttribute("canViewRequests", canViewRequests);
             request.setAttribute("operationstatus", "CanView");
-        }else if("WaitRequest".equalsIgnoreCase(operation)){
+        } else if ("WaitRequest".equalsIgnoreCase(operation)) {
             List<Request> waitRequests = reqService.getWaitRequests(userName, userEmail);
             request.setAttribute("waitRequests", waitRequests);
             request.setAttribute("operationstatus", "wait");
-        }else if("SignedRequest".equalsIgnoreCase(operation)){
+        } else if ("SignedRequest".equalsIgnoreCase(operation)) {
             List<Request> signedOffRequests = reqService.getSignedOffRequests(userName, userEmail);
             request.setAttribute("signedOffRequests", signedOffRequests);
             request.setAttribute("operationstatus", "signed");
-        }else if("CCToMeRequest".equalsIgnoreCase(operation)){
+        } else if ("CCToMeRequest".equalsIgnoreCase(operation)) {
             List<Request> ccToMeRequests = reqService.getCCToMeRequests(userName, userEmail);
             request.setAttribute("ccToMeRequests", ccToMeRequests);
             request.setAttribute("operationstatus", "cctome");
-        }else if("MyRequest".equalsIgnoreCase(operation)){
+        } else if ("MyRequest".equalsIgnoreCase(operation)) {
             List<Request> myRequests = reqService.getMyRequest(userName);
             request.setAttribute("myRequests", myRequests);
             request.setAttribute("operationstatus", "myrequest");
-        }else if("NewRequest".equalsIgnoreCase(operation)){
+        } else if ("NewRequest".equalsIgnoreCase(operation)) {
             request.setAttribute("operationstatus", "newrequest");
-        }else if("Search".equalsIgnoreCase(operation)){
-            String          requestName       =   (String) request.getParameter("requestName");
-            String          type            =   (String) request.getParameter("type");
-            String          creator         =   (String) request.getParameter("creator");
-            String          versionid       =   (String) request.getParameter("versionid");
-            String          productid       =   (String) request.getParameter("productid");
-            String          status          =   (String) request.getParameter("status");
-            String          owneremail      =   (String) request.getParameter("owneremail");
-            /*if(requestName != null){
-            	requestName = StringEscapeUtils.escapeHtml(requestName);
-            }
-            if(creator != null){
-            	creator = StringEscapeUtils.escapeHtml(creator);
-            }
-            if(owneremail != null){
-            	owneremail = StringEscapeUtils.escapeHtml(owneremail);
-            }*/
-            List<Request> requests = reqService.advanceSearch(requestName, creator, versionid, productid, status, owneremail, userName, userEmail);
+        } else if ("StaticsRequest".equalsIgnoreCase(operation)) {
+            request.setAttribute("operationstatus", "staticsrequest");
+        } else if ("Search".equalsIgnoreCase(operation)) {
+            String requestName = request.getParameter("requestName");
+            String type = request.getParameter("type");
+            String creator = request.getParameter("creator");
+            String versionid = request.getParameter("versionid");
+            String productid = request.getParameter("productid");
+            String status = request.getParameter("status");
+            String owneremail = request.getParameter("owneremail");
+            /*
+             * if(requestName != null){ requestName = StringEscapeUtils.escapeHtml(requestName); } if(creator != null){ creator
+             * = StringEscapeUtils.escapeHtml(creator); } if(owneremail != null){ owneremail =
+             * StringEscapeUtils.escapeHtml(owneremail); }
+             */
+            List<Request> requests = reqService.advanceSearch(requestName, creator, versionid, productid, status, owneremail,
+                    userName, userEmail);
             request.setAttribute("searchRequests", requests);
             request.setAttribute("is_search", "is_search");
         }
-        Map<String,Long> counts = reqService.getRequestCount(userName, userEmail);
+        Map<String, Long> counts = reqService.getRequestCount(userName, userEmail);
         request.setAttribute("reqCounts", counts);
         request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
-	}
+    }
 
 }
