@@ -27,6 +27,10 @@
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/datatable.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/vault.js"></script>
 	
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/exporting.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/highcharts.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/tab.js"></script>
+	
 	<script>
 		var loc;
 		var loc_timezoneOffset=new Date();
@@ -50,6 +54,7 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#onbehalf_table").hide();
+				$("table#statics").hide();
 				$("table#searchrequest").attr("style","display");
 			}
 			else 
@@ -66,6 +71,7 @@
 				$("div#advance_query").hide();
 				$("fieldset#advance_set").hide();
 				$("table#onbehalf_table").hide();
+				$("table#statics").hide();
 				$("table#detail_name_table").attr("style","display");
                 $("table#reception_tbl").attr("style","display");
 				$("table#detail_comment").attr("style","display");
@@ -84,6 +90,7 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#onbehalf_table").hide();
+				$("table#statics").hide();
 				$("table#waitrequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval</a>");
@@ -102,6 +109,7 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
+				$("table#statics").hide();
 				$("table#signedrequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed </a>");
@@ -120,6 +128,7 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
+				$("table#statics").hide();
 				$("table#canviewrequest").attr("style","display");
 				
 
@@ -139,6 +148,7 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
+				$("table#statics").hide();
 				$("table#cctomerequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me </a>");
@@ -157,6 +167,7 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
+				$("table#statics").hide();
 				$("table#myrequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests </a>");
@@ -179,6 +190,8 @@
 				$("div#advance_query").hide();
 				$("fieldset#advance_set").hide();
 				$("table#onbehalf_table").hide();
+
+				$("table#statics").hide();
 				$("table#newrequest_tbl").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a>");
@@ -202,7 +215,7 @@
 				$("fieldset#advance_set").hide();
 				$("table#onbehalf_table").hide();
 				$("table#newrequest_tbl").hide();
-				$("div#statics").attr("style","display");
+				$("table#statics").attr("style","display");
 				
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=StaticsRequest >Statics</a>");
 				$("#" + currentMenu).removeClass("active");
@@ -220,6 +233,7 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#onbehalf_table").hide();
+				$("table#statics").hide();
 				$("table#myrequest").attr("style","display");
 				$("table#waitrequest").attr("style","display");
 			}

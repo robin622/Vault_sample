@@ -1,6 +1,7 @@
 package com.redhat.tools.vault.service;
 
 import java.util.List;
+
 import java.util.Map;
 
 import net.sf.json.JSONObject;
@@ -71,5 +72,8 @@ public interface RequestService {
     public String compare(Request current,Request request);
     
     public void withdrawRequest(Request current, String requestid, String requestVersion, String userName, String userEmail);
+    
+    //zym,test
+	public JSONObject staicsCount();
 
 }

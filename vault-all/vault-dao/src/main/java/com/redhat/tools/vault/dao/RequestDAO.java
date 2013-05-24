@@ -1,14 +1,18 @@
 package com.redhat.tools.vault.dao;
 
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -1627,4 +1631,478 @@ public class RequestDAO {
         return counts;
     }
 
+ 
+  //zym,test
+    @SuppressWarnings("unchecked")
+    public Map<String, Long> countByCreatedTimeDay() {
+    	Map<String, Long> countsDay= new TreeMap<String, Long>();
+    	int n=5;
+    	Calendar cl = Calendar.getInstance();
+    	Date date[]=new Date[n];
+    	SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
+    	String day[]=new String[n];
+    	Session sess=null;
+    	String queryString[]=new String[n];
+    	Query query[]=new Query[n];
+        long sum[]=new long[n];
+    	
+		try {
+			sess = dao.getSession();
+		} catch (Exception e) {
+			log.error("Create session failed", e);
+		}
+    	
+    	for(int i=0;i<n;i++)
+    	{
+    		cl = Calendar.getInstance();
+    		cl.add(Calendar.DATE, -i);
+    		date[i]=cl.getTime();
+    		day[i] = dd.format(date[i]);
+    		queryString[i] = "select count(*) from Request as a where a.createdtime like'%"+day[i]+"%'";
+    	    query[i] = sess.createQuery(queryString[i]);
+    	    List<Long> temp = query[i].list();
+    	    sum[i]=0;
+            if (temp != null && temp.size() > 0) {
+            	sum[i]=temp.get(0);
+            	countsDay.put(day[i], sum[i]);
+               
+            } else {
+               sum[i]=0l;
+               countsDay.put(day[i], sum[i]);
+            }
+           
+    	}
+
+    	 return countsDay;
+
+    }
+    
+    public Map<String, Long> countByCreatedTimeWeek() {
+    	Map<String, Long> countsWeek= new TreeMap<String, Long>();
+    	Calendar cl = Calendar.getInstance();
+    	int n=5;
+    	Date date[]=new Date[n+1];
+    	SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
+    	String day[]=new String[n+1];
+    	String week[]=new String[n];
+    	Session sess=null;
+    	String queryString[]=new String[n];
+    	Query query[]=new Query[n];
+        long sum[]=new long[n];
+        
+    	
+		try {
+			sess = dao.getSession();
+		} catch (Exception e) {
+			log.error("Create session failed", e);
+		}
+    	date[0]=cl.getTime();
+    	day[0] = dd.format(date[0]);
+    	for(int i=1;i<=n;i++)
+    	{
+    		cl = Calendar.getInstance();
+    		int daySub=(i-1)*7+cl.get(Calendar.DAY_OF_WEEK);
+    		cl.add(Calendar.DATE, -daySub);
+    		
+    		date[i]=cl.getTime();
+    		day[i] = dd.format(date[i]);
+    		week[i-1]="week"+cl.get(Calendar.WEEK_OF_YEAR);
+    		queryString[i-1] = "select count(*) from Request as a where a.createdtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" a.createdtime like '%"+day[i]+"%' or a.createdtime like '%"+day[i-1]+"%'";
+    	    query[i-1] = sess.createQuery(queryString[i-1]);
+    	    List<Long> temp = query[i-1].list();
+    	    sum[i-1]=0;
+            if (temp != null && temp.size() > 0) {
+            	sum[i-1]=temp.get(0);
+            	countsWeek.put(week[i-1], sum[i-1]);
+               
+            } else {
+               sum[i-1]=0l;
+               countsWeek.put(week[i-1], sum[i-1]);
+            }
+           
+    	}
+
+    	 return countsWeek;
+
+    }
+    
+    
+    public Map<String, Long> countByCreatedTimeMonth() {
+    	Map<String, Long> countsMonth= new TreeMap<String, Long>();
+    	int n=5;
+    	Calendar cl = Calendar.getInstance();
+    	Date date[]=new Date[n];
+    	SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM");
+    	String month[]=new String[n];
+    	Session sess=null;
+    	String queryString[]=new String[n];
+    	Query query[]=new Query[n];
+        long sum[]=new long[n];
+        
+    	
+		try {
+			sess = dao.getSession();
+		} catch (Exception e) {
+			log.error("Create session failed", e);
+		}
+
+    	for(int i=0;i<n;i++)
+    	{
+    		cl = Calendar.getInstance();
+    		cl.add(Calendar.MONTH, -i);
+    		
+    		date[i]=cl.getTime();
+    		month[i] = dd.format(date[i]);
+    		queryString[i] = "select count(*) from Request as a where a.createdtime like '%"+month[i]+"%'";
+    	    query[i] = sess.createQuery(queryString[i]);
+    	    List<Long> temp = query[i].list();
+    	    sum[i]=0;
+            if (temp != null && temp.size() > 0) {
+            	sum[i]=temp.get(0);
+            	countsMonth.put(month[i], sum[i]);
+               
+            } else {
+               sum[i]=0l;
+               countsMonth.put(month[i], sum[i]);
+            }
+           
+    	}
+
+    	 return countsMonth;
+
+    }
+    
+    //zym,test
+    @SuppressWarnings("unchecked")
+    public Map<String, BigInteger> countActiveUserNumberDay() {
+    	Map<String, BigInteger> countsDay= new TreeMap<String, BigInteger>();
+    	int n=5;
+    	Calendar cl = Calendar.getInstance();
+    	Date date[]=new Date[n];
+    	SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
+    	String day[]=new String[n];
+    	Session sess=null;
+    	String queryString[]=new String[n];
+    	Query query[]=new Query[n];
+    	BigInteger[] sum=new BigInteger[n];
+    	
+		try {
+			sess = dao.getSession();
+		} catch (Exception e) {
+			log.error("Create session failed", e);
+		}
+    	
+    	for(int i=0;i<n;i++)
+    	{
+    		cl = Calendar.getInstance();
+    		cl.add(Calendar.DATE, -i);
+    		date[i]=cl.getTime();
+    		day[i] = dd.format(date[i]);
+    		queryString[i] = "select count(*) from (select a.createdby from VA_request as a where a.createdtime like '%"+day[i]+"%' union" +
+    				" select a.createdby from VA_request as a where a.requesttime like '%"+day[i]+"%' union select a.signedby from VA_request " +
+    						"as a where a.signedtime like '%"+day[i]+"%' union select a.editedby from VA_request as a where a.editedtime like " +
+    								"'%"+day[i]+"%' union select b.username from VA_user as b where b.createdtime like '%"+day[i]+"%' union " +
+    										"select c.editedby from VA_reply_comment as c where c.editedtime like '%"+day[i]+"%' union " +
+    												"select d.createdby from VA_savequery as d where d.createdtime like '%"+day[i]+"%') as user";
+    	    query[i] = sess.createSQLQuery(queryString[i]);
+    	    List<BigInteger> temp = query[i].list();
+    	    sum[i]=new BigInteger("0");
+            if (temp != null && temp.size() > 0) {
+            	sum[i]=temp.get(0);
+            	countsDay.put(day[i], sum[i]);
+               
+            } else {
+               sum[i]=new BigInteger("0");
+               countsDay.put(day[i], sum[i]);
+            }
+           
+    	}
+
+    	 return countsDay;
+
+    }
+    
+    public Map<String,BigInteger> countActiveUserNumberWeek() {
+    	Map<String, BigInteger> countsWeek= new TreeMap<String, BigInteger>();
+    	Calendar cl = Calendar.getInstance();
+    	int n=5;
+    	Date date[]=new Date[n+1];
+    	SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
+    	String day[]=new String[n+1];
+    	String week[]=new String[n];
+    	Session sess=null;
+    	String queryString[]=new String[n];
+    	Query query[]=new Query[n];
+    	BigInteger sum[]=new BigInteger[n];
+        
+    	
+		try {
+			sess = dao.getSession();
+		} catch (Exception e) {
+			log.error("Create session failed", e);
+		}
+    	date[0]=cl.getTime();
+    	day[0] = dd.format(date[0]);
+    	for(int i=1;i<=n;i++)
+    	{
+    		cl = Calendar.getInstance();
+    		int daySub=(i-1)*7+cl.get(Calendar.DAY_OF_WEEK);
+    		cl.add(Calendar.DATE, -daySub);
+    		
+    		date[i]=cl.getTime();
+    		day[i] = dd.format(date[i]);
+    		week[i-1]="week"+cl.get(Calendar.WEEK_OF_YEAR);
+    		queryString[i-1] = "select count(*) from (select a.createdby from VA_request as a where a.createdtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" a.createdtime like '%"+day[i]+"%' or a.createdtime like '%"+day[i-1]+"%' union select a.signedby from VA_request as a where a.signedtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" a.signedtime like '%"+day[i]+"%' or a.signedtime like '%"+day[i-1]+"%' union select a.editedby from VA_request as a where a.editedtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" a.editedtime like '%"+day[i]+"%' or a.editedtime like '%"+day[i-1]+"%' union select b.username from VA_user as b where b.createdtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" b.createdtime like '%"+day[i]+"%' or b.createdtime like '%"+day[i-1]+"%' union select c.editedby from VA_reply_comment as c where c.editedtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" c.editedtime like '%"+day[i]+"%' or c.editedtime like '%"+day[i-1]+"%' union select d.createdby from VA_savequery as d where d.createdtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" d.createdtime like '%"+day[i]+"%' or d.createdtime like '%"+day[i-1]+"%') as user";
+    	    query[i-1] = sess.createSQLQuery(queryString[i-1]);
+    	    List<BigInteger> temp = query[i-1].list();
+    	    sum[i-1]=new BigInteger("0");
+            if (temp != null && temp.size() > 0) {
+            	sum[i-1]=temp.get(0);
+            	countsWeek.put(week[i-1], sum[i-1]);
+               
+            } else {
+               sum[i-1]=new BigInteger("0");;
+               countsWeek.put(week[i-1], sum[i-1]);
+            }
+           
+    	}
+
+    	 return countsWeek;
+
+    }
+ 
+    
+    public Map<String, BigInteger> countActiveUserNumberMonth() {
+    	Map<String, BigInteger> countsMonth= new TreeMap<String,BigInteger>();
+    	int n=5;
+    	Calendar cl = Calendar.getInstance();
+    	Date date[]=new Date[n];
+    	SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM");
+    	String month[]=new String[n];
+    	Session sess=null;
+    	String queryString[]=new String[n];
+    	Query query[]=new Query[n];
+    	BigInteger sum[]=new BigInteger[n];
+        
+    	
+		try {
+			sess = dao.getSession();
+		} catch (Exception e) {
+			log.error("Create session failed", e);
+		}
+
+    	for(int i=0;i<n;i++)
+    	{
+    		cl = Calendar.getInstance();
+    		cl.add(Calendar.MONTH, -i);
+    		
+    		date[i]=cl.getTime();
+    		month[i] = dd.format(date[i]);
+    		queryString[i] = "select count(*) from (select a.createdby from VA_request as a where a.createdtime like '%"+month[i]+"%' union" +
+    				" select a.createdby from VA_request as a where a.requesttime like '%"+month[i]+"%' union select a.signedby from VA_request " +
+					"as a where a.signedtime like '%"+month[i]+"%' union select a.editedby from VA_request as a where a.editedtime like " +
+							"'%"+month[i]+"%' union select b.username from VA_user as b where b.createdtime like '%"+month[i]+"%' union " +
+									"select c.editedby from VA_reply_comment as c where c.editedtime like '%"+month[i]+"%' union " +
+											"select d.createdby from VA_savequery as d where d.createdtime like '%"+month[i]+"%') as user";
+    	    query[i] = sess.createSQLQuery(queryString[i]);
+    	    List<BigInteger> temp = query[i].list();
+    	    sum[i]=new BigInteger("0");
+            if (temp != null && temp.size() > 0) {
+            	sum[i]=temp.get(0);
+            	countsMonth.put(month[i], sum[i]);
+               
+            } else {
+               sum[i]=new BigInteger("0");
+               countsMonth.put(month[i], sum[i]);
+            }
+           
+    	}
+
+    	 return countsMonth;
+
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Map<String, String> countActiveUserDay() {
+
+    	Map<String, String> countsDay= new TreeMap<String,String>();
+    	int n=5;
+    	Calendar cl = Calendar.getInstance();
+    	Date date[]=new Date[n];
+    	SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
+    	String day[]=new String[n];
+    	Session sess=null;
+    	String queryString[]=new String[n];
+    	Query query[]=new Query[n];
+    	String userday[]=new String[n];
+    	//BigInteger[] sum=new BigInteger[n];
+    	//Set<String> userSet=new HashSet<String>();
+    	
+    	
+		try {
+			sess = dao.getSession();
+		} catch (Exception e) {
+			log.error("Create session failed", e);
+		}
+    	
+    	for(int i=0;i<n;i++)
+    	{
+    		cl = Calendar.getInstance();
+    		cl.add(Calendar.DATE, -i);
+    		date[i]=cl.getTime();
+    		day[i] = dd.format(date[i]);
+    		queryString[i] = "select a.createdby from VA_request as a where a.createdtime like '%"+day[i]+"%' union" +
+    				" select a.createdby from VA_request as a where a.requesttime like '%"+day[i]+"%' union select a.signedby from VA_request " +
+    						"as a where a.signedtime like '%"+day[i]+"%' union select a.editedby from VA_request as a where a.editedtime like " +
+    								"'%"+day[i]+"%' union select b.username from VA_user as b where b.createdtime like '%"+day[i]+"%' union " +
+    										"select c.editedby from VA_reply_comment as c where c.editedtime like '%"+day[i]+"%' union " +
+    												"select d.createdby from VA_savequery as d where d.createdtime like '%"+day[i]+"%'";
+    	    query[i] = sess.createSQLQuery(queryString[i]);
+    	    List<String> temp = query[i].list();
+    	    
+    	    userday[i]="";
+    	    for(int j=0;j<temp.size();j++)
+    	    {
+    	    	userday[i]=userday[i]+temp.get(j)+"  \n";
+    	    	//System.out.println(temp.get(j));
+    	    }
+    	    //sum[i]=new BigInteger("0");
+            if (temp != null && temp.size() > 0) {
+            	//sum[i]=temp.get(0);
+            	countsDay.put(day[i], userday[i]);
+               
+            } else {
+               //sum[i]=new BigInteger("0");
+               countsDay.put(day[i], "nobody");
+            }
+           
+    	}
+
+    	 return countsDay;
+
+    }
+   
+    
+    public Map<String,String> countActiveUserWeek() {
+    	Map<String, String> countsWeek= new TreeMap<String, String>();
+    	Calendar cl = Calendar.getInstance();
+    	int n=5;
+    	Date date[]=new Date[n+1];
+    	SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
+    	String day[]=new String[n+1];
+    	String week[]=new String[n];
+    	Session sess=null;
+    	String queryString[]=new String[n];
+    	Query query[]=new Query[n];
+    	//BigInteger sum[]=new BigInteger[n];
+    	String userweek[]=new String[n];
+        
+    	
+		try {
+			sess = dao.getSession();
+		} catch (Exception e) {
+			log.error("Create session failed", e);
+		}
+    	date[0]=cl.getTime();
+    	day[0] = dd.format(date[0]);
+    	for(int i=1;i<=n;i++)
+    	{
+    		cl = Calendar.getInstance();
+    		int daySub=(i-1)*7+cl.get(Calendar.DAY_OF_WEEK);
+    		cl.add(Calendar.DATE, -daySub);
+    		
+    		date[i]=cl.getTime();
+    		day[i] = dd.format(date[i]);
+    		week[i-1]="week"+cl.get(Calendar.WEEK_OF_YEAR);
+    		queryString[i-1] = "select a.createdby from VA_request as a where a.createdtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" a.createdtime like '%"+day[i]+"%' or a.createdtime like '%"+day[i-1]+"%' union select a.signedby from VA_request as a where a.signedtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" a.signedtime like '%"+day[i]+"%' or a.signedtime like '%"+day[i-1]+"%' union select a.editedby from VA_request as a where a.editedtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" a.editedtime like '%"+day[i]+"%' or a.editedtime like '%"+day[i-1]+"%' union select b.username from VA_user as b where b.createdtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" b.createdtime like '%"+day[i]+"%' or b.createdtime like '%"+day[i-1]+"%' union select c.editedby from VA_reply_comment as c where c.editedtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" c.editedtime like '%"+day[i]+"%' or c.editedtime like '%"+day[i-1]+"%' union select d.createdby from VA_savequery as d where d.createdtime between '"+day[i]+"' and '"+day[i-1]+"' or" +
+    				" d.createdtime like '%"+day[i]+"%' or d.createdtime like '%"+day[i-1]+"%'";
+    	    query[i-1] = sess.createSQLQuery(queryString[i-1]);
+    	    List<String> temp = query[i-1].list();
+    	    userweek[i-1]="";
+    	    for(int j=0;j<temp.size();j++)
+    	    {
+    	    	//System.out.println(userweek[i-1]);
+    	    	userweek[i-1]=userweek[i-1]+temp.get(j)+"  \n";
+    	    	//System.out.println(temp.get(j));
+    	    	//System.out.println(userweek[i-1]);
+    	    }
+    	    //sum[i]=new BigInteger("0");
+            if (temp != null && temp.size() > 0) {
+            	//sum[i]=temp.get(0);
+            	countsWeek.put(week[i-1], userweek[i-1]);
+               
+            } else {
+               //sum[i]=new BigInteger("0");
+               countsWeek.put(week[i-1], "nobody");
+            }
+           
+    	}
+
+    	 return countsWeek;
+
+    }
+    
+    public Map<String, String> countActiveUserMonth() {
+    	Map<String, String> countsMonth= new TreeMap<String,String>();
+    	int n=5;
+    	Calendar cl = Calendar.getInstance();
+    	Date date[]=new Date[n];
+    	SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM");
+    	String month[]=new String[n];
+    	Session sess=null;
+    	String queryString[]=new String[n];
+    	Query query[]=new Query[n];
+    	//BigInteger sum[]=new BigInteger[n];
+        String usermonth[]=new String[n];
+    	
+		try {
+			sess = dao.getSession();
+		} catch (Exception e) {
+			log.error("Create session failed", e);
+		}
+
+    	for(int i=0;i<n;i++)
+    	{
+    		cl = Calendar.getInstance();
+    		cl.add(Calendar.MONTH, -i);
+    		
+    		date[i]=cl.getTime();
+    		month[i] = dd.format(date[i]);
+    		queryString[i] = "select a.createdby from VA_request as a where a.createdtime like '%"+month[i]+"%' union" +
+    				" select a.createdby from VA_request as a where a.requesttime like '%"+month[i]+"%' union select a.signedby from VA_request " +
+					"as a where a.signedtime like '%"+month[i]+"%' union select a.editedby from VA_request as a where a.editedtime like " +
+							"'%"+month[i]+"%' union select b.username from VA_user as b where b.createdtime like '%"+month[i]+"%' union " +
+									"select c.editedby from VA_reply_comment as c where c.editedtime like '%"+month[i]+"%' union " +
+											"select d.createdby from VA_savequery as d where d.createdtime like '%"+month[i]+"%'";
+    	    query[i] = sess.createSQLQuery(queryString[i]);
+    	    List<String> temp = query[i].list();
+    	    usermonth[i]="";
+    	    for(int j=0;j<temp.size();j++)
+    	    {
+    	    	usermonth[i]=usermonth[i]+temp.get(j)+"  \n";
+    	    }
+            if (temp != null && temp.size() > 0) {
+            	countsMonth.put(month[i], usermonth[i]);
+               
+            } else {
+               //sum[i]=new BigInteger("0");
+               countsMonth.put(month[i], "nobody");
+            }
+           
+    	}
+    	 return countsMonth;
+    }
+ 
 }
