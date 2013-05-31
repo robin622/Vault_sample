@@ -20,63 +20,61 @@ import com.redhat.tools.vault.web.helper.MGProperties;
 import com.rehat.tools.vault.service.impl.VaultSendMail;
 
 public class VaultTimerTask extends TimerTask {
-	/** The logger. */
-	protected static final Logger log = Logger.getLogger(VaultTimerTask.class);
+    /** The logger. */
+    protected static final Logger log = Logger.getLogger(VaultTimerTask.class);
 
-	MGProperties prop;
-	
-	@Inject
-	SendemailCount mailcount;
-	
-	List<SendemailCount> countlist = null;
-	
-	@Inject
-	SendemailCountDAO countDAO = null;
-	
-	@Inject
-	Request request = null;
-	
-	@Inject
-	RequestDAO requestDAO = null;
-	
-	@Inject
-	VaultSendMail mailer=null;
+    MGProperties prop;
 
-	List<Request> requests = null;
+    @Inject
+    SendemailCount mailcount;
 
-	DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    List<SendemailCount> countlist = null;
 
-	public VaultTimerTask() {
-		log.info("init");
-		prop = MGProperties.getInstance();
-		//mailcount = new SendemailCount();
-		countlist = new ArrayList<SendemailCount>();
-		//countDAO = new SendemailCountDAO();
-		//requestDAO = new RequestDAO();
-		requests = new ArrayList<Request>();
-	}
+    @Inject
+    SendemailCountDAO countDAO = null;
 
-	/** Timer Task main **/
-	public void run() {
-		log.info("start");
-		try {
-			log.debug(request);
-			request.setStatus(request.ACTIVE);
-			request.setRequesttime(DateUtil.dateOnly((new Date(new Date()
-					.getTime() + 24 * 60 * 60 * 1000))));
-			requests = requestDAO.get(request);
-			log.info(requests);
-			if (requests != null && requests.size() > 0) {
-				for (Request req : requests) {
-					mailer.sendEmail(null, req, null, null, "showrequest", "dueDate",
-							"");
-				}
-			}
+    @Inject
+    Request request = null;
 
-		}
-		catch (Exception e) {
-			log.error(e.getMessage());
-		}
-		log.debug("success");
-	}
+    @Inject
+    RequestDAO requestDAO = null;
+
+    @Inject
+    VaultSendMail mailer = null;
+
+    List<Request> requests = null;
+
+    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+    public VaultTimerTask() {
+        log.info("init");
+        prop = MGProperties.getInstance();
+        // mailcount = new SendemailCount();
+        countlist = new ArrayList<SendemailCount>();
+        // countDAO = new SendemailCountDAO();
+        // requestDAO = new RequestDAO();
+        requests = new ArrayList<Request>();
+    }
+
+    /** Timer Task main **/
+    @Override
+    public void run() {
+        log.info("start");
+        try {
+            log.debug(request);
+            request.setStatus(request.ACTIVE);
+            request.setRequesttime(DateUtil.dateOnly((new Date(new Date().getTime() + 24 * 60 * 60 * 1000))));
+            requests = requestDAO.get(request);
+            log.info(requests);
+            if (requests != null && requests.size() > 0) {
+                for (Request req : requests) {
+                    mailer.sendEmail(null, req, null, null, "showrequest", "dueDate", "");
+                }
+            }
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        log.debug("success");
+    }
 }
