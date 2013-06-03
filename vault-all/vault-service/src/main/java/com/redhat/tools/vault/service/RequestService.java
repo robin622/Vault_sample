@@ -72,8 +72,7 @@ public interface RequestService {
     public String compare(Request current,Request request);
     
     public void withdrawRequest(Request current, String requestid, String requestVersion, String userName, String userEmail);
-    
-    //zym,test
-	public JSONObject staicsCount();
+    //
+	public JSONObject staicsCount(String type);
 
 }

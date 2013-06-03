@@ -15,12 +15,12 @@ import org.jboss.logging.Logger;
 
 import com.redhat.tools.vault.service.RequestService;
 
-@WebServlet("/CountRequest")
+@WebServlet("/StaticsServlet")
 public class StaticsServlet extends HttpServlet{
 
 	   private static final long serialVersionUID = 1L;
 		
-			private static Logger log = Logger.getLogger(CheckRequestServlet.class);
+			private static Logger log = Logger.getLogger(StaticsServlet.class);
 		    @Inject
 		    private RequestService service; 
 		    
@@ -43,8 +43,15 @@ public class StaticsServlet extends HttpServlet{
 			protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 				response.setContentType("application/json;charset=UTF-8");
 				response.setHeader("Cache-Control", "no-chche");
-				JSONObject joReturn=service.staicsCount();
+				String[] types={"day","week","month"};
+				JSONObject joReturn=new JSONObject();
+				for(int i=0;i<types.length;i++)
+				{
+				joReturn.put(types[i], service.staicsCount(types[i]));	
+				}
 				response.getWriter().print(joReturn);
+				
+				
 			
 			}
 }

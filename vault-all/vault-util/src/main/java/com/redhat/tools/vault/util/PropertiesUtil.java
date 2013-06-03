@@ -1,7 +1,11 @@
 package com.redhat.tools.vault.util;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 import org.jboss.logging.Logger;
@@ -15,7 +19,8 @@ public class PropertiesUtil {
     public static Properties readProperties(String filename) {
         Properties properties = new Properties();
         try {
-            properties.load(PropertiesUtil.class.getResourceAsStream(filename));
+        	InputStream inputStream=new FileInputStream(new File(filename));
+            properties.load(inputStream);
         } catch (FileNotFoundException e) {
             logger.error("file " + filename + " can not be found!");
             return null;

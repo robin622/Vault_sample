@@ -19,7 +19,7 @@ public class PropertiesUtilTest {
 
     @Test
     public void readProperties() {
-        Properties p = PropertiesUtil.readProperties("roles.properties");
+        Properties p = PropertiesUtil.readProperties("/home/zym/Downloads/jboss-eap-6.0/standalone/deployments/vault-web.war/WEB-INF/classes/roles.properties");
         String role = (String) p.get("wezhao");
         Assert.assertEquals("Admin", role);
     }

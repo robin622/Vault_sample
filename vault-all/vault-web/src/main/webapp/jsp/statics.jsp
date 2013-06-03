@@ -11,20 +11,20 @@
 <span class="green-font ">New requests and Active users Trend by Day/Week/Month</span>
 <div class="line5"></div>
 				<div id="tab">
-					<ul class="nav nav-tabs"">
-					    <li class="active"><a id="1" href="#dayly" data-toggle="tab">Daily</a></li>
-						<li><a id="2" href="#weekly" data-toggle="tab">Weekly</a></li>
-						<li><a id="3" href="#monthly" data-toggle="tab">Monthly</a></li>
+					<ul class="nav nav-tabs">
+					    <li class="active"><a id="1" href="#day" data-toggle="tab">Daily</a></li>
+						<li><a id="2" href="#week" data-toggle="tab">Weekly</a></li>
+						<li><a id="3" href="#month" data-toggle="tab">Monthly</a></li>
 					</ul>
-					<div class="tab-pane fade container5" id="dayly"></div>
-					<div class="tab-pane fade container5" id="weekly" style="display:none;" ></div>
-					<div class="tab-pane fade container5" id="monthly" style="display:none;"></div>
+					<div class="tab-pane fade container5" id="day"></div>
+					<div class="tab-pane fade container5" id="week" style="display:none;" ></div>
+					<div class="tab-pane fade container5" id="month" style="display:none;"></div>
 				</div>				
 
 
 <script type="text/javascript">
 jQuery(function($){
-	var url = "<%=request.getContextPath()%>/CountRequest";
+	var url = "<%=request.getContextPath()%>/StaticsServlet";
 	
 	$.ajax({
 		type: "POST",
@@ -32,61 +32,65 @@ jQuery(function($){
 		data: "",
 		dataType:'json',
 		success: function(rtnData) {
-			
+
 			$(".nav.nav-tabs").children().each(function() {
 				$("#1").click(function(){
-					 $("#dayly").show();
-					 $("#weekly").hide();
-					 $("#monthly").hide();
+					 $("#day").show();
+					 $("#week").hide();
+					 $("#month").hide();
+					 displayTicketTrendChart("day");
 					 });
 				 
                 $("#2").click(function(){
-                	 $("#dayly").hide();
-					 $("#weekly").show();
-					 $("#monthly").hide();
+                	 $("#day").hide();
+					 $("#week").show();
+					 $("#month").hide();
+					 displayTicketTrendChart("week");
 					 });
 
                 $("#3").click(function(){
-                	 $("#dayly").hide();
-					 $("#weekly").hide();
-					 $("#monthly").show();
+                	 $("#day").hide();
+					 $("#week").hide();
+					 $("#month").show();
+					 displayTicketTrendChart("month");
 					 });
 				 
 			});
 
-
+			displayTicketTrendChart("day");
 			
-			var day=rtnData.day;
-			var resultDay=rtnData.resultDay;
-			var resultUserDay=rtnData.resultUserDay;
 
-			var week=rtnData.week;
-			var resultWeek=rtnData.resultWeek;
-			var resultUserWeek=rtnData.resultUserWeek;
-
-			var month=rtnData.month;
-			var resultMonth=rtnData.resultMonth;
-			var resultUserMonth=rtnData.resultUserMonth;
-
-			
-			var userday=rtnData.userday;
-			var userweek=rtnData.userweek;
-			var usermonth=rtnData.usermonth;
-			console.log("usermonth="+usermonth);
-			for(var i=0;i<usermonth.length;i++)
+			function displayTicketTrendChart(container)
 			{
-				console.log("usermonth"+i+"="+usermonth[i]);
-				}
-		
-			
-			
 
-			
-
-			$('#dayly').highcharts({
+				console.log("container="+container);
+				if(container=="day")
+				{
+					var dateType=rtnData.day.dateType;
+		            var resultRequest=rtnData.day.resultRequest;
+		            var resultUserNumber=rtnData.day.resultUserNumber;
+		            var resultUser=rtnData.day.resultUser;
+					}
+				else if(container=="week")
+				{
+					var dateType=rtnData.week.dateType;
+		            var resultRequest=rtnData.week.resultRequest;
+		            var resultUserNumber=rtnData.week.resultUserNumber;
+		            var resultUser=rtnData.week.resultUser;
+					}
+				else if(container=="month")
+				{
+					var dateType=rtnData.month.dateType;
+		            var resultRequest=rtnData.month.resultRequest;
+		            var resultUserNumber=rtnData.month.resultUserNumber;
+		            var resultUser=rtnData.month.resultUser;
+					}
+	            
+			    var chart = new Highcharts.Chart({
 	
 	            chart: {
-	                type: 'column'
+	                type: 'column',
+	                renderTo:container
 	            },
 	            title: {
 	                text: ''
@@ -94,12 +98,12 @@ jQuery(function($){
 	            subtitle: {
 	            },
 	            xAxis: {
-	                categories:  day,	               
+	                categories: dateType,	               
 	            },
 	            yAxis: {
 	                min: 0,
 	                title: {
-	                    text: 'request(number)'
+	                    text: 'number'
 	                }
 	            },
 	             tooltip: {
@@ -115,19 +119,17 @@ jQuery(function($){
 	                	var i=0;
 	                	var s='<b>'+ this.key +'</b><br/><b>'+
                         this.series.name +': </b>'+ this.point.y +'<br/>';
-		                while(i<day.length)
+		                while(i<dateType.length)
 			                {
-                               if(this.x==day[i])
-                               {
-                            	 
-         	                       return s+"<b>Users:</b>"+userday[i];
+                               if(this.x==dateType[i])
+                               {                           	 
+         	                        return s+"<b>Users:</b>"+resultUser[i];
          	                        break;
                                    }
                                    
                                    else
                                    {
-                                	   i++;
-                        
+                                	   i++;                    
                                        }
                                       
 			                }
@@ -147,175 +149,20 @@ jQuery(function($){
 	           
 	            series: [{
 	                name: 'new created requests',
-	                data: resultDay,
+	                data: resultRequest,
 	    
 	            }, {
 	                name: 'active users',
-	                data: resultUserDay,
+	                data: resultUserNumber,
 	    
 	            }]
 	            
 	        });
-			
 
-				
-			$('#weekly').highcharts({
-
-	            chart: {
-	                type: 'column'
-	            },
-	            title: {
-	                text: ''
-	            },
-	            subtitle: {
-	            },
-	            xAxis: {
-	                categories: week,
-	            },
-	            yAxis: {
-	                min: 0,
-	                title: {
-	                    text: 'request(number)'
-	                }
-	            },
-	            tooltip: {
-	               /* headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	                    '<td style="padding:0"><b>{point.y:.0f} </b></td></tr>',
-	                footerFormat: '</table>',
-	                shared: true,
-	               useHTML: true,*/
-	                 style: {
-	                    color: '#333333',
-	                	fontSize: '12px',
-		                padding: 10,
-		                width: 200,
-	                },
-	                formatter: function() {
-	                	if(this.series.name=="active users"){
-	                	var i=0;
-	                	var s='<b>'+ this.key +'</b><br/><b>'+
-                        this.series.name +': </b>'+ this.point.y +'<br/>';
-                        
-		                while(i<week.length)
-			                {
-                               if(this.x==week[i])
-                               {
-         	                       return s+"<b>Users:</b>"+userweek[i];
-         	                        break;
-                                   }
-                                   
-                                   else
-                                   {
-                                	   i++;
-                                       }
-                                      
-			                }
-	                	}
-	                	else
-		                    return '<b>'+ this.key +'</b><br/><b>'+
-	                        this.series.name +': </b>'+ this.point.y +'<br/>';
-	                
-	                }
-	            },
-	            plotOptions: {
-	                column: {
-	                    pointPadding: 0.2,
-	                    borderWidth: 0
-	                }
-	            },
-	            series: [{
-	                name: 'new created requests',
-	                data: resultWeek,
-	    
-	            }, {
-	                name: 'active users',
-	                data: resultUserWeek,
-	    
-	            }]
-	        });
+		        return chart;
+			}
 
 			
-
-
-				
-			$('#monthly').highcharts({
-
-	            chart: {
-	                type: 'column'
-	            },
-	            title: {
-	                text: ''
-	            },
-	            subtitle: {
-	            },
-	            xAxis: {
-	                categories: month,
-	            },
-	            yAxis: {
-	                min: 0,
-	                title: {
-	                    text: 'request(number)'
-	                }
-	            },
-	            tooltip: {
-	               /* headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	                    '<td style="padding:0"><b>{point.y:.0f} </b></td></tr>',
-	                footerFormat: '</table>',
-	                shared: true,
-	                useHTML: true*/
-
-	                style: {
-	                    color: '#333333',
-	                	fontSize: '12px',
-		                padding: 10,
-		                width: 200,
-	                },
-	                formatter: function() {
-	                	if(this.series.name=="active users"){
-	                	var i=0;
-	                	var s='<b>'+ this.key +'</b><br/><b>'+
-                        this.series.name +': </b>'+ this.point.y +'<br/>';
-		                while(i<month.length)
-			                {
-                               if(this.x==month[i])
-                               {
-                            	 
-         	                       return s+"<b>Users:</b>"+usermonth[i];
-         	                        break;
-                                   }
-                                   
-                                   else
-                                   {
-                                	   i++;
-                        
-                                       }
-                                      
-			                }
-	                	}
-	                	else
-		                    return '<b>'+ this.key +'</b><br/><b>'+
-	                        this.series.name +': </b>'+ this.point.y +'<br/>';
-	                
-	                }
-	            },
-	            plotOptions: {
-	                column: {
-	                    pointPadding: 0.2,
-	                    borderWidth: 0
-	                }
-	            },
-	            series: [{
-	                name: 'new created requests',
-	                data: resultMonth
-	    
-	            }, {
-	                name: 'active users',
-	                data: resultUserMonth
-	    
-	            }]
-	        });
 			}
 			
 	});

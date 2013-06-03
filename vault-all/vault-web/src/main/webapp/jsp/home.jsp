@@ -2,6 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="tran" uri="/wezhao/tran" %>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.Map"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -315,7 +318,15 @@
     <li id="navSign" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed <span class="number">( ${reqCounts.signed} )</span></a></li>
     <li id="navCC" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me<span class="number"> ( ${reqCounts.cc} )</span></a></li>
     <li id="navView" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=CanViewRequest>I Can View <span class="number">( ${reqCounts.canview} )</span></a></li>
-    <li id="navStatics" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=StaticsRequest>Statics </a></li>
+  
+
+
+<c:forEach items="${userRoles}" var="userRole" >
+ <c:if test="${userName eq userRole.key && userRole.value eq 'Admin' }">
+    <li id="navStatics" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=StaticsRequest>Statics</a></li>
+  </c:if>
+</c:forEach>
+
   </ul>
 </div>
 <div class="content">

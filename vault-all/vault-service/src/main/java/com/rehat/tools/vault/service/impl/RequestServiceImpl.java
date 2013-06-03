@@ -961,188 +961,96 @@ public class RequestServiceImpl implements RequestService{
 	}
 
 	
-	//zym.test
-	public JSONObject staicsCount() {
+	//yizhai
+	public JSONObject staicsCount(String type) {
 		JSONObject json = new JSONObject();
 		int n=5;
-		String day[]=new String[n];
-		String week[]=new String[n];
-		String month[]=new String[n];
-		
 
-		long[] resultDayDate=new long[n];
-		long[] resultWeekDate=new long[n];
-		long[] resultMonthDate=new long[n];
-		BigInteger[] resultUserDayDate=new BigInteger[n];
-		BigInteger[] resultUserWeekDate=new BigInteger[n];
-		BigInteger[] resultUserMonthDate=new BigInteger[n];
-		String[] userday=new String[n];
-		String[] userweek=new String[n];
-		String[] usermonth=new String[n];
+		String dateType[]=new String[n];
+		long[] resultDateRequest=new long[n];
+		BigInteger[] resultDateUserNumber=new BigInteger[n];
+		String[] resultDateUser=new String[n];
+		Map<String, Long> resultRequest=null;
+	    Map<String, BigInteger> resultUserNumber=null;
+	    Map<String,String> resultUser=null;
 
-		
-		  Map<String, Long> resultDay = null;
-		  Map<String, Long> resultWeek = null;
-		  Map<String, Long> resultMonth= null;
-		  Map<String, BigInteger> resultUserDay = null;
-		  Map<String, BigInteger> resultUserWeek = null;
-		  Map<String, BigInteger> resultUserMonth = null;
-		  Map<String,String> userEveryDay=null;
-		  Map<String,String> userEveryWeek=null;
-		  Map<String,String> userEveryMonth=null;
-		  
 	        try{
-	        	resultDay = requestDAO.countByCreatedTimeDay();
-	        	resultWeek = requestDAO.countByCreatedTimeWeek();
-	        	resultMonth = requestDAO.countByCreatedTimeMonth();
-	        	resultUserDay=requestDAO.countActiveUserNumberDay();
-	        	resultUserWeek=requestDAO.countActiveUserNumberWeek();
-	        	resultUserMonth=requestDAO.countActiveUserNumberMonth();
-	        	userEveryDay=requestDAO.countActiveUserDay();
-	        	userEveryWeek=requestDAO.countActiveUserWeek();
-	        	userEveryMonth=requestDAO.countActiveUserMonth();
+	        	resultRequest=requestDAO.countByCreatedTime(type);
+	        	resultUserNumber=requestDAO.countActiveUserNumber(type);
+	        	resultUser=requestDAO.countActiveUser(type);
 	        }catch(Exception e){
 	            log.error(e.getMessage(),e);
 	        }
+
+	        Set setRequest=resultRequest.keySet();
+	        Set setUserNumber=resultUserNumber.keySet();
+	        Set setUser=resultUser.keySet();
 	        
-	        Set setDay = resultDay.keySet();
-	        Set setWeek = resultWeek.keySet();
-	        Set setMonth = resultMonth.keySet();
-	        Set setUserDay = resultUserDay.keySet();
-	        Set setUserWeek = resultUserWeek.keySet();
-	        Set setUserMonth = resultUserMonth.keySet();
-	        Set setUserEveryDay=userEveryDay.keySet();
-	        Set setUserEveryWeek=userEveryWeek.keySet();
-	        Set setUserEveryMonth=userEveryMonth.keySet();
+	        Iterator itRequest=setRequest.iterator();
+	        Iterator itUserNumber = setUserNumber.iterator();
+	        Iterator itUser=setUser.iterator();
 	        
-	        Iterator itDay = setDay.iterator();
-	        Iterator itWeek = setWeek.iterator();
-	        Iterator itMonth = setMonth.iterator();
-	        Iterator itUserDay = setUserDay.iterator();
-	        Iterator itUserWeek = setUserWeek.iterator();
-	        Iterator itUserMonth = setUserMonth.iterator();
-	        Iterator itUserEveryDay = setUserEveryDay.iterator();
-	        Iterator itUserEveryWeek = setUserEveryWeek.iterator();
-	        Iterator itUserEveryMonth = setUserEveryMonth.iterator();
+	
+	        int requestNum=0;
+	        int userNumber=0;
+	        int user=0;
 	        
-	        int dayNum=0;
-	        int weekNum=0;
-	        int monthNum=0;
-	        int dayUserNum=0;
-	        int weekUserNum=0;
-	        int monthUserNum=0;
-	        int userNumDay=0;
-	        int userNumWeek=0;
-	        int userNumMonth=0;
 	        
-	        while (itDay.hasNext())
+	        while (itRequest.hasNext())
 	        {
-	        	String keyDay = (String) itDay.next();        	
-	        	Long valueDay = (Long) resultDay.get(keyDay);    	
-	        	day[dayNum]=keyDay;
-	        	resultDayDate[dayNum]=valueDay;
-	        	dayNum++;
+	        	String keyRequest = (String) itRequest.next();        	
+	        	Long valueRequest = (Long) resultRequest.get(keyRequest);    	
+	        	dateType[requestNum]=keyRequest;
+	        	resultDateRequest[requestNum]=valueRequest;
+	        	requestNum++;
 
 	        }
-	        //
-	        while (itUserEveryDay.hasNext())
+	        while (itUserNumber.hasNext())
 	        {
-	        	
-	        	String keyDay = (String) itUserEveryDay.next();   
-	        	//System.out.println("keyDay="+keyDay);
-	        	//System.out.println("valueday="+userEveryDay.get(keyDay));
-	        	String valueDay = (String) userEveryDay.get(keyDay);    	
-
-	        	userday[userNumDay]=valueDay;
-	        	userNumDay++;
+	        	String keyUserNumber = (String) itUserNumber.next();        	
+	        	BigInteger valueUserNumber = (BigInteger) resultUserNumber.get(keyUserNumber);    	
+	        	resultDateUserNumber[userNumber]=valueUserNumber;
+	        	userNumber++;
 
 	        }
-	        while (itWeek.hasNext())
+	        while (itUser.hasNext())
 	        {
-	        	String keyWeek = (String) itWeek.next();        	
-	        	Long valueWeek = (Long) resultWeek.get(keyWeek);       	
-	        	week[weekNum]=keyWeek;
-	        	resultWeekDate[weekNum]=valueWeek;
-	        	weekNum++;
+	        	String keyUser = (String) itUser.next();        	
+	        	String valueUser = (String) resultUser.get(keyUser);    	
+	        	resultDateUser[user]=valueUser;
+	        	user++;
 
 	        }
+	        json.put("dateType", dateType);
+	        json.put("resultRequest", resultDateRequest);
+	        json.put("resultUserNumber", resultDateUserNumber);
+	        json.put("resultUser", resultDateUser);
+
+           //count user in month could repeat
+	/*        Map<String,BigInteger> userEveryMonthRepeat=null;
+	        BigInteger[] resultUserMonthRepeat=new BigInteger[n];
+	        String[] monthRepeat=new String[n]; 
+	        try{
+	        	userEveryMonthRepeat=requestDAO.countActiveUserNumberMonthRepeat();
+	        }catch(Exception e){
+	            log.error(e.getMessage(),e);	        	
+	        }
+	        Set setUserEveryMonthRepeat=userEveryMonthRepeat.keySet();
+	        Iterator itUserEveryMonthRepeat = setUserEveryMonthRepeat.iterator();
+            
+	        int userNumMonthRepeat=0;
 	        
-	        while (itUserEveryWeek.hasNext())
-	        {
-	        	
-	        	String keyWeek = (String) itUserEveryWeek.next();   
-	        	//System.out.println("keyWeek="+keyWeek);
-	        	//System.out.println("valueWeek="+userEveryWeek.get(keyWeek));
-	        	String valueWeek = (String) userEveryWeek.get(keyWeek);    	
-
-	        	userweek[userNumWeek]=valueWeek;
-	        	userNumWeek++;
+	        while (itUserEveryMonthRepeat.hasNext())
+	        {	        	
+	        	String keyMonthRepeat = (String) itUserEveryMonthRepeat.next();        	
+	        	BigInteger keyResultUserMonthRepeat= (BigInteger) userEveryMonthRepeat.get(keyMonthRepeat);
+	        	System.out.println(keyResultUserMonthRepeat);
+	        	monthRepeat[userNumMonthRepeat]=keyMonthRepeat;
+	        	resultUserMonthRepeat[userNumMonthRepeat]=keyResultUserMonthRepeat;
+	        	userNumMonthRepeat++;
 	        }
-	        while (itMonth.hasNext())
-	        {
-	        	String keyMonth = (String) itMonth.next();	        	
-	        	Long valueMonth = (Long) resultMonth.get(keyMonth);      	
-	        	month[monthNum]=keyMonth;
-	        	resultMonthDate[monthNum]=valueMonth;
-	        	monthNum++;
-
-	        }
-	        while (itUserEveryMonth.hasNext())
-	        {
-	        	
-	        	String keyMonth = (String) itUserEveryMonth.next();   
-	        	System.out.println("keyMOnth="+keyMonth);
-	        	System.out.println("valueMonth"+userEveryMonth.get(keyMonth));
-	        	String valueMonth = (String) userEveryMonth.get(keyMonth);    	
-
-	        	usermonth[userNumMonth]=valueMonth;
-	        	userNumMonth++;
-	        }
-	        while (itUserDay.hasNext())
-	        {
-	        	String keyUserDay = (String) itUserDay.next();        	
-	        	BigInteger valueUserDay = (BigInteger) resultUserDay.get(keyUserDay);    	
-
-	        	resultUserDayDate[dayUserNum]=valueUserDay;
-	        	dayUserNum++;
-
-	        }
-	        while (itUserWeek.hasNext())
-	        {
-	        	String keyUserWeek = (String) itUserWeek.next();        	
-	        	BigInteger valueUserWeek = (BigInteger) resultUserWeek.get(keyUserWeek);    	
-
-	        	resultUserWeekDate[weekUserNum]=valueUserWeek;
-	        	weekUserNum++;
-
-	        }
-	        while (itUserMonth.hasNext())
-	        {
-	        	String keyUserMonth = (String) itUserMonth.next();        	
-	        	BigInteger valueUserMonth = (BigInteger) resultUserMonth.get(keyUserMonth);    	
-
-	        	resultUserMonthDate[monthUserNum]=valueUserMonth;
-	        	monthUserNum++;
-
-	        }
-
-	        json.put("day", day);
-	        json.put("resultDay", resultDayDate);
-	        json.put("resultUserDay", resultUserDayDate);
-	        
-	        json.put("week", week);
-	        json.put("resultWeek", resultWeekDate);
-	        json.put("resultUserWeek", resultUserWeekDate);
-	        
-	        json.put("month", month);
-	        json.put("resultMonth", resultMonthDate);
-	        json.put("resultUserMonth", resultUserMonthDate);
-	        
-	        json.put("userday", userday);
-	        json.put("userweek", userweek);
-	        json.put("usermonth", usermonth);
-
-
+	        json.put("monthRepeat", monthRepeat);
+	        json.put("resultUserMonthRepeat", resultUserMonthRepeat);*/
 
 		 return json;
 	}
