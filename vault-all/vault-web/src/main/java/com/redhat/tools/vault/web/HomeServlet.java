@@ -84,10 +84,42 @@ public class HomeServlet extends HttpServlet {
 		Map<String, Long> counts = service.getRequestCount(userName, userEmail);
 		request.setAttribute("reqCounts", counts);
 
-		
+		 String path = this.getServletContext().getRealPath("/");;
+			String filePath = path + "WEB-INF/classes/roles.properties";
+			Properties prop = PropertiesUtil.readProperties(filePath);
+			File file = new File(filePath);
+			 		
+			long lastModified = file.lastModified();
+			String lastmodifiedtime_s =String.valueOf(this.getServletContext()
+			 				.getAttribute("lastmodifiedtime"));
+			if (lastmodifiedtime_s!="null"&&Long.parseLong(lastmodifiedtime_s) == lastModified) {
+			 			// do nothing
+			 } else {
+			 	this.getServletContext().setAttribute("lastmodifiedtime",
+			 					lastModified);
+			 	Map<String,String> map = (Map<String, String>) this.getServletContext().getAttribute("userRoles");
+			 	if(map!=null){
+			 		getRole(prop, map);
+			 		this.getServletContext().setAttribute("userRoles", map);
+			 	}else{
+			 		Map<String, String> userRoles = new TreeMap<String, String>();
+			 		getRole(prop, userRoles);
+			 		this.getServletContext().setAttribute("userRoles", userRoles);
+			 			}
+			 		}
 		
 		request.getRequestDispatcher("/jsp/home.jsp")
 				.forward(request, response);
 	}
 
+	
+
+    private void getRole(Properties prop, Map<String, String> userRoles) {
+		Enumeration en = prop.propertyNames();
+		while (en.hasMoreElements()) {
+			String name = (String) en.nextElement();
+			String value = prop.getProperty(name);
+			userRoles.put(name, value);
+		}
+}
 }

@@ -57,7 +57,7 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#onbehalf_table").hide();
-				$("table#statics").hide();
+				$("table#statistics").hide();
 				$("table#searchrequest").attr("style","display");
 			}
 			else 
@@ -74,7 +74,7 @@
 				$("div#advance_query").hide();
 				$("fieldset#advance_set").hide();
 				$("table#onbehalf_table").hide();
-				$("table#statics").hide();
+				$("table#statistics").hide();
 				$("table#detail_name_table").attr("style","display");
                 $("table#reception_tbl").attr("style","display");
 				$("table#detail_comment").attr("style","display");
@@ -93,7 +93,7 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#onbehalf_table").hide();
-				$("table#statics").hide();
+				$("table#statistics").hide();
 				$("table#waitrequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=WaitRequest>Needing My Approval</a>");
@@ -112,7 +112,7 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
-				$("table#statics").hide();
+				$("table#statistics").hide();
 				$("table#signedrequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=SignedRequest>Have Signed </a>");
@@ -131,7 +131,7 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
-				$("table#statics").hide();
+				$("table#statistics").hide();
 				$("table#canviewrequest").attr("style","display");
 				
 
@@ -151,7 +151,7 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
-				$("table#statics").hide();
+				$("table#statistics").hide();
 				$("table#cctomerequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=CCToMeRequest>CC Me </a>");
@@ -170,7 +170,7 @@
 				$("table#detail_tbl").hide();
 				$("table#waitrequest").hide();
 				$("table#onbehalf_table").hide();
-				$("table#statics").hide();
+				$("table#statistics").hide();
 				$("table#myrequest").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=MyRequest>My Requests </a>");
@@ -194,7 +194,7 @@
 				$("fieldset#advance_set").hide();
 				$("table#onbehalf_table").hide();
 
-				$("table#statics").hide();
+				$("table#statistics").hide();
 				$("table#newrequest_tbl").attr("style","display");
 
 				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=NewRequest >New Request </a>");
@@ -218,9 +218,9 @@
 				$("fieldset#advance_set").hide();
 				$("table#onbehalf_table").hide();
 				$("table#newrequest_tbl").hide();
-				$("table#statics").attr("style","display");
+				$("table#statistics").attr("style","display");
 				
-				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=StaticsRequest >Statics</a>");
+				$("#subMenu").html("<a href=${pageContext.request.contextPath}/listRequest?operation=StaticsRequest >Statistics</a>");
 				$("#" + currentMenu).removeClass("active");
 				$("#navStatics").addClass("active");
 				currentMenu = "navStatics";
@@ -236,7 +236,7 @@
 				$("table#detail_name_table").hide();
 				$("table#detail_tbl").hide();
 				$("table#onbehalf_table").hide();
-				$("table#statics").hide();
+				$("table#statistics").hide();
 				$("table#myrequest").attr("style","display");
 				$("table#waitrequest").attr("style","display");
 			}
@@ -304,6 +304,7 @@
 			setWidth();	
 		}
 	</script>
+	
 </head>
 <body id='eso-body' onload="rmloading();BrowserDetection.init();addStyle();setWidth();">
 <div class="eso-inner">
@@ -323,7 +324,7 @@
 
 <c:forEach items="${userRoles}" var="userRole" >
  <c:if test="${userName eq userRole.key && userRole.value eq 'Admin' }">
-    <li id="navStatics" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=StaticsRequest>Statics</a></li>
+    <li id="navStatics" class=""><a href=${pageContext.request.contextPath}/listRequest?operation=StaticsRequest>Statistics</a></li>
   </c:if>
 </c:forEach>
 
@@ -347,7 +348,7 @@
 	<%@ include file="cctomerequest.jsp" %>
 	<%@ include file="myrequest.jsp" %>
 	<%@ include file="newrequest.jsp" %>
-	<%@ include file="statics.jsp" %>
+	<%@ include file="statistics.jsp" %>
 </div>
 <%@ include file="footer.jsp" %>
 </div>

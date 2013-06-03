@@ -54,7 +54,7 @@ public class RequestDAO {
     //yizhai
     private static final String QUERY_REQUESTSTATICREQ="select count(*) from Request as a where a.createdtime like ?";
     private static final String QUERY_REQUESTSTATICMONTH="select count(*) from Request as a where a.createdtime between ? and ? or a.createdtime like ? or a.createdtime like ? ";
-    private static final String QUERY_USERSTATICREQ="select a.createdby from VA_request as a where a.createdtime like ? union select a.createdby from VA_request as a where a.requesttime like ? union select a.signedby from VA_request " +
+    private static final String QUERY_USERSTATICREQ="select a.createdby from VA_request as a where a.createdtime like ? union select a.signedby from VA_request " +
 			                                        "as a where a.signedtime like ? union select a.editedby from VA_request as a where a.editedtime like ? union select b.username from VA_user as b where b.createdtime like ? union " +
 							                        "select c.editedby from VA_reply_comment as c where c.editedtime like ? union select d.createdby from VA_savequery as d where d.createdtime like ?";
     private static final String QUERY_USERSTATICMONTH="select a.createdby from VA_request as a where a.createdtime between ? and ? or" +
@@ -1767,7 +1767,7 @@ public class RequestDAO {
 			    }
 			    queryString[i] ="select count(*) from ( "+QUERY_USERSTATICREQ+" ) as user";
 	    	    query[i] = sess.createSQLQuery(queryString[i]);
-	    	    for(int j=0;j<=6;j++)
+	    	    for(int j=0;j<=5;j++)
 	    	    {
 	    	       query[i].setString(j, dateType[i] + "%");
 	    	    }
@@ -1861,7 +1861,7 @@ public class RequestDAO {
 			    }
 			    queryString[i] =QUERY_USERSTATICREQ;
 	    	    query[i] = sess.createSQLQuery(queryString[i]);
-	    	    for(int j=0;j<=6;j++)
+	    	    for(int j=0;j<=5;j++)
 	    	    {
 	    	       query[i].setString(j,dateType[i] + "%");
 	    	    }

@@ -27,7 +27,7 @@ import com.redhat.tools.vault.web.helper.VaultHelper;
 @WebFilter(urlPatterns = { "/Addcomment", "/AddReply", "/Checkrequest", "/deleteRequest", "/editVersion", "/FindRequest",
         "/ListNoneSign", "/showRequest", "/listRequest", "/ReportServlet", "/RequestHistory", "/SavequeryServlet",
         "/Saverequest", "/ShowAllEmails", "/ShowReplyComment", "/SignedOrRject", "/download", "/VaultFileUpload",
-        "/vaultSumReport" })
+        "/vaultSumReport","/StaticsServlet"})
 public class VaultFilter  implements Filter {
 
     /**
