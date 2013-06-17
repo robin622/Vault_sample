@@ -13,12 +13,6 @@
 	<name>vault-web Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
-	    <dependency>
-			<groupId>com.redhat.engineering.hss</groupId>
-			<artifactId>hss-commoncomponents4j-orgchart</artifactId>
-			<version>0.1</version>
-			<scope>compile</scope>
-		</dependency>
 		<dependency>
 			<groupId>com.redhat.tools.vault</groupId>
 			<artifactId>vault-service</artifactId>
@@ -34,6 +28,18 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<scope>provided</scope>
+			<version>1.0.1.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<scope>provided</scope>
+			<version>4.2.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.spec.javax.servlet</groupId>
