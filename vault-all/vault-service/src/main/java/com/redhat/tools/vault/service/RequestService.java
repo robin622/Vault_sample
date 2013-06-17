@@ -74,5 +74,6 @@ public interface RequestService {
     public void withdrawRequest(Request current, String requestid, String requestVersion, String userName, String userEmail);
     //
 	public JSONObject staicsCount(String type);
+	public JSONObject teamCount();
 
 }

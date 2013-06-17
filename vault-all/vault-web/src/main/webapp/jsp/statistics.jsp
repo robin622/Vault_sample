@@ -20,8 +20,12 @@
 					<div class="tab-pane fade container5" id="week" style="display:none;" ></div>
 					<div class="tab-pane fade container5" id="month" style="display:none;"></div>
 				</div>				
-
-
+<span class="green-font ">Group Utilization</span>
+<div class="line5"></div>
+<div class="tab-pane fade container7" id="group"></div>
+		</td>
+</tr>
+</thead>
 <script type="text/javascript">
 jQuery(function($){
 	var url = "<%=request.getContextPath()%>/StaticsServlet";
@@ -58,12 +62,11 @@ jQuery(function($){
 			});
 
 			displayTicketTrendChart("day");
-			
 
 			function displayTicketTrendChart(container)
 			{
 
-				console.log("container="+container);
+				//console.log("container="+container);
 				if(container=="day")
 				{
 					var dateType=rtnData.day.dateType;
@@ -162,17 +165,76 @@ jQuery(function($){
 		        return chart;
 			}
 
+			 $('#group').highcharts({
+		            chart: {
+		                type: 'bar'
+		            },
+		            title: {
+		                text: ''
+		            },
+		            subtitle: {
+		                text: ''
+		            },
+		            xAxis: {
+		                categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+		                title: {
+		                    text: null
+		                }
+		            },
+		            yAxis: {
+		                min: 0,
+		                title: {
+		                    text: 'Population (millions)',
+		                    align: 'high'
+		                },
+		                labels: {
+		                    overflow: 'justify'
+		                }
+		            },
+		            tooltip: {
+		                valueSuffix: ' millions'
+		            },
+		            plotOptions: {
+		                bar: {
+		                    dataLabels: {
+		                        enabled: true
+		                    }
+		                }
+		            },
+		            legend: {
+		                layout: 'vertical',
+		                align: 'right',
+		                verticalAlign: 'top',
+		                x: -100,
+		                y: 100,
+		                floating: true,
+		                borderWidth: 1,
+		                backgroundColor: '#FFFFFF',
+		                shadow: true
+		            },
+		            credits: {
+		                enabled: false
+		            },
+		            series: [{
+		                name: 'Year 1800',
+		                data: [107, 31, 635, 203, 2]
+		            }, {
+		                name: 'Year 1900',
+		                data: [133, 156, 947, 408, 6]
+		            }, {
+		                name: 'Year 2008',
+		                data: [973, 914, 4054, 732, 34]
+		            }]
+		        });
 			
-			}
+			}	   
 			
 	});
+
+	
 });
 	
 
 		</script>
-
-		</td>
-</tr>
-</thead>
 
 </table>

@@ -960,6 +960,36 @@ public class RequestServiceImpl implements RequestService{
 		}
 	}
 
+   //yizhai
+	public JSONObject teamCount()
+	{
+		JSONObject json = new JSONObject();
+		int n=2;
+		String[] resultDateThisMonth=new String[n];
+		Map<String,String> resultThisMonth=null;
+		
+		try{
+        	resultThisMonth=requestDAO.userThisMonth();
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+        }
+		 Set setThisMonth=resultThisMonth.keySet();
+		 Iterator itThisMonth=setThisMonth.iterator();
+		 int thisMonth=0;
+		 
+		 while (itThisMonth.hasNext())
+	     {
+	        String keyThisMonth = (String) itThisMonth.next();
+	        System.out.println("keyThisMonth="+keyThisMonth);
+	        String valueThisMonth = (String) resultThisMonth.get(keyThisMonth);
+	        System.out.println("valueThisMonth="+valueThisMonth);
+	        resultDateThisMonth[thisMonth]=valueThisMonth;	        	
+	        thisMonth++;
+
+	       }
+		 json.put("thisMonth", resultDateThisMonth);
+		 return json;		 
+	}
 	
 	//yizhai
 	public JSONObject staicsCount(String type) {
@@ -970,9 +1000,11 @@ public class RequestServiceImpl implements RequestService{
 		long[] resultDateRequest=new long[n];
 		BigInteger[] resultDateUserNumber=new BigInteger[n];
 		String[] resultDateUser=new String[n];
+
 		Map<String, Long> resultRequest=null;
 	    Map<String, BigInteger> resultUserNumber=null;
 	    Map<String,String> resultUser=null;
+	   
 
 	        try{
 	        	resultRequest=requestDAO.countByCreatedTime(type);
@@ -985,15 +1017,18 @@ public class RequestServiceImpl implements RequestService{
 	        Set setRequest=resultRequest.keySet();
 	        Set setUserNumber=resultUserNumber.keySet();
 	        Set setUser=resultUser.keySet();
+	       
 	        
 	        Iterator itRequest=setRequest.iterator();
 	        Iterator itUserNumber = setUserNumber.iterator();
 	        Iterator itUser=setUser.iterator();
+	       
 	        
 	
 	        int requestNum=0;
 	        int userNumber=0;
 	        int user=0;
+	       
 	        
 	        
 	        while (itRequest.hasNext())
@@ -1021,10 +1056,12 @@ public class RequestServiceImpl implements RequestService{
 	        	user++;
 
 	        }
+	       
 	        json.put("dateType", dateType);
 	        json.put("resultRequest", resultDateRequest);
 	        json.put("resultUserNumber", resultDateUserNumber);
 	        json.put("resultUser", resultDateUser);
+	       
 
            //count user in month could repeat
 	/*        Map<String,BigInteger> userEveryMonthRepeat=null;
