@@ -1,6 +1,7 @@
 package com.redhat.tools.vault.web;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import net.sf.json.JSONObject;
 import org.jboss.logging.Logger;
 
 import com.redhat.tools.vault.service.RequestService;
+import com.redhat.tools.vault.web.orgchart.OrgChartDataService;
 
 @WebServlet("/StaticsServlet")
 public class StaticsServlet extends HttpServlet {
@@ -24,19 +26,28 @@ public class StaticsServlet extends HttpServlet {
     @Inject
     private RequestService service;
 
-    /*
-     * @Inject private OrgChartDataService dataService;
-     * 
-     * private Set<String> members; private String[] leader={"vchen"}; private String[] user=new String[10];
-     * 
-     * public Set<String> getMembers() { return members; }
-     * 
-     * public void setMembers(Set<String> members) { this.members = members; }
-     * 
-     * public String[] getUser() { return user; }
-     * 
-     * public void setUser(String[] user) { this.user = user; }
-     */
+    @Inject
+    private OrgChartDataService dataService;
+
+    private Set<String> members;
+    private final String[] leader = { "vchen" };
+    private String[] user = new String[10];
+
+    public Set<String> getMembers() {
+        return members;
+    }
+
+    public void setMembers(Set<String> members) {
+        this.members = members;
+    }
+
+    public String[] getUser() {
+        return user;
+    }
+
+    public void setUser(String[] user) {
+        this.user = user;
+    }
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -66,15 +77,14 @@ public class StaticsServlet extends HttpServlet {
         for (int i = 0; i < types.length; i++) {
             joReturn.put(types[i], service.staicsCount(types[i]));
         }
+        dataService.loadOrgChartUsers();
+        for (int j = 0; j < leader.length; j++) {
+            members = dataService.getAllMembers(leader[j]);
+            user[j] = members.toString();
+            System.out.println("user[j]=" + user[j]);
+        }
 
-        // for(int j=0;j<leader.length;j++)
-        // {
-        // members=dataService.getAllMembers(leader[j]);
-        // user[j]=members.toString();
-        // System.out.println("user[j]="+user[j]);
-        // }
-
-        // joReturn.put("team", service.teamCount());
+        joReturn.put("team", service.teamCount());
         response.getWriter().print(joReturn);
 
     }

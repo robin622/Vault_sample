@@ -12,7 +12,7 @@
 		<!-- If you are running in a production environment, add a managed data 
 			source, the example data source is just for development and testing! -->
 		<jta-data-source>java:jboss/datasources/engvdbf-DS</jta-data-source>
-		<class>com.redhat.hss.tools.data.orgchart.User</class>
+		<class>com.redhat.tools.vault.web.orgchart.User</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<!-- Properties for Hibernate -->
@@ -20,5 +20,10 @@
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.dialect" value="org.teiid.dialect.TeiidDialect" />
 		</properties>
+	</persistence-unit>
+	<persistence-unit name="MyVtDS">
+		 <properties>
+		 	 <property name="hibernate.ejb.cfgfile" value="/hibernate_vault.cfg.xml"/> 
+		 </properties> 
 	</persistence-unit>
 </persistence>

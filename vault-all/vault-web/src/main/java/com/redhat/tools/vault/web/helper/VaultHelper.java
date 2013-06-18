@@ -70,7 +70,7 @@ public class VaultHelper {
             }
         }
         if (null == userName || "".equals(userName)) {
-            userName = "";
+            userName = "wezhao";
         }
         return userName;
     }
