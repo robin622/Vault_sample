@@ -28,7 +28,7 @@ public class OrgChartDataService {
     @Inject
     private Logger log;
 
-    private final Map<Integer, User> orgChartUsersMap = new ConcurrentHashMap<>();
+    private final Map<Integer, User> orgChartUsersMap = new ConcurrentHashMap<Integer, User>();
 
     public void loadOrgChartUsers() {
         orgChartUsersMap.clear();
@@ -81,7 +81,7 @@ public class OrgChartDataService {
     public void addMember(User manager, User member) {
         Map<String, User> members = manager.getMembers();
         if (null == members) {
-            members = new HashMap<>();
+            members = new HashMap<String, User>();
             manager.setMembers(members);
         }
         if (manager.getUserId() != member.getUserId()) {
