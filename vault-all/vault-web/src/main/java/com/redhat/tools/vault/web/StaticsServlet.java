@@ -29,6 +29,12 @@ public class StaticsServlet extends HttpServlet {
     @Inject
     private OrgChartDataService dataService;
 
+    @Override
+    public void init() throws ServletException {
+        dataService.loadOrgChartUsers();
+        super.init();
+    }
+
     private Set<String> members;
     private final String[] leader = { "vchen" };
     private String[] user = new String[10];
@@ -77,7 +83,6 @@ public class StaticsServlet extends HttpServlet {
         for (int i = 0; i < types.length; i++) {
             joReturn.put(types[i], service.staicsCount(types[i]));
         }
-        dataService.loadOrgChartUsers();
         for (int j = 0; j < leader.length; j++) {
             members = dataService.getAllMembers(leader[j]);
             user[j] = members.toString();
