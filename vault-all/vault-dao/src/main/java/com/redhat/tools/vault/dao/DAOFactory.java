@@ -1,7 +1,5 @@
 package com.redhat.tools.vault.dao;
 
-import javax.persistence.Persistence;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -35,7 +33,6 @@ public class DAOFactory {
     private void init() {
         try {
             Configuration cfg = new Configuration().configure("hibernate_vault.cfg.xml");
-            // factory = new AnnotationConfiguration().configure().buildSessionFactory();
             factory = cfg.buildSessionFactory();
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -45,8 +42,7 @@ public class DAOFactory {
     public Session getSession() throws Exception {
         Session session = null;
         try {
-            // session = this.factory.openSession();
-            session = (Session) Persistence.createEntityManagerFactory("MyVtDS").createEntityManager().getDelegate();
+            session = this.factory.openSession();
         } catch (Exception e) {
             throw e;
         } finally {

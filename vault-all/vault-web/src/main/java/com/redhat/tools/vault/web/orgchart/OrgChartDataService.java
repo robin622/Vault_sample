@@ -1,5 +1,11 @@
 package com.redhat.tools.vault.web.orgchart;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,9 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import org.jboss.logging.Logger;
+
+import com.redhat.tools.vault.bean.User;
 
 /**
  * @author cdou
@@ -21,9 +28,20 @@ import org.jboss.logging.Logger;
  */
 @ApplicationScoped
 public class OrgChartDataService {
-    @Inject
-    @Vdb
-    private EntityManager em;
+
+    Connection conn = null;
+
+    public OrgChartDataService() {
+        try {
+            Class.forName("org.teiid.jdbc.TeiidDriver");
+            conn = DriverManager.getConnection("jdbc:teiid:EngVDBF@mms://vdb.engineering.redhat.com:31000", "teiid", "teiid");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Inject
     private Logger log;
@@ -31,27 +49,43 @@ public class OrgChartDataService {
     private final Map<Integer, User> orgChartUsersMap = new ConcurrentHashMap<Integer, User>();
 
     public void loadOrgChartUsers() {
-        orgChartUsersMap.clear();
-        @SuppressWarnings("unchecked")
-        List<User> orgChartUsers = em.createQuery("select ocu from User ocu where ocu.specialUser = false").getResultList();
-
-        for (User orgChartUser : orgChartUsers) {
-            orgChartUsersMap.put(orgChartUser.getUserId(), orgChartUser);
-        }
-
-        for (Entry<Integer, User> ent : orgChartUsersMap.entrySet()) {
-            User orgChartUser = ent.getValue();
-            User manager = null;
-            if (orgChartUser.getManager() != null) {
-                manager = orgChartUsersMap.get(orgChartUser.getManager());
+        List<User> orgChartUsers = new ArrayList<User>();
+        try {
+            orgChartUsersMap.clear();
+            String sql = "select u.id,u.uid,u.realname,u.manager,u.disabled,u.special_user,u.group_id from OrgChart2S.User u";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                User user = new User();
+                user.setUserId(resultSet.getInt(1));
+                user.setUserUid(resultSet.getString(2));
+                user.setUserName(resultSet.getString(3));
+                user.setManager(resultSet.getInt(4));
+                user.setDisabled(resultSet.getBoolean(5));
+                user.setSpecialUser(resultSet.getBoolean(6));
+                user.setGroupId(resultSet.getInt(7));
+                orgChartUsers.add(user);
+            }
+            for (User orgChartUser : orgChartUsers) {
+                orgChartUsersMap.put(orgChartUser.getUserId(), orgChartUser);
             }
 
-            if (null != manager) {
-                addMember(manager, orgChartUser);
+            for (Entry<Integer, User> ent : orgChartUsersMap.entrySet()) {
+                User orgChartUser = ent.getValue();
+                User manager = null;
+                if (orgChartUser.getManager() != null) {
+                    manager = orgChartUsersMap.get(orgChartUser.getManager());
+                }
+
+                if (null != manager) {
+                    addMember(manager, orgChartUser);
+                }
             }
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("OrgChart User Map is : " + orgChartUsersMap);
+            if (log.isDebugEnabled()) {
+                log.debug("OrgChart User Map is : " + orgChartUsersMap);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
         }
     }
 

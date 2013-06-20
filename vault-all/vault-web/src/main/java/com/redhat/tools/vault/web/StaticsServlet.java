@@ -31,7 +31,6 @@ public class StaticsServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        dataService.loadOrgChartUsers();
         super.init();
     }
 
@@ -76,7 +75,6 @@ public class StaticsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Cache-Control", "no-chche");
-
         String[] types = { "day", "week", "month" };
         JSONObject joReturn = new JSONObject();
 

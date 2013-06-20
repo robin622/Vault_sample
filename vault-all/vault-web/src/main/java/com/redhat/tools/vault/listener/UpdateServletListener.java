@@ -30,6 +30,7 @@ public class UpdateServletListener implements ServletContextListener {
     /** The logger. */
     protected static final Logger log = Logger.getLogger(UpdateServletListener.class);
 
+    @Override
     public void contextInitialized(ServletContextEvent event) {
         /**
          * for piwiki
@@ -70,6 +71,7 @@ public class UpdateServletListener implements ServletContextListener {
         timer.schedule(updateTimer, delay, period);
     }
 
+    @Override
     public void contextDestroyed(ServletContextEvent event) {
         timer.cancel();
         log.info("[product update listener] stop......");
