@@ -56,14 +56,16 @@ public class RequestDAO {
     private static final String QUERY_REQUESTSTATICMONTH="select count(*) from Request as a where a.createdtime between ? and ? or a.createdtime like ? or a.createdtime like ? ";
     private static final String QUERY_USERSTATICREQ="select a.createdby from VA_request as a where a.createdtime like ? union select a.signedby from VA_request " +
 			                                        "as a where a.signedtime like ? union select a.editedby from VA_request as a where a.editedtime like ? union select b.username from VA_user as b where b.createdtime like ? union " +
-							                        "select c.editedby from VA_reply_comment as c where c.editedtime like ? union select d.createdby from VA_savequery as d where d.createdtime like ?";
+							                        "select c.editedby from VA_reply_comment as c where c.editedtime like ? union select d.createdby from VA_savequery as d where d.createdtime like ? " +
+							                        "union select e.editedby from VA_request_history as e where e.editedtime like ?";
     private static final String QUERY_USERSTATICMONTH="select a.createdby from VA_request as a where a.createdtime between ? and ? or" +
     				" a.createdtime like ? or a.createdtime like ? union select a.signedby from VA_request as a where a.signedtime between ? and ? or" +
     				" a.signedtime like ? or a.signedtime like ? union select a.editedby from VA_request as a where a.editedtime between ? and ? or" +
     				" a.editedtime like ? or a.editedtime like ? union select b.username from VA_user as b where b.createdtime between ? and ? or" +
     				" b.createdtime like ? or b.createdtime like ? union select c.editedby from VA_reply_comment as c where c.editedtime between ? and ? or" +
     				" c.editedtime like ? or c.editedtime like ? union select d.createdby from VA_savequery as d where d.createdtime between ? and ? or" +
-    				" d.createdtime like ? or d.createdtime like ?";
+    				" d.createdtime like ? or d.createdtime like ? union select e.editedby from VA_request_history as e where e.editedtime between ? and ? or" +
+    				" e.editedtime like ? or e.editedtime like ?";
     //
     
     public RequestDAO() {
@@ -1767,7 +1769,7 @@ public class RequestDAO {
 			    }
 			    queryString[i] ="select count(*) from ( "+QUERY_USERSTATICREQ+" ) as user";
 	    	    query[i] = sess.createSQLQuery(queryString[i]);
-	    	    for(int j=0;j<=5;j++)
+	    	    for(int j=0;j<=6;j++)
 	    	    {
 	    	       query[i].setString(j, dateType[i] + "%");
 	    	    }
@@ -1799,7 +1801,7 @@ public class RequestDAO {
       		  dateType[i-1]="week"+cl.get(Calendar.WEEK_OF_YEAR);
       		  queryString[i-1]="select count(*) from ( "+QUERY_USERSTATICMONTH+") as user";
       	      query[i-1] = sess.createSQLQuery(queryString[i-1]);
-      	      for(int j=0;j<24;j=j+2)
+      	      for(int j=0;j<27;j=j+2)
       	      {
       	        query[i-1].setString(j, day[i] + "%");
       	        query[i-1].setString(j+1, day[i-1] + "%");
@@ -1851,7 +1853,7 @@ public class RequestDAO {
 			    }
 			    queryString[i] =QUERY_USERSTATICREQ;
 	    	    query[i] = sess.createSQLQuery(queryString[i]);
-	    	    for(int j=0;j<=5;j++)
+	    	    for(int j=0;j<=6;j++)
 	    	    {
 	    	       query[i].setString(j,dateType[i] + "%");
 	    	    }
@@ -1885,7 +1887,7 @@ public class RequestDAO {
       		dateType[i-1]="week"+cl.get(Calendar.WEEK_OF_YEAR);
       		queryString[i-1]=QUERY_USERSTATICMONTH;
       	    query[i-1] = sess.createSQLQuery(queryString[i-1]);
-      	    for(int j=0;j<24;j=j+2)
+      	    for(int j=0;j<27;j=j+2)
       	    {
       	      query[i-1].setString(j, day[i] + "%");
       	      query[i-1].setString(j+1, day[i-1] + "%");
@@ -1910,10 +1912,10 @@ public class RequestDAO {
   }
 
  
-  public Map<String,String> userThisMonth()
+  public Map<String,String> userTwoMonth()
   {
 	  Map<String,String> countUserThisMonth=new TreeMap<String,String>();
-	  //Calendar cl = Calendar.getInstance();
+	  Calendar cl = Calendar.getInstance();
   	  Date date[]=new Date[31];
   	  SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
       SimpleDateFormat dday = new SimpleDateFormat("dd");
@@ -1943,16 +1945,17 @@ public class RequestDAO {
   		  day[i] = dd.format(date[i]);
   		  queryString[i] =QUERY_USERSTATICREQ;
 	      query[i] = sess.createSQLQuery(queryString[i]);
-	      for(int j=0;j<=5;j++)
+	      for(int j=0;j<=6;j++)
 	      {
 	        query[i].setString(j,day[i] + "%");
 	      }
+	      
 	      List<String> temp = query[i].list();
   	      sumEveryDay[i]="";
   	    
   	      for(int j=0;j<temp.size();j++)
   	      {
-  	    	sumEveryDay[i]=sumEveryDay[i]+temp.get(j)+"  \n";
+  	    	sumEveryDay[i]=sumEveryDay[i]+temp.get(j)+"\n";
   	    	//System.out.println(day[i]+" active users numbers: "+sumEveryDay[i]); 	    	
   	      }
   	    thisMonth=thisMonth+sumEveryDay[i];
@@ -1979,7 +1982,7 @@ public class RequestDAO {
 	    }
   		queryString[k] =QUERY_USERSTATICREQ;
 	    query[k] = sess.createSQLQuery(queryString[k]);
-	    for(int j=0;j<=5;j++)
+	    for(int j=0;j<=6;j++)
 	    {
 	        query[k].setString(j,day[k] + "%");
 	      }
@@ -1988,7 +1991,7 @@ public class RequestDAO {
 	    
 	    for(int j=0;j<temp.size();j++)
 	    {
-	    	sumEveryDay[k]=sumEveryDay[k]+temp.get(j)+"  \n";
+	    	sumEveryDay[k]=sumEveryDay[k]+temp.get(j)+"\n";
 	    	//System.out.println(day[k]+" active users numbers: "+sumEveryDay[k]);
         	
 	      }

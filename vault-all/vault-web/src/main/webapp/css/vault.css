@@ -716,6 +716,7 @@ textarea {
 }
 /*--add weekly/month trend--*/
 .container5,.container6{min-width:600px; margin: 0 auto; height: 300px; margin: 0 auto;}
+.container7{min-width:600px; margin: 0 auto; height: 700px; margin: 0 auto;}
 .nav{margin-bottom:0px;margin-top:10px;}
 .nav-tabs > li > a{padding-bottom:px;padding-top:0px;border-radius:0px;}
 .nav-tabs{border-radius:0px;}

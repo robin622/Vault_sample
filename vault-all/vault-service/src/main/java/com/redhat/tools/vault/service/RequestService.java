@@ -2,6 +2,7 @@ package com.redhat.tools.vault.service;
 
 import java.util.List;
 
+
 import java.util.Map;
 
 import net.sf.json.JSONObject;
@@ -74,6 +75,6 @@ public interface RequestService {
     public void withdrawRequest(Request current, String requestid, String requestVersion, String userName, String userEmail);
     //
 	public JSONObject staicsCount(String type);
-	public JSONObject teamCount();
+	public String[] teamCount();
 
 }

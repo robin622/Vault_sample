@@ -61,6 +61,12 @@ jQuery(function($){
 				 
 			});
 
+			var groups=rtnData.groups;
+			var userGroupThisMonth=rtnData.userGroupThisMonth;
+			var userGroupLastMonth=rtnData.userGroupLastMonth;
+			console.log(groups);
+			console.log(userGroupThisMonth);
+			console.log(userGroupLastMonth);
 			displayTicketTrendChart("day");
 
 			function displayTicketTrendChart(container)
@@ -176,15 +182,20 @@ jQuery(function($){
 		                text: ''
 		            },
 		            xAxis: {
-		                categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+		                categories: groups,
 		                title: {
 		                    text: null
-		                }
+		                },
+
+	                    width:50
+
+	                
+	                    
 		            },
 		            yAxis: {
 		                min: 0,
 		                title: {
-		                    text: 'Population (millions)',
+		                    text: '',
 		                    align: 'high'
 		                },
 		                labels: {
@@ -192,7 +203,7 @@ jQuery(function($){
 		                }
 		            },
 		            tooltip: {
-		                valueSuffix: ' millions'
+		                valueSuffix: ' '
 		            },
 		            plotOptions: {
 		                bar: {
@@ -202,28 +213,22 @@ jQuery(function($){
 		                }
 		            },
 		            legend: {
-		                layout: 'vertical',
-		                align: 'right',
-		                verticalAlign: 'top',
-		                x: -100,
-		                y: 100,
-		                floating: true,
-		                borderWidth: 1,
+			            
 		                backgroundColor: '#FFFFFF',
-		                shadow: true
+		                shadow: true,
+		                reversed: true
 		            },
 		            credits: {
 		                enabled: false
 		            },
 		            series: [{
-		                name: 'Year 1800',
-		                data: [107, 31, 635, 203, 2]
+		                name: 'This Month',
+		                data: userGroupThisMonth,
+		                width:20
 		            }, {
-		                name: 'Year 1900',
-		                data: [133, 156, 947, 408, 6]
-		            }, {
-		                name: 'Year 2008',
-		                data: [973, 914, 4054, 732, 34]
+		                name: 'Last Month',
+		                data: userGroupLastMonth,
+		                width:20
 		            }]
 		        });
 			

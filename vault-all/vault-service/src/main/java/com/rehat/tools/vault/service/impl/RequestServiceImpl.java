@@ -961,34 +961,35 @@ public class RequestServiceImpl implements RequestService{
 	}
 
    //yizhai
-	public JSONObject teamCount()
+	public String[] teamCount()
 	{
-		JSONObject json = new JSONObject();
+		//JSONObject json = new JSONObject();
 		int n=2;
-		String[] resultDateThisMonth=new String[n];
-		Map<String,String> resultThisMonth=null;
+		String[] resultDateTwoMonth=new String[n];
+		Map<String,String> resultTwoMonth=null;
 		
 		try{
-        	resultThisMonth=requestDAO.userThisMonth();
+        	resultTwoMonth=requestDAO.userTwoMonth();
         }catch(Exception e){
             log.error(e.getMessage(),e);
         }
-		 Set setThisMonth=resultThisMonth.keySet();
-		 Iterator itThisMonth=setThisMonth.iterator();
-		 int thisMonth=0;
+		 Set setTwoMonth=resultTwoMonth.keySet();
+		 Iterator itTwoMonth=setTwoMonth.iterator();
+		 int twoMonth=0;
 		 
-		 while (itThisMonth.hasNext())
+		 while (itTwoMonth.hasNext())
 	     {
-	        String keyThisMonth = (String) itThisMonth.next();
-	        System.out.println("keyThisMonth="+keyThisMonth);
-	        String valueThisMonth = (String) resultThisMonth.get(keyThisMonth);
-	        System.out.println("valueThisMonth="+valueThisMonth);
-	        resultDateThisMonth[thisMonth]=valueThisMonth;	        	
-	        thisMonth++;
-
+	        String keyTwoMonth = (String) itTwoMonth.next();
+	        System.out.println("keyTwoMonth="+keyTwoMonth);
+	        String valueTwoMonth = (String) resultTwoMonth.get(keyTwoMonth);
+	        System.out.println("valueTwoMonth="+valueTwoMonth);
+	        resultDateTwoMonth[twoMonth]=valueTwoMonth;	        	
+	        twoMonth++;
 	       }
-		 json.put("thisMonth", resultDateThisMonth);
-		 return json;		 
+
+		 
+		 return resultDateTwoMonth;
+		 
 	}
 	
 	//yizhai
