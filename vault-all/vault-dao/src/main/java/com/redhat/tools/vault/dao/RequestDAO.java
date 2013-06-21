@@ -1710,7 +1710,7 @@ public class RequestDAO {
 		  	{
 		  		cl = Calendar.getInstance();
 		  		int daySub=(i-1)*7+cl.get(Calendar.DAY_OF_WEEK);
-		  		cl.add(Calendar.DATE, -daySub);
+		  		cl.add(Calendar.DATE, -(daySub-1));
 		  		
 		  		date[i]=cl.getTime();
 		  		day[i] = dday.format(date[i]);
@@ -1794,7 +1794,7 @@ public class RequestDAO {
       	  {
       		  cl = Calendar.getInstance();
       		  int daySub=(i-1)*7+cl.get(Calendar.DAY_OF_WEEK);
-      		  cl.add(Calendar.DATE, -daySub);
+      		  cl.add(Calendar.DATE, -(daySub-1));
       		
       		  date[i]=cl.getTime();
       		  day[i] = dday.format(date[i]);
@@ -1880,7 +1880,7 @@ public class RequestDAO {
       	{
       		cl = Calendar.getInstance();
       		int daySub=(i-1)*7+cl.get(Calendar.DAY_OF_WEEK);
-      		cl.add(Calendar.DATE, -daySub);
+      		cl.add(Calendar.DATE, -(daySub-1));
       		
       		date[i]=cl.getTime();
       		day[i] = dday.format(date[i]);
