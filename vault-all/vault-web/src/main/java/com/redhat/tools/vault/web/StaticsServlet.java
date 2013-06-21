@@ -30,9 +30,12 @@ public class StaticsServlet extends HttpServlet{
 		    @Inject
 		    private OrgChartDataService dataService;
 		    
-		    @PostConstruct
 		    public void init() {
-		        dataService.toString();
+		    	members=dataService.getAllMembers(leader[0]);
+		    	if(members.isEmpty())
+				{
+					dataService.loadOrgChartUsers();
+				}
 		    }
 
 		    private Set<String> members;
@@ -119,12 +122,13 @@ public class StaticsServlet extends HttpServlet{
 				{
 				    joReturn.put(types[i], service.staicsCount(types[i]));	
 				}
-		
+				
 				
 				for(int j=0;j<leader.length;j++)
 				{
 					System.out.println("learder["+j+"]="+leader[j]);
 					members=dataService.getAllMembers(leader[j]);
+					
 					System.out.println("members.size="+members.size());
 					userNumberThisMonth[j]=0;
 					userNumberLastMonth[j]=0;
