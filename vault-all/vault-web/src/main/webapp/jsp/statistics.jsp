@@ -8,7 +8,7 @@
 
 <tr>   
 <td>
-<span class="green-font ">New requests and Active users Trend by Day/Week/Month</span>
+<span class="green-font">New requests and Active users Trend by Day/Week/Month</span>
 <div class="line5"></div>
 				<div id="tab">
 					<ul class="nav nav-tabs">
@@ -20,8 +20,78 @@
 					<div class="tab-pane fade container5" id="week" style="display:none;" ></div>
 					<div class="tab-pane fade container5" id="month" style="display:none;"></div>
 				</div>				
-<span class="green-font ">Group Utilization</span>
-<div class="line5"></div>
+<span class="purple-font">Group Utilization(
+<span id="currentTime"></span>
+)
+</span>
+<script type="text/javascript">
+jQuery(function($){
+	var currentDate = new Date();
+	var str;
+	if(currentDate.getMonth()+1==1)
+	{
+		  str="Jan,"+currentDate.getFullYear();
+		  $("#currentTime").html(str);
+	}else if(currentDate.getMonth()+1==2)
+		{
+		  str="Feb,"+currentDate.getFullYear();
+		  $("#currentTime").html(str);
+		}
+	else if(currentDate.getMonth()+1==3)
+	{
+	  str="Mar,"+currentDate.getFullYear();
+	  $("#currentTime").html(str);
+	}
+	else if(currentDate.getMonth()+1==4)
+	{
+	  str="Apr,"+currentDate.getFullYear();
+	  $("#currentTime").html(str);
+	}
+	else if(currentDate.getMonth()+1==5)
+	{
+	  str="May,"+currentDate.getFullYear();
+	  $("#currentTime").html(str);
+	}
+	else if(currentDate.getMonth()+1==6)
+	{
+	  str="June,"+currentDate.getFullYear();
+	  $("#currentTime").html(str);
+	}
+	else if(currentDate.getMonth()+1==7)
+	{
+	  str="July,"+currentDate.getFullYear();
+	  $("#currentTime").html(str);
+	}
+	else if(currentDate.getMonth()+1==8)
+	{
+	  str="Aug,"+currentDate.getFullYear();
+	  $("#currentTime").html(str);
+	}
+	else if(currentDate.getMonth()+1==9)
+	{
+	  str="Sep,"+currentDate.getFullYear();
+	  $("#currentTime").html(str);
+	}
+	else if(currentDate.getMonth()+1==10)
+	{
+	  str="Oct,"+currentDate.getFullYear();
+	  $("#currentTime").html(str);
+	}
+	else if(currentDate.getMonth()+1==11)
+	{
+	  str="Nov,"+currentDate.getFullYear();
+	  $("#currentTime").html(str);
+	}
+	else if(currentDate.getMonth()+1==12)
+	{
+	  str="Dem,"+currentDate.getFullYear();
+	  $("#currentTime").html(str);
+	}
+	
+	
+});
+</script>
+<div class="line2"></div>
 <div class="tab-pane fade container7" id="group"></div>
 		</td>
 </tr>
@@ -117,10 +187,9 @@ jQuery(function($){
 	            },
 	             tooltip: {
 	            	 style: {
-		                    color: '#333333',
 		                	fontSize: '12px',
 			                padding: 10,
-			                width: 200,
+			                width: 300,
 		                },
 	            	
 	                formatter: function() {
@@ -159,10 +228,14 @@ jQuery(function($){
 	            series: [{
 	                name: 'new created requests',
 	                data: resultRequest,
+	                color : '#7AACE2',
+	                borderColor : '#2F7FD7'
 	    
 	            }, {
 	                name: 'active users',
 	                data: resultUserNumber,
+	                color : '#C1DD86',
+					borderColor : '#8BBC23'
 	    
 	            }]
 	            
@@ -203,7 +276,12 @@ jQuery(function($){
 		                }
 		            },
 		            tooltip: {
-		                valueSuffix: ' '
+		            	useHTML : true,
+						shared : true,
+						headerFormat : '<small>{point.key}</small><table>',
+						pointFormat : '<tr><td style="color: {series.options.borderColor}">{series.name}: </td>'
+								+ '<td style="text-align: right"><b>{point.y}</b></td></tr>',
+						footerFormat : '</table>'
 		            },
 		            plotOptions: {
 		                bar: {
@@ -224,11 +302,13 @@ jQuery(function($){
 		            series: [{
 		                name: 'This Month',
 		                data: userGroupThisMonth,
-		                width:20
+		                color : '#B993B9',
+						borderColor : '#773577'
 		            }, {
 		                name: 'Last Month',
 		                data: userGroupLastMonth,
-		                width:20
+		                color : '#EFEFEF',
+						borderColor : '#CCCCCC'
 		            }]
 		        });
 			

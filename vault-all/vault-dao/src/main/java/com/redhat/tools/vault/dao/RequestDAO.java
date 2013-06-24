@@ -57,15 +57,15 @@ public class RequestDAO {
     private static final String QUERY_USERSTATICREQ="select a.createdby from VA_request as a where a.createdtime like ? union select a.signedby from VA_request " +
 			                                        "as a where a.signedtime like ? union select a.editedby from VA_request as a where a.editedtime like ? union select b.username from VA_user as b where b.createdtime like ? union " +
 							                        "select c.editedby from VA_reply_comment as c where c.editedtime like ? union select d.createdby from VA_savequery as d where d.createdtime like ? " +
-							                        "union select e.editedby from VA_request_history as e where e.editedtime like ?";
+							                        "union select e.editedby from VA_request_history as e where e.editedtime like ? and e.status != ?";
     private static final String QUERY_USERSTATICMONTH="select a.createdby from VA_request as a where a.createdtime between ? and ? or" +
     				" a.createdtime like ? or a.createdtime like ? union select a.signedby from VA_request as a where a.signedtime between ? and ? or" +
     				" a.signedtime like ? or a.signedtime like ? union select a.editedby from VA_request as a where a.editedtime between ? and ? or" +
     				" a.editedtime like ? or a.editedtime like ? union select b.username from VA_user as b where b.createdtime between ? and ? or" +
     				" b.createdtime like ? or b.createdtime like ? union select c.editedby from VA_reply_comment as c where c.editedtime between ? and ? or" +
     				" c.editedtime like ? or c.editedtime like ? union select d.createdby from VA_savequery as d where d.createdtime between ? and ? or" +
-    				" d.createdtime like ? or d.createdtime like ? union select e.editedby from VA_request_history as e where e.editedtime between ? and ? or" +
-    				" e.editedtime like ? or e.editedtime like ?";
+    				" d.createdtime like ? or d.createdtime like ? union select e.editedby from VA_request_history as e where (e.editedtime between ? and ? or" +
+    				" e.editedtime like ? or e.editedtime like ?) and e.status != ?";
     //
     
     public RequestDAO() {
@@ -1773,6 +1773,7 @@ public class RequestDAO {
 	    	    {
 	    	       query[i].setString(j, dateType[i] + "%");
 	    	    }
+	    	    query[i].setString(7, "SignedOnBehalf");
 	    	    List<BigInteger> temp = query[i].list();
 	    	    sum[i]=new BigInteger("0");
 	            if (temp != null && temp.size() > 0) {
@@ -1806,6 +1807,7 @@ public class RequestDAO {
       	        query[i-1].setString(j, day[i] + "%");
       	        query[i-1].setString(j+1, day[i-1] + "%");
       	      }
+      	      query[i-1].setString(28, "SignedOnBehalf");
       	      List<BigInteger> temp = query[i-1].list();
       	      sum[i-1]=new BigInteger("0");
               if (temp != null && temp.size() > 0) {
@@ -1857,6 +1859,7 @@ public class RequestDAO {
 	    	    {
 	    	       query[i].setString(j,dateType[i] + "%");
 	    	    }
+	    	    query[i].setString(7,"SignedOnBehalf");
 	    	    List<String> temp = query[i].list();
 	    	    
 	    	    user[i]="";
@@ -1892,6 +1895,7 @@ public class RequestDAO {
       	      query[i-1].setString(j, day[i] + "%");
       	      query[i-1].setString(j+1, day[i-1] + "%");
       	    }
+      	    query[i-1].setString(28, "SignedOnBehalf");
       	    List<String> temp = query[i-1].list();
       	    user[i-1]="";
       	    for(int j=0;j<temp.size();j++)
@@ -1949,7 +1953,7 @@ public class RequestDAO {
 	      {
 	        query[i].setString(j,day[i] + "%");
 	      }
-	      
+	      query[i].setString(7,"SignedOnBehalf");
 	      List<String> temp = query[i].list();
   	      sumEveryDay[i]="";
   	    
@@ -1986,6 +1990,7 @@ public class RequestDAO {
 	    {
 	        query[k].setString(j,day[k] + "%");
 	      }
+	    query[k].setString(7, "SignedOnBehalf");
 	    List<String> temp = query[k].list();
 	    sumEveryDay[k]="";
 	    

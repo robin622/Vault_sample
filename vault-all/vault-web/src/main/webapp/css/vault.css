@@ -716,12 +716,14 @@ textarea {
 }
 /*--add weekly/month trend--*/
 .container5,.container6{min-width:600px; margin: 0 auto; height: 300px; margin: 0 auto;}
-.container7{min-width:600px; margin: 0 auto; height: 700px; margin: 0 auto;}
+.container7{min-width:600px; margin: 0 auto; height: 1000px; margin: 0 auto;}
 .nav{margin-bottom:0px;margin-top:10px;}
 .nav-tabs > li > a{padding-bottom:px;padding-top:0px;border-radius:0px;}
 .nav-tabs{border-radius:0px;}
 .green-font{ color: #659007; font-weight: bold;}
+.purple-font{color: #773577; font-weight: bold;}
 .line5{border-bottom:2px solid #659007;width: 100%;}
+.line2{border-bottom: 2px solid #773577;width: 100%;}
 .tab-content > .active, .pill-content > .active{display:inline-block; width:100%;}
 .flr {
 float: right!important;
