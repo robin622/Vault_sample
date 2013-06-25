@@ -2,7 +2,7 @@
 	<div class="hss-logo"></div>
 	<div class='copyright'>
 		<p>
-			Vault 3.1.1 <a href="https://bugzilla.redhat.com/enter_bug.cgi?product=Vault&version=3.1.1"
+			Vault 3.1.2 <a href="https://bugzilla.redhat.com/enter_bug.cgi?product=Vault&version=3.1.2"
 				target="_blank"> Report an Issue</a>
 		</p>
 		<p>Copyright © 2012 Red Hat, Inc. All rights reserved.</p>
