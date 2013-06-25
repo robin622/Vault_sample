@@ -26,15 +26,13 @@ public class Mail {
      * @param subject
      * @param text
      */
-    public static void sendMail(String smtpServerAddress,String fromUserAddress,String fromUserName,String toUserAddress,
-            String ccUserAddress,String subject,String text) throws Exception {
+    public static void sendMail(String smtpServerAddress, String fromUserAddress, String fromUserName, String toUserAddress,
+            String ccUserAddress, String subject, String text) throws Exception {
         try {
             String encoding = "utf-8";
             Properties props = System.getProperties();
             props.put("mail.smtp.host", smtpServerAddress);
-
             Session session = Session.getDefaultInstance(props, null);
-
             MimeMessage mimeMessage = new MimeMessage(session);
             mimeMessage.setFrom(new InternetAddress(fromUserAddress, fromUserName, encoding));
             mimeMessage.setRecipients(Message.RecipientType.TO, toUserAddress);
@@ -42,7 +40,6 @@ public class Mail {
             mimeMessage.setSubject(subject, encoding);
             mimeMessage.setContent(text, "text/plain");
             mimeMessage.setSentDate(new Date());
-
             Transport.send(mimeMessage);
         } catch (Exception e) {
 
