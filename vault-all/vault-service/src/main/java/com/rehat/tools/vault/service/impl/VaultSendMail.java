@@ -27,7 +27,6 @@ import com.redhat.tools.vault.util.DateUtil;
 import com.redhat.tools.vault.util.StringUtil;
 
 public class VaultSendMail {
-    private static final String MANUAL_LINK = "https://engineering.redhat.com/docs/en-US/Application_Guide/90.User/html/Vault/";
     @Inject
     private RequestDAO requestDAO;
     @Inject
@@ -65,6 +64,8 @@ public class VaultSendMail {
     String URL = null;
 
     String nextLine = "\r\n";
+
+    private static final String dash_character = "-----------------------";
 
     public String getSubject(Request bean, String status) {
         String subject = null;
@@ -183,79 +184,45 @@ public class VaultSendMail {
 
         requests = requestDAO.get(request);
         String subject = getSubject(bean, status);
-
-        /**/
-        // if(serverName.indexOf("vault-devel") > -1){
-        // sb.append("The email originated from the testing instance and is part of the development process.");
-        // addLine(sb);
-        // }
+        if (serverName != null && serverPort != null && URL != null) {
+            url = "https://" + serverName + "/showRequest/" + bean.getRequestid();
+        }
 
         addLine(sb);
-        sb.append("Greetings,");
+        sb.append(url + "");
         addLine(sb);
-        sb.append("(**all time below is UTC time**)");
-        addLine(sb);
-        // sb.append("Greetings,<p><p>");
 
         addLine(sb);
         if ("new".equals(status)) {
-            // sb.append(
-            // "This message has been automatically generated in response to the creation of a request regarding:<p>");
-            // sb.append(
-            // "This message has been automatically generated in response to the creation of a request regarding:");
-            sb.append("Request \"" + bean.getRequestname() + "\" has been created in Vault and requires your sign-off by "
-                    + dayFormat.format(bean.getRequesttime()));
+
+            // sb.append("Request \"" + bean.getRequestname() + "\" has been created in Vault and requires your sign-off by "
+            // + dayFormat.format(bean.getRequesttime()));
+            sb.append("requires your sign-off by: ");
+            addLine(sb);
+            sb.append(dayFormat.format(bean.getRequesttime())).append(" (UTC)");
             addLine(sb);
         } else if ("reject".equals(status)) {
-            sb.append("Your Vault request \"" + bean.getRequestname() + "\" has been rejected by " + bean.getSignedby()
-                    + "@redhat.com at " + format.format(bean.getSignedtime()) + ".");
+            // sb.append("Your Vault request \"" + bean.getRequestname() + "\" has been rejected by " + bean.getSignedby()
+            // + "@redhat.com at " + format.format(bean.getSignedtime()) + ".");
+            // sb.append("has been rejected by " + bean.getSignedby() + "@redhat.com at " + format.format(bean.getSignedtime())
+            // + ".");
+            sb.append(bean.getSignedby() + "@redhat.com [" + format.format(bean.getSignedtime()) + "](UTC)rejected.");
             addLine(sb);
         } else if ("signoff".equals(status) || "signoffOnBehalf".equals(status)) {
 
         } else if ("change".equals(status)) {
-            // sb.append(
-            // "This message has been automatically generated in response to the change of Vault request \""+bean.getRequestid()+"  "+bean.getRequestname()+"\",");
-            // sb.append(
-            // "This message has been automatically generated in response to the change of Vault request \""+bean.getRequestid()+"  "+bean.getRequestname()+"\",");
 
-            // addLine(sb);
         } else if ("delete".equals(status)) {
-            // sb.append("This message has been automatically generated in response to the deletion of a request:<p>");
-            // sb.append("This message has been automatically generated in response to the deletion of a request:<p>");
-            sb.append("Request \"" + bean.getRequestname() + "\" required your sign-off has been deleted.");
+            // sb.append("Request \"" + bean.getRequestname() + "\" required your sign-off has been deleted.");
+            sb.append(bean.getCreatedby() + "@redhat.com [" + format.format(DateUtil.getLocalUTCTime()) + "](UTC)deleted.");
             addLine(sb);
         } else if ("withdraw".equals(status)) {
-            // sb.append("This message has been automatically generated in response to the deletion of a request:<p>");
-            // sb.append("This message has been automatically generated in response to the deletion of a request:<p>");
-            sb.append("Request \"" + bean.getRequestname() + "\" required your sign-off has been withdrawn.");
+            sb.append(bean.getSignedby() + "@redhat.com [" + format.format(bean.getSignedtime()) + "](UTC)withdrawed.");
+            // sb.append("has been withdrawn.");
             addLine(sb);
         } else if ("dueDate".equals(status)) {
-            // sb.append("This message has been automatically generated in response to the  maturity of a request:<p>");
-            // sb.append("This message has been automatically generated in response to the  maturity of a request:");
-            // sb.append("Request \""+bean.getRequestname()+"\" required your sign_off will be expired today.");
-            sb.append("Request \"" + bean.getRequestname() + "\" required your sign_off will be expired on "
-                    + dayFormat.format(bean.getRequesttime()) + ".");
+            sb.append("will be expired on: ").append(nextLine).append(dayFormat.format(bean.getRequesttime()) + "(UTC).");
             addLine(sb);
-        }
-
-        if (serverName != null && serverPort != null && URL != null) {
-            // url = "https://"
-            // + serverName
-            // + URL
-            // + "&"
-            // + (operation.equals("") ? ""
-            // : ("operation=" + operation + "&")) + "requestid="
-            // + bean.getRequestid();
-            // url =
-            // "http://localhost:8080/Vault/showRequest/"+bean.getRequestid();
-            url = "https://" + serverName + "/showRequest/" + bean.getRequestid();
-            // url = "<a href='"+url+"'><strong>View This Request</strong></a>";
-            /*
-             * if("new".equals(status) || "reject".equals(status) ){
-             * 
-             * }else if("signoff".equals(status)){ url = "https://" + serverName + URL + "&" + "operation=" + operation + "&" +
-             * "requestid="+bean.getRequestid(); }
-             */
         }
 
         fromUserName = "Vault";
@@ -287,7 +254,6 @@ public class VaultSendMail {
         if ("signoff".equals(status) || "signoffOnBehalf".equals(status)) {
             toUserAddress = getCreatorEmail(bean);
             if ("signoffOnBehalf".equals(status)) {
-                // ccUserAddress += ","+bean.getOwner();
                 RequestHistory hist = new RequestHistory();
                 hist.setRequestid(bean.getRequestid());
                 hist.setIsHistory(false);
@@ -318,60 +284,20 @@ public class VaultSendMail {
                 }
             }
 
-            // sb.append( "Request name: "+bean.getRequestname()+"<p><p>";
             if ("signoffOnBehalf".equals(status)) {
-                // sb.append(
-                // "Your Vault request \""+bean.getRequestid()+"  "+bean.getRequestname()+"\" has been signed off by "+bean.getSignedby()+"@redhat.com on behalf of the target signatories at "+format.format(bean.getSignedtime())+".<p><p>");
-                // sb.append(
-                // "Your Vault request \""+bean.getRequestid()+"  "+bean.getRequestname()+"\" has been signed off by "+bean.getSignedby()+"@redhat.com on behalf of the target signatories at "+format.format(bean.getSignedtime())+".");
-                // addLine(sb);
-                // //sb.append(
-                // "Your Vault request \""+bean.getRequestid()+"  "+bean.getRequestname()+"\" has been signed off by "+bean.getSignedby()+"@redhat.com at "+format.format(bean.getSignedtime())+".<p><p>");
-                // sb.append(
-                // "Your Vault request \""+bean.getRequestid()+"  "+bean.getRequestname()+"\" has been signed off by "+bean.getSignedby()+"@redhat.com at "+format.format(bean.getSignedtime())+".");
-                // addLine(sb);
-                sb.append("Your request \"" + bean.getRequestname() + "\" has been signed off on behalf by "
-                        + bean.getSignedby() + "@redhat.com at " + format.format(bean.getSignedtime()) + ".");
+                // sb.append("has been signed off on behalf by " + bean.getSignedby() + "@redhat.com at "
+                // + format.format(bean.getSignedtime()) + ".");
+                sb.append(bean.getSignedby() + "@redhat.com [" + format.format(bean.getSignedtime())
+                        + "](UTC)signed off on behalf.");
                 addLine(sb);
             } else {
-                sb.append("Your request \"" + bean.getRequestname() + "\" has been signed off by " + bean.getSignedby()
-                        + "@redhat.com at " + format.format(bean.getSignedtime()) + ".");
+                // sb.append("has been signed off by " + bean.getSignedby() + "@redhat.com at "
+                // + format.format(bean.getSignedtime()) + ".");
+                sb.append(bean.getSignedby() + "@redhat.com [" + format.format(bean.getSignedtime()) + "](UTC)signed.");
                 addLine(sb);
             }
-
-            // sb.append( "Comment: <p>" + bean.getComment() + "<p><p>");
-            // sb.append(
-            // "You can find the request detailed description:<p><p>");
-            // sb.append( "<ul><li>Created by: " + bean.getCreatedby() +
-            // "</li>");
-            // sb.append( "<li>Created: " + format.format(bean.getCreatedtime())
-            // + "</li>");
-            // if(bean.getRequesttime() != null){
-            // sb.append( "<li>Due date: " +
-            // dayFormat.format(bean.getRequesttime()) + "</li>");
-            // }else{
-            // sb.append( "<li>Due date: " + dayFormat.format(new Date()) +
-            // "</li>");
-            // }
-            // sb.append( "<li>Sign off by: " + bean.getSignedby() + "</li>";
-
-            // sb.append( "<li>Sign off date: " +
-            // format.format(bean.getSignedtime()) + "</li>";
-
-            // String detail = bean.getDetail();
-            //
-            // detail = StringUtil.showInEmail(detail);
-            //
-            // detail = StringUtil.convertToHref(detail);
-            //
-            // sb.append( "<li>Detailed description: <p><p>" + detail +
-            // "</li></ul><p><p>");
-            // addDetailLink(sb,url);
-            // addRegards(sb);
             showComment(sb, bean);
-            // addPlainDetailLink(sb,url);
-            // addPlainDetail(sb,bean);
-            addPlainDetails(sb, bean, url);
+            // addPlainDetails(sb, bean, url);
             addPlainQuestions(sb);
             addPlainRegards(sb);
             if (!"".equals(url)) {
@@ -384,53 +310,14 @@ public class VaultSendMail {
                 }
             }
         } else if ("comment".equals(status)) {
-            // sb.append(
-            // "Request \""+bean.getRequestid()+"  "+bean.getRequestname()+
-            // "\" requiring your sign off has been commented on the Vault portal.<p><p>");
-            // sb.append(
-            // "Request \""+bean.getRequestid()+"  "+bean.getRequestname()+
-            // "\" requiring your sign off has been commented on the Vault portal.");
-            sb.append("Request \"" + bean.getRequestname() + "\" has been commented.");
+            // sb.append("Request \"" + bean.getRequestname() + "\" has been commented.");
             addLine(sb);
-            // sb.append(
-            // "Commented by "+bean.getEditedby()+"@redhat.com ["+format.format(bean.getCreatedtime())+"]: <p><p>"
-            // + bean.getComment() + "<p><p>");
             toUserAddress += getOwner(bean);
-            // showComment(sb,bean);
-            sb.append("Commented by " + bean.getEditedby() + "@redhat.com [" + format.format(bean.getCreatedtime()) + "]:");
-            addLine(sb);
             String comm = (bean.getComment() == null ? "" : bean.getComment());
-            sb.append(StringUtil.showInEmail(comm));
-            addLine(sb);
-            // addPlainDetailLink(sb,url);
-            // addPlainDetail(sb,bean);
-            addPlainDetails(sb, bean, url);
+            toCommentOrReply(bean, sb, "Commented", StringUtil.showInEmail(comm));
+            // addPlainDetails(sb, bean, url);
             addPlainQuestions(sb);
             addPlainRegards(sb);
-            // sb.append(
-            // "You can find the request detailed description:<p><p>");
-            // sb.append( "<ul><li>Created by: " + bean.getCreatedby() +
-            // "</li>");
-            // sb.append( "<li>Created: " + format.format(bean.getCreatedtime())
-            // + "</li>");
-            // if(bean.getRequesttime() != null){
-            // sb.append( "<li>Due date: " +
-            // dayFormat.format(bean.getRequesttime()) + "</li>");
-            // }else{
-            // sb.append( "<li>Due date: " + dayFormat.format(new Date()) +
-            // "</li>");
-            // }
-            // String detail = bean.getDetail();
-            //
-            // detail = StringUtil.showInEmail(detail);
-            // detail = StringUtil.convertToHref(detail);
-            //
-            // sb.append( "<li>Detailed description: <p>" + detail +
-            // "<p><p><p></li></ul><p><p>");
-            // //sb.append( "<li>Comment by "+bean.getEditedby()+": <p><p>" +
-            // bean.getComment() + "<p></li></ul><p><p>";
-            // addDetailLink(sb,url);
-            // addRegards(sb);
             if (!"".equals(url)) {
                 try {
                     Mail.sendMail(prop.getSMTPAddress(), fromUserAddress, fromUserName, toUserAddress, ccUserAddress, subject,
@@ -450,23 +337,26 @@ public class VaultSendMail {
             try {
                 Long historyid = relationDAO.getHistoryidByreplyId(reply.getReplyid());
                 RequestHistory history = historyDao.getRequestHistoryByid(historyid);
-                sb.append("Request \"" + bean.getRequestname() + "\" 's comment(" + history.getStatus() + ") has a new Reply.");
-                addLine(sb);
-                addLine(sb);
-                sb.append("This comment is:");
-                addLine(sb);
-                sb.append(StringUtil.showInEmail(history.getComment()));
+                toCommentOrReply(bean, sb, "Commented", StringUtil.showInEmail(history.getComment()));
+                // sb.append("Request \"" + bean.getRequestname() + "\" 's comment(" + history.getStatus() +
+                // ") has a new Reply.");
+                // addLine(sb);
+                // addLine(sb);
+                // sb.append("This comment is:");
+                // addLine(sb);
+                // sb.append(StringUtil.showInEmail(history.getComment()));
             } catch (Exception e) {
                 log.error(e.getMessage());
                 throw e;
             }
             addLine(sb);
             addLine(sb);
-            sb.append("Replied by " + reply.getEditedby() + "@redhat.com [" + reply.getEditedtime() + "]:");
-            addLine(sb);
-            sb.append(StringUtil.showInEmail(StringUtil.showInEmail(reply.getReplycomment())));
-            addLine(sb);
-            addPlainDetails(sb, bean, url);
+            toCommentOrReply(bean, sb, "Replied", StringUtil.showInEmail(reply.getReplycomment()));
+            // sb.append("Replied by " + reply.getEditedby() + "@redhat.com [" + reply.getEditedtime() + "]:");
+            // addLine(sb);
+            // sb.append(StringUtil.showInEmail(StringUtil.showInEmail(reply.getReplycomment())));
+            // addLine(sb);
+            // addPlainDetails(sb, bean, url);
             addPlainQuestions(sb);
             addPlainRegards(sb);
             toUserAddress += getOwner(bean);
@@ -489,43 +379,7 @@ public class VaultSendMail {
 
         else if ("new".equals(status)) {
             log.debug(request);
-            // sb.append( "Request name: "+bean.getRequestname()+"<p><p>");
-            // sb.append(
-            // "A new request requiring your sign off has been created on the Vault portal<p><p>");
             toUserAddress += getOwner(bean);
-            // sb.append( "These are the detailed description:<p><p>");
-            // sb.append( "<ul><li>Created by: " + bean.getCreatedby() +
-            // "</li>");
-            // sb.append( "<li>Created: " + format.format(bean.getCreatedtime())
-            // + "</li>");
-            // if(bean.getRequesttime() != null){
-            // sb.append( "<li>Due date: " +
-            // dayFormat.format(bean.getRequesttime()) + "</li>");
-            // }else{
-            // sb.append( "<li>Due date: " + dayFormat.format(new Date()) +
-            // "</li>");
-            // }
-            // String detail = bean.getDetail();
-            //
-            // detail = StringUtil.showInEmail(detail);
-            //
-            // detail = StringUtil.convertToHref(detail);
-            //
-            // sb.append( "<li>Detailed description: <p><p>" + detail +
-            // "<p></li></ul><p><p>");
-            // addDetailLink(sb,url);
-            // sb.append( "Request name: "+bean.getRequestname()+"");
-            // addLine(sb);
-            // sb.append(
-            // "A new request requiring your sign off has been created on the Vault portal");
-            // addLine(sb);
-            // addPlainDetailLink(sb,url);
-            // addPlainDetail(sb,bean);
-            // sb.append(
-            // "To learn more about the Vault Sign Off Process follow the attached link:"+"<p><p>");
-            // sb.append(
-            // "<a href='https://riddler.bne.redhat.com/User_Guides/Vault/Book_Sign_Off_Process/tmp/en-US/html-single/index.html#sect-Book_Sign_Off_Process-Sign_off_request'>Vault Sign Off Process</a>"+"<p><p>");
-            // addRegards(sb);
             addPlainDetails(sb, bean, url);
             addPlainNewQuestions(sb);
             addPlainRegards(sb);
@@ -561,41 +415,8 @@ public class VaultSendMail {
                     ccUserAddress += "," + users.get(0).getUseremail();
                 }
             }
-            // sb.append(
-            // "Your Vault request \""+bean.getRequestid()+"  "+bean.getRequestname()+"\" has been rejected by "+bean.getSignedby()+"@redhat.com at "+format.format(bean.getSignedtime())+".<p><p>");
-            // sb.append( "Comment: <p>" + bean.getComment() + "<p><p>");
-            // sb.append(
-            // "You can find the request detailed description:<p><p>");
-            // sb.append( "<ul><li>Created by: " + bean.getCreatedby() +
-            // "</li>");
-            // sb.append( "<li>Created: " + format.format(bean.getCreatedtime())
-            // + "</li>");
-            // if(bean.getRequesttime() != null){
-            // sb.append( "<li>Due date: " +
-            // dayFormat.format(bean.getRequesttime()) + "</li>");
-            // }else{
-            // sb.append( "<li>Due date: " + dayFormat.format(new Date()) +
-            // "</li>");
-            // }
-            // //sb.append( "<li>Reject date: " +
-            // format.format(bean.getSignedtime()) + "</li>";
-            // //sb.append( "<li>Reject by: " + bean.getSignedby() +
-            // "@redhat.com</li>";
-            // String detail = bean.getDetail();
-            // detail = StringUtil.showInEmail(detail);
-            // detail = StringUtil.convertToHref(detail);
-            //
-            // sb.append( "<li>Detailed description: <p><p>" + detail +
-            // "</li></ul><p><p>");
-            // addDetailLink(sb,url);
-            // addRegards(sb);
-            // sb.append(
-            // "Your Vault request \""+bean.getRequestid()+"  "+bean.getRequestname()+"\" has been rejected by "+bean.getSignedby()+"@redhat.com at "+format.format(bean.getSignedtime())+".");
-            // addLine(sb);
             showComment(sb, bean);
-            // addPlainDetailLink(sb,url);
-            // addPlainDetail(sb,bean);
-            addPlainDetails(sb, bean, url);
+            // addPlainDetails(sb, bean, url);
             addPlainQuestions(sb);
             addPlainRegards(sb);
             if (!"".equals(url)) {
@@ -627,44 +448,21 @@ public class VaultSendMail {
             StringBuffer reSignOffContent = new StringBuffer(sb.toString());
             compare = StringUtil.showInEmail(compare);
             if (notifyReSignoffEmails.length() > 0) {
-                reSignOffContent.append("Requeset \"" + bean.getRequestname()
-                        + "\"  has been modified in Vault and requires your review and sign-off by "
-                        + dayFormat.format(bean.getRequesttime()) + " .");
+                // reSignOffContent.append("Requeset \"" + bean.getRequestname()
+                // + "\"  has been modified in Vault and requires your review and sign-off by "
+                // + dayFormat.format(bean.getRequesttime()) + " .");
                 addLine(reSignOffContent);
-                // addPlainDetailLink(reSignOffContent,url);
-                // reSignOffContent.append("Changed by "+bean.getCreatedby()+"@redhat.com ["+format.format(bean.getCreatedtime())+"]:");
-                // addLine(reSignOffContent);
-                // reSignOffContent.append(compare+"");
-                // addLine(reSignOffContent);
                 addLine(reSignOffContent);
                 reSignOffContent.append("Change details");
                 addLine(reSignOffContent);
-                reSignOffContent.append("-----------------------");
+                reSignOffContent.append(dash_character);
                 addLine(reSignOffContent);
                 reSignOffContent.append(compare);
                 toUserAddress = notifyReSignoffEmails;
-                // addPlainDetail(reSignOffContent,bean);
-                addPlainDetails(reSignOffContent, bean, url);
+                // addPlainDetails(reSignOffContent, bean, url);
                 addPlainQuestions(reSignOffContent);
                 addPlainRegards(reSignOffContent);
 
-                // reSignOffContent.append("You can find the request detailed description:<p><p>");
-                // if(bean.getRequesttime() != null){
-                // reSignOffContent.append("<ul><li>Due date: " +
-                // dayFormat.format(bean.getRequesttime()) + "</li>");
-                // }else{
-                // reSignOffContent.append("<li>Due date: " +
-                // dayFormat.format(new Date()) + "</li>");
-                // }
-                // String detail = bean.getDetail();
-                //
-                // detail = StringUtil.showInEmail(detail);
-                // detail = StringUtil.convertToHref(detail);
-                //
-                // reSignOffContent.append("<li>Detailed description: <p><p>" +
-                // detail + "</li></ul><p><p><p>");
-                // addDetailLink(reSignOffContent,url);
-                // addRegards(reSignOffContent);
                 if (!"".equals(url)) {
                     try {
                         Mail.sendMail(prop.getSMTPAddress(), fromUserAddress, fromUserName, toUserAddress, ccUserAddress,
@@ -683,52 +481,16 @@ public class VaultSendMail {
             }
 
             if (notifyNoSignoffEmails.length() > 0) {
-                // sb.append( " which is NOT  requiring your re-sign off.");
-                // // sb.append(
-                // " which is <strong>NOT</strong> requiring your re-sign off.<p><p>");
-                // addLine(sb);
-                // sb.append(
-                // "Changed by "+bean.getCreatedby()+"@redhat.com ["+format.format(bean.getCreatedtime())+"]:");
-                // // sb.append(
-                // "Changed by "+bean.getCreatedby()+"@redhat.com ["+format.format(bean.getCreatedtime())+"]:<p><p>");
-                // addLine(sb);
-                // sb.append( compare+"");
-                // addLine(sb);
-                // addLine(sb);
-                // // sb.append(
-                // "You can find the request detailed description:<p><p>");
-                // // if(bean.getRequesttime() != null){
-                // // sb.append( "<ul><li>Due date: " +
-                // dayFormat.format(bean.getRequesttime()) + "</li>");
-                // // }else{
-                // // sb.append( "<li>Due date: " + dayFormat.format(new Date())
-                // + "</li>");
-                // // }
-                // // String detail = bean.getDetail();
-                // // detail = StringUtil.showInEmail(detail);
-                // // detail = StringUtil.convertToHref(detail);
-                // // sb.append( "<li>Detailed description: <p><p>" + detail +
-                // "</li></ul><p><p>");
-                // // addDetailLink(sb,url);
-                // // addRegards(sb);
-                // addPlainDetail(sb,bean);
-                // addPlainDetailLink(sb,url);
-                // addPlainRegards(sb);
-                sb.append("Requeset \"" + bean.getRequestname() + "\"  has been modified in Vault and requires your review.");
+                // sb.append("Requeset \"" + bean.getRequestname() +
+                // "\"  has been modified in Vault and requires your review.");
                 addLine(sb);
-                // addPlainDetailLink(sb,url);
-                // reSignOffContent.append("Changed by "+bean.getCreatedby()+"@redhat.com ["+format.format(bean.getCreatedtime())+"]:");
-                // addLine(reSignOffContent);
-                // reSignOffContent.append(compare+"");
-                // addLine(reSignOffContent);
                 addLine(sb);
                 sb.append("Change details");
                 addLine(sb);
-                sb.append("-----------------------");
+                sb.append(dash_character);
                 addLine(sb);
                 sb.append(compare);
-                // addPlainDetail(sb,bean);
-                addPlainDetails(sb, bean, url);
+                // addPlainDetails(sb, bean, url);
                 addPlainQuestions(sb);
                 addPlainRegards(sb);
                 toUserAddress = notifyNoSignoffEmails;
@@ -750,19 +512,7 @@ public class VaultSendMail {
             }
         } else if ("delete".equals(status)) {
             toUserAddress += getOwner(bean);
-            // sb.append( "Request name: "+bean.getRequestname()+"<p><p>");
-            // sb.append(
-            // "A  request requiring your sign off has been deleted on the Vault portal<p><p>");
-            // addDetail(sb,bean);
-            // //addDetailLink(sb,url);
-            // addRegards(sb);
-            // sb.append( "Request name: "+bean.getRequestname()+"");
-            // addLine(sb);
-            // sb.append(
-            // "A  request requiring your sign off has been deleted on the Vault portal");
-            // addLine(sb);
-            // addPlainDetail(sb,bean);
-            addPlainDetails(sb, bean, url);
+            // addPlainDetails(sb, bean, url);
             addPlainQuestions(sb);
             addPlainRegards(sb);
             if (!"".equals(url)) {
@@ -776,7 +526,7 @@ public class VaultSendMail {
             }
         } else if ("withdraw".equals(status)) {
             toUserAddress += getOwner(bean);
-            addPlainDetails(sb, bean, url);
+            // addPlainDetails(sb, bean, url);
             addPlainQuestions(sb);
             addPlainRegards(sb);
             if (!"".equals(url)) {
@@ -791,20 +541,7 @@ public class VaultSendMail {
         } else if ("dueDate".equals(status)) {
             toUserAddress = getUnSigned(bean);
             ccUserAddress = "";
-            // sb.append( "Request name: "+bean.getRequestname()+"");
-            // addLine(sb);
-            // sb.append(
-            // "A  request requiring your sign off will be expired today on the Vault portal");
-            // addLine(sb);
-            // sb.append( "Request name: "+bean.getRequestname()+"<p><p>");
-            // sb.append(
-            // "A  request requiring your sign off will be expired today on the Vault portal <p><p>");
-            // addDetail(sb,bean);
-            // addDetailLink(sb,url);
-            // addRegards(sb);
-            // addPlainDetailLink(sb,url);
-            // addPlainDetail(sb,bean);
-            addPlainDetails(sb, bean, url);
+            // addPlainDetails(sb, bean, url);
             addPlainQuestions(sb);
             addPlainRegards(sb);
             if (!"".equals(url)) {
@@ -818,6 +555,18 @@ public class VaultSendMail {
             }
         }
         log.debug(METHOD + ": success");
+    }
+
+    private void toCommentOrReply(Request bean, StringBuffer sb, String specialCharacter, String content) {
+        sb.append(bean.getEditedby() + "@redhat.com [" + format.format(bean.getCreatedtime()) + "](UTC)" + specialCharacter
+                + ":");
+        addLine(sb);
+        sb.append(dash_character);
+        addLine(sb);
+        sb.append(content);
+        addLine(sb);
+        addLine(sb);
+        addLine(sb);
     }
 
     public String getUnSigned(Request request) {
@@ -919,22 +668,24 @@ public class VaultSendMail {
     public void addPlainDetails(StringBuffer sb, Request bean, String url) {
         addLine(sb);
         addLine(sb);
-        sb.append("Vault Request #" + bean.getRequestid());
+        // sb.append("Vault Request #" + bean.getRequestid());
+        sb.append("Description:");
         addLine(sb);
-        sb.append("------------------------------");
-        addLine(sb);
+        sb.append(dash_character);
+        // addLine(sb);
         addLine(sb);
 
         sb.append(replaceDetail(bean.getDetail()));
         addLine(sb);
         addLine(sb);
-        sb.append("==============================");
+        // sb.append("------------------------------");
+        // sb.append("==============================");
         addLine(sb);
-        sb.append("Vault Request Details");
-        addLine(sb);
-        addLine(sb);
-        sb.append(url + "");
-        addLine(sb);
+        // sb.append("Vault Request Details");
+        // addLine(sb);
+        // addLine(sb);
+        // sb.append(url + "");
+        // addLine(sb);
         sb.append("Created by: " + bean.getCreatedby() + "");
         addLine(sb);
         sb.append("Created on: " + format.format(bean.getCreatedtime()) + " (UTC)");
@@ -945,7 +696,9 @@ public class VaultSendMail {
             sb.append("Due date: " + dayFormat.format(DateUtil.getLocalUTCTime()) + " (UTC)");
         }
         addLine(sb);
-        sb.append("==============================");
+        addLine(sb);
+        addLine(sb);
+        // sb.append("==============================");
     }
 
     public void addRegards(StringBuffer sb) {
@@ -958,38 +711,40 @@ public class VaultSendMail {
     }
 
     public void addPlainQuestions(StringBuffer sb) {
-        addLine(sb);
-        addLine(sb);
-        sb.append("Questions?");
-        addLine(sb);
-        sb.append("-----------------");
-        addLine(sb);
-        sb.append("To learn more about using Vault, visit:");
-        addLine(sb);
-        sb.append(MANUAL_LINK);
-        addLine(sb);
-        sb.append("Or contact us at ");
-        sb.append(email);
-        addLine(sb);
+        // addLine(sb);
+        // addLine(sb);
+        // sb.append("Questions?");
+        // addLine(sb);
+        // sb.append("-----------------");
+        // addLine(sb);
+        // sb.append("To learn more about using Vault, visit:");
+        // addLine(sb);
+        // sb.append(MANUAL_LINK);
+        // addLine(sb);
+        // sb.append("Or contact us at ");
+        // sb.append(email);
+        // addLine(sb);
     }
 
     public void addPlainNewQuestions(StringBuffer sb) {
-        addLine(sb);
-        addLine(sb);
-        sb.append("Questions?");
-        addLine(sb);
-        sb.append("-----------------");
-        addLine(sb);
-        sb.append("To learn more about the Vault sign-off process, visit:");
-        addLine(sb);
-        sb.append(MANUAL_LINK);
-        addLine(sb);
-        sb.append("Or contact us at ");
-        sb.append(email);
-        addLine(sb);
+        // addLine(sb);
+        // addLine(sb);
+        // sb.append("Questions?");
+        // addLine(sb);
+        // sb.append("-----------------");
+        // addLine(sb);
+        // sb.append("To learn more about the Vault sign-off process, visit:");
+        // addLine(sb);
+        // sb.append(MANUAL_LINK);
+        // addLine(sb);
+        // sb.append("Or contact us at ");
+        // sb.append(email);
+        // addLine(sb);
     }
 
     public void addPlainRegards(StringBuffer sb) {
+        addLine(sb);
+        addLine(sb);
         addLine(sb);
         sb.append("Regards,");
         addLine(sb);
@@ -1034,7 +789,12 @@ public class VaultSendMail {
     }
 
     public void showComment(StringBuffer sb, Request bean) {
-        sb.append("Comment:");
+        String comment = bean.getComment();
+        if (comment == null || comment.trim().length() == 0) {
+            sb.append("");
+        } else {
+            sb.append("Comment:");
+        }
         addLine(sb);
         sb.append(StringUtil.showInEmail(bean.getComment()));
         addLine(sb);
