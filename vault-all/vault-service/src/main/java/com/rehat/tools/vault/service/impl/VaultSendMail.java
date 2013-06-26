@@ -245,7 +245,7 @@ public class VaultSendMail {
                 }
             }
         }
-
+      
         if (bean.getForward() != null && !"".equals(bean.getForward())) {
             String forward = StringUtil.deFormartCCList(bean.getForward());
             ccUserAddress += "," + forward;

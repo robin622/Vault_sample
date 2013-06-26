@@ -1115,10 +1115,10 @@ public class RequestDAO {
         String result = "";
         if (current.getEditedby() != null) {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            result += "Changed by:      " + change.getEditedby() + "[" + format.format(change.getEditedtime()) + "]" + "<br>";
+            result += "Changed by:      " + change.getEditedby() + "[" + format.format(change.getEditedtime()) + "]" + "<br><br>";
         }
         if (!current.getRequestname().equals(change.getRequestname())) {
-            result += "Request name:    changed from " + current.getRequestname() + " to " + change.getRequestname() + "<br>";
+            result += "Request name:    changed from " + current.getRequestname() + " to " + change.getRequestname() + "<br><br>";
         }
 
         String productCompare = compareProduct(current, change);
@@ -1129,12 +1129,12 @@ public class RequestDAO {
         if (current.getRequesttime().compareTo(change.getRequesttime()) == -1) {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             result += "Due date:        changed from " + format.format(current.getRequesttime()) + " to "
-                    + format.format(change.getRequesttime()) + "<br>";
+                    + format.format(change.getRequesttime()) + "<br><br>";
         }
 
         if (current.getIs_public().intValue() != change.getIs_public().intValue()) {
             result += "IsPublic:        changed from \"" + publicString(current.getIs_public()) + "\" to \""
-                    + publicString(change.getIs_public()) + "\" <br>";
+                    + publicString(change.getIs_public()) + "\" <br><br>";
         }
 
         String signatoryCompare = compareEmails(current.getOwner(), change.getOwner(), "signatory");
@@ -1169,7 +1169,7 @@ public class RequestDAO {
 
         String fileCompare = compareFiles(current, change);
         if (!StringUtil.isEmpty(fileCompare)) {
-            result += "<br>";
+            result += "";
             result += fileCompare;
         }
         String changeDetail_replace = replaceDetail(change.getDetail());
@@ -1181,7 +1181,7 @@ public class RequestDAO {
             String currentDetail = StringUtil.showInEmail(current.getDetail());
             String changeDetail = StringUtil.showInEmail(change.getDetail());
             result += "<br>";
-            result += "Description:<br><br>changed from: <br> " + currentDetail + "<br><br>to: <br> " + changeDetail
+            result += "Description:<br>changed from: <br> " + currentDetail + "<br>to: <br> " + changeDetail
                     + "<br><br>";
         }
 
@@ -1218,15 +1218,15 @@ public class RequestDAO {
         }
 
         if (currVersion == null && changeVersion != null) {
-            return "Added product:   " + changeProduct.getName() + "(version:" + changeVersion.getValue() + ") <br>";
+            return "Added product:   " + changeProduct.getName() + "(version:" + changeVersion.getValue() + ") <br><br>";
         }
         if (currVersion != null && changeVersion == null) {
-            return "Removed product: " + currProduct.getName() + "(version:" + currVersion.getValue() + ") <br>";
+            return "Removed product: " + currProduct.getName() + "(version:" + currVersion.getValue() + ") <br><br>";
         }
         if (currVersion != null && changeVersion != null
                 && currVersion.getId().longValue() != changeVersion.getId().longValue()) {
             return "Product:   changed from " + currProduct.getName() + "(version:" + currVersion.getValue() + ")" + " to "
-                    + changeProduct.getName() + "(version:" + changeVersion.getValue() + ") <br>";
+                    + changeProduct.getName() + "(version:" + changeVersion.getValue() + ") <br><br>";
         }
         return null;
     }
@@ -1242,24 +1242,24 @@ public class RequestDAO {
     }
 
     private String compareEmails(String current, String change, String type) {
-        String changeName = "Signatory list:  ";
+        String changeName = "Signatory list:  <br>";
         if (type.equals("forward")) {
-            changeName = "CC list:         ";
+            changeName = "CC list:<br>";
             if (StringUtil.isEmpty(current) && StringUtil.isEmpty(change)) {
                 return null;
             }
             if (!StringUtil.isEmpty(current) && StringUtil.isEmpty(change)) {
-                return "remove " + current + " <br> ";
+                return changeName+"remove " + current + " <br><br>";
             }
             if (StringUtil.isEmpty(current) && !StringUtil.isEmpty(change)) {
-                return "add " + change + " <br> ";
+                return changeName+"add " + change + " <br><br>";
             }
         }
         String[] currArray = current.split(",");
         String[] changeArray = change.split(",");
 
         if (currArray.length != changeArray.length) {
-            return changeName + "changed from " + current + " to " + change + " <br>";
+            return changeName + "changed from:<br> " + current + "<br>to:<br> " + change + " <br><br>";
         }
 
         int count = 0;
@@ -1271,7 +1271,7 @@ public class RequestDAO {
             }
         }
         if (count < currArray.length) {
-            return changeName + "changed from " + current + " to " + change + " <br>";
+            return changeName + "changed from:<br> " + current + "<br>to:<br> " + change + " <br><br>";
         }
         return null;
     }
@@ -1294,12 +1294,12 @@ public class RequestDAO {
         if (currParentId == null && changeParentId == null) {
             return null;
         }
-        String parent = "Parent request:  ";
+        String parent = "Parent request:   ";
         if (currParentId == null && changeParentId != null) {
             requestDao = new RequestDAO();
             Request changeParent = requestDao.find(changeParentId);
             if (changeParent != null) {
-                return parent + "added \"" + changeParentId + "  " + changeParent.getRequestname() + "\" <br>";
+                return parent + "added \"" + changeParentId + "  " + changeParent.getRequestname() + "\" <br><br>";
             }
         }
 
@@ -1307,7 +1307,7 @@ public class RequestDAO {
             requestDao = new RequestDAO();
             Request currParent = requestDao.find(currParentId);
             if (currParent != null) {
-                return parent + "removed \"" + currParentId + "  " + currParent.getRequestname() + "\" <br>";
+                return parent + "removed \"" + currParentId + "  " + currParent.getRequestname() + "\" <br><br>";
             }
         }
 
@@ -1317,7 +1317,7 @@ public class RequestDAO {
             Request changeParent = requestDao.find(changeParentId);
             if (currParent != null && changeParent != null) {
                 return parent + "changed from \"" + currParentId + "  " + currParent.getRequestname() + "\"   to   \""
-                        + changeParentId + "  " + changeParent.getRequestname() + "\" <br>";
+                        + changeParentId + "  " + changeParent.getRequestname() + "\" <br><br>";
             }
         }
 
@@ -1330,7 +1330,7 @@ public class RequestDAO {
         // List<Long> currChildIdList = rDao.getChildId(current);
         String[] currChildIdList = null;
         List<Long> changeChildIdList = null;
-        String childre = "Child requests:  ";
+        String childre = "Child requests:<br>";
         if (!StringUtil.isEmpty(current.getChildren())) {
             currChildIdList = current.getChildren().split(",");
         }
@@ -1339,7 +1339,7 @@ public class RequestDAO {
             return null;
         }
         if ((currChildIdList == null || currChildIdList.length < 1) && !StringUtil.isEmpty(change.getChildren())) {
-            return childre + "added \"" + change.getChildren() + "\" <br>";
+            return childre + "added \"" + change.getChildren() + "\" <br><br>";
         }
 
         String currChildList = "";
@@ -1360,12 +1360,12 @@ public class RequestDAO {
         }
 
         if (StringUtil.isEmpty(change.getChildren())) {
-            return childre + "removed \"" + currChildList + "\" <br>";
+            return childre + "removed \"" + currChildList + "\" <br><br>";
         }
 
         String[] childArray = change.getChildren().trim().split(",");
         if (currChildIdList.length != childArray.length) {
-            return childre + "changed from \"" + currChildList + "\"   to   \"" + change.getChildren() + "\" <br>";
+            return childre + "changed from:<br> \"" + currChildList + "\"<br>to:<br>\"" + change.getChildren() + "\"<br><br>";
         }
 
         int index = 0;
@@ -1378,7 +1378,7 @@ public class RequestDAO {
             }
         }
         if (index != currChildIdList.length) {
-            return childre + "changed from \"" + currChildList + "\"   to   \"" + change.getChildren() + "\" <br>";
+            return childre + "changed from:<br> \"" + currChildList + "\"<br>to:<br>\"" + change.getChildren() + "\"<br><br>";
         }
 
         return null;
@@ -1408,7 +1408,7 @@ public class RequestDAO {
                                 if (!currentType.equals(changeType)) {
                                     result += "Signatory:       " + currentEmail + ", changed from \""
                                             + getNotificationType(currentType) + "\"  to  \"" + getNotificationType(changeType)
-                                            + "\" <br>";
+                                            + "\" <br><br>";
                                 }
                             }
                         }
@@ -1423,7 +1423,7 @@ public class RequestDAO {
                     String changeEmail = cm.getMapvalue().split(":")[0];
                     String changeType = cm.getMapvalue().split(":")[1];
                     result += "Signatory:       " + changeEmail + ", changed to  \"" + getNotificationType(changeType)
-                            + "\" <br>";
+                            + "\" <br><br>";
                 }
             }
         }
@@ -1495,13 +1495,13 @@ public class RequestDAO {
                     removed = false;
                     if (!currFileMap.get(currFileName).equals(changeFileMap.get(changeFileName))) {
                         result += "File: \"" + currFileName + " MD5:" + currFileMap.get(currFileName) + "\" changed to \""
-                                + changeFileName + " MD5:" + changeFileMap.get(changeFileName) + "\"<br>";
+                                + changeFileName + " MD5:" + changeFileMap.get(changeFileName) + "\"<br><br>";
                     }
                 }
             }
 
             if (removed) {
-                result += "File: \"" + currFileName + " MD5:" + currFileMap.get(currFileName) + "\" was deleted <br>";
+                result += "File: \"" + currFileName + " MD5:" + currFileMap.get(currFileName) + "\" was deleted <br><br>";
             }
         }
 
@@ -1514,7 +1514,7 @@ public class RequestDAO {
                 }
             }
             if (added) {
-                result += "File: \"" + changeFileName + " MD5:" + changeFileMap.get(changeFileName) + "\" was added <br>";
+                result += "File: \"" + changeFileName + " MD5:" + changeFileMap.get(changeFileName) + "\" was added <br><br>";
             }
         }
 
