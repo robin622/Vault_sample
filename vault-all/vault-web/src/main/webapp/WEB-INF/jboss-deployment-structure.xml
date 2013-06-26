@@ -3,8 +3,6 @@
   <deployment>
     <dependencies>
       <module name="com.redhat.tools.vault.conf" />
-      <module name="org.jboss.teiid.translator.jpa" export="true" />
-	  <module name="org.jboss.teiid.client" export="true" />
     </dependencies>
   </deployment>
 </jboss-deployment-structure>
