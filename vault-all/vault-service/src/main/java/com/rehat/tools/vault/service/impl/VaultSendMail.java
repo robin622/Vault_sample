@@ -206,7 +206,7 @@ public class VaultSendMail {
             // + "@redhat.com at " + format.format(bean.getSignedtime()) + ".");
             // sb.append("has been rejected by " + bean.getSignedby() + "@redhat.com at " + format.format(bean.getSignedtime())
             // + ".");
-            sb.append(bean.getSignedby() + "@redhat.com [" + format.format(bean.getSignedtime()) + "](UTC)rejected.");
+            sb.append(bean.getSignedby() + "@redhat.com [" + format.format(bean.getSignedtime()) + " UTC] rejected.");
             addLine(sb);
         } else if ("signoff".equals(status) || "signoffOnBehalf".equals(status)) {
 
@@ -214,10 +214,10 @@ public class VaultSendMail {
 
         } else if ("delete".equals(status)) {
             // sb.append("Request \"" + bean.getRequestname() + "\" required your sign-off has been deleted.");
-            sb.append(bean.getCreatedby() + "@redhat.com [" + format.format(DateUtil.getLocalUTCTime()) + "](UTC)deleted.");
+            sb.append(bean.getCreatedby() + "@redhat.com [" + format.format(DateUtil.getLocalUTCTime()) + " UTC] deleted.");
             addLine(sb);
         } else if ("withdraw".equals(status)) {
-            sb.append(bean.getSignedby() + "@redhat.com [" + format.format(bean.getSignedtime()) + "](UTC)withdrawed.");
+            sb.append(bean.getSignedby() + "@redhat.com [" + format.format(bean.getSignedtime()) + " UTC] withdrawed.");
             // sb.append("has been withdrawn.");
             addLine(sb);
         } else if ("dueDate".equals(status)) {
@@ -288,12 +288,12 @@ public class VaultSendMail {
                 // sb.append("has been signed off on behalf by " + bean.getSignedby() + "@redhat.com at "
                 // + format.format(bean.getSignedtime()) + ".");
                 sb.append(bean.getSignedby() + "@redhat.com [" + format.format(bean.getSignedtime())
-                        + "](UTC)signed off on behalf.");
+                        + " UTC] signed off on behalf.");
                 addLine(sb);
             } else {
                 // sb.append("has been signed off by " + bean.getSignedby() + "@redhat.com at "
                 // + format.format(bean.getSignedtime()) + ".");
-                sb.append(bean.getSignedby() + "@redhat.com [" + format.format(bean.getSignedtime()) + "](UTC)signed.");
+                sb.append(bean.getSignedby() + "@redhat.com [" + format.format(bean.getSignedtime()) + " UTC] signed.");
                 addLine(sb);
             }
             showComment(sb, bean);
@@ -558,7 +558,7 @@ public class VaultSendMail {
     }
 
     private void toCommentOrReply(Request bean, StringBuffer sb, String specialCharacter, String content) {
-        sb.append(bean.getEditedby() + "@redhat.com [" + format.format(bean.getCreatedtime()) + "](UTC)" + specialCharacter
+        sb.append(bean.getEditedby() + "@redhat.com [" + format.format(bean.getCreatedtime()) + " UTC]" + specialCharacter
                 + ":");
         addLine(sb);
         sb.append(dash_character);
