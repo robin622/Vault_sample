@@ -74,7 +74,20 @@ public class ListRequestServlet extends HttpServlet {
         } else if ("NewRequest".equalsIgnoreCase(operation)) {
             request.setAttribute("operationstatus", "newrequest");
         } else if ("StaticsRequest".equalsIgnoreCase(operation)) {
-            request.setAttribute("operationstatus", "staticsrequest");
+            Map<String, String> map = (Map<String, String>) request.getServletContext().getAttribute("userRoles");
+            if (map == null || map.size() == 0) {
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                return;
+            } else {
+                String role = map.get(userName);
+                if (role == null) {
+                    request.getRequestDispatcher("/login.jsp").forward(request, response);
+                    return;
+                } else {
+                    request.setAttribute("operationstatus", "staticsrequest");
+                }
+            }
+
         } else if ("Search".equalsIgnoreCase(operation)) {
             String requestName = request.getParameter("requestName");
             String type = request.getParameter("type");
@@ -97,5 +110,4 @@ public class ListRequestServlet extends HttpServlet {
         request.setAttribute("reqCounts", counts);
         request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
     }
-
 }
