@@ -980,9 +980,9 @@ public class RequestServiceImpl implements RequestService{
 		 while (itTwoMonth.hasNext())
 	     {
 	        String keyTwoMonth = (String) itTwoMonth.next();
-	        System.out.println("keyTwoMonth="+keyTwoMonth);
+	        //System.out.println("keyTwoMonth="+keyTwoMonth);
 	        String valueTwoMonth = (String) resultTwoMonth.get(keyTwoMonth);
-	        System.out.println("valueTwoMonth="+valueTwoMonth);
+	       // System.out.println("valueTwoMonth="+valueTwoMonth);
 	        resultDateTwoMonth[twoMonth]=valueTwoMonth;	        	
 	        twoMonth++;
 	       }

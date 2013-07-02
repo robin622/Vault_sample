@@ -480,7 +480,7 @@ public class VaultSendMail {
                 }
             }
 
-            if (notifyNoSignoffEmails.length() > 0) {
+            if ((notifyNoSignoffEmails.length() > 0)&&(notifyReSignoffEmails.length()<=0)) {
                 // sb.append("Requeset \"" + bean.getRequestname() +
                 // "\"  has been modified in Vault and requires your review.");
                 addLine(sb);

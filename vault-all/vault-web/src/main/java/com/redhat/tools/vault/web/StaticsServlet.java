@@ -39,22 +39,27 @@ public class StaticsServlet extends HttpServlet{
 		    }
 
 		    private Set<String> members;
-		    private String[] groups={"Cloud DEV","Middleware DEV","Openshift DEV","Platform DEV","Storage DEV",
-		    		"Performance","Systems Engineering DEV","Storage QE","Cloud QE","Middleware QE","Platform QE",
-		    		"HSS","RCM (Release Management)","CS (Content Service)","Internationalization(I18N)",
-		    		"Security Response Team","Software Certification","Hardware Certification","Platform MKT","Middleware MKT",
-		    		"Virtualization MKT","Gluster MKT","GSS Operations","Sales Management",
-		    		"MKT Management & Security",		    		
+		    private String[] groups={"Cloud DEV","Cloud QE","CS (Content Service)","Executive Assistant Of Paul. C",
 		    		"Exec PPL Executive",
+		    		"Gluster MKT","Hardware Certification","HSS","Internationalization(I18N)","GSS Operations",
+		    		"Middleware DEV","Middleware MKT","Middleware QE",
+		    		"MKT Management & Security",
+		    		"Openshift DEV","Performance","Platform DEV",
+		    		"Platform MKT","Platform QE","RCM (Release Management)","Sales Management","Security Response Team",
+		    		"Software Certification","Storage DEV","Storage QE","Systems Engineering DEV","Virt Dev",
+		    		"Virtualization MKT","VP,Technical Business Development",
 		    		"others"};
 		    
-		    private String[] leader={"tburke","mlittle","mhicks","ddumas","rfortier",
-		    		"dshaks","vtrehan","sdharane","jturner","mharvey","benl",
-		    		"llim","jflanagan","mhideo","petersen",
-		    		"mjc","smohan","yshao","jtotton","cmuzilla",
-		    		"rbalakri","srangach","mbillpet","oberoi",
-		    		"abadani","bche","mferris","mrimmler",	    		
-		    		"cpeters","delisa","jyeaney","mrc"};
+		    private String[] leader={"tburke","jturner","mhideo","ddelegge",
+		    		"cpeters","delisa","jyeaney","mrc",
+                    "srangach","yshao","llim","petersen","mbillpet",
+                    "mlittle","cmuzilla","mharvey",
+                    "abadani","bche","mferris","mrimmler",	
+		    		"mhicks","dshaks","ddumas",
+		    		"jtotton","benl","jflanagan","oberoi","mjc",
+		    		"smohan","rfortier","sdharane","vtrehan","knoel",
+		    		"rbalakri","mevans",	    		
+		    		};
 		   
 
 		    public Set<String> getMembers() {
@@ -102,14 +107,14 @@ public class StaticsServlet extends HttpServlet{
 				JSONObject joReturn=new JSONObject();
 				String[] userTwoMonth=service.teamCount();
 				String lastMonth=userTwoMonth[0];
-				System.out.println("String thisMonth"+lastMonth);
+				//System.out.println("String thisMonth"+lastMonth);
 				String thisMonth=userTwoMonth[1];
-				System.out.println("String lastMonth"+thisMonth);
+				//System.out.println("String lastMonth"+thisMonth);
 
 				String[] activeUserThisMonth=getTokens(thisMonth,"\n");
 				String[] activeUserLastMonth=getTokens(lastMonth,"\n");
-				System.out.println("activeUserThisMonth length="+activeUserThisMonth.length);
-			    System.out.println("activeUserLastMonth length="+activeUserLastMonth.length);
+				//System.out.println("activeUserThisMonth length="+activeUserThisMonth.length);
+			   // System.out.println("activeUserLastMonth length="+activeUserLastMonth.length);
 				
 			    int n=leader.length;
 			    int numGroups=groups.length;
@@ -126,10 +131,10 @@ public class StaticsServlet extends HttpServlet{
 				
 				for(int j=0;j<leader.length;j++)
 				{
-					System.out.println("learder["+j+"]="+leader[j]);
+					//System.out.println("learder["+j+"]="+leader[j]);
 					members=dataService.getAllMembers(leader[j]);
 					
-					System.out.println("members.size="+members.size());
+					//System.out.println("members.size="+members.size());
 					userNumberThisMonth[j]=0;
 					userNumberLastMonth[j]=0;
 					
@@ -142,7 +147,7 @@ public class StaticsServlet extends HttpServlet{
 						    }
 					}
 					
-					System.out.println("userNumberThisMonth["+j+"]="+userNumberThisMonth[j]);
+					//System.out.println("userNumberThisMonth["+j+"]="+userNumberThisMonth[j]);
 					for(int i=0;i<activeUserLastMonth.length;i++)
 					{				
 						 if(members.contains(activeUserLastMonth[i]))
@@ -151,7 +156,7 @@ public class StaticsServlet extends HttpServlet{
 							    activeUserLastMonth[i]="";
 						    }
 					}
-					System.out.println("userNumberLastMonth["+j+"]="+userNumberLastMonth[j]);
+					//System.out.println("userNumberLastMonth["+j+"]="+userNumberLastMonth[j]);
 					
 				}
 				userNumberThisMonth[leader.length]=0;
@@ -164,7 +169,7 @@ public class StaticsServlet extends HttpServlet{
 				    	 userNumberThisMonth[leader.length]++;
 				     }
 				}
-				System.out.println("userNumberThisMonth["+leader.length+"]="+userNumberThisMonth[leader.length]);
+				//System.out.println("userNumberThisMonth["+leader.length+"]="+userNumberThisMonth[leader.length]);
 				
 				for(int i=0;i<activeUserLastMonth.length;i++)
 				{
@@ -174,38 +179,47 @@ public class StaticsServlet extends HttpServlet{
 				    	 userNumberLastMonth[leader.length]++;
 				     }
 				}
-				System.out.println("userNumberLastMonth["+leader.length+"]="+userNumberLastMonth[leader.length]);
+				//System.out.println("userNumberLastMonth["+leader.length+"]="+userNumberLastMonth[leader.length]);
 				
 				for(int i=0;i<groups.length;i++)
 				{
 					userGroupThisMonth[i]=0;
 					userGroupLastMonth[i]=0;
 				}
-		        for(int i=0;i<=23;i++)
+		        for(int i=0;i<=3;i++)
 		        {
 		        	userGroupThisMonth[i]=userNumberThisMonth[i];
 		        	userGroupLastMonth[i]=userNumberLastMonth[i];
 		        }
-		        for(int i=24;i<=27;i++)
+		        for(int i=4;i<=7;i++)
 		        {
-		            userGroupThisMonth[24]+=userNumberThisMonth[i];
-		            userGroupLastMonth[24]+=userNumberLastMonth[i];
+		            userGroupThisMonth[4]+=userNumberThisMonth[i];
+		            userGroupLastMonth[4]+=userNumberLastMonth[i];
 		        }
-		        for(int i=28;i<=31;i++)
+		        for(int i=8;i<=15;i++)
 		        {
-		        	userGroupThisMonth[25]+=userNumberThisMonth[i];
-		            userGroupLastMonth[25]+=userNumberLastMonth[i];
+		        	userGroupThisMonth[i-3]=userNumberThisMonth[i];
+		        	userGroupLastMonth[i-3]=userNumberLastMonth[i];
+		        }
+		        for(int i=16;i<=19;i++)
+		        {
+		        	userGroupThisMonth[13]+=userNumberThisMonth[i];
+		            userGroupLastMonth[13]+=userNumberLastMonth[i];
 		        }
 		        
-		        
-		        userGroupThisMonth[26]=userNumberThisMonth[32];
-		        userGroupLastMonth[26]=userNumberLastMonth[32];
-		        for(int i=0;i<groups.length;i++)
+		        for(int i=20;i<=34;i++)
 		        {
-		        	System.out.println(groups[i]+"  userGroupThisMonth "+userGroupThisMonth[i]);
-		        	System.out.println(groups[i]+"  userGroupLastMonth "+userGroupLastMonth[i]);
+		        	userGroupThisMonth[i-6]=userNumberThisMonth[i];
+		        	userGroupLastMonth[i-6]=userNumberLastMonth[i];
 		        }
-			
+		        userGroupThisMonth[29]=userNumberThisMonth[35];
+		        userGroupLastMonth[29]=userNumberLastMonth[35];
+//		        for(int i=0;i<groups.length;i++)
+//		        {
+//		        	System.out.println(groups[i]+"  userGroupThisMonth "+userGroupThisMonth[i]);
+//		        	System.out.println(groups[i]+"  userGroupLastMonth "+userGroupLastMonth[i]);
+//		        }
+//			
 				joReturn.put("groups", groups);
 				joReturn.put("userGroupThisMonth", userGroupThisMonth);
 				joReturn.put("userGroupLastMonth", userGroupLastMonth);

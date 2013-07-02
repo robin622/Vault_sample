@@ -186,7 +186,7 @@ jQuery(function($){
 	                }
 	            },
 	             tooltip: {
-	            	 style: {
+	            /*	 style: {
 		                	fontSize: '12px',
 			                padding: 10,
 			                width: 300,
@@ -216,7 +216,13 @@ jQuery(function($){
 		                    return '<b>'+ this.key +'</b><br/><b>'+
 	                        this.series.name +': </b>'+ this.point.y +'<br/>';
 	                
-	                }
+	                }*/
+	            	 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	                     '<td style="padding:0"><b>{point.y}</b></td></tr>',
+	                 footerFormat: '</table>',
+	                 shared: true,
+	                 useHTML: true
 	            },
 	            plotOptions: {
 	                column: {
