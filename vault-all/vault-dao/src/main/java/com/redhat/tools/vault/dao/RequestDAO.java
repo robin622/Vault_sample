@@ -1113,8 +1113,11 @@ public class RequestDAO {
 
     public String compare(Request current, Request change) throws Exception {
         String result = "";
-        if (current.getEditedby() != null) {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        System.out.println(current.getEditedby());
+        System.out.println(change.getEditedby());
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        if (change.getEditedby() != null) {
+            
             result += "Changed by:      " + change.getEditedby() + "[" + format.format(change.getEditedtime()) + "]" + "<br><br>";
         }
         if (!current.getRequestname().equals(change.getRequestname())) {
@@ -1127,7 +1130,7 @@ public class RequestDAO {
         }
 
         if (current.getRequesttime().compareTo(change.getRequesttime()) == -1) {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+           // DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             result += "Due date:        changed from " + format.format(current.getRequesttime()) + " to "
                     + format.format(change.getRequesttime()) + "<br><br>";
         }
@@ -1153,7 +1156,7 @@ public class RequestDAO {
         // String ccCompare =
         // compareEmails(current.getForward(),change.getForward(),"forward");
         String ccCompare = compareEmails(currentForward, changeForward, "forward");
-        if (ccCompare != null) {
+         if (ccCompare != null) {
             result += ccCompare;
         }
 
@@ -1185,6 +1188,10 @@ public class RequestDAO {
                     + "<br><br>";
         }
 
+        if(result.equals("Changed by:      " + change.getEditedby() + "[" + format.format(change.getEditedtime()) + "]" + "<br><br>"))
+        {
+        	result="";
+        }
         return result;
 
     }

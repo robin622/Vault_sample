@@ -3,10 +3,8 @@ package com.redhat.tools.vault.web;
 import java.io.IOException;
 import java.util.Set;
 
-import java.util.Set;
 import java.util.StringTokenizer;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -447,7 +447,8 @@ public class VaultSendMail {
 
             StringBuffer reSignOffContent = new StringBuffer(sb.toString());
             compare = StringUtil.showInEmail(compare);
-            if (notifyReSignoffEmails.length() > 0) {
+            if(!compare.equals(""))
+            { if (notifyReSignoffEmails.length() > 0) {
                 // reSignOffContent.append("Requeset \"" + bean.getRequestname()
                 // + "\"  has been modified in Vault and requires your review and sign-off by "
                 // + dayFormat.format(bean.getRequesttime()) + " .");
@@ -553,6 +554,7 @@ public class VaultSendMail {
                     throw e;
                 }
             }
+        }
         }
         log.debug(METHOD + ": success");
     }
