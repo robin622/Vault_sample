@@ -14,7 +14,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/vault.js"></script>
 </head>
 <body id='eso-body'>
-	<div class="eso-inner">
+	<div class="eso-inner" style="width:1000px;">
 		<a href="<%=request.getContextPath()%>/jsp/warn.jsp" class="warn-index" style="display: none"
 			id="warning">Your browser is not supported</a>
 		<%@ include file="jsp/header.jsp"%>
@@ -24,11 +24,11 @@
 			</ul>
 		</div>
 		<div class="content" style="border-radius: 0px 0px 6px 6px;">
-			<section id="tables" style="margin: 0px 15px 50px;">
+			<section id="tables" style="margin: 0px 15px 30px;">
 			<div class="row-fluid mgt0">
 				<div id="content">
-					<div style="display: table;">
-						<div style="width: 320px; display: table-cell; padding: 0 10px;">
+					<div style="display: table; margin-top:40px;">
+						<div style="width: 320px; padding: 0 10px; float:left; padding-top:40px;">
 							<form action="j_security_check" method="POST" class="form-horizontal">
 								<div class="control-group">
 									<label class="control-label" for="username">Username</label>
@@ -49,7 +49,7 @@
 								</div>
 							</form>
 						</div>
-						<div style="display: table-cell; padding: 0 10px;">
+						<div style="float:right;width:580px; padding: 0 10px; padding-left:30px;">
 							<div class="content error-content">
 								<h2>401 — Kerberos Authentication Failed</h2>
 								<p>

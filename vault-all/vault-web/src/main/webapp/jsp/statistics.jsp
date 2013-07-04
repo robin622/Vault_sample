@@ -1,4 +1,4 @@
-<table id="statistics" style="min-width: 400px; height: 200px; margin: 0 auto">
+<table id="statistics" style="min-width: 400px; height: 200px; margin: 0 auto; display: none;">
  <thead>
     <tr>
       <th class="no-underline"><a href="#" class="float-right no-underline"></a></th>      
