@@ -62,7 +62,7 @@ function viewRequest(requestId,url) {
 
 </script>
 <input type="hidden" name="versionid" id="versionid" value="-1" />
-<table class="eso-table tableWidth table-top detail-table fix-table" id="detail_name_table"
+<table class="eso-table tableWidth table-top detail-table " id="detail_name_table"
 	style="display: none; table-layout:fixed;">
 	<thead>
 		<tr>

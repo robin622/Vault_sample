@@ -25,7 +25,7 @@
 </head>
 <body>
 	<div class="content margin padding">
-		<table class="eso-table table-width blod bgnone detail-table fix-table" id="home_table">
+		<table class="eso-table table-width blod bgnone detail-table" id="home_table">
 			<thead>
 				<tr>
 					<th colspan="3"><h3 class="w800 wordwrap">${reportRequest.requestid}&nbsp;&nbsp;${reportRequest.requestname}</h3>
