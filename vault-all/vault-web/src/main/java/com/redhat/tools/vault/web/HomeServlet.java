@@ -3,6 +3,8 @@ package com.redhat.tools.vault.web;
 import java.io.File;
 import java.io.IOException;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -18,8 +20,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
+import com.redhat.tools.vault.bean.LoginInfo;
 import com.redhat.tools.vault.bean.Request;
+import com.redhat.tools.vault.bean.Savequery;
+import com.redhat.tools.vault.service.LoginInfoService;
 import com.redhat.tools.vault.service.RequestService;
+import com.redhat.tools.vault.util.DateUtil;
 import com.redhat.tools.vault.util.PropertiesUtil;
 import com.redhat.tools.vault.web.helper.VaultHelper;
 
@@ -33,6 +41,8 @@ public class HomeServlet extends HttpServlet {
 
 	@Inject
 	private RequestService service;
+	@Inject
+	private LoginInfoService loginservice;
 
 	/**
 	 * Default constructor.
@@ -49,6 +59,10 @@ public class HomeServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json;charset=UTF-8");
+		response.setHeader("Cache-Control", "no-chche");
+		JSONObject json = new JSONObject();
+		
 		String userName_init = (String) request.getSession().getAttribute(
 				"userName");
 		if (userName_init == null) {
@@ -63,7 +77,10 @@ public class HomeServlet extends HttpServlet {
 		String userEmail = VaultHelper.getEmailFromName(userName);
 		request.getSession().setAttribute("userName", userName);
 		request.getSession().setAttribute("userEmail", userEmail);
-
+		
+		json=loginservice.AddLoginInfo(userName, DateUtil.getLocalUTCTime());
+		response.getWriter().print(json);
+		
 		String ref = (String) request.getSession().getAttribute("ref");
 		if (null != ref && ref.contains("showRequest")) {
 			request.getRequestDispatcher(ref).forward(request, response);

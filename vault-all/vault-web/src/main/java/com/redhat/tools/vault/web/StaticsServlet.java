@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import org.jboss.logging.Logger;
+
+import com.redhat.tools.vault.service.LoginInfoService;
 import com.redhat.tools.vault.service.RequestService;
 import com.redhat.tools.vault.web.orgchart.OrgChartDataService;
 
@@ -27,6 +29,9 @@ public class StaticsServlet extends HttpServlet{
 		    private RequestService service; 
 		    @Inject
 		    private OrgChartDataService dataService;
+		    
+		    @Inject
+		    private LoginInfoService loginService;
 		    
 		    public void init() {
 		    	members=dataService.getAllMembers(leader[0]);
@@ -44,7 +49,7 @@ public class StaticsServlet extends HttpServlet{
 		    		"MKT Management & Security",
 		    		"Openshift DEV","Performance","Platform DEV",
 		    		"Platform MKT","Platform QE","RCM (Release Management)","Sales Management","Security Response Team",
-		    		"Software Certification","Storage DEV","Storage QE","Systems Engineering DEV","Virt Dev",
+		    		"Software Certification","Storage DEV","Storage QE","Systems Engineering DEV",
 		    		"Virtualization MKT","VP,Technical Business Development",
 		    		"others"};
 		    
@@ -55,7 +60,7 @@ public class StaticsServlet extends HttpServlet{
                     "abadani","bche","mferris","mrimmler",	
 		    		"mhicks","dshaks","ddumas",
 		    		"jtotton","benl","jflanagan","oberoi","mjc",
-		    		"smohan","rfortier","sdharane","vtrehan","knoel",
+		    		"smohan","rfortier","sdharane","vtrehan",
 		    		"rbalakri","mevans",	    		
 		    		};
 		   
@@ -103,6 +108,7 @@ public class StaticsServlet extends HttpServlet{
 				
 				String[] types={"day","week","month"};		
 				JSONObject joReturn=new JSONObject();
+				
 				String[] userTwoMonth=service.teamCount();
 				String lastMonth=userTwoMonth[0];
 				//System.out.println("String thisMonth"+lastMonth);
@@ -205,13 +211,13 @@ public class StaticsServlet extends HttpServlet{
 		            userGroupLastMonth[13]+=userNumberLastMonth[i];
 		        }
 		        
-		        for(int i=20;i<=34;i++)
+		        for(int i=20;i<=33;i++)
 		        {
 		        	userGroupThisMonth[i-6]=userNumberThisMonth[i];
 		        	userGroupLastMonth[i-6]=userNumberLastMonth[i];
 		        }
-		        userGroupThisMonth[29]=userNumberThisMonth[35];
-		        userGroupLastMonth[29]=userNumberLastMonth[35];
+		        userGroupThisMonth[28]=userNumberThisMonth[34];
+		        userGroupLastMonth[28]=userNumberLastMonth[34];
 //		        for(int i=0;i<groups.length;i++)
 //		        {
 //		        	System.out.println(groups[i]+"  userGroupThisMonth "+userGroupThisMonth[i]);

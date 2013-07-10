@@ -118,6 +118,8 @@ public class Request {
 	public static String PROPERTY_FROM = "from";
 
 	public static String PROPERTY_REQUEST_VERSION = "requestVersion";
+	
+	public static String PROPERTY_IS_DELETE="is_delete";
 
 	private Long requestid = null;
 
@@ -168,6 +170,8 @@ public class Request {
 	private Integer requestVersion = null; // request version
 	
 	private Integer from = null;
+	
+	private boolean is_delete=false;
 
 	public Integer getFrom() {
 		return from;
@@ -632,6 +636,17 @@ public class Request {
 		}
 		return false;
 	}
+	
+	
+	
+
+	public boolean isIs_delete() {
+		return is_delete;
+	}
+
+	public void setIs_delete(boolean is_delete) {
+		this.is_delete = is_delete;
+	}
 
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
@@ -657,6 +672,7 @@ public class Request {
 		sb.append(" ,is_public=" + is_public);
 		sb.append(" ,forward=" + forward);
 		sb.append(" ,from=" + from);
+		sb.append(" ,is_delete="+is_delete);
 		sb.append("]");
 		return sb.toString();
 	}

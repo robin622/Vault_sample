@@ -16,6 +16,7 @@
 <input type="hidden" name="childrenStr" id="childrenStr" value=""/>
 <input type="hidden" name="detailStr" id="detailStr" value=""/>
 <input type="hidden" name="gap" id="gap" value=""/>
+<input type="hidden" name="isDelete" id="isDelete" value="false">
 
 		<table class="eso-table new-request" id="newrequest_tbl" style="display:none">
   <thead>

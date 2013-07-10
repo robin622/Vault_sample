@@ -2,6 +2,7 @@ package com.redhat.tools.vault.dao;
 
 import java.math.BigInteger;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,10 +47,10 @@ public class RequestDAO {
 
     Session session = null;
 
-    private static final String QUERY_SIGNEDREQ = "from Request as a where (a.owner like ? or a.owner like ?) and a.requestid in(select distinct b.requestid from RequestHistory b where b.editedby = ? and (b.status = ? or b.status = ? or b.status = ? or b.status = ?) and b.isHistory = 0 ) order by requestid desc";
-    private static final String QUERY_WAITINGREQ = "from Request as a where (a.owner like ? or a.owner like ?) and a.status = ? and a.requestid not in(select distinct b.requestid from RequestHistory b where b.editedby = ? and (b.status = ? or b.status = ? or b.status = ?) and b.isHistory = 0 ) order by requestid desc";
-    private static final String QUERY_CANVIEWREQ = "from Request as a where a.is_public = 1 or a.createdby = ? or (a.owner like ? or a.owner like ?) or (a.forward like ? or a.forward like ?) order by requestid desc";
-    private static final String QUERY_CCTOMEREQ = "from Request as a where (a.forward like ? or a.forward like ?) order by requestid desc";
+    private static final String QUERY_SIGNEDREQ = "from Request as a where a.is_delete=0 and(a.owner like ? or a.owner like ?) and a.requestid in(select distinct b.requestid from RequestHistory b where b.editedby = ? and (b.status = ? or b.status = ? or b.status = ? or b.status = ?) and b.isHistory = 0 ) order by requestid desc";
+    private static final String QUERY_WAITINGREQ = "from Request as a where a.is_delete=0 and (a.owner like ? or a.owner like ?) and a.status = ? and a.requestid not in(select distinct b.requestid from RequestHistory b where b.editedby = ? and (b.status = ? or b.status = ? or b.status = ?) and b.isHistory = 0 ) order by requestid desc";
+    private static final String QUERY_CANVIEWREQ = "from Request as a where a.is_delete=0 and (a.is_public = 1 or a.createdby = ? or (a.owner like ? or a.owner like ?) or (a.forward like ? or a.forward like ?)) order by requestid desc";
+    private static final String QUERY_CCTOMEREQ = "from Request as a where a.is_delete=0 and (a.forward like ? or a.forward like ?) order by requestid desc";
 
     //yizhai
     private static final String QUERY_REQUESTSTATICREQ="select count(*) from Request as a where a.createdtime like ?";
@@ -57,7 +58,7 @@ public class RequestDAO {
     private static final String QUERY_USERSTATICREQ="select a.createdby from VA_request as a where a.createdtime like ? union select a.signedby from VA_request " +
 			                                        "as a where a.signedtime like ? union select a.editedby from VA_request as a where a.editedtime like ? union select b.username from VA_user as b where b.createdtime like ? union " +
 							                        "select c.editedby from VA_reply_comment as c where c.editedtime like ? union select d.createdby from VA_savequery as d where d.createdtime like ? " +
-							                        "union select e.editedby from VA_request_history as e where e.editedtime like ? and e.status != ?";
+							                        "union select e.editedby from VA_request_history as e where e.editedtime like ? and e.status != ? union select f.username from VA_loginInfo as f where f.logintime like ?";
     private static final String QUERY_USERSTATICMONTH="select a.createdby from VA_request as a where a.createdtime between ? and ? or" +
     				" a.createdtime like ? or a.createdtime like ? union select a.signedby from VA_request as a where a.signedtime between ? and ? or" +
     				" a.signedtime like ? or a.signedtime like ? union select a.editedby from VA_request as a where a.editedtime between ? and ? or" +
@@ -65,8 +66,9 @@ public class RequestDAO {
     				" b.createdtime like ? or b.createdtime like ? union select c.editedby from VA_reply_comment as c where c.editedtime between ? and ? or" +
     				" c.editedtime like ? or c.editedtime like ? union select d.createdby from VA_savequery as d where d.createdtime between ? and ? or" +
     				" d.createdtime like ? or d.createdtime like ? union select e.editedby from VA_request_history as e where (e.editedtime between ? and ? or" +
-    				" e.editedtime like ? or e.editedtime like ?) and e.status != ?";
-    //
+    				" e.editedtime like ? or e.editedtime like ?) and e.status != ? union select f.username from VA_loginInfo as f where f.logintime between ? and ? or f.logintime like ? or f.logintime like ?";
+    private static final String QUERY_LOGINUSERSTATICREQ="from VA_loginInfo as a where a.logintime like ?";
+    private static final String QUERY_LOGINUSERSTATICMONTH="from VA_loginInfo as a where a.logintime between ? and ? or a.logintime like ? or a.logintime like ?";
     
     public RequestDAO() {
         dao = DAOFactory.getInstance();
@@ -114,6 +116,10 @@ public class RequestDAO {
                 criteria.add(Expression.ge(Request.PROPERTY_REQUESTTIME, condition.getRequesttime()));
                 criteria.add(Expression.lt(Request.PROPERTY_REQUESTTIME, DateUtil.dateTomorrow(condition.getRequesttime())));
             }
+            if (condition.isIs_delete() ==false) {
+                criteria.add(Expression.eq(Request.PROPERTY_IS_DELETE, condition.isIs_delete()));
+            }
+     
             // criteria.addOrder(Order.desc((Request.PROPERTY_EDITEDTIME)));
             criteria.addOrder(Order.desc((Request.PROPERTY_REQUESTID)));
             List<Request> list = criteria.list();
@@ -407,6 +413,10 @@ public class RequestDAO {
             }
             if (request.getRequestVersion() != null) {
                 updatedRequest.setRequestVersion(request.getRequestVersion());
+            }
+            if(request.isIs_delete()!=false)
+            {
+            	 updatedRequest.setIs_delete(true);
             }
             sess.update(updatedRequest);
             // trans.commit();
@@ -876,7 +886,7 @@ public class RequestDAO {
                 queryString += " and a.owner like ?";
             }
             queryString += " and (a.createdby = ? or a.is_public = 1 or a.owner like ? or a.forward like ?)";
-            queryString += " order by requestid desc";
+            queryString += " and a.is_delete=0 order by requestid desc";
             queryObject = sess.createQuery(queryString);
             if (requestName != null && !"".equals(requestName)) {
                 queryObject.setString(++i, "%" + replaceSpecialSQLChar(requestName) + "%");
@@ -1113,8 +1123,8 @@ public class RequestDAO {
 
     public String compare(Request current, Request change) throws Exception {
         String result = "";
-        System.out.println(current.getEditedby());
-        System.out.println(change.getEditedby());
+        //System.out.println(current.getEditedby());
+       // System.out.println(change.getEditedby());
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         if (change.getEditedby() != null) {
             
@@ -1751,7 +1761,9 @@ public class RequestDAO {
 	 
       BigInteger sum[]=new BigInteger[n];
       Session sess=null;
-      
+      Date earliest=this.EarliestLoginTime();
+      cl = Calendar.getInstance();
+           
       try {
 			sess = dao.getSession();
 		} catch (Exception e) {
@@ -1768,19 +1780,23 @@ public class RequestDAO {
 				    cl.add(Calendar.DATE, -i);
 				    date[i]=cl.getTime();
 				    dateType[i] = dday.format(date[i]);
+				   
+				
 			   }else if(type.equals("month"))
 			    {
 				    cl.add(Calendar.MONTH, -i);	
 	    		    date[i]=cl.getTime();
 	    		    dateType[i] = dmonth.format(date[i]);
 			    }
-			    queryString[i] ="select count(*) from ( "+QUERY_USERSTATICREQ+" ) as user";
-	    	    query[i] = sess.createSQLQuery(queryString[i]);
-	    	    for(int j=0;j<=6;j++)
-	    	    {
-	    	       query[i].setString(j, dateType[i] + "%");
-	    	    }
-	    	    query[i].setString(7, "SignedOnBehalf");
+ 
+		    	 queryString[i] ="select count(*) from ( "+QUERY_USERSTATICREQ+" ) as user";
+		    	 query[i] = sess.createSQLQuery(queryString[i]);
+		    	 for(int j=0;j<=6;j++)
+		    	 {
+		    	     query[i].setString(j, dateType[i] + "%");
+		    	    }
+		    	query[i].setString(7, "SignedByRequestor");
+		    	query[i].setString(8, dateType[i] + "%");
 	    	    List<BigInteger> temp = query[i].list();
 	    	    sum[i]=new BigInteger("0");
 	            if (temp != null && temp.size() > 0) {
@@ -1806,25 +1822,53 @@ public class RequestDAO {
       		
       		  date[i]=cl.getTime();
       		  day[i] = dday.format(date[i]);
+      		  String middle=dday.format(earliest);
+      		  
       		  dateType[i-1]="week"+cl.get(Calendar.WEEK_OF_YEAR);
-      		  queryString[i-1]="select count(*) from ( "+QUERY_USERSTATICMONTH+") as user";
-      	      query[i-1] = sess.createSQLQuery(queryString[i-1]);
-      	      for(int j=0;j<27;j=j+2)
-      	      {
-      	        query[i-1].setString(j, day[i] + "%");
-      	        query[i-1].setString(j+1, day[i-1] + "%");
-      	      }
-      	      query[i-1].setString(28, "SignedOnBehalf");
-      	      List<BigInteger> temp = query[i-1].list();
-      	      sum[i-1]=new BigInteger("0");
-              if (temp != null && temp.size() > 0) {
-              	sum[i-1]=temp.get(0);
-              	countsUserNumber.put(dateType[i-1], sum[i-1]);
-                 
-              } else {
-                 sum[i-1]=new BigInteger("0");
-                 countsUserNumber.put(dateType[i-1], sum[i-1]);
-              }
+              if(date[i].after(earliest)&&(date[i-1].after(earliest))){
+				   queryString[i-1]="select count(*) from (select username "+QUERY_LOGINUSERSTATICMONTH+" group by username) as user";
+			       query[i-1] = sess.createSQLQuery(queryString[i-1]);
+			       query[i-1].setString(0,  day[i]+"%");
+			       query[i-1].setString(1,  day[i-1]+"%");
+			       query[i-1].setString(2,  day[i]+"%");
+			       query[i-1].setString(3,  day[i-1]+"%");
+			       List<BigInteger> temp = query[i-1].list();
+		      	      sum[i-1]=new BigInteger("0");
+		              if (temp != null && temp.size() > 0) {
+		              	sum[i-1]=temp.get(0);
+		              	countsUserNumber.put(dateType[i-1], sum[i-1]);
+		                 
+		              } else {
+		                 sum[i-1]=new BigInteger("0");
+		                 countsUserNumber.put(dateType[i-1], sum[i-1]);
+		              }
+			   }else{
+				   queryString[i-1]="select count(*) from ( "+QUERY_USERSTATICMONTH+") as user";
+	      	       query[i-1] = sess.createSQLQuery(queryString[i-1]);
+	      	       for(int j=0;j<27;j=j+2)
+	      	       {
+	      	            query[i-1].setString(j, day[i] + "%");
+	      	            query[i-1].setString(j+1, middle + "%");
+	      	       }
+	      	         query[i-1].setString(28, "SignedByRequestor");
+	      	         query[i-1].setString(29, day[i] + "%");
+	      	         query[i-1].setString(30, middle + "%");
+	      	         query[i-1].setString(31, day[i] + "%");
+	      	         query[i-1].setString(32, middle + "%");
+	      	         
+	      	        List<BigInteger> temp = query[i-1].list();
+	        	      sum[i-1]=new BigInteger("0");
+	        	      
+	                if (temp != null && temp.size() > 0) {
+	                	sum[i-1]=temp.get(0);
+	                	countsUserNumber.put(dateType[i-1], sum[i-1]);
+	                   
+	                } else {
+	                   sum[i-1]=new BigInteger("0");
+	                   countsUserNumber.put(dateType[i-1], sum[i-1]);
+	                }
+			   }
+      	     
              
       	}
       }
@@ -1833,11 +1877,15 @@ public class RequestDAO {
   }
    
   //yizhai,count active user
+  /*
   public Map<String,String> countActiveUser(String type)
   {
 	  Map<String, String> countsUser= new TreeMap<String,String>();
       Session sess=null;
       String user[]=new String[n];
+      Date earliest=this.EarliestLoginTime();
+      cl = Calendar.getInstance();
+	  Date dateNow=cl.getTime();
       
       try {
 			sess = dao.getSession();
@@ -1848,25 +1896,36 @@ public class RequestDAO {
       {
     	  for(int i=0;i<n;i++)
    	      {
-			   cl = Calendar.getInstance();
+			   //cl = Calendar.getInstance();
+			   cl.setTime(earliest);
 			   if(type.equals("day"))
 			    {
-				    cl.add(Calendar.DATE, -i);
-				    date[i]=cl.getTime();
-				    dateType[i] = dday.format(date[i]);
+				   cl.add(Calendar.DATE, -i);
+				   date[i]=cl.getTime();
+				   dateType[i] = dday.format(date[i]); 
+				   if(date[i].before(earliest))
+				   {
+					    
+					    queryString[i] =QUERY_USERSTATICREQ;
+			    	    query[i] = sess.createSQLQuery(queryString[i]);
+			    	    for(int j=0;j<=6;j++)
+			    	    {
+			    	       query[i].setString(j,dateType[i] + "%");
+			    	    }
+			    	    query[i].setString(7,"SignedOnBehalf");
+				   }
+				   else{
+					   
+				   }
+				   
+				   
 			   }else if(type.equals("month"))
 			    {
 				    cl.add(Calendar.MONTH, -i);	
 	    		    date[i]=cl.getTime();
 	    		    dateType[i] = dmonth.format(date[i]);
 			    }
-			    queryString[i] =QUERY_USERSTATICREQ;
-	    	    query[i] = sess.createSQLQuery(queryString[i]);
-	    	    for(int j=0;j<=6;j++)
-	    	    {
-	    	       query[i].setString(j,dateType[i] + "%");
-	    	    }
-	    	    query[i].setString(7,"SignedOnBehalf");
+			    
 	    	    List<String> temp = query[i].list();
 	    	    
 	    	    user[i]="";
@@ -1883,12 +1942,13 @@ public class RequestDAO {
    	      }
       }else if(type.equals("week"))
       {
-    	  cl = Calendar.getInstance();
+    	  //cl = Calendar.getInstance();
     	  date[0]=cl.getTime();
       	  day[0] = dday.format(date[0]);
       	for(int i=1;i<=n;i++)
       	{
       		cl = Calendar.getInstance();
+      		//cl.setTime(earliest);
       		int daySub=(i-1)*7+cl.get(Calendar.DAY_OF_WEEK);
       		cl.add(Calendar.DATE, -(daySub-1));
       		
@@ -1921,9 +1981,9 @@ public class RequestDAO {
       }
       return countsUser;
   }
-
+*/
  
-  public Map<String,String> userTwoMonth()
+  public Map<String,String> userTwoMonth() throws HibernateException, ParseException
   {
 	  Map<String,String> countUserThisMonth=new TreeMap<String,String>();
 	  Calendar cl = Calendar.getInstance();
@@ -1931,6 +1991,7 @@ public class RequestDAO {
   	  SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd");
       SimpleDateFormat dday = new SimpleDateFormat("dd");
   	  SimpleDateFormat ddmonth = new SimpleDateFormat("yyyy-MM");
+  	  Date earliest=this.EarliestLoginTime();
   	  int whichDay =Integer.parseInt(dday.format(cl.getTime()));
   	  String day[]=new String[31];
   	  Date LastMonth=new Date();
@@ -1942,6 +2003,7 @@ public class RequestDAO {
   	  String queryString[]=new String[31];
   	  Query query[]=new Query[31];
   	  String[] sumEveryDay=new String[31];
+  	  
   	  try {
 		sess = dao.getSession();
 	  } catch (Exception e) {
@@ -1952,27 +2014,35 @@ public class RequestDAO {
 	  {
 		  cl = Calendar.getInstance();
   		  cl.add(Calendar.DATE, -i);
-  		  date[i]=cl.getTime();
+  		  date[i]=cl.getTime();	  
   		  day[i] = dd.format(date[i]);
-  		  queryString[i] =QUERY_USERSTATICREQ;
-	      query[i] = sess.createSQLQuery(queryString[i]);
-	      for(int j=0;j<=6;j++)
-	      {
-	        query[i].setString(j,day[i] + "%");
-	      }
-	      query[i].setString(7,"SignedOnBehalf");
+  		  if(date[i].before(earliest))
+		   {
+  		      queryString[i] =QUERY_USERSTATICREQ;
+	          query[i] = sess.createSQLQuery(queryString[i]);
+	          for(int j=0;j<=6;j++)
+	          {
+	             query[i].setString(j,day[i] + "%");
+	          }
+	         query[i].setString(7,"SignedByRequestor");
+	         query[i].setString(8, day[i] + "%");
+		   }
+  		  else
+  		  {
+  			queryString[i]="select a.username "+QUERY_LOGINUSERSTATICREQ+" group by a.username";
+	    	query[i] = sess.createSQLQuery(queryString[i]);
+	    	query[i].setString(0, day[i]+"%");
+  		  }
 	      List<String> temp = query[i].list();
   	      sumEveryDay[i]="";
   	    
   	      for(int j=0;j<temp.size();j++)
   	      {
-  	    	sumEveryDay[i]=sumEveryDay[i]+temp.get(j)+"\n";
-  	    	//System.out.println(day[i]+" active users numbers: "+sumEveryDay[i]); 	    	
+  	    	sumEveryDay[i]=sumEveryDay[i]+temp.get(j)+"\n";  	
   	      }
   	    thisMonth=thisMonth+sumEveryDay[i];
 	      
 	  }
-	  //System.out.println("active users numbers: "+thisMonth);
 	  countUserThisMonth.put("thisMonth", thisMonth);
 	  
 	  cl = Calendar.getInstance();
@@ -1991,29 +2061,54 @@ public class RequestDAO {
 	    {
 	      day[k] = month+"-0"+(numberOfDay-k);
 	    }
-  		queryString[k] =QUERY_USERSTATICREQ;
-	    query[k] = sess.createSQLQuery(queryString[k]);
-	    for(int j=0;j<=6;j++)
-	    {
-	        query[k].setString(j,day[k] + "%");
-	      }
-	    query[k].setString(7, "SignedOnBehalf");
+	    Date daylast=dd.parse(day[k]);
+	    if(daylast.before(earliest))
+		   {
+		      queryString[k] =QUERY_USERSTATICREQ;
+	          query[k] = sess.createSQLQuery(queryString[k]);
+	          for(int j=0;j<=6;j++)
+	          {
+	             query[k].setString(j,day[k] + "%");
+	          }
+	         query[k].setString(7,"SignedByRequestor");
+	         query[k].setString(8,day[k] + "%");
+		   }
+		  else
+		  {
+			queryString[k]="select a.username "+QUERY_LOGINUSERSTATICREQ+" group by a.username";
+	    	query[k] = sess.createSQLQuery(queryString[k]);
+	    	query[k].setString(0, day[k]+"%");
+		  }
 	    List<String> temp = query[k].list();
 	    sumEveryDay[k]="";
 	    
 	    for(int j=0;j<temp.size();j++)
 	    {
-	    	sumEveryDay[k]=sumEveryDay[k]+temp.get(j)+"\n";
-	    	//System.out.println(day[k]+" active users numbers: "+sumEveryDay[k]);
-        	
+	    	sumEveryDay[k]=sumEveryDay[k]+temp.get(j)+"\n";        	
 	      }
 	    lastMonth=lastMonth+sumEveryDay[k];
 		}
-	  //System.out.println("active users numbers: "+lastMonth);
 	  countUserThisMonth.put("lastMonth", lastMonth);
 	  return countUserThisMonth;
   }
     
+  
+  public Date EarliestLoginTime()
+  {
+    Session sess=null;
+    Query query;
+    try {
+		sess = dao.getSession();
+	  } catch (Exception e) {
+		log.error("Create session failed", e);
+	  }	
+	String queryString="select min(a.logintime) from LoginInfo as a";
+	query=sess.createQuery(queryString);
+	 List<Date> temp = query.list();
+	 
+	return temp.get(0);
+	  
+  }
 //    @SuppressWarnings("unchecked")
 //    public Map<String, String> countActiveUserNumberMonthRepeat() {
 //    	Map<String, String> countsDay= new TreeMap<String, String>();

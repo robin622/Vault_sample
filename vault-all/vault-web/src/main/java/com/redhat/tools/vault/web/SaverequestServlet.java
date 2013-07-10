@@ -77,6 +77,7 @@ public class SaverequestServlet extends HttpServlet {
         String parent          =   null;
         String children        =   null;
         String gap             =   null;
+        String isDelete        =   null;
         boolean editMode = false;
         try{
             String newrequestid = req.getParameter("newrequestid");
@@ -96,6 +97,7 @@ public class SaverequestServlet extends HttpServlet {
             parent = req.getParameter("parentStr");
             children = req.getParameter("childrenStr");
             gap = req.getParameter("gap");
+            isDelete=req.getParameter("isDelete");
             int requestVersion = 0;
             Set<RequestMap> maps        = new HashSet<RequestMap>();
             String signOffList = "";
@@ -113,6 +115,7 @@ public class SaverequestServlet extends HttpServlet {
                 request.setRequestVersion(requestVersion + 1);
                 request.setEditedby(userName);
                 request.setEditedtime(DateUtil.getLocalUTCTime());
+                request.setIs_delete(false);
                 // maps.addAll(request.getMaps());//add exsisting maps
                 // to changed request.
                 /*for (RequestMap m : request.getMaps()) {
@@ -125,6 +128,7 @@ public class SaverequestServlet extends HttpServlet {
                 request.setCreatedtime(DateUtil.getLocalUTCTime());
                 request.setCreatedby(userName);
                 request.setStatus(Request.ACTIVE);
+                request.setIs_delete(false);
             }
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             DateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
@@ -146,6 +150,8 @@ public class SaverequestServlet extends HttpServlet {
             }else{
                 request.setIs_public(0);
             }
+            
+          
             owner = StringUtil.removeComma(owner.trim());
             children = StringUtil.removeComma(children);
             cc = StringUtil.removeComma(cc);
@@ -159,6 +165,7 @@ public class SaverequestServlet extends HttpServlet {
             request.setForward(cc);
             request.setParent(parent);
             request.setChildren(children);
+            request.setIs_delete(false);
             Request current = new Request();
             
             //maps, notify option                   
@@ -236,6 +243,8 @@ public class SaverequestServlet extends HttpServlet {
     
                 // requestDAO.update(request);
             }else{
+            	//System.out.println(request.getCreatedby());
+            	//System.out.println(request.isIs_delete());
                 requestId = service.save(request);
             }
             

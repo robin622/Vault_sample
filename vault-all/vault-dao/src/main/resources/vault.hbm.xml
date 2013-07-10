@@ -76,9 +76,13 @@
 			<one-to-many class="com.redhat.tools.vault.bean.RequestMap" />
 		</set>
 		<property name="requestVersion" type="java.lang.Integer" not-null="false" update="true" insert="true">
-			<column name="request_version" default="1" />
+			<column name="request_version" default="1" />	
 		</property>
-		
+	
+		<property name="is_delete" type="java.lang.Boolean" not-null="true"
+			update="true" insert="true">
+			<column name="is_delete" default="false" />
+		</property>
 		<!-- 
         <set name="relations" table="VA_request_relationship" lazy="false" inverse="true"
 			cascade="all" sort="unsorted">
@@ -295,5 +299,18 @@
 			update="true" insert="true" unique="false" />
 		<property name="count" column="count" type="java.lang.Long"
 			update="true" insert="true" not-null="true" unique="false" />
+	</class>
+	
+	<class name="com.redhat.tools.vault.bean.LoginInfo" table="VA_loginInfo">
+		<cache usage="read-write" />
+		<id name="loginid" column="loginid" type="java.lang.Long">
+			<generator class="native">
+				<param name="sequence">id_seq</param>
+			</generator>
+		</id>
+		<property name="username" column="username" type="java.lang.String"
+			update="true" insert="true" not-null="true"/>
+		<property name="logintime" column="logintime" type="java.util.Date"
+			update="true" insert="true" not-null="true"/>		
 	</class>
 </hibernate-mapping>

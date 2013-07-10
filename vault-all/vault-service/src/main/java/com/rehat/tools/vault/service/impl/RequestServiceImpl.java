@@ -31,6 +31,7 @@ import com.redhat.tools.vault.bean.RequestRelationship;
 import com.redhat.tools.vault.bean.SendemailCount;
 import com.redhat.tools.vault.bean.Version;
 import com.redhat.tools.vault.dao.CommentRelationshipDAO;
+import com.redhat.tools.vault.dao.LoginInfoDAO;
 import com.redhat.tools.vault.dao.ProductDAO;
 import com.redhat.tools.vault.dao.ReplyCommentDAO;
 import com.redhat.tools.vault.dao.RequestDAO;
@@ -63,6 +64,9 @@ public class RequestServiceImpl implements RequestService{
     private CommentRelationshipDAO commentRelationDAO;
 	@Inject
 	private SendemailCountDAO countDAO;
+	
+	@Inject
+	private LoginInfoDAO loginInfoDAO;
 	
 	private static final Logger log = Logger.getLogger(RequestServiceImpl.class);
 	
@@ -695,27 +699,29 @@ public class RequestServiceImpl implements RequestService{
             	if(!deleteRequest.get(0).getCreatedby().equals(userName)){
                 	throw new Exception("No permission to do the operation!");
                 }
-                requestDAO.deleteRequest(request);
-                history.setRequestid(request.getRequestid());
-                RequestHistoryDAO historyDAO = new RequestHistoryDAO();
-                historys = historyDAO.get(history, false);
-                if (historys != null && historys.size() > 0) {
-                    for (RequestHistory temp : historys) {
-                        historyDAO.deleteHistory(temp);
-                        //delete reply
-                        List<Long> replyIdList = commentRelationDAO.getReplyIdListByHistoryId(temp.getHistoryid());
-                        commentRelationDAO.deleteRelationByHistoryid(temp.getHistoryid());
-                        List<ReplyComment> replyList = replyCommentDAO.getReplyCommentListByIdList(replyIdList);
-                        replyCommentDAO.deleteReplyCommentList(replyList);
-                    }
-                }
-
-                RequestRelationship rl = new RequestRelationship();
-                rl.setRelationshipId(request.getRequestid());
-                relationshipDAO.delete(rl);
-                rl = new RequestRelationship();
-                rl.setRequestId(request.getRequestid());
-                relationshipDAO.delete(rl);
+               // requestDAO.deleteRequest(request);
+            	request.setIs_delete(true);
+            	requestDAO.update(request);
+//                history.setRequestid(request.getRequestid());
+//                RequestHistoryDAO historyDAO = new RequestHistoryDAO();
+//                historys = historyDAO.get(history, false);
+//                if (historys != null && historys.size() > 0) {
+//                    for (RequestHistory temp : historys) {
+//                        historyDAO.deleteHistory(temp);
+//                        //delete reply
+//                        List<Long> replyIdList = commentRelationDAO.getReplyIdListByHistoryId(temp.getHistoryid());
+//                        commentRelationDAO.deleteRelationByHistoryid(temp.getHistoryid());
+//                        List<ReplyComment> replyList = replyCommentDAO.getReplyCommentListByIdList(replyIdList);
+//                        replyCommentDAO.deleteReplyCommentList(replyList);
+//                    }
+//                }
+//
+//                RequestRelationship rl = new RequestRelationship();
+//                rl.setRelationshipId(request.getRequestid());
+//                relationshipDAO.delete(rl);
+//                rl = new RequestRelationship();
+//                rl.setRequestId(request.getRequestid());
+//                relationshipDAO.delete(rl);
                 mailer.sendEmail(null, deleteRequest.get(0), null, 
                         "", "", "delete", "");
             }
@@ -970,6 +976,7 @@ public class RequestServiceImpl implements RequestService{
 		
 		try{
         	resultTwoMonth=requestDAO.userTwoMonth();
+			//resultTwoMonth=loginInfoDAO.userTwoMonth();
         }catch(Exception e){
             log.error(e.getMessage(),e);
         }
@@ -1010,25 +1017,27 @@ public class RequestServiceImpl implements RequestService{
 	        try{
 	        	resultRequest=requestDAO.countByCreatedTime(type);
 	        	resultUserNumber=requestDAO.countActiveUserNumber(type);
-	        	resultUser=requestDAO.countActiveUser(type);
+	        	
+	        	//resultUserNumber=loginInfoDAO.countActiveUserNumber(type);
+	        	//resultUser=requestDAO.countActiveUser(type);
 	        }catch(Exception e){
 	            log.error(e.getMessage(),e);
 	        }
 
 	        Set setRequest=resultRequest.keySet();
 	        Set setUserNumber=resultUserNumber.keySet();
-	        Set setUser=resultUser.keySet();
+	       // Set setUser=resultUser.keySet();
 	       
 	        
 	        Iterator itRequest=setRequest.iterator();
 	        Iterator itUserNumber = setUserNumber.iterator();
-	        Iterator itUser=setUser.iterator();
+	       // Iterator itUser=setUser.iterator();
 	       
 	        
 	
 	        int requestNum=0;
 	        int userNumber=0;
-	        int user=0;
+	       // int user=0;
 	       
 	        
 	        
@@ -1044,24 +1053,26 @@ public class RequestServiceImpl implements RequestService{
 	        while (itUserNumber.hasNext())
 	        {
 	        	String keyUserNumber = (String) itUserNumber.next();        	
-	        	BigInteger valueUserNumber = (BigInteger) resultUserNumber.get(keyUserNumber);    	
+	        	BigInteger valueUserNumber = (BigInteger) resultUserNumber.get(keyUserNumber);  
+	        
+	        	//System.out.println(keyUserNumber+"  "+valueUserNumber);
 	        	resultDateUserNumber[userNumber]=valueUserNumber;
 	        	userNumber++;
 
 	        }
-	        while (itUser.hasNext())
-	        {
-	        	String keyUser = (String) itUser.next();        	
-	        	String valueUser = (String) resultUser.get(keyUser);    	
-	        	resultDateUser[user]=valueUser;
-	        	user++;
-
-	        }
+//	        while (itUser.hasNext())
+//	        {
+//	        	String keyUser = (String) itUser.next();        	
+//	        	String valueUser = (String) resultUser.get(keyUser);    	
+//	        	resultDateUser[user]=valueUser;
+//	        	user++;
+//
+//	        }
 	       
 	        json.put("dateType", dateType);
 	        json.put("resultRequest", resultDateRequest);
 	        json.put("resultUserNumber", resultDateUserNumber);
-	        json.put("resultUser", resultDateUser);
+	       // json.put("resultUser", resultDateUser);
 	       
 
            //count user in month could repeat
