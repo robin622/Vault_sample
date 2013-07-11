@@ -61,7 +61,7 @@ public class LoginInfoServiceImpl implements LoginInfoService{
 		
 	}
 
-	public JSONObject staicsCount(String type) {
+	/*public JSONObject staicsCount(String type) {
 		JSONObject json = new JSONObject();
 		int n=5;
 
@@ -118,7 +118,7 @@ public class LoginInfoServiceImpl implements LoginInfoService{
 	       }		 
 		 return resultDateTwoMonth;
 		 
-	}
+	}*/
 	
 	
 }
